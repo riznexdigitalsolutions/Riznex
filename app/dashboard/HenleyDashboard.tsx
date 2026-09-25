@@ -359,6 +359,66 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     return acc
   }, {})).sort((a: any, b: any) => a.name.localeCompare(b.name))
 
+  // --- Weekly Comparison Data Logic ---
+  const uniqueWeeksSet = new Set<string>();
+  rawSales.forEach((s: any) => { if (s.weekStart) uniqueWeeksSet.add(s.weekStart); });
+  const uniqueWeeks = Array.from(uniqueWeeksSet).sort((a: any, b: any) => new Date(b).getTime() - new Date(a).getTime());
+
+  // We want the last 6 weeks (from the latest available date)
+  const latest6WeeksDates = uniqueWeeks.slice(0, 6).reverse(); // oldest to newest
+  const previous6WeeksDates = uniqueWeeks.slice(6, 12).reverse();
+
+  const getWeeklyStats = (weekDates: string[]) => {
+    const weeklyData = weekDates.map(dateStr => {
+      const weekSales = rawSales.filter((s: any) => s.weekStart === dateStr);
+      const wSales = weekSales.reduce((sum: number, s: any) => sum + (s.grossSales || 0), 0);
+      const wOrders = weekSales.reduce((sum: number, s: any) => sum + (s.totalOrders || 0), 0);
+      const wNetPaid = weekSales.reduce((sum: number, s: any) => sum + (s.netPaid || 0), 0);
+      const wAdSpends = weekSales.reduce((sum: number, s: any) => sum + (s.adSpends || 0), 0);
+      const wOtherFees = weekSales.reduce((sum: number, s: any) => sum + (s.otherFees || 0), 0);
+      
+      const wProfit = wNetPaid - wAdSpends - wOtherFees;
+
+      const d = new Date(dateStr);
+      const endD = new Date(d);
+      endD.setDate(d.getDate() + 6);
+      const formatD = (date: Date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      
+      const w1 = new Date(d.getFullYear(), 0, 4);
+      const isoWeek = 1 + Math.round(((d.getTime() - w1.getTime()) / 86400000 - 3 + (w1.getDay() + 6) % 7) / 7);
+
+      return {
+        dateStr,
+        name: `Week ${isoWeek}`,
+        dateRange: `${formatD(d)} - ${formatD(endD)}`,
+        sales: wSales,
+        orders: wOrders,
+        aov: wOrders > 0 ? wSales / wOrders : 0,
+        profit: wProfit
+      };
+    });
+
+    const totalSales = weeklyData.reduce((sum, w) => sum + w.sales, 0);
+    const totalOrders = weeklyData.reduce((sum, w) => sum + w.orders, 0);
+    const totalProfit = weeklyData.reduce((sum, w) => sum + w.profit, 0);
+    const totalAov = totalOrders > 0 ? totalSales / totalOrders : 0;
+
+    return { weeklyData, totalSales, totalOrders, totalProfit, aov: totalAov };
+  };
+
+  const curr6Stats = getWeeklyStats(latest6WeeksDates);
+  const prev6Stats = getWeeklyStats(previous6WeeksDates);
+
+  const calcTrend = (curr: number, prev: number) => {
+    if (prev === 0) return curr > 0 ? 100 : 0;
+    return ((curr - prev) / prev) * 100;
+  };
+
+  const trendSales = calcTrend(curr6Stats.totalSales, prev6Stats.totalSales);
+  const trendOrders = calcTrend(curr6Stats.totalOrders, prev6Stats.totalOrders);
+  const trendAov = calcTrend(curr6Stats.aov, prev6Stats.aov);
+  const trendProfit = calcTrend(curr6Stats.totalProfit, prev6Stats.totalProfit);
+
   const getDynamicSubtitle = () => {
     let parts = []
     

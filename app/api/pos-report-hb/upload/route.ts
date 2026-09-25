@@ -105,6 +105,7 @@ export async function POST(req: NextRequest) {
     }
 
     const clientId = session.user.role === 'admin' ? 'client-1' : session.user.clientId;
+    if (!clientId) return NextResponse.json({ error: "Client ID missing" }, { status: 400 });
 
     // Upsert into Sales table
     let processedWeeks = 0;
@@ -160,3 +161,4 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to process file' }, { status: 500 });
   }
 }
+

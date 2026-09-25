@@ -144,7 +144,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
   let totalWages = 0
   const staffTotals: Record<string, number> = {}
 
-  filteredWages.forEach(w => {
+  filteredWages.forEach((w: any) => {
     totalWages += w.amount
     staffTotals[w.staffId] = (staffTotals[w.staffId] || 0) + w.amount
   })
@@ -431,3 +431,4 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
     </div>
   )
 }
+

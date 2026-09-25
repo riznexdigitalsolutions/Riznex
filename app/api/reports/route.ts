@@ -51,7 +51,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const buildWhere = (base, dateField) => {
+    const buildWhere = (base: any, dateField: string) => {
       if (dateWhereList.length === 1) {
         return { ...base, [dateField]: dateWhereList[0] }
       }
@@ -77,18 +77,13 @@ export async function GET(req: NextRequest) {
           salesWhere.AND = [{ OR: salesWhere.OR }, { OR: platformConditions[0].OR }];
           delete salesWhere.OR;
         } else {
-          if (salesWhere.OR) {
-        salesWhere.AND = [{ OR: salesWhere.OR }, { OR: platformConditions }];
-        delete salesWhere.OR;
-      } else {
-        salesWhere.OR = platformConditions;
-      }[0].OR;
+          salesWhere.OR = platformConditions[0].OR;
         }
       } else {
-        Object.assign(salesWhere, platformConditions[0])
+        Object.assign(salesWhere, platformConditions[0]);
       }
     } else if (platformConditions.length > 1) {
-      salesWhere.OR = platformConditions.flatMap(c => c.OR || [c])
+      salesWhere.OR = platformConditions.flatMap(c => c.OR || [c]);
     }
   }
 
@@ -410,3 +405,4 @@ export async function GET(req: NextRequest) {
     },
   })
 }
+

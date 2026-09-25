@@ -52,7 +52,7 @@ export async function GET(req: NextRequest) {
       }
     }
 
-    const buildWhere = (base, dateField) => {
+    const buildWhere = (base: any, dateField: string) => {
       if (dateWhereList.length === 1) {
         return { ...base, [dateField]: dateWhereList[0] }
       }
@@ -246,3 +246,4 @@ export async function GET(req: NextRequest) {
     },
   })
 }
+

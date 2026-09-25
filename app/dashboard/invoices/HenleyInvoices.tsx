@@ -641,7 +641,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                     setIsDragging(false);
                     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
                       const dt = new DataTransfer();
-                      Array.from(e.dataTransfer.files).forEach(f => dt.items.add(f));
+                      Array.from(e.dataTransfer.files).forEach((f: any) => dt.items.add(f));
                       if (fileInputRef.current) {
                         fileInputRef.current.files = dt.files;
                         setDragFileNames(Array.from(dt.files).map(f => f.name));
@@ -703,3 +703,4 @@ export function HenleyInvoices({ is2025 = false }: { is2025?: boolean }) {
     </Suspense>
   )
 }
+

@@ -83,8 +83,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   const rawSuppliers = r?.suppliers?.items || [];
 
   // 1. Group by Week
-  const weeklyMap = {};
-  rawSales.forEach(s => {
+  const weeklyMap: any = {};
+  rawSales.forEach((s: any) => {
     // Safely parse date
     let d = new Date();
     if (s.weekStart) {
@@ -97,7 +97,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     weeklyMap[dateStr].sales += (Number(s.grossSales) || 0);
     weeklyMap[dateStr].orders += (Number(s.totalOrders) || 0);
   });
-  rawSuppliers.forEach(s => {
+  rawSuppliers.forEach((s: any) => {
     let d = new Date();
     if (s.invoiceDate) d = new Date(s.invoiceDate);
     if (isNaN(d.getTime())) d = new Date();
@@ -110,11 +110,11 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     weeklyMap[dateStr].suppliers += (Number(s.totalAmount) || 0);
   });
 
-  const realWeeklyData = Object.values(weeklyMap).sort((a, b) => a.date.getTime() - b.date.getTime()).map((w, i) => {
+  const realWeeklyData = Object.values(weeklyMap).sort((a: any, b: any) => a.date.getTime() - b.date.getTime()).map((w: any, i: number) => {
     // Format like "Week 1" and sub label
     const endD = new Date(w.date);
     endD.setDate(endD.getDate() + 6);
-    const formatD = (date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    const formatD = (date: any) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
     return {
       name: `Week ${i + 1}`,
       label: `${formatD(w.date)} - ${formatD(endD)}`,
@@ -138,8 +138,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   }
 
   // 2. Group by Month
-  const monthlyMap = {};
-  rawSales.forEach(s => {
+  const monthlyMap: any = {};
+  rawSales.forEach((s: any) => {
     let d = new Date();
     if (s.weekStart) d = new Date(s.weekStart);
     if (isNaN(d.getTime())) d = new Date();
@@ -148,7 +148,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     monthlyMap[mStr].sales += (Number(s.grossSales) || 0);
     monthlyMap[mStr].orders += (Number(s.totalOrders) || 0);
   });
-  rawSuppliers.forEach(s => {
+  rawSuppliers.forEach((s: any) => {
     let d = new Date();
     if (s.invoiceDate) d = new Date(s.invoiceDate);
     if (isNaN(d.getTime())) d = new Date();
@@ -157,7 +157,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     monthlyMap[mStr].suppliers += (Number(s.totalAmount) || 0);
   });
 
-  const realMonthlyData = Object.values(monthlyMap).sort((a, b) => a.date.getTime() - b.date.getTime()).map(m => ({
+  const realMonthlyData = Object.values(monthlyMap).sort((a: any, b: any) => a.date.getTime() - b.date.getTime()).map((m: any) => ({
     name: m.name,
     sales: Math.round(m.sales) || 0,
     orders: Math.round(m.orders) || 0,
@@ -194,8 +194,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   }
 
   // --- EXPENSE PIE CHART ---
-  const expenseMap = {};
-  rawSuppliers.forEach(s => {
+  const expenseMap: any = {};
+  rawSuppliers.forEach((s: any) => {
     const cat = s.supplier?.category || 'Other';
     if (!expenseMap[cat]) expenseMap[cat] = 0;
     expenseMap[cat] += (Number(s.amount) || 0);
@@ -981,9 +981,9 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false}/>
                     <XAxis dataKey="name" stroke="#64748b" tick={{fill: '#94a3b8', fontSize: 12}} tickMargin={10} axisLine={false} tickLine={false} />
                     <YAxis stroke="#64748b" tick={{fill: '#94a3b8', fontSize: 12}} axisLine={false} tickLine={false} tickFormatter={(v) => '£' + (v/1000) + 'K'}/>
-                    <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}} formatter={(v) => gbp(v)}/>
+                    <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}} formatter={(v: any) => gbp(v as any)}/>
                     <Bar dataKey="sales" fill="#3b82f6" radius={[4,4,0,0]} maxBarSize={60}>
-                      <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v) => gbp(v)}/>
+                      <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as any)}/>
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -1021,7 +1021,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}}/>
                     <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', color: '#94a3b8', paddingTop: '10px' }} />
                     <Bar yAxisId="left" name="Sales (£)" dataKey="sales" fill="#3b82f6" radius={[4,4,0,0]} maxBarSize={60}>
-                      <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v) => gbp(v)}/>
+                      <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as any)}/>
                     </Bar>
                     <Line yAxisId="right" name="Orders" type="monotone" dataKey="orders" stroke="#f97316" strokeWidth={3} dot={{r: 5, fill: '#0a0c14', stroke: '#f97316', strokeWidth: 2}}>
                       <LabelList dataKey="orders" position="bottom" fill="#f97316" fontSize={12} fontWeight="bold" offset={10}/>
@@ -1039,9 +1039,9 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false}/>
                     <XAxis dataKey="name" stroke="#64748b" tick={{fill: '#94a3b8', fontSize: 12}} tickMargin={10} axisLine={false} tickLine={false}/>
                     <YAxis stroke="#64748b" tick={{fill: '#94a3b8', fontSize: 12}} axisLine={false} tickLine={false} tickFormatter={(v) => '£' + (v/1000) + 'K'}/>
-                    <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}} formatter={(v) => gbp(v)}/>
+                    <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}} formatter={(v: any) => gbp(v as any)}/>
                     <Bar dataKey="suppliers" fill="#10b981" radius={[4,4,0,0]} maxBarSize={60}>
-                      <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={12} fontWeight="bold" formatter={(v) => gbp(v)}/>
+                      <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as any)}/>
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -1094,9 +1094,9 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false}/>
                     <XAxis dataKey="name" stroke="#64748b" tick={{fill: '#94a3b8', fontSize: 12}} tickMargin={10} axisLine={false} tickLine={false} />
                     <YAxis stroke="#64748b" tick={{fill: '#94a3b8', fontSize: 12}} axisLine={false} tickLine={false} tickFormatter={(v) => '£' + (v/1000) + 'K'}/>
-                    <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}} formatter={(v) => gbp(v)}/>
+                    <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}} formatter={(v: any) => gbp(v as any)}/>
                     <Bar dataKey="sales" fill="#3b82f6" radius={[4,4,0,0]} maxBarSize={60}>
-                      <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v) => gbp(v)}/>
+                      <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as any)}/>
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -1134,7 +1134,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}}/>
                     <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', color: '#94a3b8', paddingTop: '10px' }} />
                     <Bar yAxisId="left" name="Sales (£)" dataKey="sales" fill="#3b82f6" radius={[4,4,0,0]} maxBarSize={60}>
-                      <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v) => gbp(v)}/>
+                      <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as any)}/>
                     </Bar>
                     <Line yAxisId="right" name="Orders" type="monotone" dataKey="orders" stroke="#f97316" strokeWidth={3} dot={{r: 5, fill: '#0a0c14', stroke: '#f97316', strokeWidth: 2}}>
                       <LabelList dataKey="orders" position="bottom" fill="#f97316" fontSize={12} fontWeight="bold" offset={10}/>
@@ -1152,9 +1152,9 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false}/>
                     <XAxis dataKey="name" stroke="#64748b" tick={{fill: '#94a3b8', fontSize: 12}} tickMargin={10} axisLine={false} tickLine={false}/>
                     <YAxis stroke="#64748b" tick={{fill: '#94a3b8', fontSize: 12}} axisLine={false} tickLine={false} tickFormatter={(v) => '£' + (v/1000) + 'K'}/>
-                    <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}} formatter={(v) => gbp(v)}/>
+                    <Tooltip cursor={{fill: '#1e293b'}} contentStyle={{backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff'}} formatter={(v: any) => gbp(v as any)}/>
                     <Bar dataKey="suppliers" fill="#10b981" radius={[4,4,0,0]} maxBarSize={60}>
-                      <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={12} fontWeight="bold" formatter={(v) => gbp(v)}/>
+                      <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as any)}/>
                     </Bar>
                   </BarChart>
                 </ResponsiveContainer>
@@ -1357,3 +1357,15 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     </div>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+

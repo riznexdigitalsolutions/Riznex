@@ -175,13 +175,13 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
   // Group by category for totals
   const catTotals = {} as Record<string, number>
   if (filterMode === 'utilities') {
-    ['electricity', 'gas', 'water', 'internet', 'bin', 'utilities'].forEach(c => catTotals[c] = 0)
+    ['electricity', 'gas', 'water', 'internet', 'bin', 'utilities'].forEach((c: any) => catTotals[c] = 0)
   } else if (filterMode === 'other') {
-    ['fuel', 'misc', 'tax', 'rent', 'fees'].forEach(c => catTotals[c] = 0)
+    ['fuel', 'misc', 'tax', 'rent', 'fees'].forEach((c: any) => catTotals[c] = 0)
   } else if (filterMode === 'marketing') {
-    ['social_media', 'facebook_ads', 'google_ads', 'newspaper_ads', 'print_material', 'marketing_misc', 'herbies_head_office'].forEach(c => catTotals[c] = 0)
+    ['social_media', 'facebook_ads', 'google_ads', 'newspaper_ads', 'print_material', 'marketing_misc', 'herbies_head_office'].forEach((c: any) => catTotals[c] = 0)
   } else if (!filterMode) {
-    EXPENSE_CATEGORIES.forEach(c => catTotals[c.value] = 0)
+    EXPENSE_CATEGORIES.forEach((c: any) => catTotals[c.value] = 0)
   }
 
   filteredExpenses.forEach((e) => {
@@ -492,3 +492,4 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
     </div>
   )
 }
+

@@ -54,7 +54,7 @@ export function HenleyExpensesDashboard() {
   const handleUnifiedAutoFill = async () => {
     setIsAutoFillingUnified(true)
     try {
-      const b1 = JSON.stringify({ date: unifiedAutoFillDate, clientId: session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId, is2025: filter.is2025 === true })
+      const b1 = JSON.stringify({ date: unifiedAutoFillDate, clientId: session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId, is2025: (filter as any).is2025 === true })
       const res1 = await fetch('/api/expenses/auto-fill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: b1 })
       const res2 = await fetch('/api/staff/auto-fill', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: b1 })
       
@@ -79,7 +79,7 @@ export function HenleyExpensesDashboard() {
     if (!session) return
     setLoading(true)
     const params = new URLSearchParams()
-    params.set('clientId', session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId)
+    params.set('clientId', session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : (session?.user?.clientId || ''))
     if (filter.from) params.set('from', filter.from)
     if (filter.to)   params.set('to',   filter.to)
     // fetch all non-template records (backend excludes template by default)
@@ -417,3 +417,5 @@ export function HenleyExpensesDashboard() {
     </div>
   )
 }
+
+

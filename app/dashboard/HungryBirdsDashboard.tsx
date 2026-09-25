@@ -94,7 +94,7 @@ export function HungryBirdsDashboard() {
     { name: 'Utilities', amount: utilities, color: 'bg-cyan-500' },
     { name: 'Ad Spend', amount: adSpends, color: 'bg-yellow-500' },
     { name: 'Other Expenses', amount: Math.max(0, otherExpenses), color: 'bg-indigo-500' },
-  ].filter(item => item.amount > 0).sort((a, b) => b.amount - a.amount)
+  ].filter(item => item.amount > 0).sort((a: any, b: any) => b.amount - a.amount)
 
   // Compute breakdowns for Profit Summary
   const utilitiesBreakdown = (r?.expenses?.items || [])
@@ -856,3 +856,12 @@ export function HungryBirdsDashboard() {
     </div>
   )
 }
+
+
+
+
+
+
+
+
+

@@ -84,7 +84,7 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
   }
 
   let totalWages = 0
-  wages.forEach(w => { totalWages += w.amount })
+  wages.forEach((w: any) => { totalWages += w.amount })
 
   const uniqueStaffList = staffList.reduce((acc: any[], current) => {
     const capitalizedName = current.name.split(' ').map((word: string) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ')
@@ -224,3 +224,4 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
     </div>
   )
 }
+

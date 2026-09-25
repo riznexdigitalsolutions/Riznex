@@ -74,21 +74,7 @@ const getNavItems = (clientName?: string | null, role?: string) => {
   },
   { href: '/dashboard/reports', icon: '📈', label: 'Reports' },
   { href: '/dashboard/settings', icon: '⚙️', label: 'Settings' },
-  ...(clientName !== 'Hungry Birds' ? [{
-    href: '/dashboard/2025', 
-    icon: '🗓️', 
-    label: '2025 Audit',
-    subItems: [
-      { href: '/dashboard/2025', label: '2025 Overview' },
-      { href: '/dashboard/2025/sales', label: '2025 Sales' },
-      { href: '/dashboard/2025/expenses', label: '2025 Expenses' },
-      { href: '/dashboard/2025/wages', label: '2025 Staff Wages' },
-      { href: '/dashboard/2025/invoices?tab=all', label: 'Herbies Invoices Data' },
-      { href: '/dashboard/2025/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
-      { href: '/dashboard/2025/invoices?tab=pos', label: 'Herbies Pizza POS Invoices' },
-      { href: '/dashboard/2025/reports', label: '2025 Reports' }
-    ]
-  }] : [])
+  
 ]
 }
 

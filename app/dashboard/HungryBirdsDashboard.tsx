@@ -133,12 +133,9 @@ export function HungryBirdsDashboard() {
     .map(offer => {
     const matchingSales = rawSales.filter((s: any) => {
       let pMatch = false
-      const sPlatform = (s.platform || '').toLowerCase()
-      const oPlatform = (offer.platform || '').toLowerCase()
-      if (oPlatform === 'just_eat' && sPlatform.includes('just_eat')) pMatch = true
-      else if (oPlatform === 'uber_eats' && sPlatform.includes('uber_eats')) pMatch = true
-      else if (oPlatform === 'deliveroo' && sPlatform.includes('deliveroo')) pMatch = true
-      else if (oPlatform === sPlatform) pMatch = true
+      const sPlatform = (s.platform || '').toLowerCase().replace(/_/g, ' ')
+      const oPlatform = (offer.platform || '').toLowerCase().replace(/_/g, ' ')
+      if (sPlatform.includes(oPlatform) || oPlatform.includes(sPlatform) || oPlatform === sPlatform) pMatch = true
 
       const offerDate = new Date(offer.startDate).getTime()
       const saleDate = new Date(s.weekStart || s.weekEnd).getTime()

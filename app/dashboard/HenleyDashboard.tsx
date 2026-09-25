@@ -107,7 +107,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     const mon = new Date(d.setDate(diff));
     const dateStr = mon.toISOString().split('T')[0];
     if (!weeklyMap[dateStr]) weeklyMap[dateStr] = { name: dateStr, sales: 0, orders: 0, suppliers: 0, date: mon };
-    weeklyMap[dateStr].suppliers += (Number(s.totalAmount) || 0);
+    weeklyMap[dateStr].suppliers += (Number(s.amount) || 0);
   });
 
   const realWeeklyData = Object.values(weeklyMap).sort((a: any, b: any) => a.date.getTime() - b.date.getTime()).map((w: any, i: number) => {
@@ -154,7 +154,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     if (isNaN(d.getTime())) d = new Date();
     const mStr = d.toLocaleString('en-GB', { month: 'short', year: 'numeric' });
     if (!monthlyMap[mStr]) monthlyMap[mStr] = { name: mStr, sales: 0, orders: 0, suppliers: 0, date: d };
-    monthlyMap[mStr].suppliers += (Number(s.totalAmount) || 0);
+    monthlyMap[mStr].suppliers += (Number(s.amount) || 0);
   });
 
   const realMonthlyData = Object.values(monthlyMap).sort((a: any, b: any) => a.date.getTime() - b.date.getTime()).map((m: any) => ({

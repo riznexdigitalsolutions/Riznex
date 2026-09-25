@@ -106,7 +106,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const fetchData = useCallback(async () => {
     if (!session) return
     const params = new URLSearchParams()
-    params.set('clientId', session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId)
+    params.set('clientId', session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : (session?.user?.clientId || ''))
     if (filter.from) params.set('from', filter.from)
     if (filter.to) params.set('to', filter.to)
     if (platformFilter) params.set('platform', platformFilter)
@@ -703,4 +703,6 @@ export function HenleyInvoices({ is2025 = false }: { is2025?: boolean }) {
     </Suspense>
   )
 }
+
+
 

@@ -1055,7 +1055,16 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       <XAxis 
                         dataKey="name" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={(props: any) => {
+                          const { x, y, payload } = props;
+                          const data = curr6Stats.weeklyData.find((d: any) => d.name === payload.value);
+                          return (
+                            <g transform={`translate(${x},${y})`}>
+                              <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={12} fontWeight="bold">{payload.value}</text>
+                              {data?.dateRange && <text x={0} y={0} dy={32} textAnchor="middle" fill="#64748b" fontSize={11}>{data.dateRange}</text>}
+                            </g>
+                          );
+                        }}
                         tickMargin={12} 
                         axisLine={false} 
                         tickLine={false} 
@@ -1091,29 +1100,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </div>
               </div>
 
-              {/* Bottom Cards Row (Dark Theme) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {curr6Stats.weeklyData.map((w: any, i: number) => (
-                  <div key={i} className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 shadow-xl flex flex-col">
-                    <div className="mb-5">
-                      <div className="text-lg font-black text-white mb-1">{w.name}</div>
-                      <div className="text-[13px] font-semibold text-slate-400">{w.dateRange}</div>
-                    </div>
-                    <div className="grid grid-cols-2 gap-3 mt-auto">
-                      <div className="bg-[#0a0c14] border border-[#1f2947] rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                        <div className="text-xl font-black text-blue-400 mb-1">{gbp(w.sales)}</div>
-                        <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Sales</div>
-                      </div>
-                      <div className="bg-[#0a0c14] border border-[#1f2947] rounded-xl p-4 flex flex-col items-center justify-center text-center">
-                        <div className="text-xl font-black text-orange-400 mb-1">{w.orders}</div>
-                        <div className="text-[11px] font-bold text-slate-500 uppercase tracking-wide">Orders</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-            </div>
+                          </div>
             ) : (
               <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
                 <h2 className="text-3xl font-black text-white mb-3">No Data Available</h2>

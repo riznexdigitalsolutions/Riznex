@@ -1050,7 +1050,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </div>
                 <div className="flex-1 min-h-0 w-full">
                   <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: 0, left: 0, bottom: 0 }}>
+                    <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: 0, left: 0, bottom: 40 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
                       <XAxis 
                         dataKey="name" 
@@ -1087,7 +1087,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                         tickLine={false} 
                         dx={10}
                       />
-                      <Tooltip cursor={{ fill: '#1e293b' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} />
+                      <Tooltip cursor={{ fill: '#1e293b' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any, name: string) => name === 'sales' ? gbp(v as number) : v} />
                       
                       <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60}>
                         <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />

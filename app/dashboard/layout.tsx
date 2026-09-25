@@ -45,8 +45,7 @@ const getNavItems = (clientName?: string | null, role?: string) => {
     icon: '💷', 
     label: 'Sales',
     subItems: clientName === 'Hungry Birds' ? undefined : [
-      { href: '/dashboard/sales?tab=combined', label: 'Combined Sales' },
-      { href: '/dashboard/sales?tab=monthly_combined', label: 'Combined Monthly Sales' }
+      { href: '/dashboard/sales?tab=combined', label: 'Combined Sales' }
     ]
   },
   { 

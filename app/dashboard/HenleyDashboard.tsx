@@ -378,7 +378,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
       const wOtherFees = weekSales.reduce((sum: number, s: any) => sum + (s.otherFees || 0), 0);
       
       const wProfit = wNetPaid - wAdSpends - wOtherFees;
-      const wSuppliers = weeklyMap[dateStr]?.suppliers || 0;
+      const mapKey = new Date(dateStr).toISOString().split('T')[0];
+      const wSuppliers = weeklyMap[mapKey]?.suppliers || 0;
 
       const d = new Date(dateStr);
       const endD = new Date(d);

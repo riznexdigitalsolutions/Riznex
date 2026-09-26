@@ -1119,30 +1119,32 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
               </div>
 
                 {/* 3 Bottom Widgets */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 w-full mb-8">
+                <div className="flex flex-col gap-6 w-full mb-8">
+                  {/* Top Row: 2 Pies */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
                   <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-white font-bold mb-4 self-start">Sales Mix</h2>
+                    <h2 className="text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
                     <div className="flex w-full items-center">
-                      <div className="w-[160px] h-[160px] relative">
+                      <div className="w-[220px] h-[220px] relative">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
-                            <Pie data={customSalesPieData} cx="50%" cy="50%" innerRadius={50} outerRadius={70} stroke="none" dataKey="value">
+                            <Pie data={customSalesPieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
                               {customSalesPieData.map((e, i) => <Cell key={i} fill={chartColors[i % chartColors.length]} />)}
                             </Pie>
                             <Tooltip cursor={{ fill: '#1e293b' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-white font-black text-lg">{gbp(customSalesPieTotal)}</span>
+                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customSalesPieTotal)}</span>
                           <span className="text-[10px] text-slate-400 font-bold uppercase">Total Sales</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-6 flex flex-col gap-2">
+                      <div className="flex-1 pl-8 flex flex-col gap-3">
                         {customSalesPieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-xs">
+                          <div key={i} className="flex justify-between items-center text-[13px]">
                             <div className="flex items-center gap-2">
-                              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
                               <span className="text-slate-300 font-medium">{d.name}</span>
                             </div>
                             <span className="text-slate-400">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
@@ -1154,27 +1156,27 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
 
                   {/* Expense Breakdown */}
                   <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-white font-bold mb-4 self-start">Expense Breakdown</h2>
+                    <h2 className="text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
                     <div className="flex w-full items-center">
-                      <div className="w-[160px] h-[160px] relative">
+                      <div className="w-[220px] h-[220px] relative">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
-                            <Pie data={customExpensePieData} cx="50%" cy="50%" innerRadius={50} outerRadius={70} stroke="none" dataKey="value">
+                            <Pie data={customExpensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
                               {customExpensePieData.map((e, i) => <Cell key={i} fill={chartColors[i % chartColors.length]} />)}
                             </Pie>
                             <Tooltip cursor={{ fill: '#1e293b' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-white font-black text-lg">{gbp(customExpensePieTotal)}</span>
+                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customExpensePieTotal)}</span>
                           <span className="text-[10px] text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-6 flex flex-col gap-2">
+                      <div className="flex-1 pl-8 flex flex-col gap-3">
                         {customExpensePieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-xs">
+                          <div key={i} className="flex justify-between items-center text-[13px]">
                             <div className="flex items-center gap-2">
-                              <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
                               <span className="text-slate-300 font-medium truncate max-w-[90px]" title={d.name}>{d.name}</span>
                             </div>
                             <span className="text-slate-400 shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
@@ -1184,8 +1186,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </div>
 
-                  {/* Supplier Purchases */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-full min-h-[250px]">
+                  </div>
+
+                  {/* Bottom Row: Supplier Purchases */}
+                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
                     <div className="flex justify-between items-center mb-4">
                       <h2 className="text-white font-bold">Supplier Purchases</h2>
                       <span className="text-[10px] bg-[#1f2947] text-slate-300 px-2 py-1 rounded border border-[#2a3454] uppercase font-bold tracking-wider">Last 4 Weeks</span>

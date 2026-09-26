@@ -10,13 +10,22 @@ export async function middleware(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Allow public landing page
-  if (pathname === '/') {
+  // Public routes
+  if (pathname === '/' || pathname === '/login' || pathname === '/client-login') {
+    if (token && pathname === '/login') {
+      // Already logged in — redirect to appropriate dashboard
+      const role = (token as any).role
+      if (role === 'admin') {
+        return NextResponse.redirect(new URL('/admin', request.url))
+      } else {
+        return NextResponse.redirect(new URL('/dashboard', request.url))
+      }
+    }
     return NextResponse.next()
   }
 
-  // Login page handling
-  if (pathname === '/login') {
+  // Allow NextAuth API routes to function normally
+  if (pathname.startsWith('/api/auth')) {
     return NextResponse.next()
   }
 
@@ -32,9 +41,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('/dashboard', request.url))
   }
 
+
+
   return NextResponse.next()
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|images|favicon.ico|uploads).*)'],
+  matcher: ['/((?!_next/static|_next/image|images|favicon.ico|uploads).*)'],
 }

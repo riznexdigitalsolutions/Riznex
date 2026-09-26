@@ -1,783 +1,1163 @@
 'use client';
+
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-// Pure CSS / SVG Icons
+// --- Premium Inline SVGs ---
 const Icons = {
-  Menu: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M4 6h16M4 12h16M4 18h16"></path></svg>,
-  Close: () => <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M6 18L18 6M6 6l12 12"></path></svg>,
-  Lock: () => <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>,
-  BigLock: () => <svg className="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>,
-  Check: () => <svg className="w-4 h-4 text-[#C89B3C] shrink-0 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>,
-  CheckCircle: () => <svg className="w-4 h-4 text-[#C89B3C] shrink-0 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>,
-  ArrowRight: () => <svg className="w-4 h-4 ml-2 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>,
-  
-  // Custom Line Icons for Services
-  MenuIcon: () => <svg className="w-12 h-12 text-[#C89B3C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M8 11h8"></path></svg>,
-  SocialIcon: () => <svg className="w-12 h-12 text-[#C89B3C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M10 10h4"></path></svg>,
-  ProfileIcon: () => <svg className="w-12 h-12 text-[#C89B3C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>,
-  SupportIcon: () => <svg className="w-12 h-12 text-[#C89B3C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path></svg>,
-  ReportIcon: () => <svg className="w-12 h-12 text-[#C89B3C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>,
-  GrowthIcon: () => <svg className="w-12 h-12 text-[#C89B3C]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>,
-
-  // How It Works Icons
-  Discover: () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>,
-  Setup: () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>,
-  Manage: () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>,
-  Improve: () => <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path></svg>,
+  Menu: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  ),
+  Close: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+    </svg>
+  ),
+  Lock: () => (
+    <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+    </svg>
+  ),
+  Check: () => (
+    <svg className="w-4 h-4 text-[#E5B869] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M5 13l4 4L19 7" />
+    </svg>
+  ),
+  CheckBadge: () => (
+    <div className="w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#E5B869]/20 flex items-center justify-center shrink-0 text-[#E5B869]">
+      <svg className="w-2 h-2 sm:w-2.5 sm:h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+      </svg>
+    </div>
+  ),
+  ArrowRight: () => (
+    <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 inline transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+    </svg>
+  ),
+  Sparkles: () => (
+    <svg className="w-3.5 h-3.5 text-[#E5B869]" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M12 2l2.4 7.2L22 12l-7.6 2.8L12 22l-2.4-7.2L2 12l7.6-2.8z" />
+    </svg>
+  ),
+  TrendingUp: () => (
+    <svg className="w-3 h-3 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+    </svg>
+  ),
+  MenuBook: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#E5B869]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+    </svg>
+  ),
+  Share: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#E5B869]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+    </svg>
+  ),
+  MapPin: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#E5B869]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  ),
+  Headset: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#E5B869]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M18.364 5.636a9 9 0 010 12.728m0 0l-2.829-2.829m2.829 2.829L21 21M15.536 8.464a5 5 0 010 7.072m0 0l-2.829-2.829m-4.243 2.829a4.978 4.978 0 01-1.414-2.83m-1.414 5.658a9 9 0 01-2.167-9.238m7.824 2.167a1 1 0 111.414 1.414m-1.414-1.414L3 3" />
+    </svg>
+  ),
+  ChartBar: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#E5B869]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+    </svg>
+  ),
+  Rocket: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#E5B869]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M13 10V3L4 14h7v7l9-11h-7z" />
+    </svg>
+  ),
 };
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activePricingTab, setActivePricingTab] = useState<'month1' | 'growth'>('month1');
+  const [formSent, setFormSent] = useState(false);
+  const [formSubmitting, setFormSubmitting] = useState(false);
+  const [activeLegalModal, setActiveLegalModal] = useState<'privacy' | 'terms' | 'cookies' | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 30);
+    const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
-    
-    // Setup intersection observer for scroll reveals
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('is-visible');
-        }
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-    const hiddenElements = document.querySelectorAll('.reveal-on-scroll');
-    hiddenElements.forEach(el => observer.observe(el));
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      observer.disconnect();
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActiveLegalModal(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (activeLegalModal || mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+  }, [activeLegalModal, mobileMenuOpen]);
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setFormSubmitting(true);
+    setTimeout(() => {
+      setFormSubmitting(false);
+      setFormSent(true);
+    }, 900);
+  };
+
   return (
-    <div className="min-h-screen bg-black text-white font-sans selection:bg-[#C89B3C] selection:text-black overflow-x-hidden">
+    <div className="min-h-screen w-full max-w-full bg-[#07080B] text-slate-100 font-sans selection:bg-[#E5B869] selection:text-black overflow-x-hidden antialiased">
       
-      {/* HEADER / NAVIGATION */}
-      <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 shadow-[0_4px_30px_rgba(0,0,0,0.8)]' : 'bg-transparent py-6'}`}>
-        <div className="max-w-[1400px] mx-auto px-6 flex justify-between items-center">
+      {/* AMBIENT GLOW EFFECTS (STRICTLY CONTAINED) */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[350px] bg-gradient-to-b from-[#E5B869]/10 via-[#C89B3C]/5 to-transparent blur-[120px] pointer-events-none -z-10 overflow-hidden" />
+
+      {/* TOP NAVIGATION HEADER */}
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full ${
+        scrolled 
+          ? 'bg-[#07080B]/90 backdrop-blur-xl border-b border-white/[0.08] py-3 shadow-2xl shadow-black/80' 
+          : 'bg-[#07080B]/60 backdrop-blur-md py-3.5 sm:py-5 border-b border-white/[0.04]'
+      }`}>
+        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 flex justify-between items-center gap-2">
           
-          <Link href="/" className="flex items-center">
-            <img src="/images/new-logo.jpg" alt="Riznex Logo" className="h-10 md:h-12 w-auto mix-blend-screen" />
+          {/* Logo */}
+          <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
+            <div className="relative p-1 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 group-hover:border-[#E5B869]/40 transition-colors">
+              <img 
+                src="/images/new-logo.jpg" 
+                alt="Riznex Logo" 
+                className="h-7 sm:h-9 w-auto object-contain rounded-lg" 
+              />
+            </div>
+            <div className="flex flex-col">
+              <span className="font-extrabold text-base sm:text-xl tracking-tight text-white flex items-center gap-1.5 leading-none">
+                Riznex
+                <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869] animate-pulse"></span>
+              </span>
+              <span className="text-[8px] sm:text-[9px] uppercase tracking-[0.2em] text-[#E5B869] font-semibold mt-0.5">
+                Digital Solutions
+              </span>
+            </div>
           </Link>
-          
-          {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-8 ml-8">
-            {['Home', 'Services', 'Packages', 'How It Works', 'About', 'Contact'].map(link => (
-              <a key={link} href={`#${link.toLowerCase().replace(/\s+/g, '-')}`} className="text-[0.7rem] font-bold uppercase tracking-widest text-gray-300 hover:text-[#C89B3C] transition-colors">{link}</a>
-            ))}
-          </div>
 
-          {/* CTAs */}
-          <div className="hidden lg:flex items-center gap-4">
-            <Link href="/client-login" className="flex items-center gap-2 px-6 py-2.5 border border-[#C89B3C] text-white text-[0.65rem] font-bold uppercase tracking-widest hover:bg-[#C89B3C]/10 transition-colors rounded-sm">
-              <Icons.Lock /> CLIENT LOGIN
+          {/* Desktop Nav Items */}
+          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.03] border border-white/[0.08] px-3 py-1.5 rounded-full backdrop-blur-md">
+            {[
+              { label: 'Services', href: '#services' },
+              { label: 'Platforms', href: '#platforms' },
+              { label: 'Packages', href: '#packages' },
+              { label: 'How It Works', href: '#how-it-works' },
+              { label: 'Contact', href: '#contact' },
+            ].map(item => (
+              <a 
+                key={item.label} 
+                href={item.href}
+                className="px-4 py-1.5 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/[0.06] rounded-full transition-all"
+              >
+                {item.label}
+              </a>
+            ))}
+          </nav>
+
+          {/* Right Header CTAs & Mobile Controls */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+            
+            {/* Direct Client Login Button (Always Visible On Mobile & Desktop) */}
+            <Link 
+              href="/client-login" 
+              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[11px] sm:text-xs font-semibold text-slate-200 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] hover:border-white/20 transition-all shadow-sm"
+            >
+              <Icons.Lock /> <span>Client Login</span>
             </Link>
-            <a href="#contact" className="px-6 py-2.5 bg-[#C89B3C] text-black text-[0.65rem] font-bold uppercase tracking-widest hover:bg-white transition-colors rounded-sm">GET STARTED</a>
+
+            {/* Desktop Get Started */}
+            <a 
+              href="#contact" 
+              className="hidden sm:inline-flex relative group overflow-hidden px-5 py-2 rounded-xl text-xs font-bold text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] shadow-lg shadow-[#E5B869]/20 hover:shadow-[#E5B869]/35 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            >
+              <span className="relative z-10 flex items-center gap-1.5">
+                Get Started <Icons.ArrowRight />
+              </span>
+            </a>
+
+            {/* Mobile Menu Hamburger Button */}
+            <button 
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="lg:hidden p-2 rounded-xl bg-white/[0.05] border border-white/10 text-slate-200 hover:text-white focus:outline-none"
+              aria-label="Toggle Navigation Menu"
+            >
+              {mobileMenuOpen ? <Icons.Close /> : <Icons.Menu />}
+            </button>
           </div>
 
-          {/* Mobile Menu Button */}
-          <button className="lg:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <Icons.Close /> : <Icons.Menu />}
-          </button>
         </div>
-        
-        {/* Mobile Menu */}
+
+        {/* Mobile Slide-Down Navigation Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden absolute top-full left-0 right-0 bg-black border-t border-white/10 p-6 flex flex-col gap-4 shadow-2xl">
-            {['Home', 'Services', 'Packages', 'How It Works', 'About', 'Contact'].map(link => (
-              <a key={link} href={`#${link.toLowerCase().replace(/\s+/g, '-')}`} onClick={() => setMobileMenuOpen(false)} className="text-sm font-bold uppercase tracking-widest text-gray-300 hover:text-[#C89B3C] py-2 border-b border-white/5">{link}</a>
+          <div className="lg:hidden mt-2 mx-3.5 p-5 rounded-2xl bg-[#0D0F17]/98 border border-white/15 backdrop-blur-2xl shadow-2xl flex flex-col gap-3 animate-in fade-in slide-in-from-top-3 duration-200">
+            {[
+              { label: 'Services Overview', href: '#services' },
+              { label: 'Supported Platforms', href: '#platforms' },
+              { label: 'Packages & Pricing', href: '#packages' },
+              { label: 'How Riznex Works', href: '#how-it-works' },
+              { label: 'Contact Us', href: '#contact' },
+            ].map(item => (
+              <a 
+                key={item.label} 
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className="py-2.5 px-3 rounded-lg text-sm font-semibold text-slate-200 hover:bg-white/[0.06] hover:text-[#E5B869] transition-all flex items-center justify-between"
+              >
+                <span>{item.label}</span>
+                <Icons.ArrowRight />
+              </a>
             ))}
-            <div className="flex flex-col gap-3 mt-4">
-              <Link href="/client-login" onClick={() => setMobileMenuOpen(false)} className="w-full flex items-center justify-center gap-2 py-3 border border-[#C89B3C] text-white text-[0.7rem] font-bold uppercase tracking-widest rounded-sm">
-                <Icons.Lock /> CLIENT LOGIN
+            <div className="pt-3 border-t border-white/[0.08] flex flex-col gap-2.5">
+              <Link 
+                href="/client-login" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold text-slate-200 bg-white/[0.06] border border-white/10"
+              >
+                <Icons.Lock /> Access Client Portal
               </Link>
-              <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="w-full py-3 bg-[#C89B3C] text-black text-center text-[0.7rem] font-bold uppercase tracking-widest rounded-sm">GET STARTED</a>
+              <a 
+                href="#contact" 
+                onClick={() => setMobileMenuOpen(false)}
+                className="w-full py-3 rounded-xl text-xs font-black text-black text-center bg-gradient-to-r from-[#E5B869] to-[#C89B3C] shadow-md shadow-[#E5B869]/20"
+              >
+                Request Free Consultation
+              </a>
             </div>
           </div>
         )}
-      </nav>
+      </header>
 
       {/* HERO SECTION */}
-      <section id="home" className="pt-32 pb-16 md:pt-40 md:pb-24 px-6 lg:px-12 bg-black text-white relative">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#C89B3C]/10 via-black to-black pointer-events-none"></div>
-        {/* Abstract curve background approximation */}
-        <div className="absolute right-0 top-0 w-full h-full bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI4MDAiIGhlaWdodD0iODAwIj48cGF0aCBkPSJNMCA0MDBRNDAwIDAgODAwIDQwMCIgc3Ryb2tlPSIjQzg5QjNDIiBzdHJva2Utd2lkdGg9IjEiIGZpbGw9Im5vbmUiIG9wYWNpdHk9IjAuMSIvPjwvc3ZnPg==')] bg-no-repeat bg-right-top opacity-30 pointer-events-none"></div>
-
-        <div className="max-w-[1400px] mx-auto flex flex-col xl:flex-row items-center gap-12 relative z-10">
-          
-          {/* Left Text */}
-          <div className="xl:w-1/2 flex flex-col items-start">
-            <h3 className="text-[#C89B3C] font-semibold text-[0.75rem] md:text-sm mb-4 uppercase tracking-widest animate-fade-in-up">
-               DIGITAL SOLUTIONS FOR UK RESTAURANTS
-            </h3>
-            <h1 className="text-[2.5rem] md:text-5xl lg:text-[4.5rem] font-black tracking-tight leading-[1] mb-6 text-white animate-fade-in-up delay-100">
-              WE HELP RESTAURANTS<br/>
-              RUN SMARTER &<br/>
-              GROW ONLINE.
-            </h1>
-            <p className="text-gray-300 text-sm md:text-[1.05rem] leading-relaxed mb-10 max-w-[32rem] font-normal animate-fade-in-up delay-200">
-              Riznex Digital Solutions helps UK restaurants manage delivery platforms, social media, customer support and business reporting through one professional service.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto mb-10 animate-fade-in-up delay-300">
-              <a href="#services" className="w-full sm:w-auto px-8 py-3.5 bg-[#C89B3C] text-black font-bold text-[0.8rem] uppercase tracking-widest hover:bg-white hover:scale-105 transition-all duration-300 text-center rounded-sm">
-                VIEW OUR SERVICES
-              </a>
-              <Link href="/client-login" className="w-full sm:w-auto px-8 py-3.5 border border-[#C89B3C] text-white font-bold text-[0.8rem] uppercase tracking-widest hover:bg-[#C89B3C]/10 hover:scale-105 transition-all duration-300 text-center rounded-sm">
-                CLIENT LOGIN
-              </Link>
-            </div>
+      <section className="relative pt-24 sm:pt-36 pb-16 sm:pb-24 px-3.5 sm:px-6 lg:px-8 w-full max-w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-8 items-center w-full">
             
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-[0.7rem] font-semibold text-white tracking-wide">
-               <span className="flex items-center"><Icons.CheckCircle /> Delivery Platforms</span>
-               <span className="flex items-center"><Icons.CheckCircle /> Social Media</span>
-               <span className="flex items-center"><Icons.CheckCircle /> Business Reporting</span>
-               <span className="flex items-center"><Icons.CheckCircle /> Ongoing Management</span>
-            </div>
-          </div>
-          
-          {/* Right Dashboard Visual */}
-          <div className="xl:w-1/2 w-full mt-12 xl:mt-0">
-            <div className="bg-[#0f0f0f] border border-white/10 rounded-lg p-5 shadow-2xl flex flex-col gap-5 relative">
-               
-               {/* Top Row: Business Overview */}
-               <div className="bg-[#161616] rounded-md border border-white/5 p-5 relative">
-                  <div className="flex justify-between items-center mb-6">
-                     <span className="text-xs font-bold text-white">Business Overview</span>
-                     <span className="text-[0.65rem] bg-[#222] text-gray-400 px-3 py-1.5 rounded border border-white/5 font-medium cursor-pointer hover:text-white">This Month ▾</span>
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                     {/* Sales */}
-                     <div className="border border-white/5 bg-[#1C1C1C] p-4 rounded-md flex flex-col relative overflow-hidden">
-                        <span className="text-[0.65rem] text-gray-400 mb-1">Total Sales</span>
-                        <span className="text-2xl font-bold text-white mb-2 tracking-tight">£18,420</span>
-                        <span className="text-[0.6rem] text-[#00C48C] font-bold">↑ 12.5%</span>
-                        {/* CSS Line Chart */}
-                        <svg className="absolute bottom-2 right-2 w-20 h-10 text-[#C89B3C]" viewBox="0 0 100 30" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M0 25 L15 20 L30 22 L45 10 L60 15 L75 8 L100 2"/></svg>
-                     </div>
-                     {/* Orders */}
-                     <div className="border border-white/5 bg-[#1C1C1C] p-4 rounded-md flex flex-col relative overflow-hidden">
-                        <span className="text-[0.65rem] text-gray-400 mb-1">Orders</span>
-                        <span className="text-2xl font-bold text-white mb-2 tracking-tight">1,284</span>
-                        <span className="text-[0.6rem] text-[#00C48C] font-bold">↑ 8.7%</span>
-                        <svg className="absolute bottom-2 right-2 w-20 h-10 text-[#C89B3C]" viewBox="0 0 100 30" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M0 20 L20 25 L40 15 L60 18 L80 8 L100 5"/></svg>
-                     </div>
-                     {/* Profit */}
-                     <div className="border border-white/5 bg-[#1C1C1C] p-4 rounded-md flex flex-col relative overflow-hidden">
-                        <span className="text-[0.65rem] text-gray-400 mb-1">Profit</span>
-                        <span className="text-2xl font-bold text-white mb-2 tracking-tight">£4,280</span>
-                        <span className="text-[0.6rem] text-[#00C48C] font-bold">↑ 15.3%</span>
-                        <svg className="absolute bottom-2 right-2 w-20 h-10 text-[#C89B3C]" viewBox="0 0 100 30" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M0 28 L15 20 L30 24 L50 12 L70 16 L85 5 L100 2"/></svg>
-                     </div>
-                     {/* Expenses */}
-                     <div className="border border-white/5 bg-[#1C1C1C] p-4 rounded-md flex flex-col relative overflow-hidden">
-                        <span className="text-[0.65rem] text-gray-400 mb-1">Expenses</span>
-                        <span className="text-2xl font-bold text-white mb-2 tracking-tight">£3,840</span>
-                        <span className="text-[0.6rem] text-red-500 font-bold">↓ 7.1%</span>
-                        <svg className="absolute bottom-2 right-2 w-20 h-10 text-[#C89B3C]" viewBox="0 0 100 30" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M0 5 L20 10 L40 5 L60 20 L80 15 L100 25"/></svg>
-                     </div>
-                  </div>
-               </div>
-
-               {/* Middle Row: Sales Overview Bar Chart */}
-               <div className="bg-[#161616] rounded-md border border-white/5 p-5 h-40 flex flex-col">
-                  <span className="text-xs font-bold text-white mb-3">Sales Overview</span>
-                  <div className="flex-1 flex items-end justify-between gap-1 relative">
-                     <div className="absolute left-0 top-0 h-full flex flex-col justify-between text-[0.45rem] text-gray-500 py-1 font-medium">
-                        <span>20K</span><span>15K</span><span>10K</span><span>5K</span><span>0</span>
-                     </div>
-                     <div className="ml-6 flex-1 flex items-end justify-between gap-1 h-full pt-4 pb-1 border-b border-white/10">
-                        {[40,30,50,60,35,45,80,60,50,40,90,70,50,60,80,100,60,50,80,90,100].map((h, i) => (
-                           <div key={i} className={`w-full rounded-t-sm ${i%3===0 ? 'bg-[#C89B3C]' : i%2===0 ? 'bg-gray-400' : 'bg-gray-600'}`} style={{height: `${h}%`}}></div>
-                        ))}
-                     </div>
-                  </div>
-                  <div className="ml-6 flex justify-between text-[0.45rem] text-gray-500 mt-2 font-medium">
-                     <span>1 May</span><span>8 May</span><span>15 May</span><span>22 May</span><span>29 May</span>
-                  </div>
-               </div>
-
-               {/* Bottom Row: Top Platforms */}
-               <div className="bg-[#161616] rounded-md border border-white/5 p-5 flex flex-col">
-                  <span className="text-xs font-bold text-white mb-4">Top Platforms</span>
-                  <div className="grid grid-cols-4 gap-2">
-                     <div className="flex flex-col gap-1">
-                        <span className="text-[#06C167] text-[0.65rem] font-bold">Uber Eats</span>
-                        <div className="flex items-baseline gap-2"><span className="text-white text-base font-bold">£7,820</span><span className="text-gray-400 text-[0.6rem]">42%</span></div>
-                     </div>
-                     <div className="flex flex-col gap-1">
-                        <span className="text-[#F36D00] text-[0.65rem] font-bold">JUST EAT</span>
-                        <div className="flex items-baseline gap-2"><span className="text-white text-base font-bold">£5,230</span><span className="text-gray-400 text-[0.6rem]">28%</span></div>
-                     </div>
-                     <div className="flex flex-col gap-1">
-                        <span className="text-[#00CCBC] text-[0.65rem] font-bold">deliveroo</span>
-                        <div className="flex items-baseline gap-2"><span className="text-white text-base font-bold">£3,650</span><span className="text-gray-400 text-[0.6rem]">19%</span></div>
-                     </div>
-                     <div className="flex flex-col gap-1">
-                        <span className="text-gray-400 text-[0.65rem] font-bold">Other</span>
-                        <div className="flex items-baseline gap-2"><span className="text-white text-base font-bold">£1,720</span><span className="text-gray-400 text-[0.6rem]">11%</span></div>
-                     </div>
-                  </div>
-               </div>
-            </div>
-          </div>
-          
-        </div>
-      </section>
-
-      {/* PLATFORM STRIP (White block) */}
-      <div className="bg-[#F8F9FA] py-8 border-y border-gray-200">
-        <div className="max-w-[1400px] mx-auto px-6 flex flex-col lg:flex-row items-center justify-between gap-8">
-           <div className="text-black font-black text-sm lg:text-base max-w-[300px] leading-tight">
-             BUILT AROUND THE PLATFORMS<br/>YOUR RESTAURANT ALREADY USES
-           </div>
-           <div className="flex flex-wrap justify-center lg:justify-end items-center gap-8 lg:gap-10">
-             <span className="text-[#06C167] font-black text-2xl md:text-3xl tracking-tighter">Uber <span className="font-medium">Eats</span></span>
-             <span className="text-[#F36D00] font-black text-xl md:text-2xl">JUST EAT</span>
-             <span className="text-[#00CCBC] font-black text-xl md:text-2xl tracking-tight">deliveroo</span>
-             <span className="text-[#1877F2] font-bold text-lg md:text-xl">Facebook</span>
-             <span className="font-bold text-lg md:text-xl text-transparent bg-clip-text bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-500">Instagram</span>
-             <span className="text-black font-bold text-lg md:text-xl tracking-tight">TikTok</span>
-             <div className="flex flex-col items-center justify-center">
-               <span className="text-[#4285F4] font-bold text-lg md:text-xl leading-none">Google</span>
-               <span className="text-gray-500 text-[0.55rem] uppercase tracking-widest font-bold mt-1">Business Profile</span>
-             </div>
-           </div>
-        </div>
-      </div>
-      {/* SERVICES SECTION */}
-      <section id="services" className="pt-24 pb-20 px-6 lg:px-12 bg-[#050505] text-white">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-[1.75rem] md:text-4xl font-bold tracking-tight uppercase leading-tight text-white reveal-on-scroll">
-              ONE PARTNER. YOUR WHOLE <span className="text-[#C89B3C]">DIGITAL OPERATION.</span>
-            </h2>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
-             {[
-               { i: <Icons.MenuIcon/>, t: 'MENU\nMANAGEMENT', d: 'Keep your menus accurate, optimised and up to date across all platforms.' },
-               { i: <Icons.SocialIcon/>, t: 'SOCIAL MEDIA\nMANAGEMENT', d: 'Engaging content, regular posting and brand consistency.' },
-               { i: <Icons.ProfileIcon/>, t: 'BUSINESS\nPROFILES', d: 'Optimised profiles that help customers find and trust your restaurant.' },
-               { i: <Icons.SupportIcon/>, t: 'CUSTOMER\nSUPPORT', d: 'We handle reviews, messages and customer communications.' },
-               { i: <Icons.ReportIcon/>, t: 'BUSINESS\nREPORTING', d: 'Clear reports that help you understand and grow your business.' },
-               { i: <Icons.GrowthIcon/>, t: 'GROWTH &\nMARKETING', d: 'Promotions, advertising and strategies that drive more orders.' }
-             ].map((c, i) => (
-               <div key={i} className={`border border-[#C89B3C]/30 rounded-md p-6 flex flex-col items-center text-center transition-all duration-300 group cursor-pointer bg-black hover:border-[#C89B3C] hover:-translate-y-2 hover:shadow-[0_10px_30px_rgba(200,155,60,0.15)] reveal-on-scroll delay-${(i + 1) * 100}`}>
-                 <div className="text-[#C89B3C] mb-6 flex items-center justify-center h-12 group-hover:scale-110 transition-transform duration-300">{c.i}</div>
-                 <h4 className="font-black uppercase tracking-widest text-[0.8rem] mb-4 min-h-[40px] whitespace-pre-line leading-tight group-hover:text-[#C89B3C] transition-colors">{c.t}</h4>
-                 <p className="text-gray-300 text-[0.7rem] leading-relaxed mb-4 flex-grow font-medium">{c.d}</p>
-               </div>
-             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CLIENT LOGOS MARQUEE SECTION */}
-      <section className="py-16 bg-[#030303] border-t border-white/5 overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-6 mb-10 text-center">
-          <h3 className="text-[#C89B3C] text-[0.65rem] font-bold uppercase tracking-[0.2em]">
-            Trusted By Ambitious UK Restaurants
-          </h3>
-        </div>
-        <div className="relative w-full flex overflow-hidden group">
-          {/* Fading Edges */}
-          <div className="absolute top-0 bottom-0 left-0 w-32 bg-gradient-to-r from-[#030303] to-transparent z-10 pointer-events-none"></div>
-          <div className="absolute top-0 bottom-0 right-0 w-32 bg-gradient-to-l from-[#030303] to-transparent z-10 pointer-events-none"></div>
-          
-          <div className="animate-marquee items-center justify-around gap-12 px-6">
-            {/* Set 1 */}
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/taste-of-tandoori.png" alt="Taste of Tandoori" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/the-best-fry.png" alt="The Best Fry" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/tasty-bun.jpg" alt="Tasty Bun" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105 rounded-xl" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/hungry-birds.jpg" alt="Hungry Birds" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105 rounded-xl" />
-            </div>
-            {/* Set 2 (Duplicated for seamless looping) */}
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/taste-of-tandoori.png" alt="Taste of Tandoori" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/the-best-fry.png" alt="The Best Fry" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/tasty-bun.jpg" alt="Tasty Bun" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105 rounded-xl" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/hungry-birds.jpg" alt="Hungry Birds" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105 rounded-xl" />
-            </div>
-            {/* Set 3 (Duplicated for wide screens) */}
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/taste-of-tandoori.png" alt="Taste of Tandoori" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/the-best-fry.png" alt="The Best Fry" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/tasty-bun.jpg" alt="Tasty Bun" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105 rounded-xl" />
-            </div>
-            <div className="flex items-center justify-center min-w-[200px]">
-              <img src="/images/clients/hungry-birds.jpg" alt="Hungry Birds" className="h-20 w-auto object-contain grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500 hover:scale-105 rounded-xl" />
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* PACKAGES SECTION */}
-      <section id="packages" className="py-16 md:py-20 px-4 lg:px-8 bg-[#F7F5F0] text-black border-t border-[#C89B3C]/20">
-        <div className="max-w-[1500px] mx-auto">
-          <div className="text-center mb-10 reveal-on-scroll">
-            <h2 className="text-[2rem] md:text-[2.75rem] font-black tracking-tighter uppercase leading-[1.05] text-[#111]">
-              CHOOSE THE <span className="text-[#C89B3C]">RIGHT LEVEL</span> OF SUPPORT
-            </h2>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-[1500px] mx-auto">
-            
-            {/* Package 1 */}
-            <div className="bg-white rounded-xl border border-[#E8E3D5] flex flex-col relative shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 reveal-on-scroll delay-100 group">
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#C89B3C] group-hover:bg-[#111] transition-colors duration-500 rounded-t-xl z-20"></div>
+            {/* Left Content */}
+            <div className="lg:col-span-7 flex flex-col items-start text-left w-full min-w-0">
               
-              <div className="text-center px-6 pt-10 pb-6 border-b border-[#E8E3D5]/50 bg-[#FCFBF8] relative rounded-t-xl">
-                 <div className="absolute -top-3.5 left-0 right-0 flex justify-center z-30">
-                   <span className="inline-block bg-[#111] text-[#C89B3C] text-[0.65rem] font-bold px-6 py-1.5 rounded-full uppercase tracking-widest shadow-md">1ST MONTH</span>
-                 </div>
-                 <h3 className="text-2xl md:text-[1.7rem] font-black uppercase tracking-tighter leading-tight mb-3 text-[#111]">RESTAURANT SETUP & REPORTING</h3>
-                 <p className="text-gray-500 text-[0.8rem] max-w-[450px] mx-auto mb-6 font-medium leading-relaxed">
-                   We help restaurants improve their menus, set up social media accounts and establish clear business reporting.
-                 </p>
-                 
-                 <div className="flex items-center justify-center gap-4">
-                    <div className="text-gray-400 line-through font-bold text-xl relative top-1">£500</div>
-                    <div className="text-[#111] text-[3.5rem] font-black leading-none tracking-tighter">£300</div>
-                 </div>
-                 <div className="mt-2 flex justify-center">
-                   <span className="bg-[#C89B3C]/10 text-[#C89B3C] font-bold uppercase tracking-widest text-[0.65rem] px-3 py-1 rounded-sm">Special Offer</span>
-                 </div>
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E5B869]/10 border border-[#E5B869]/25 text-[#E5B869] text-[11px] sm:text-xs font-semibold tracking-wide mb-5">
+                <Icons.Sparkles />
+                <span>Next-Gen UK Restaurant Intelligence</span>
               </div>
-              
-              <div className="p-6 md:p-8 flex flex-col flex-grow bg-white rounded-b-xl">
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-6 flex-grow mb-8 text-left">
-                    
-                    {/* Category 1 */}
-                    <div>
-                       <h4 className="text-[#111] font-bold uppercase tracking-widest text-[0.65rem] mb-3 flex items-center pb-1.5 border-b border-gray-100"><span className="w-4 h-[2px] bg-[#C89B3C] mr-2"></span> MENU SETUP</h4>
-                       <ul className="space-y-2 text-[0.75rem] font-medium text-gray-700">
-                         {['Professional Menu Setup', 'Add Categories & Items', 'Extras & Add-ons Setup', 'Price & Competitor Review', 'Offers & Discounts Setup', 'Sales-Boosting Improvements', 'Ongoing Support & Updates'].map(item => (
-                           <li key={item} className="flex items-start">
-                             <div className="bg-[#C89B3C]/10 rounded-full p-0.5 mr-2 shrink-0 mt-[2px]"><Icons.Check /></div>
-                             <span className="leading-tight">{item}</span>
-                           </li>
-                         ))}
-                       </ul>
-                    </div>
 
-                    {/* Category 2 */}
-                    <div>
-                       <h4 className="text-[#111] font-bold uppercase tracking-widest text-[0.65rem] mb-3 flex items-center pb-1.5 border-b border-gray-100"><span className="w-4 h-[2px] bg-[#C89B3C] mr-2"></span> PROFILE SETUP</h4>
-                       <ul className="space-y-2 text-[0.75rem] font-medium text-gray-700">
-                         {['Create New Accounts', 'Review Existing Accounts', 'Update Business Information', 'Set Up Business Profiles', 'Improve Profile Appearance', 'Customer Review Management', 'Branding & Consistency'].map(item => (
-                           <li key={item} className="flex items-start">
-                             <div className="bg-[#C89B3C]/10 rounded-full p-0.5 mr-2 shrink-0 mt-[2px]"><Icons.Check /></div>
-                             <span className="leading-tight">{item}</span>
-                           </li>
-                         ))}
-                       </ul>
-                    </div>
+              {/* Headline */}
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12] mb-5 break-words w-full">
+                Run Smarter. <br />
+                <span className="bg-gradient-to-r from-white via-slate-200 to-[#E5B869] bg-clip-text text-transparent">
+                  Grow Faster Online.
+                </span>
+              </h1>
 
-                    {/* Category 3 */}
-                    <div>
-                       <h4 className="text-[#111] font-bold uppercase tracking-widest text-[0.65rem] mb-3 flex items-center pb-1.5 border-b border-gray-100"><span className="w-4 h-[2px] bg-[#C89B3C] mr-2"></span> BUSINESS REPORTS</h4>
-                       <ul className="space-y-2 text-[0.75rem] font-medium text-gray-700">
-                         {['Sales Summary', 'Expenses Summary', 'Supplier Purchases', 'Platform Fees & Charges', 'Profit & Loss Report', 'Top Selling Items', 'Business Performance Review', 'Monthly Comparison'].map(item => (
-                           <li key={item} className="flex items-start">
-                             <div className="bg-[#C89B3C]/10 rounded-full p-0.5 mr-2 shrink-0 mt-[2px]"><Icons.Check /></div>
-                             <span className="leading-tight">{item}</span>
-                           </li>
-                         ))}
-                       </ul>
-                    </div>
-                 </div>
-                 
-                 <div className="flex justify-center mt-auto">
-                   <a href="#contact" className="w-full text-center py-3.5 bg-[#C89B3C] text-[#111] font-black uppercase tracking-widest text-[0.75rem] hover:bg-[#111] hover:text-[#C89B3C] transition-colors rounded-sm flex items-center justify-center gap-2 group-hover:scale-[1.02] duration-300">
-                     START WITH MONTH 1 <Icons.ArrowRight />
-                   </a>
-                 </div>
+              {/* Subtitle */}
+              <p className="text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed mb-7 max-w-2xl font-normal">
+                Riznex delivers end-to-end digital operations for ambitious UK restaurants. We unify your delivery platforms, streamline menus, manage customer reputation, and automate weekly profit reporting.
+              </p>
+
+              {/* CTA Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-8">
+                <a 
+                  href="#services" 
+                  className="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] shadow-xl shadow-[#E5B869]/20 hover:scale-[1.02] active:scale-[0.98] transition-all text-center flex items-center justify-center gap-2"
+                >
+                  Explore Services <Icons.ArrowRight />
+                </a>
+                <Link 
+                  href="/client-login" 
+                  className="px-6 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-slate-200 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] hover:border-white/20 transition-all text-center flex items-center justify-center gap-2"
+                >
+                  <Icons.Lock /> Client Portal
+                </Link>
               </div>
-            </div>
 
-            {/* Package 2 */}
-            <div className="bg-white rounded-xl border border-[#E8E3D5] flex flex-col relative shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 reveal-on-scroll delay-200 group">
-              <div className="absolute top-0 left-0 right-0 h-1.5 bg-[#111] group-hover:bg-[#C89B3C] transition-colors duration-500 rounded-t-xl z-20"></div>
-              
-              <div className="text-center px-6 pt-10 pb-6 border-b border-[#E8E3D5]/50 bg-[#FCFBF8] relative rounded-t-xl">
-                 <div className="absolute -top-3.5 left-0 right-0 flex justify-center z-30">
-                   <span className="inline-block bg-[#C89B3C] text-[#111] text-[0.65rem] font-bold px-6 py-1.5 rounded-full uppercase tracking-widest shadow-md">2ND MONTH+</span>
-                 </div>
-                 <h3 className="text-2xl md:text-[1.7rem] font-black uppercase tracking-tighter leading-tight mb-3 text-[#111]">MONTHLY GROWTH PACKAGE</h3>
-                 <p className="text-gray-500 text-[0.8rem] max-w-[450px] mx-auto mb-6 font-medium leading-relaxed">
-                   Ongoing support to help restaurants maintain their digital presence, manage accounts and grow their business.
-                 </p>
-                 
-                 <div className="flex items-center justify-center gap-4">
-                    <div className="text-gray-400 line-through font-bold text-xl relative top-1">£300</div>
-                    <div className="flex items-baseline gap-1"><span className="text-[#111] text-[3.5rem] font-black leading-none tracking-tighter">£250</span><span className="text-gray-400 font-bold text-xs uppercase tracking-widest">/ MONTH</span></div>
-                 </div>
-                 <div className="mt-2 flex justify-center">
-                   <span className="bg-[#C89B3C]/10 text-[#C89B3C] font-bold uppercase tracking-widest text-[0.65rem] px-3 py-1 rounded-sm">Special Offer</span>
-                 </div>
-              </div>
-              
-              <div className="p-6 md:p-8 flex flex-col flex-grow bg-white rounded-b-xl">
-                 <div className="grid grid-cols-1 md:grid-cols-3 gap-x-6 gap-y-6 flex-grow mb-8 text-left">
-                    
-                    {/* Category 1 */}
-                    <div>
-                       <h4 className="text-[#111] font-bold uppercase tracking-widest text-[0.65rem] mb-3 flex items-center pb-1.5 border-b border-gray-100"><span className="w-4 h-[2px] bg-[#C89B3C] mr-2"></span> SOCIAL & ADS</h4>
-                       <ul className="space-y-2 text-[0.75rem] font-medium text-gray-700">
-                         {['3 Posts Per Week', '6 Static & 6 Reels/Month', 'Content Creation & Publishing', 'Facebook, Instagram & TikTok', 'Ad Campaign Management', 'Offers & Promotions Setup', 'Brand Consistency', 'Monthly Performance Report'].map(item => (
-                           <li key={item} className="flex items-start">
-                             <div className="bg-[#C89B3C]/10 rounded-full p-0.5 mr-2 shrink-0 mt-[2px]"><Icons.Check /></div>
-                             <span className="leading-tight">{item}</span>
-                           </li>
-                         ))}
-                       </ul>
-                    </div>
-
-                    {/* Category 2 */}
-                    <div>
-                       <h4 className="text-[#111] font-bold uppercase tracking-widest text-[0.65rem] mb-3 flex items-center pb-1.5 border-b border-gray-100"><span className="w-4 h-[2px] bg-[#C89B3C] mr-2"></span> ACCOUNT MGMT</h4>
-                       <ul className="space-y-2 text-[0.75rem] font-medium text-gray-700">
-                         {['Up to 12 Hours Daily Support', '7 Days a Week Availability', 'Daily Review Replies', 'Menu Updates & Amendments', 'Price & Product Updates', 'Item Additions & Removals', 'Settings Adjustments', 'Business Support'].map(item => (
-                           <li key={item} className="flex items-start">
-                             <div className="bg-[#C89B3C]/10 rounded-full p-0.5 mr-2 shrink-0 mt-[2px]"><Icons.Check /></div>
-                             <span className="leading-tight">{item}</span>
-                           </li>
-                         ))}
-                       </ul>
-                    </div>
-
-                    {/* Category 3 */}
-                    <div>
-                       <h4 className="text-[#111] font-bold uppercase tracking-widest text-[0.65rem] mb-3 flex items-center pb-1.5 border-b border-gray-100"><span className="w-4 h-[2px] bg-[#C89B3C] mr-2"></span> BUSINESS REPORTS</h4>
-                       <ul className="space-y-2 text-[0.75rem] font-medium text-gray-700">
-                         {['Sales Summary', 'Expenses Summary', 'Supplier Purchases', 'Platform Charges', 'Profit & Loss Report', 'Top Selling Items', 'Business Performance', 'Monthly Comparison', 'Customer Growth'].map(item => (
-                           <li key={item} className="flex items-start">
-                             <div className="bg-[#C89B3C]/10 rounded-full p-0.5 mr-2 shrink-0 mt-[2px]"><Icons.Check /></div>
-                             <span className="leading-tight">{item}</span>
-                           </li>
-                         ))}
-                       </ul>
-                    </div>
-                 </div>
-                 
-                 <div className="flex justify-center mt-auto">
-                   <a href="#contact" className="w-full text-center py-3.5 bg-[#111] text-[#C89B3C] font-black uppercase tracking-widest text-[0.75rem] hover:bg-[#C89B3C] hover:text-[#111] transition-colors rounded-sm flex items-center justify-center gap-2 group-hover:scale-[1.02] duration-300">
-                     CHOOSE MONTHLY GROWTH <Icons.ArrowRight />
-                   </a>
-                 </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* HOW IT WORKS SECTION */}
-      <section id="how-it-works" className="py-20 px-6 lg:px-12 bg-black text-white border-y border-white/5">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-[1.5rem] md:text-2xl font-bold tracking-widest uppercase text-white">
-              HOW RIZNEX WORKS
-            </h2>
-          </div>
-          
-          <div className="flex flex-col lg:flex-row items-start justify-between gap-8 relative mt-10">
-             {/* Dashed line */}
-             <div className="hidden lg:block absolute top-[1.25rem] left-[15%] right-[15%] border-t border-dashed border-[#C89B3C]/40 z-0"></div>
-             
-             {[
-               { n: '01', i: <Icons.Discover/>, t: 'DISCOVER', d: 'We understand your restaurant, platforms, current setup and goals.' },
-               { n: '02', i: <Icons.Setup/>, t: 'SET UP', d: 'We organise your menus, profiles, branding and reporting structure.' },
-               { n: '03', i: <Icons.Manage/>, t: 'MANAGE', d: 'We handle ongoing updates, social media, support and digital operations.' },
-               { n: '04', i: <Icons.Improve/>, t: 'REVIEW & IMPROVE', d: 'You receive clear reports and insights to make better decisions.' }
-             ].map((s, i) => (
-               <div key={i} className="flex flex-col items-start lg:items-center relative z-10 bg-black lg:px-4 w-full lg:w-1/4">
-                 <div className="flex items-center gap-4 mb-5 bg-black px-2">
-                   <span className="text-[#C89B3C] text-xl font-bold">{s.n}</span>
-                   <div className="w-10 h-10 rounded-full border border-[#C89B3C] flex items-center justify-center text-[#C89B3C]">
-                     {s.i}
-                   </div>
-                 </div>
-                 <div className="flex flex-col lg:items-center text-left lg:text-center">
-                   <h4 className="font-bold uppercase tracking-widest text-[0.7rem] mb-2 text-white">{s.t}</h4>
-                   <p className="text-gray-400 text-[0.65rem] leading-relaxed max-w-[200px] font-medium">{s.d}</p>
-                 </div>
-               </div>
-             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CLIENT CTA SECTION */}
-      <section className="py-20 px-6 lg:px-12 bg-black text-white">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="border border-[#C89B3C]/30 rounded-lg p-10 flex flex-col xl:flex-row items-center justify-between gap-12 bg-black relative overflow-hidden">
-             
-             {/* Left Text */}
-             <div className="xl:w-[45%] flex flex-col items-start relative z-10">
-                <div className="flex items-start gap-6 mb-4">
-                  <div className="w-16 h-16 border border-[#C89B3C]/40 rounded-lg flex items-center justify-center text-[#C89B3C] shrink-0 mt-2">
-                    <Icons.BigLock />
-                  </div>
-                  <div>
-                    <h2 className="text-2xl md:text-[2rem] font-black tracking-tight uppercase leading-[1.1] mb-3">
-                      ALREADY A RIZNEX CLIENT?
-                    </h2>
-                    <p className="text-gray-300 text-sm leading-relaxed mb-8 max-w-md">
-                      Access your private dashboard to view your restaurant's reports, performance information, documents and account updates.
-                    </p>
-                    <div className="flex flex-wrap items-center gap-6">
-                      <Link href="/client-login" className="px-6 py-2.5 bg-[#C89B3C] text-black font-bold uppercase tracking-widest text-[0.7rem] hover:bg-white transition-colors rounded-sm flex items-center gap-2">
-                        CLIENT LOGIN <Icons.ArrowRight />
-                      </Link>
-                      <div className="flex items-center gap-2 text-gray-400 text-[0.65rem] font-bold uppercase tracking-widest">
-                        <Icons.Lock /> SECURE CLIENT AREA
-                      </div>
-                    </div>
-                  </div>
-                </div>
-             </div>
-
-             {/* Middle Checklist */}
-             <div className="xl:w-[20%] flex flex-col gap-4 relative z-10">
+              {/* Value Points */}
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-5 border-t border-white/[0.08] w-full">
                 {[
-                  'Real-time business reports',
-                  'Sales & performance tracking',
-                  'Platform overview',
-                  'Documents & updates',
-                  '24/7 secure access'
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center gap-3 text-[0.65rem] font-bold tracking-wide text-gray-300">
-                     <Icons.CheckCircle /> {item}
+                  'Delivery Platforms',
+                  'Social & Marketing',
+                  'Weekly P&L Reports',
+                  'Dedicated Manager'
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-slate-300 min-w-0">
+                    <Icons.CheckBadge />
+                    <span className="truncate">{item}</span>
                   </div>
                 ))}
-             </div>
+              </div>
+            </div>
 
-             {/* Right Dashboard Mockup Image via CSS */}
-             <div className="xl:w-[35%] w-full flex justify-end items-end relative z-10 pt-10 xl:pt-0">
-                {/* Laptop */}
-                <div className="w-[300px] xl:w-[350px] relative">
-                  <div className="bg-[#111] border-t border-x border-white/20 rounded-t-lg p-2 pb-0 shadow-2xl relative z-10">
-                    <div className="bg-[#050505] rounded-t border border-white/10 border-b-0 h-[200px] p-2 flex flex-col gap-2">
-                       <div className="flex justify-between items-center px-1 mb-2">
-                          <div className="flex gap-1"><div className="w-1.5 h-1.5 rounded-full bg-red-500"></div><div className="w-1.5 h-1.5 rounded-full bg-yellow-500"></div><div className="w-1.5 h-1.5 rounded-full bg-green-500"></div></div>
-                       </div>
-                       <div className="flex gap-2 h-full">
-                         {/* Sidebar */}
-                         <div className="w-1/4 h-full bg-[#111] rounded p-1.5 flex flex-col gap-1">
-                           <div className="w-full h-2 bg-white/10 rounded mb-2"></div>
-                           <div className="w-full h-1.5 bg-[#C89B3C]/30 rounded"></div>
-                           <div className="w-full h-1.5 bg-white/5 rounded"></div>
-                           <div className="w-full h-1.5 bg-white/5 rounded"></div>
-                           <div className="w-full h-1.5 bg-white/5 rounded"></div>
-                         </div>
-                         {/* Main Content */}
-                         <div className="w-3/4 h-full flex flex-col gap-2">
-                           <div className="flex gap-2">
-                             <div className="w-1/3 h-10 bg-[#111] rounded border border-white/5 p-1"><div className="w-4 h-1 bg-white/20 rounded mb-1"></div><div className="w-6 h-2 bg-white rounded"></div></div>
-                             <div className="w-1/3 h-10 bg-[#111] rounded border border-white/5 p-1"><div className="w-4 h-1 bg-white/20 rounded mb-1"></div><div className="w-6 h-2 bg-white rounded"></div></div>
-                             <div className="w-1/3 h-10 bg-[#111] rounded border border-white/5 p-1"><div className="w-4 h-1 bg-white/20 rounded mb-1"></div><div className="w-6 h-2 bg-white rounded"></div></div>
-                           </div>
-                           <div className="w-full flex-1 bg-[#111] rounded border border-white/5 p-2 flex items-end justify-between gap-1">
-                              {[30,50,40,70,50,80,90,60,40,70,60,80,100].map((h, i) => (
-                                 <div key={i} className="w-full bg-[#C89B3C] rounded-t-sm" style={{height: `${h}%`}}></div>
-                              ))}
-                           </div>
-                         </div>
-                       </div>
+            {/* Right Live Hub Visual (Completely Overflow Proof) */}
+            <div className="lg:col-span-5 w-full min-w-0">
+              <div className="relative rounded-2xl bg-[#0D0F17]/95 border border-white/[0.12] p-4 sm:p-6 backdrop-blur-xl shadow-2xl w-full overflow-hidden">
+                
+                {/* Header */}
+                <div className="flex justify-between items-center pb-3.5 mb-4 border-b border-white/[0.08]">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-md shadow-emerald-500/50 shrink-0" />
+                    <div className="min-w-0">
+                      <h2 className="text-[11px] sm:text-xs font-bold text-white tracking-wide uppercase truncate">Live Performance Hub</h2>
+                      <p className="text-[9px] sm:text-[10px] text-slate-400 truncate">Consolidated Weekly Metrics</p>
                     </div>
                   </div>
-                  <div className="h-3 bg-[#222] rounded-b-xl border border-white/20 relative z-20 mx-[-10px]">
-                    <div className="w-16 h-1 bg-[#111] mx-auto rounded-b-md"></div>
+                  <span className="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/[0.05] text-[#E5B869] border border-[#E5B869]/30 shrink-0">
+                    Active Client
+                  </span>
+                </div>
+
+                {/* 4 Stat KPIs */}
+                <div className="grid grid-cols-2 gap-2.5 mb-4">
+                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] min-w-0">
+                    <span className="text-[10px] font-medium text-slate-400 block mb-0.5 truncate">Gross Sales</span>
+                    <div className="text-lg sm:text-2xl font-black text-white tracking-tight truncate">£18,420</div>
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
+                      <Icons.TrendingUp /> +12.5%
+                    </div>
                   </div>
-                  
-                  {/* Mobile Phone Mockup Overlay */}
-                  <div className="absolute -bottom-4 -right-4 w-[90px] h-[180px] bg-black border-[3px] border-[#333] rounded-2xl shadow-2xl z-30 flex flex-col p-1.5">
-                    <div className="w-1/3 h-1 bg-[#333] rounded-full mx-auto mb-2"></div>
-                    <div className="w-full h-1/4 bg-[#111] rounded mb-1.5 flex items-center justify-center">
-                      <div className="w-8 h-8 rounded-full border-[3px] border-[#C89B3C] border-r-transparent"></div>
+
+                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] min-w-0">
+                    <span className="text-[10px] font-medium text-slate-400 block mb-0.5 truncate">Total Orders</span>
+                    <div className="text-lg sm:text-2xl font-black text-white tracking-tight truncate">1,284</div>
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
+                      <Icons.TrendingUp /> +8.7%
                     </div>
-                    <div className="flex gap-1 mb-1.5">
-                      <div className="w-1/2 h-8 bg-[#111] rounded"></div>
-                      <div className="w-1/2 h-8 bg-[#111] rounded"></div>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] min-w-0">
+                    <span className="text-[10px] font-medium text-slate-400 block mb-0.5 truncate">Net Profit</span>
+                    <div className="text-lg sm:text-2xl font-black text-[#E5B869] tracking-tight truncate">£4,280</div>
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
+                      <Icons.TrendingUp /> 23.2%
                     </div>
-                    <div className="w-full flex-1 bg-[#111] rounded flex items-end p-1 gap-0.5">
-                       {[30,50,40,70,90,60].map((h, i) => (
-                          <div key={i} className="w-full bg-[#C89B3C] rounded-t-[1px]" style={{height: `${h}%`}}></div>
-                       ))}
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] min-w-0">
+                    <span className="text-[10px] font-medium text-slate-400 block mb-0.5 truncate">Expenses / Ops</span>
+                    <div className="text-lg sm:text-2xl font-black text-slate-200 tracking-tight truncate">£3,840</div>
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-rose-400 font-semibold mt-1">
+                      ↓ 7.1%
                     </div>
                   </div>
                 </div>
-             </div>
+
+                {/* Revenue Rhythm Bar Visual */}
+                <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] mb-4 w-full">
+                  <div className="flex justify-between items-center mb-2 text-[11px]">
+                    <span className="font-semibold text-slate-300">Weekly Revenue Rhythm</span>
+                    <span className="text-[9px] text-slate-500 font-mono">May 2026</span>
+                  </div>
+                  <div className="flex items-end justify-between gap-1.5 h-16 pt-2 border-b border-white/[0.06] w-full">
+                    {[45, 60, 50, 75, 55, 88, 70, 95, 65, 100].map((val, i) => (
+                      <div key={i} className="flex-1 flex flex-col items-center justify-end h-full min-w-0">
+                        <div 
+                          style={{ height: `${val}%` }} 
+                          className={`w-full rounded-t-sm transition-all ${
+                            val >= 85 
+                              ? 'bg-gradient-to-t from-[#C89B3C] to-[#E5B869]' 
+                              : 'bg-white/20'
+                          }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex justify-between text-[8px] text-slate-500 mt-1.5 font-mono">
+                    <span>Wk 1</span>
+                    <span>Wk 2</span>
+                    <span>Wk 3</span>
+                    <span>Wk 4</span>
+                  </div>
+                </div>
+
+                {/* Platform Split Responsive Grid (2 cols on mobile, 4 on desktop) */}
+                <div>
+                  <span className="text-[10px] font-semibold text-slate-400 block mb-2">Active Platform Share</span>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center w-full">
+                    <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                      <span className="text-[9px] font-bold text-emerald-400 block truncate">Uber Eats</span>
+                      <span className="text-xs font-black text-white">42%</span>
+                    </div>
+                    <div className="p-1.5 sm:p-2 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                      <span className="text-[9px] font-bold text-orange-400 block truncate">Just Eat</span>
+                      <span className="text-xs font-black text-white">28%</span>
+                    </div>
+                    <div className="p-1.5 sm:p-2 rounded-lg bg-teal-500/10 border border-teal-500/20">
+                      <span className="text-[9px] font-bold text-teal-400 block truncate">Deliveroo</span>
+                      <span className="text-xs font-black text-white">19%</span>
+                    </div>
+                    <div className="p-1.5 sm:p-2 rounded-lg bg-slate-500/10 border border-slate-500/20">
+                      <span className="text-[9px] font-bold text-slate-400 block truncate">In-Store</span>
+                      <span className="text-xs font-black text-white">11%</span>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
 
           </div>
         </div>
       </section>
-      
-      {/* ABOUT / CONTACT SECTION */}
-      <section id="about" className="py-24 px-6 lg:px-12 bg-black text-white border-t border-white/5">
-        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-16">
-          <div className="lg:w-1/2">
-            <h2 className="text-[1.5rem] md:text-3xl font-black uppercase tracking-tight leading-tight mb-6">
-              DIGITAL MANAGEMENT BUILT FOR RESTAURANTS.
+
+      {/* PLATFORMS BANNER */}
+      <section id="platforms" className="py-8 sm:py-12 border-y border-white/[0.08] bg-[#0A0C13] w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center">
+          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-6">
+            Seamlessly Integrated With Top UK Delivery Platforms & Social Channels
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-10">
+            <span className="text-lg sm:text-2xl font-black text-emerald-400 tracking-tight">Uber <span className="font-light text-white">Eats</span></span>
+            <span className="text-lg sm:text-2xl font-black text-orange-500 tracking-wider">JUST EAT</span>
+            <span className="text-lg sm:text-2xl font-black text-teal-400 tracking-tight">deliveroo</span>
+            <span className="text-base sm:text-xl font-bold text-blue-500">Facebook</span>
+            <span className="text-base sm:text-xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-amber-400 bg-clip-text text-transparent">Instagram</span>
+            <span className="text-base sm:text-xl font-bold text-white">TikTok</span>
+            <span className="text-sm sm:text-lg font-bold text-slate-300 flex items-center gap-1">
+              <span className="text-blue-400 font-extrabold">G</span>oogle Business
+            </span>
+          </div>
+        </div>
+      </section>
+
+      {/* SERVICES: RESPONSIVE BENTO GRID */}
+      <section id="services" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 relative w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full">
+          
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5B869]/10 border border-[#E5B869]/25 text-[#E5B869] text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-3">
+              Comprehensive Services
+            </div>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight break-words">
+              One Dedicated Partner. <br />
+              <span className="text-[#E5B869]">Your Complete Digital Operation.</span>
             </h2>
-            <p className="text-gray-400 text-sm leading-relaxed mb-6 font-medium">
-              Riznex helps UK restaurants manage the digital side of their business from one professional service. We understand that running a restaurant is demanding, which is why we handle your digital operations so you can focus on the food.
-            </p>
-            <p className="text-gray-400 text-sm leading-relaxed mb-10 font-medium">
-              From delivery platform management and menu optimisation to social media, customer support and detailed business reporting, we are the digital partner for ambitious independent takeaways and restaurants.
-            </p>
-            <h2 className="text-[1.25rem] md:text-2xl font-black uppercase tracking-tight leading-tight mb-6 mt-12">
-              READY TO TAKE CONTROL OF YOUR RESTAURANT'S DIGITAL OPERATION?
-            </h2>
-            <p className="text-gray-400 text-sm leading-relaxed mb-8 font-medium">
-              Let's build a stronger digital presence, improve your operations and give you clearer visibility over your business.
+            <p className="mt-3 text-slate-400 text-xs sm:text-base leading-relaxed max-w-xl mx-auto">
+              We take the heavy digital burden off your shoulders so your staff can focus 100% on cooking exceptional food.
             </p>
           </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full">
+            
+            {/* 1. Menu Management */}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
+                <Icons.MenuBook />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Menu Management</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+                Keep menus synced across Uber Eats, Just Eat, and Deliveroo. We add categories, modify prices, configure modifier add-ons, and optimize dishes to maximize order basket values.
+              </p>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
+                <Icons.Check /> Instant multi-platform sync
+              </div>
+            </div>
+
+            {/* 2. Social Media Management */}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
+                <Icons.Share />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Social Media Marketing</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+                Engage hungry locals through eye-catching food reels, static posts, and strategic story campaigns on Instagram, TikTok, and Facebook that convert browsers into repeat diners.
+              </p>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
+                <Icons.Check /> 3+ weekly posts & targeted reels
+              </div>
+            </div>
+
+            {/* 3. Business Profiles & Maps */}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
+                <Icons.MapPin />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Business Profiles & Maps</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+                Optimize your Google Business Profile, Apple Maps, and local search presence. Verified opening hours, location details, high-res menus, and local search visibility.
+              </p>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
+                <Icons.Check /> Top Google search ranking
+              </div>
+            </div>
+
+            {/* 4. Customer Support & Reviews */}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
+                <Icons.Headset />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Customer Support & Reviews</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+                We safeguard your restaurant's 5-star reputation. We handle online guest reviews, reply politely to feedback across platforms, and promptly resolve customer inquiries.
+              </p>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
+                <Icons.Check /> 7-day-a-week review management
+              </div>
+            </div>
+
+            {/* 5. Business & Financial Reporting */}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
+                <Icons.ChartBar />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Automated Financial Reporting</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+                No more guessing where your money goes. Receive weekly consolidated P&L statements that break down platform commissions, VAT, supplier invoices, staff wages, and genuine profits.
+              </p>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
+                <Icons.Check /> Clear weekly profit calculation
+              </div>
+            </div>
+
+            {/* 6. Growth & Order Surges */}
+            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
+                <Icons.Rocket />
+              </div>
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Growth & Order Surges</h3>
+              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+                Launch data-driven meal deals, promotional discounts, and localized ad campaigns on Uber Eats and social media to capture high-volume orders during peak dinner rushes.
+              </p>
+              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
+                <Icons.Check /> Return on ad spend (ROAS) focus
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+
+      {/* CLIENT TESTIMONIAL LOGOS */}
+      <section className="py-10 sm:py-14 bg-[#050608] border-y border-white/[0.06] w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center mb-6">
+          <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869]">
+            Trusted By Established UK Restaurants
+          </p>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 max-w-4xl mx-auto px-3.5">
+          {[
+            { name: 'Hungry Birds', src: '/images/clients/hungry-birds.jpg' },
+            { name: 'Taste of Tandoori', src: '/images/clients/taste-of-tandoori.png' },
+            { name: 'Tasty Bun', src: '/images/clients/tasty-bun.jpg' },
+            { name: 'The Best Fry', src: '/images/clients/the-best-fry.png' },
+          ].map((client, i) => (
+            <div 
+              key={i} 
+              className="flex items-center justify-center p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]"
+            >
+              <img 
+                src={client.src} 
+                alt={client.name} 
+                className="h-10 sm:h-14 w-auto object-contain max-w-[120px] rounded-lg" 
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* PACKAGES & PRICING */}
+      <section id="packages" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 relative w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full">
           
-          <div className="lg:w-1/2" id="contact">
-            <div className="bg-[#0A0A0A] border border-[#C89B3C]/20 rounded-md p-8 shadow-2xl">
-              <form className="space-y-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[0.65rem] font-bold uppercase tracking-widest text-gray-500 mb-1.5">Restaurant Name</label>
-                    <input type="text" className="w-full bg-[#111] border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-[#C89B3C] transition-colors text-sm rounded-sm" />
-                  </div>
-                  <div>
-                    <label className="block text-[0.65rem] font-bold uppercase tracking-widest text-gray-500 mb-1.5">Your Name</label>
-                    <input type="text" className="w-full bg-[#111] border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-[#C89B3C] transition-colors text-sm rounded-sm" />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-[0.65rem] font-bold uppercase tracking-widest text-gray-500 mb-1.5">Email</label>
-                    <input type="email" className="w-full bg-[#111] border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-[#C89B3C] transition-colors text-sm rounded-sm" />
-                  </div>
-                  <div>
-                    <label className="block text-[0.65rem] font-bold uppercase tracking-widest text-gray-500 mb-1.5">Phone</label>
-                    <input type="tel" className="w-full bg-[#111] border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-[#C89B3C] transition-colors text-sm rounded-sm" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-[0.65rem] font-bold uppercase tracking-widest text-gray-500 mb-1.5">Message</label>
-                  <textarea rows={4} className="w-full bg-[#111] border border-white/10 px-4 py-3 text-white focus:outline-none focus:border-[#C89B3C] transition-colors text-sm rounded-sm"></textarea>
-                </div>
-                <button type="button" className="w-full py-4 bg-[#C89B3C] text-black font-bold tracking-widest uppercase text-[0.75rem] hover:bg-white transition-all rounded-sm mt-2">
-                  CONTACT RIZNEX
-                </button>
-              </form>
+          <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5B869]/10 border border-[#E5B869]/25 text-[#E5B869] text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-3">
+              Clear & Transparent Pricing
+            </div>
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight break-words">
+              Choose The Right Level <br />
+              <span className="text-[#E5B869]">Of Growth & Support.</span>
+            </h2>
+            <p className="mt-3 text-slate-400 text-xs sm:text-base">
+              No hidden fees, no long-term lock-ins. Simple investment that pays for itself in higher sales.
+            </p>
+
+            {/* Mobile Tab Switcher */}
+            <div className="sm:hidden flex items-center justify-center mt-6 p-1 rounded-xl bg-white/[0.05] border border-white/10 max-w-xs mx-auto">
+              <button
+                onClick={() => setActivePricingTab('month1')}
+                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
+                  activePricingTab === 'month1' 
+                    ? 'bg-[#E5B869] text-black shadow-md' 
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                1st Month (£300)
+              </button>
+              <button
+                onClick={() => setActivePricingTab('growth')}
+                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
+                  activePricingTab === 'growth' 
+                    ? 'bg-[#E5B869] text-black shadow-md' 
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Ongoing (£250/mo)
+              </button>
             </div>
           </div>
+
+          {/* Cards */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto w-full">
+            
+            {/* Plan 1: 1st Month Setup & Reporting */}
+            <div className={`rounded-3xl p-5 sm:p-8 bg-[#0D0F17]/90 border transition-all flex flex-col relative w-full ${
+              activePricingTab === 'month1' ? 'border-[#E5B869]/50 shadow-2xl shadow-[#E5B869]/10' : 'border-white/10'
+            } ${activePricingTab === 'growth' ? 'hidden sm:flex' : 'flex'}`}>
+              
+              <div className="flex justify-between items-start mb-6">
+                <div>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
+                    Phase 1: Foundation
+                  </span>
+                  <h3 className="text-lg sm:text-2xl font-black text-white">Restaurant Setup & Audit</h3>
+                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">Complete digital overhaul, platform setup, and clean baseline reports.</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£500</span>
+                  <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">£300</div>
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Save £200</span>
+                </div>
+              </div>
+
+              <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Menu & Platform Setup
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> Full menu digital setup across Uber Eats & Just Eat</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Add categories, dish descriptions & modifier add-ons</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Competitor pricing review & margin optimization</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Initial promotion & meal-deal configuration</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Business Profile Optimization
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> Create or claim Google Business & Maps profiles</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Update verified restaurant hours, phone & address</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> High-resolution logo and food image curation</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Initial customer review response strategy</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Consolidated Reporting Baseline
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> Baseline sales & commission analysis report</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Supplier invoice structure setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Full month performance recap & action plan</li>
+                  </ul>
+                </div>
+              </div>
+
+              <a 
+                href="#contact" 
+                className="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] text-center shadow-lg shadow-[#E5B869]/20"
+              >
+                Start With Month 1 Setup
+              </a>
+            </div>
+
+            {/* Plan 2: 2nd Month+ Monthly Growth Package */}
+            <div className={`rounded-3xl p-5 sm:p-8 bg-gradient-to-b from-[#131622] to-[#0A0C14] border border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/15 flex flex-col relative w-full ${
+              activePricingTab === 'month1' ? 'hidden sm:flex' : 'flex'
+            }`}>
+              
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-gradient-to-r from-[#E5B869] to-[#C89B3C] text-black text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-md shrink-0">
+                Most Popular Ongoing
+              </div>
+
+              <div className="flex justify-between items-start mb-6 pt-2">
+                <div>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#E5B869]/20 text-[#E5B869] border border-[#E5B869]/30 mb-2">
+                    Phase 2: Continuous Growth
+                  </span>
+                  <h3 className="text-lg sm:text-2xl font-black text-white">Monthly Growth Package</h3>
+                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">Daily platform management, proactive marketing, and weekly P&L.</p>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£300</span>
+                  <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">
+                    £250 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
+                  </div>
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Cancel Anytime</span>
+                </div>
+              </div>
+
+              <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Content & Promotions
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> 3 strategic posts per week (Instagram, FB & TikTok)</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 6 static creative graphics & 6 reels / month</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Continuous ad campaign & promo management</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Monthly social reach & customer audit</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Dedicated Daily Management
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> Up to 12 hours daily operational support availability</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 7 days a week customer review replies & resolution</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Instant menu price tweaks, item 86-ing & additions</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Dedicated WhatsApp manager for direct contact</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Automated Weekly Reports
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> Weekly sales breakdown (Uber Eats, Just Eat, Deliveroo)</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Expense tracking: supplier invoices, staff wages, utilities</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Clear net profit margin calculation sent every Monday</li>
+                  </ul>
+                </div>
+              </div>
+
+              <a 
+                href="#contact" 
+                className="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] text-center shadow-lg shadow-[#E5B869]/30"
+              >
+                Choose Monthly Growth Package
+              </a>
+            </div>
+
+          </div>
+
         </div>
       </section>
 
-      {/* FOOTER */}
-      <footer className="bg-black py-16 px-6 lg:px-12 text-white border-t border-white/10">
-        <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row justify-between items-start gap-12">
+      {/* HOW IT WORKS */}
+      <section id="how-it-works" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-white/[0.08] bg-[#0A0C13] w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto w-full">
           
-          <div className="flex flex-col items-start w-full lg:w-1/3">
-            <Link href="/" className="mb-6 block">
-              <img src="/images/new-logo.jpg" alt="Riznex Logo" className="h-14 w-auto mix-blend-screen" />
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869] block mb-2">Simple Onboarding</span>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight break-words">How Riznex Powers Your Restaurant</h2>
+            <p className="mt-2 text-slate-400 text-xs sm:text-sm">We handle all technical hurdles so you can focus entirely on food quality.</p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
+            {[
+              {
+                step: '01',
+                title: 'Discover & Audit',
+                desc: 'We analyze your current delivery platform accounts, menus, commission fees, and Google profile to identify immediate margin gains.'
+              },
+              {
+                step: '02',
+                title: 'Set Up & Synchronize',
+                desc: 'We clean up category layouts, craft high-res branding, configure modifier add-ons, and establish automated reporting templates.'
+              },
+              {
+                step: '03',
+                title: 'Daily Operations',
+                desc: 'Our team monitors orders, posts fresh social content, replies to reviews, and adjusts promotions during peak weekend rushes.'
+              },
+              {
+                step: '04',
+                title: 'Weekly P&L Insights',
+                desc: 'Every week you receive a clear financial summary showing net sales, commissions, wages, expenses, and true take-home profits.'
+              }
+            ].map((step, idx) => (
+              <div 
+                key={idx} 
+                className="p-5 sm:p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex flex-col"
+              >
+                <div className="text-2xl sm:text-3xl font-black text-[#E5B869] mb-2.5 font-mono">{step.step}</div>
+                <h3 className="text-sm sm:text-base font-bold text-white mb-1.5">{step.title}</h3>
+                <p className="text-xs text-slate-400 leading-relaxed">{step.desc}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
+      {/* CLIENT PORTAL CTA BANNER */}
+      <section className="py-12 sm:py-16 px-3.5 sm:px-6 lg:px-8 w-full overflow-hidden">
+        <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-r from-[#111420] via-[#0E111A] to-[#161B29] border border-white/10 p-6 sm:p-12 relative overflow-hidden shadow-2xl w-full">
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
+            <div className="text-left max-w-xl">
+              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#E5B869] block mb-2 flex items-center gap-1.5">
+                <Icons.Lock /> Secure Client Portal
+              </span>
+              <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight mb-2">
+                Already a Riznex Client?
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                Log into your personalized dashboard to inspect live delivery platform sales, OCR scanned invoices, staff wages, and weekly profit margins.
+              </p>
+            </div>
+            <Link 
+              href="/client-login" 
+              className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] shadow-lg shadow-[#E5B869]/25 text-center shrink-0 flex items-center justify-center gap-2"
+            >
+              Access Dashboard <Icons.ArrowRight />
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* CONTACT & CONSULTATION FORM */}
+      <section id="contact" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-white/[0.08] relative w-full overflow-hidden">
+        <div className="max-w-4xl mx-auto w-full">
           
-          <div className="flex-1 grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="flex flex-col gap-3">
-              <span className="text-[#C89B3C] text-[0.6rem] font-bold uppercase tracking-widest mb-1">QUICK LINKS</span>
-              <a href="#home" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Home</a>
-              <a href="#services" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Services</a>
-              <a href="#packages" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Packages</a>
-              <a href="#how-it-works" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">How It Works</a>
-              <a href="#about" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">About</a>
-              <a href="#contact" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Contact</a>
+          <div className="text-center max-w-2xl mx-auto mb-10">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869] block mb-2">Get Started Today</span>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight break-words">Ready to Take Control of Your Restaurant's Growth?</h2>
+            <p className="mt-2 text-slate-400 text-xs sm:text-sm">Send us a quick message. Our team will review your menu and delivery platforms and get in touch within 24 hours.</p>
+          </div>
+
+          <div className="p-5 sm:p-10 rounded-3xl bg-[#0D0F17]/95 border border-white/10 backdrop-blur-xl shadow-2xl w-full">
+            {formSent ? (
+              <div className="py-10 text-center">
+                <div className="w-12 h-12 rounded-full bg-[#E5B869]/20 text-[#E5B869] mx-auto flex items-center justify-center mb-3">
+                  <Icons.Check />
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Thank you! Your inquiry has been received.</h3>
+                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                  A Riznex restaurant specialist will review your details and contact you shortly to schedule your introductory walkthrough.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleFormSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Restaurant Name</label>
+                    <input 
+                      type="text" 
+                      required 
+                      placeholder="e.g. Spice Lounge UK" 
+                      className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Your Name</label>
+                    <input 
+                      type="text" 
+                      required 
+                      placeholder="e.g. Tariq Khan" 
+                      className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Email Address</label>
+                    <input 
+                      type="email" 
+                      required 
+                      placeholder="manager@restaurant.co.uk" 
+                      className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Phone Number</label>
+                    <input 
+                      type="tel" 
+                      required 
+                      placeholder="e.g. +44 7911 123456" 
+                      className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">How can we assist you?</label>
+                  <textarea 
+                    rows={4} 
+                    required 
+                    placeholder="Tell us about your current delivery platforms, weekly issues, or goals..." 
+                    className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors resize-none"
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  disabled={formSubmitting}
+                  className="w-full py-3.5 sm:py-4 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] shadow-lg shadow-[#E5B869]/25 hover:scale-[1.01] active:scale-[0.99] transition-all disabled:opacity-50"
+                >
+                  {formSubmitting ? 'Sending Request...' : 'Send Free Consultation Request'}
+                </button>
+              </form>
+            )}
+          </div>
+
+        </div>
+      </section>
+
+      {/* FOOTER (PROMINENT, 100% VISIBLE & RESPONSIVE) */}
+      <footer className="py-12 sm:py-16 border-t border-white/[0.08] bg-[#050609] text-xs text-slate-400 w-full overflow-hidden">
+        <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 w-full">
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 w-full">
+            
+            {/* Column 1: Brand Info */}
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <img src="/images/new-logo.jpg" alt="Riznex Logo" className="h-7 w-auto object-contain rounded" />
+                <span className="font-bold text-white text-sm">Riznex Digital Solutions</span>
+              </div>
+              <p className="text-slate-500 text-[11px] leading-relaxed">
+                Dedicated digital management, marketing, and reporting software for ambitious UK restaurants.
+              </p>
+              <div className="text-[10px] text-slate-500">
+                Serving Restaurants Nationwide across England, Scotland & Wales.
+              </div>
             </div>
-            <div className="flex flex-col gap-3">
-              <span className="text-[#C89B3C] text-[0.6rem] font-bold uppercase tracking-widest mb-1">CLIENT AREA</span>
-              <Link href="/client-login" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Client Login</Link>
-              <Link href="/dashboard" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Dashboard</Link>
+
+            {/* Column 2: Navigation */}
+            <div>
+              <h4 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Quick Navigation</h4>
+              <ul className="space-y-2 text-[11px]">
+                <li><a href="#services" className="hover:text-white transition-colors">Services Overview</a></li>
+                <li><a href="#platforms" className="hover:text-white transition-colors">Platform Integrations</a></li>
+                <li><a href="#packages" className="hover:text-white transition-colors">Packages & Pricing</a></li>
+                <li><a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
+                <li><a href="#contact" className="hover:text-white transition-colors">Contact Us</a></li>
+              </ul>
             </div>
-            <div className="flex flex-col gap-3">
-              <span className="text-[#C89B3C] text-[0.6rem] font-bold uppercase tracking-widest mb-1">LEGAL</span>
-              <a href="#" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Privacy Policy</a>
-              <a href="#" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Terms & Conditions</a>
-              <a href="#" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors uppercase tracking-wider font-semibold">Cookie Policy</a>
+
+            {/* Column 3: Client Area & Legal */}
+            <div>
+              <h4 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Client & Legal</h4>
+              <ul className="space-y-2 text-[11px]">
+                <li><Link href="/client-login" className="hover:text-[#E5B869] transition-colors font-medium">Client Login</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Admin Portal</Link></li>
+                <li>
+                  <button 
+                    onClick={() => setActiveLegalModal('privacy')} 
+                    className="hover:text-[#E5B869] transition-colors text-left cursor-pointer"
+                  >
+                    Privacy Policy
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setActiveLegalModal('terms')} 
+                    className="hover:text-[#E5B869] transition-colors text-left cursor-pointer"
+                  >
+                    Terms of Service
+                  </button>
+                </li>
+                <li>
+                  <button 
+                    onClick={() => setActiveLegalModal('cookies')} 
+                    className="hover:text-[#E5B869] transition-colors text-left cursor-pointer"
+                  >
+                    Cookie Policy
+                  </button>
+                </li>
+              </ul>
             </div>
-            <div className="flex flex-col gap-3">
-              <span className="text-[#C89B3C] text-[0.6rem] font-bold uppercase tracking-widest mb-1">CONTACT</span>
-              <a href="mailto:riznexdigitalsolutions@gmail.com" className="text-[0.65rem] text-gray-400 hover:text-[#C89B3C] transition-colors flex items-center gap-2 font-semibold">riznexdigitalsolutions@gmail.com</a>
-              <span className="text-[0.65rem] text-gray-400 flex items-center gap-2 font-semibold">Serving Restaurants Across the UK</span>
+
+            {/* Column 4: Contact */}
+            <div>
+              <h4 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Direct Contact</h4>
+              <p className="text-slate-400 text-[11px] mb-2">
+                Email: <br />
+                <a href="mailto:riznexdigitalsolutions@gmail.com" className="text-[#E5B869] hover:underline font-mono text-[11px] break-all">
+                  riznexdigitalsolutions@gmail.com
+                </a>
+              </p>
+              <p className="text-slate-500 text-[10px] leading-relaxed">
+                Operating Hours: <br />
+                Monday – Sunday (7 Days Availability)
+              </p>
+            </div>
+
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500 text-center sm:text-left">
+            <span>&copy; {new Date().getFullYear()} Riznex Digital Solutions. All rights reserved.</span>
+            <div className="flex flex-wrap items-center justify-center gap-3">
+              <button 
+                onClick={() => setActiveLegalModal('privacy')} 
+                className="hover:text-[#E5B869] transition-colors cursor-pointer"
+              >
+                Privacy Policy
+              </button>
+              <span>·</span>
+              <button 
+                onClick={() => setActiveLegalModal('terms')} 
+                className="hover:text-[#E5B869] transition-colors cursor-pointer"
+              >
+                Terms of Service
+              </button>
+              <span>·</span>
+              <button 
+                onClick={() => setActiveLegalModal('cookies')} 
+                className="hover:text-[#E5B869] transition-colors cursor-pointer"
+              >
+                Cookie Policy
+              </button>
             </div>
           </div>
-          
         </div>
       </footer>
 
-      <style jsx global>{`
-        html { scroll-behavior: smooth; }
-        
-        @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(30px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        
-        .animate-fade-in-up {
-          animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-          opacity: 0;
-        }
+      {/* INTERACTIVE LEGAL MODAL */}
+      {activeLegalModal && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-3.5 sm:p-6 animate-in fade-in duration-200"
+          onClick={() => setActiveLegalModal(null)}
+        >
+          <div 
+            className="relative w-full max-w-2xl max-h-[85vh] rounded-3xl bg-[#0D0F17] border border-white/15 p-5 sm:p-8 shadow-2xl flex flex-col overflow-hidden text-slate-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-white/10 shrink-0">
+              <div>
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#E5B869] block mb-0.5">
+                  Legal Compliance · UK GDPR
+                </span>
+                <h3 className="text-lg sm:text-2xl font-black text-white">
+                  {activeLegalModal === 'privacy' && 'Privacy Policy'}
+                  {activeLegalModal === 'terms' && 'Terms of Service'}
+                  {activeLegalModal === 'cookies' && 'Cookie Policy'}
+                </h3>
+              </div>
+              <button 
+                onClick={() => setActiveLegalModal(null)}
+                className="p-1.5 sm:p-2 rounded-xl bg-white/[0.05] border border-white/10 text-slate-400 hover:text-white transition-colors"
+                aria-label="Close Modal"
+              >
+                <Icons.Close />
+              </button>
+            </div>
 
-        .reveal-on-scroll {
-          opacity: 0;
-          transform: translateY(40px);
-          transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), transform 1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal-on-scroll.is-visible {
-          opacity: 1;
-          transform: translateY(0);
-        }
-        
-        .delay-100 { transition-delay: 100ms; animation-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; animation-delay: 200ms; }
-        .delay-300 { transition-delay: 300ms; animation-delay: 300ms; }
-        .delay-400 { transition-delay: 400ms; animation-delay: 400ms; }
-        .delay-500 { transition-delay: 500ms; animation-delay: 500ms; }
-        .delay-600 { transition-delay: 600ms; animation-delay: 600ms; }
-        
-        .animate-marquee {
-          display: flex;
-          width: 200%;
-          animation: marquee 30s linear infinite;
-        }
-        
-        .animate-marquee:hover {
-          animation-play-state: paused;
-        }
-      `}</style>
+            {/* Modal Body */}
+            <div className="overflow-y-auto pr-1 sm:pr-2 space-y-3.5 text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+              {activeLegalModal === 'privacy' && (
+                <>
+                  <p className="text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. Introduction & Overview</h4>
+                    <p>Riznex Digital Solutions (&quot;Riznex&quot;, &quot;we&quot;, &quot;our&quot;) is dedicated to protecting the privacy and security of our restaurant partners and their clients. We adhere strictly to the UK General Data Protection Regulation (UK GDPR) and Data Protection Act 2018.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. Restaurant Data We Collect</h4>
+                    <p>To provide unified restaurant management and reporting services, we process:</p>
+                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-400 text-xs">
+                      <li>Business contact details (restaurant name, manager name, email, phone number).</li>
+                      <li>Delivery platform data via authorized access (Uber Eats, Just Eat, Deliveroo sales figures, order counts, and commission statements).</li>
+                      <li>Invoices, supplier statements, and operational expenses uploaded for automated profit analysis.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. How We Use Your Data</h4>
+                    <p>We process restaurant data exclusively to deliver agreed business management services: updating and synchronizing menus, generating weekly consolidated profit-and-loss reports, replying to online guest reviews, and executing promotional marketing.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">4. Data Confidentiality & Security</h4>
+                    <p>Your financial metrics, sales numbers, and customer feedback are treated with strict commercial confidentiality. We implement industry-standard encryption protocols and never sell, trade, or share client restaurant data with unauthorized third parties.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">5. Your Rights & Inquiries</h4>
+                    <p>Under UK GDPR, you have the right to request access to, correction of, or complete deletion of your business records. For any data inquiries, contact our Data Protection Officer at <a href="mailto:riznexdigitalsolutions@gmail.com" className="text-[#E5B869] underline">riznexdigitalsolutions@gmail.com</a>.</p>
+                  </div>
+                </>
+              )}
+
+              {activeLegalModal === 'terms' && (
+                <>
+                  <p className="text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. Agreement to Terms</h4>
+                    <p>By engaging Riznex Digital Solutions or accessing our reporting dashboard, you agree to comply with and be bound by these Terms of Service. These terms apply to all restaurant operators and clients.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. Scope of Services</h4>
+                    <p>Riznex acts as an authorized digital manager for food & beverage establishments across the UK. Services include delivery aggregator synchronization (Uber Eats, Just Eat, Deliveroo), social media marketing, local SEO profile management, and weekly financial reporting.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. Pricing, Invoicing & Billing</h4>
+                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-400 text-xs">
+                      <li><strong>Phase 1 (1st Month Setup & Reporting):</strong> £300 one-time fee (standard £500) covering complete digital overhaul, menu restructuring, and baseline reports.</li>
+                      <li><strong>Phase 2 (Ongoing Monthly Growth):</strong> £250 per month on a rolling basis, covering daily account management, social content, and weekly P&L summaries.</li>
+                      <li>Payments are invoiced monthly. Services can be paused or cancelled with 14 days written notice prior to the next billing cycle.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">4. Account Ownership & Client Responsibilities</h4>
+                    <p>Clients retain full legal ownership of their primary delivery platform accounts and commercial trademarks. Clients are responsible for notifying Riznex of price adjustments, stock shortages (86-ing items), or altered trading hours.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">5. Governing Law</h4>
+                    <p>These terms and any dispute arising from them shall be governed by and construed in accordance with the laws of England and Wales.</p>
+                  </div>
+                </>
+              )}
+
+              {activeLegalModal === 'cookies' && (
+                <>
+                  <p className="text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. What Are Cookies?</h4>
+                    <p>Cookies are small text files placed on your device by websites that you visit. They are widely used to make websites work efficiently, provide secure authentication, and supply reporting insights to site operators.</p>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. How Riznex Uses Cookies</h4>
+                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-400 text-xs">
+                      <li><strong>Strictly Necessary Cookies:</strong> Essential for authenticating restaurant managers into the Riznex Client Dashboard and maintaining secure session tokens.</li>
+                      <li><strong>Performance & Analytics Cookies:</strong> Anonymous telemetry that helps us optimize page load speed, mobile navigation responsiveness, and report generation times.</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. Managing Your Cookies</h4>
+                    <p>You can adjust your browser settings to refuse all or some browser cookies, or to alert you when websites set cookies. Please note that disabling essential cookies will prevent successful login to your Riznex Dashboard.</p>
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Modal Footer */}
+            <div className="pt-3.5 mt-3.5 border-t border-white/10 flex items-center justify-between shrink-0">
+              <span className="text-[10px] text-slate-500">Riznex Digital Solutions UK</span>
+              <button 
+                onClick={() => setActiveLegalModal(null)}
+                className="px-4 py-1.5 rounded-xl text-xs font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:opacity-90 transition-opacity"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

@@ -378,21 +378,30 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
       const wOtherFees = weekSales.reduce((sum: number, s: any) => sum + (s.otherFees || 0), 0);
       
       const wProfit = wNetPaid - wAdSpends - wOtherFees;
-      const d = new Date(dateStr);
-        const endD = new Date(d);
-        endD.setDate(d.getDate() + 6);
-        
-        const startOfThisWeek = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0).getTime();
-        const endOfThisWeek = new Date(endD.getFullYear(), endD.getMonth(), endD.getDate(), 23, 59, 59, 999).getTime();
+      const getUTCMidnight = (iso: string | Date) => {
+          if (!iso) return 0;
+          try {
+            const str = typeof iso === 'string' ? iso : new Date(iso).toISOString();
+            const parts = str.split('T')[0].split('-');
+            return Date.UTC(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+          } catch(e) { return 0; }
+        };
 
+        const startUTC = getUTCMidnight(dateStr);
+        const endUTC = startUTC + (6 * 24 * 60 * 60 * 1000); // 6 days later, inclusive
+        
         const wSuppliers = rawSuppliers.reduce((sum: number, s: any) => {
           if (!s.invoiceDate) return sum;
-          const sd = new Date(s.invoiceDate).getTime();
-          if (sd >= startOfThisWeek && sd <= endOfThisWeek) {
+          const invUTC = getUTCMidnight(s.invoiceDate);
+          if (invUTC >= startUTC && invUTC <= endUTC) {
             return sum + (Number(s.amount) || 0);
           }
           return sum;
         }, 0);
+        
+        const d = new Date(dateStr);
+        const endD = new Date(d);
+        endD.setDate(d.getDate() + 6);
       const formatD = (date: Date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
       
       const w1 = new Date(d.getFullYear(), 0, 4);

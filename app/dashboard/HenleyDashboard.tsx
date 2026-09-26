@@ -378,26 +378,21 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
       const wOtherFees = weekSales.reduce((sum: number, s: any) => sum + (s.otherFees || 0), 0);
       
       const wProfit = wNetPaid - wAdSpends - wOtherFees;
-      let refD = new Date(dateStr);
-        if (isNaN(refD.getTime())) refD = new Date();
-        const refDay = refD.getDay();
-        const refMon = new Date(refD.setDate(refD.getDate() - refDay + (refDay === 0 ? -6 : 1))).setHours(0,0,0,0);
+      const d = new Date(dateStr);
+        const endD = new Date(d);
+        endD.setDate(d.getDate() + 6);
         
+        const startOfThisWeek = new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0).getTime();
+        const endOfThisWeek = new Date(endD.getFullYear(), endD.getMonth(), endD.getDate(), 23, 59, 59, 999).getTime();
+
         const wSuppliers = rawSuppliers.reduce((sum: number, s: any) => {
-          let sd = new Date();
-          if (s.invoiceDate) sd = new Date(s.invoiceDate);
-          if (isNaN(sd.getTime())) return sum;
-          const sDay = sd.getDay();
-          const sMon = new Date(sd.setDate(sd.getDate() - sDay + (sDay === 0 ? -6 : 1))).setHours(0,0,0,0);
-          if (sMon === refMon) {
+          if (!s.invoiceDate) return sum;
+          const sd = new Date(s.invoiceDate).getTime();
+          if (sd >= startOfThisWeek && sd <= endOfThisWeek) {
             return sum + (Number(s.amount) || 0);
           }
           return sum;
         }, 0);
-
-      const d = new Date(dateStr);
-      const endD = new Date(d);
-      endD.setDate(d.getDate() + 6);
       const formatD = (date: Date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
       
       const w1 = new Date(d.getFullYear(), 0, 4);

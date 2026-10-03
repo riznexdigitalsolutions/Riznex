@@ -181,7 +181,7 @@ Return ONLY a valid JSON object with these fields (use null if not found):
 }
 
 IMPORTANT:
-- IF IT IS AN UBER EATS INVOICE: Use "Sales" as grossSales. "Marketplace fee" = commission. "VAT on marketplace fee" = vat. MUST extract "Offers on items" (or Promotions) and "Offer redemption fee". Extract "Adjustments" or "Refunds" into refunds. Extract "Miscellaneous payments/deductions" into otherFees. "Total payout" = netPaid.
+- IF IT IS AN UBER EATS INVOICE: Use "Sales" or "Earnings" as grossSales. Use "Marketplace fee" or "Uber Fees" as commission. "VAT on marketplace fee" = vat. MUST extract "Offers on items" (or Promotions) and "Offer redemption fee". Extract "Adjustments", "Refunds", or "Net Chargeback Amount" (as positive absolute value) into refunds. Extract "Miscellaneous payments/deductions" into otherFees. "Total payout" = netPaid. Extract "Other payments" into otherPayments. Extract "Ad Spends" into adSpends.
 - IF IT IS A JUST EAT INVOICE: Must extract "totalOrders". grossSales = "Total sales" value (usually found lower down), netPaid = "You will receive from Just Eat" value. DO NOT mix these up. You MUST ONLY extract 3 deductions: "commission", "adSpends" (Top Rank / Promoted placement / Sponsored / Ads), and "otherFees". If you see an "Admin Fee", "Delivery fee", or ANY other random deduction, you MUST bundle it into "otherFees". If there is a "Rebate" or credit, you must SUBTRACT it from "otherFees" (so otherFees = total random deductions - rebates). Top Rank and Promoted fees strictly go into "adSpends".
 - IF IT IS A DELIVEROO INVOICE: Set the JSON key "totalOrders" to the number of orders. Set "grossSales" to "Total Order Value". Set "netPaid" to "Total payable". For "commission", extract the TOTAL Deliveroo Commission (Net + VAT). Put any Marketer/Ads/Promoted fees into "adSpends". Put Top Rank fees into "topRankFee". Put all other deductions into "otherFees", and any additional payments into "otherPayments".
 - CRITICAL MATH RULE: For Just Eat, the system requires that (grossSales - commission - adSpends - vat - cashOrders - otherFees) EXACTLY equals netPaid. You MUST bundle Admin Fee and all other unlisted deductions into "otherFees", and net them against any Rebates (e.g. 50 deduction - 10 rebate = 40 otherFees) to make this equation balance perfectly. For Uber Eats, use the full equation: (grossSales - commission + vatRoundingAdj - adSpends - topRankFee - adminFee - otherFees - offersOnItems - offerRedemptionFee + refunds) = netPaid. For Deliveroo: (grossSales - commission - adSpends - topRankFee - otherFees + otherPayments) EXACTLY equals netPaid. You MUST put the exact remainder of "Additional Fees" into "otherFees" to make this equation perfectly balance.
@@ -310,17 +310,23 @@ IMPORTANT:
         if (!require('fs').existsSync(ocrWorkerPath)) {
              ocrWorkerPath = path.join(process.cwd(), '..', 'scripts', 'ocr-worker.js');
         }
-        const { stdout, stderr } = await execAsync(
-          `node "${ocrWorkerPath}" "${filePath}"`,
-        );
+        let stdout, stderr;
+        try {
+          const result = await execAsync(
+            `node "${ocrWorkerPath}" "${filePath}"`,
+            { maxBuffer: 10 * 1024 * 1024 }
+          );
+          stdout = result.stdout;
+          stderr = result.stderr;
+        } catch (execErr: any) {
+          throw new Error("OCR Worker crashed: " + (execErr.stderr || execErr.stdout || execErr.message));
+        }
         try {
           const res = JSON.parse(stdout.trim());
           if (!res.success) throw new Error(res.error);
           extractedText = res.text;
         } catch (parseErr: any) {
-          throw new Error(
-            "Worker script failed: " + (stderr || parseErr.message),
-          );
+          throw new Error("Worker script failed: " + (stderr || parseErr.message));
         }
       }
     }

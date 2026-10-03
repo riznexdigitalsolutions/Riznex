@@ -183,7 +183,7 @@ Return ONLY a valid JSON object with these fields (use null if not found):
 IMPORTANT:
 - IF IT IS AN UBER EATS INVOICE: Use "Sales" as grossSales. "Marketplace fee" = commission. "VAT on marketplace fee" = vat. MUST extract "Offers on items" (or Promotions) and "Offer redemption fee". Extract "Adjustments" or "Refunds" into refunds. Extract "Miscellaneous payments/deductions" into otherFees. "Total payout" = netPaid.
 - IF IT IS A JUST EAT INVOICE: Must extract "totalOrders". grossSales = "Total sales" value (usually found lower down), netPaid = "You will receive from Just Eat" value. DO NOT mix these up. You MUST ONLY extract 3 deductions: "commission", "adSpends" (Top Rank / Promoted placement / Sponsored / Ads), and "otherFees". If you see an "Admin Fee", "Delivery fee", or ANY other random deduction, you MUST bundle it into "otherFees". If there is a "Rebate" or credit, you must SUBTRACT it from "otherFees" (so otherFees = total random deductions - rebates). Top Rank and Promoted fees strictly go into "adSpends".
-- IF IT IS A DELIVEROO INVOICE: totalOrders = number of orders (usually under "Total Orders"). grossSales = "Total Order Value", netPaid = "Total payable". For commission, extract the TOTAL "Deliveroo Commission" (Net + VAT). Put any "Marketer", "Ads", "Promoted", or "Sponsored" fees into "adSpends". Put any "Top Rank" fees into "topRankFee". Put all other "Additional Fees" into "otherFees", and "Additional Payments" into "otherPayments".
+- IF IT IS A DELIVEROO INVOICE: Set the JSON key "totalOrders" to the number of orders. Set "grossSales" to "Total Order Value". Set "netPaid" to "Total payable". For "commission", extract the TOTAL Deliveroo Commission (Net + VAT). Put any Marketer/Ads/Promoted fees into "adSpends". Put Top Rank fees into "topRankFee". Put all other deductions into "otherFees", and any additional payments into "otherPayments".
 - CRITICAL MATH RULE: For Just Eat, the system requires that (grossSales - commission - adSpends - vat - cashOrders - otherFees) EXACTLY equals netPaid. You MUST bundle Admin Fee and all other unlisted deductions into "otherFees", and net them against any Rebates (e.g. 50 deduction - 10 rebate = 40 otherFees) to make this equation balance perfectly. For Uber Eats, use the full equation: (grossSales - commission + vatRoundingAdj - adSpends - topRankFee - adminFee - otherFees - offersOnItems - offerRedemptionFee + refunds) = netPaid. For Deliveroo: (grossSales - commission - adSpends - topRankFee - otherFees + otherPayments) EXACTLY equals netPaid. You MUST put the exact remainder of "Additional Fees" into "otherFees" to make this equation perfectly balance.
 - Return ONLY the JSON, no markdown, no explanation.`;
 }
@@ -237,9 +237,9 @@ IMPORTANT:
             
             if (
               invoice.type === "platform" &&
-              !geminiData.grossSales &&
-              !geminiData.earnings &&
-              !geminiData.netPaid
+              geminiData.grossSales === undefined &&
+              geminiData.earnings === undefined &&
+              geminiData.netPaid === undefined
             ) {
               console.error("Gemini returned empty platform data. Forcing fallback.");
               geminiData = null;

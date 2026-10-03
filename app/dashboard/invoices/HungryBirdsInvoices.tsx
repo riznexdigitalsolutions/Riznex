@@ -280,12 +280,12 @@ function InvoicesContent() {
   const getHeaderContent = () => {
     switch (activeTab) {
       case 'platform':
-        return { title: 'Delivery Platforms (Uber Eats, Just Eat, Deliveroo)', desc: 'Manage your delivery app weekly sales statements.', buttonText: '+ Upload Delivery Statement' }
+        return { title: 'Delivery Platforms (Uber Eats, Just Eat, Deliveroo)', desc: 'Manage your delivery app weekly sales invoices.', buttonText: '+ Upload Delivery Invoice' }
       case 'pos':
-        return { title: 'POS & Walk-in Sales (Card, Cash & POS)', desc: 'Manage walk-in card machine statements, walk-in cash sales, and in-store POS sales.', buttonText: '+ Upload Card/POS Statement' }
+        return { title: 'POS & Walk-in Sales (Card, Cash & POS)', desc: 'Manage walk-in card machine invoices, walk-in cash sales, and in-store POS sales.', buttonText: '+ Upload Card/POS Invoice' }
       case 'all':
       default:
-        return { title: 'Combined Sales Statements Data', desc: 'Master view combining all POS and delivery platform sales statements.', buttonText: '+ Upload Sales Statement' }
+        return { title: 'Combined Sales Invoices Data', desc: 'Master view combining all POS and delivery platform sales invoices.', buttonText: '+ Upload Sales Invoice' }
     }
   }
   const header = getHeaderContent()

@@ -119,13 +119,7 @@ export async function GET(req: NextRequest) {
     include: { staff: true },
   })
 
-  // If a specific platform is selected, zero-out restaurant-wide operating costs
-  if (platform) {
-    expensesRaw = []
-    supplierInvoices = []
-    stocks = []
-    staffWages = []
-  }
+
 
   // Remove the aggressive filter for manual expenses so they appear on the dashboard
   const supplierInvoiceIds = new Set(supplierInvoices.map(i => i.id))

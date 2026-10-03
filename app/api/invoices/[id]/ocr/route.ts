@@ -269,7 +269,7 @@ IMPORTANT:
       if (invoice.fileType === "pdf") {
         // PDF text extraction using standalone worker to avoid Next.js bundling crashes (bad XRef entry)
         const { stdout, stderr } = await execAsync(
-          `node scripts/pdf-worker.js "${filePath}"`
+          `node "${path.join(process.cwd(), 'scripts', 'pdf-worker.js')}" "${filePath}"`
         );
         try {
           const res = JSON.parse(stdout.trim());
@@ -281,7 +281,7 @@ IMPORTANT:
       } else {
         // Tesseract OCR for images
         const { stdout, stderr } = await execAsync(
-          `node scripts/ocr-worker.js "${filePath}"`,
+          `node "${path.join(process.cwd(), 'scripts', 'ocr-worker.js')}" "${filePath}"`,
         );
         try {
           const res = JSON.parse(stdout.trim());
@@ -299,7 +299,7 @@ IMPORTANT:
     if (invoice.type === "pos" && (invoice.platform?.includes("Card") || invoice.fileName?.toLowerCase().includes("card") || invoice.fileName?.toLowerCase().includes("bank") || invoice.fileName?.toLowerCase().includes("walkin"))) {
       if (!extractedText && invoice.fileType === "pdf") {
         try {
-          const { stdout } = await execAsync(`node scripts/pdf-worker.js "${filePath}"`);
+          const { stdout } = await execAsync(`node "${path.join(process.cwd(), 'scripts', 'pdf-worker.js')}" "${filePath}"`);
           const res = JSON.parse(stdout.trim());
           if (res.success) extractedText = res.text;
         } catch (e) {

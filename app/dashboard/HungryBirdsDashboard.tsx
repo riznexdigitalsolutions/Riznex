@@ -4,8 +4,10 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { gbp } from '@/lib/utils'
 import { exportToPDF } from '@/lib/pdfExport'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Line, LabelList, PieChart, Pie, Cell } from 'recharts'
 
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import MultiPlatformFilter from '@/components/MultiPlatformFilter'
 
 const PLATFORM_LABELS: Record<string, string> = {
   just_eat: 'Just Eat', uber_eats: 'Uber Eats', deliveroo: 'Deliveroo', walk_in: 'Walk-in', cash: 'Cash', mobile_app: 'Mobile App'
@@ -123,7 +125,138 @@ export function HungryBirdsDashboard() {
   const wagesBreakdown = r?.expenses?.wagesByStaff || {}
 
   const rawSales = r?.sales?.weekly || [];
-  const selectedPlatforms = platform ? platform.split(',').map(p => p.trim()) : [];
+  const rawSuppliers = r?.suppliers?.items || [];
+
+  // 1. Group by Week
+  const weeklyMap: any = {};
+  rawSales.forEach((s: any) => {
+    // Safely parse date
+    let d = new Date();
+    if (s.weekStart) {
+      d = new Date(s.weekStart);
+    }
+    if (isNaN(d.getTime())) d = new Date();
+    
+    const dateStr = d.toISOString().split('T')[0];
+    if (!weeklyMap[dateStr]) weeklyMap[dateStr] = { name: dateStr, sales: 0, orders: 0, suppliers: 0, date: d };
+    weeklyMap[dateStr].sales += (Number(s.grossSales) || 0);
+    weeklyMap[dateStr].orders += (Number(s.totalOrders) || 0);
+  });
+  rawSuppliers.forEach((s: any) => {
+    let d = new Date();
+    if (s.invoiceDate) d = new Date(s.invoiceDate);
+    if (isNaN(d.getTime())) d = new Date();
+    
+    // Align to Monday
+    const day = d.getDay(), diff = d.getDate() - day + (day == 0 ? -6:1);
+    const mon = new Date(d.setDate(diff));
+    const dateStr = mon.toISOString().split('T')[0];
+    if (!weeklyMap[dateStr]) weeklyMap[dateStr] = { name: dateStr, sales: 0, orders: 0, suppliers: 0, date: mon };
+    weeklyMap[dateStr].suppliers += (Number(s.amount) || 0);
+  });
+
+  const realWeeklyData = Object.values(weeklyMap).sort((a: any, b: any) => a.date.getTime() - b.date.getTime()).map((w: any, i: number) => {
+    // Format like "Week 1" and sub label
+    const endD = new Date(w.date);
+    endD.setDate(endD.getDate() + 6);
+    const formatD = (date: any) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+    return {
+      name: `Week ${i + 1}`,
+      label: `${formatD(w.date)} - ${formatD(endD)}`,
+      sales: Math.round(w.sales) || 0,
+      orders: Math.round(w.orders) || 0,
+      suppliers: Math.round(w.suppliers) || 0
+    };
+  });
+  
+  let displayWeeklyData = realWeeklyData.slice(-4);
+  // Fallback if empty to prevent Recharts from crashing
+  if (displayWeeklyData.length === 0) {
+    displayWeeklyData = [
+      { name: 'Week 1', label: 'No Data', sales: 0, orders: 0, suppliers: 0 },
+      { name: 'Week 2', label: 'No Data', sales: 0, orders: 0, suppliers: 0 },
+      { name: 'Week 3', label: 'No Data', sales: 0, orders: 0, suppliers: 0 },
+      { name: 'Week 4', label: 'No Data', sales: 0, orders: 0, suppliers: 0 }
+    ];
+  } else while (displayWeeklyData.length < 4) {
+    displayWeeklyData.unshift({ name: '-', label: '-', sales: 0, orders: 0, suppliers: 0 });
+  }
+
+  // 2. Group by Month
+  const monthlyMap: any = {};
+  rawSales.forEach((s: any) => {
+    let d = new Date();
+    if (s.weekStart) d = new Date(s.weekStart);
+    if (isNaN(d.getTime())) d = new Date();
+    const mStr = d.toLocaleString('en-GB', { month: 'short', year: 'numeric' });
+    if (!monthlyMap[mStr]) monthlyMap[mStr] = { name: mStr, sales: 0, orders: 0, suppliers: 0, date: d };
+    monthlyMap[mStr].sales += (Number(s.grossSales) || 0);
+    monthlyMap[mStr].orders += (Number(s.totalOrders) || 0);
+  });
+  rawSuppliers.forEach((s: any) => {
+    let d = new Date();
+    if (s.invoiceDate) d = new Date(s.invoiceDate);
+    if (isNaN(d.getTime())) d = new Date();
+    const mStr = d.toLocaleString('en-GB', { month: 'short', year: 'numeric' });
+    if (!monthlyMap[mStr]) monthlyMap[mStr] = { name: mStr, sales: 0, orders: 0, suppliers: 0, date: d };
+    monthlyMap[mStr].suppliers += (Number(s.amount) || 0);
+  });
+
+  const realMonthlyData = Object.values(monthlyMap).sort((a: any, b: any) => a.date.getTime() - b.date.getTime()).map((m: any) => ({
+    name: m.name,
+    sales: Math.round(m.sales) || 0,
+    orders: Math.round(m.orders) || 0,
+    suppliers: Math.round(m.suppliers) || 0
+  }));
+  
+  let displayMonthlyData = realMonthlyData.slice(-4);
+  if (displayMonthlyData.length === 0) {
+    displayMonthlyData = [
+      { name: 'Month 1', sales: 0, orders: 0, suppliers: 0 },
+      { name: 'Month 2', sales: 0, orders: 0, suppliers: 0 },
+      { name: 'Month 3', sales: 0, orders: 0, suppliers: 0 },
+      { name: 'Month 4', sales: 0, orders: 0, suppliers: 0 }
+    ];
+  } else while (displayMonthlyData.length < 4) {
+    displayMonthlyData.unshift({ name: '-', sales: 0, orders: 0, suppliers: 0 });
+  }
+
+
+  // --- SMART INSIGHTS ---
+  const currentWeek = displayWeeklyData[displayWeeklyData.length - 1] || { sales: 0 };
+  const prevWeek = displayWeeklyData[displayWeeklyData.length - 2] || { sales: 0 };
+  let insightMsg = "Not enough data for insights.";
+  let isPositive = true;
+  if (currentWeek.sales >= 0 && prevWeek.sales > 0) {
+    const diff = currentWeek.sales - prevWeek.sales;
+    const percent = Math.round((Math.abs(diff) / prevWeek.sales) * 100);
+    isPositive = diff >= 0;
+    insightMsg = isPositive 
+      ? `📈 Great job! Sales are up ${percent}% (£${Math.abs(diff).toLocaleString()}) compared to the previous week.`
+      : `📉 Heads up: Sales are down ${percent}% (£${Math.abs(diff).toLocaleString()}) compared to the previous week.`;
+  } else if (currentWeek.sales > 0 && prevWeek.sales === 0) {
+    insightMsg = `📈 Great job! You made £${currentWeek.sales.toLocaleString()} this week, up from £0 last week.`;
+  }
+
+  // --- EXPENSE PIE CHART ---
+  const expenseMap: any = {};
+  rawSuppliers.forEach((s: any) => {
+    const cat = s.supplier?.category || 'Other';
+    if (!expenseMap[cat]) expenseMap[cat] = 0;
+    expenseMap[cat] += (Number(s.amount) || 0);
+  });
+  const expensePieData = Object.keys(expenseMap).map(k => ({ name: k, value: Math.round(expenseMap[k]) })).filter(e => e.value > 0);
+  if (expensePieData.length === 0) expensePieData.push({ name: 'No Expenses', value: 1 });
+  const pieColors = ['#3b82f6', '#f97316', '#10b981', '#a855f7', '#f43f5e', '#eab308'];
+
+  // --- MONTHLY GOAL TRACKER ---
+  const monthlyTarget = 30000;
+  const currentMonthObj = displayMonthlyData[displayMonthlyData.length - 1] || { sales: 0 };
+  const currentMonthSales = currentMonthObj.sales;
+  const targetPercent = Math.min(100, Math.round((currentMonthSales / monthlyTarget) * 100));
+
+
+  const selectedPlatforms = platform ? platform.split(',').map((p: string) => p.trim()) : [];
   const realOffersData = offers
     .filter(o => {
       if (selectedPlatforms.length === 0) return true;
@@ -289,63 +422,10 @@ export function HungryBirdsDashboard() {
           {/* Left Side: Platform toggle tabs & selector */}
           <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full lg:w-auto overflow-x-auto hide-scrollbar">
             
-            <div className="flex items-center gap-1.5 bg-[#0a0c14] border border-[#1f2947] p-1 rounded-xl shrink-0 max-w-full overflow-x-auto hide-scrollbar">
-              <button
-                onClick={() => setPlatform('')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                  platform === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Combined
-              </button>
-              <button
-                onClick={() => setPlatform('Uber Eats')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                  platform === 'Uber Eats' ? 'bg-gradient-to-r from-emerald-400 to-emerald-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Uber Eats
-              </button>
-              <button
-                onClick={() => setPlatform('Just Eat')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                  platform === 'Just Eat' ? 'bg-gradient-to-r from-orange-400 to-orange-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Just Eat
-              </button>
-              <button
-                onClick={() => setPlatform('Deliveroo')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
-                  platform === 'Deliveroo' ? 'bg-gradient-to-r from-cyan-400 to-blue-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Deliveroo
-              </button>
+            <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} />
             </div>
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
-
-            <div className="bg-[#0e121b] border border-[#1f2947] rounded-xl px-3 py-2 flex gap-2 items-center">
-              <div className="text-slate-400 opacity-70 text-sm">📱</div>
-              <select
-                value={platform}
-                onChange={(e) => setPlatform(e.target.value)}
-                className="bg-transparent text-xs font-bold text-slate-300 outline-none cursor-pointer"
-              >
-                <option value="" className="bg-[#0e121b]">All Platforms</option>
-                <option value="Just Eat" className="bg-[#0e121b]">Just Eat</option>
-                <option value="Uber Eats" className="bg-[#0e121b]">Uber Eats</option>
-                <option value="Deliveroo" className="bg-[#0e121b]">Deliveroo</option>
-                <option value="Walk In Cash" className="bg-[#0e121b]">Walk-in Cash</option>
-                <option value="Walk In Card" className="bg-[#0e121b]">Walk-in Card</option>
-                <option value="POS Sales" className="bg-[#0e121b]">POS Sales</option>
-                <option value="Online Web" className="bg-[#0e121b]">Online Web</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Right Side: DateFilter & Reset */}
+            {/* Right Side: DateFilter & Reset */}
           <div className="flex flex-wrap items-center gap-3">
             <div className="bg-[#0e121b] border border-[#1f2947] rounded-xl px-4 py-2 flex gap-2 items-center">
               <div className="text-slate-400 opacity-70 mr-1 text-sm">📅</div>
@@ -695,6 +775,8 @@ export function HungryBirdsDashboard() {
 
       </div>
       </div>
+
+
 
       {/* --- OFFERS TAB --- */}
       <div className={activeTab === 'offers' ? 'block' : 'hidden'}>

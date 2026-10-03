@@ -9,6 +9,17 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
 import MultiPlatformFilter from '@/components/MultiPlatformFilter'
 
+
+const HB_PLATFORMS = [
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Uber Eats', label: 'Uber Eats', color: '#22d3a5' },
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'Walk In Cash', label: 'Walk-in Cash', color: '#10b981' },
+  { value: 'Walk In Card', label: 'Walk-in Card', color: '#3b82f6' },
+  { value: 'POS Sales', label: 'POS Sales', color: '#ef4444' },
+  { value: 'Online Web', label: 'Online Web', color: '#a855f7' },
+];
+
 const PLATFORM_LABELS: Record<string, string> = {
   just_eat: 'Just Eat', uber_eats: 'Uber Eats', deliveroo: 'Deliveroo', walk_in: 'Walk-in', cash: 'Cash', mobile_app: 'Mobile App'
 }
@@ -504,7 +515,7 @@ export function HungryBirdsDashboard() {
           {/* Left Side: Platform toggle tabs & selector */}
           <div className="flex flex-wrap items-center gap-3">
             
-            <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} />
+            <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} options={HB_PLATFORMS} />
             </div>
 
             {/* Right Side: DateFilter & Reset */}

@@ -64,15 +64,28 @@ export async function GET(req: NextRequest) {
   
     const salesWhere: any = buildWhere({ clientId, is2025 }, 'weekEnd')
   if (platform) {
-    let searchTerm = platform
-    if (platform.includes('Card')) searchTerm = 'Card'
-    else if (platform.includes('Cash')) searchTerm = 'Cash'
-    else if (platform.includes('POS')) searchTerm = 'POS'
-    else if (platform.includes('Uber')) searchTerm = 'Uber'
-    else if (platform.includes('Just')) searchTerm = 'Just'
-    else if (platform.includes('Deliveroo')) searchTerm = 'Deliveroo'
-
-    salesWhere.platform = { contains: searchTerm }
+    const platforms = platform.split(',').map(p => p.trim()).filter(Boolean)
+    const platformConditions = platforms.map(p => {
+      let searchTerm = p
+      if (p.includes('Card')) searchTerm = 'Card'
+      else if (p.includes('Cash')) searchTerm = 'Cash'
+      else if (p.includes('POS')) searchTerm = 'POS'
+      else if (p.includes('Uber')) searchTerm = 'Uber'
+      else if (p.includes('Just')) searchTerm = 'Just'
+      else if (p.includes('Deliveroo')) searchTerm = 'Deliveroo'
+      return { platform: { contains: searchTerm } }
+    })
+    
+    if (platformConditions.length === 1) {
+      salesWhere.platform = platformConditions[0].platform
+    } else if (platformConditions.length > 1) {
+      if (salesWhere.OR) {
+        salesWhere.AND = [{ OR: salesWhere.OR }, { OR: platformConditions }]
+        delete salesWhere.OR
+      } else {
+        salesWhere.OR = platformConditions
+      }
+    }
   }
 
   // Sales

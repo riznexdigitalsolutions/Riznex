@@ -34,6 +34,10 @@ export async function POST(
     let geminiData: any = null;
 
     const apiKey = process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY;
+    if (!apiKey) {
+      await prisma.invoice.update({ where: { id }, data: { ocrStatus: 'error', notes: 'CRASHED: GEMINI_API_KEY is missing from Hostinger environment variables!' } });
+      return NextResponse.json({ error: 'API Key missing' }, { status: 500 });
+    }
     const isBankStatementPdf = invoice.type === "pos" && (invoice.platform?.includes("Card") || invoice.fileName?.toLowerCase().includes("card") || invoice.fileName?.toLowerCase().includes("bank") || invoice.fileName?.toLowerCase().includes("walkin"));
     const isHungryBirdsPosPdf = (invoice.type === "pos" && invoice.fileType === "pdf" && (invoice.platform?.includes("Hungry Birds") || invoice.platform?.includes("Online Web"))) || isBankStatementPdf;
     const isHerbiesPosPdf = invoice.type === "pos" && invoice.fileType === "pdf" && invoice.platform?.includes("Herbies");
@@ -241,13 +245,15 @@ IMPORTANT:
               geminiData.earnings === undefined &&
               geminiData.netPaid === undefined
             ) {
+              require('fs').writeFileSync(path.join(process.cwd(), 'public', 'uploads', 'debug_gemini_val.txt'), "GEMINI VALIDATION FAILED. JSON: " + JSON.stringify(geminiData));
               console.error("Gemini returned empty platform data. Forcing fallback.");
               geminiData = null;
             } else {
               extractedText = `[Gemini Vision] ${JSON.stringify(geminiData)}`;
             }
-          } catch {
+          } catch (e) {
             extractedText = rawText;
+            require('fs').writeFileSync(path.join(process.cwd(), 'public', 'uploads', 'debug_gemini.txt'), "GEMINI RAW RESPONSE: " + rawText + " | ERROR: " + e.message);
             console.error("Gemini failed to return valid JSON:", rawText);
           }
         } else if (geminiRes) {
@@ -301,34 +307,7 @@ IMPORTANT:
         } catch (parseErr: any) {
           throw new Error("PDF Worker parse failed: " + (stderr || parseErr.message));
         }
-      } else {
-        // Tesseract OCR for images
-        let ocrWorkerPath = path.join(process.cwd(), 'scripts', 'ocr-worker.js');
-        if (!require('fs').existsSync(ocrWorkerPath)) {
-            ocrWorkerPath = path.join(process.cwd(), '..', '..', 'scripts', 'ocr-worker.js');
-        }
-        if (!require('fs').existsSync(ocrWorkerPath)) {
-             ocrWorkerPath = path.join(process.cwd(), '..', 'scripts', 'ocr-worker.js');
-        }
-        let stdout, stderr;
-        try {
-          const result = await execAsync(
-            `node "${ocrWorkerPath}" "${filePath}"`,
-            { maxBuffer: 10 * 1024 * 1024 }
-          );
-          stdout = result.stdout;
-          stderr = result.stderr;
-        } catch (execErr: any) {
-          throw new Error("OCR Worker crashed: " + (execErr.stderr || execErr.stdout || execErr.message));
-        }
-        try {
-          const res = JSON.parse(stdout.trim());
-          if (!res.success) throw new Error(res.error);
-          extractedText = res.text;
-        } catch (parseErr: any) {
-          throw new Error("Worker script failed: " + (stderr || parseErr.message));
-        }
-      }
+      } else { throw new Error("AI failed to read this image. Please ensure it is clear."); }
     }
 
     // --- BANK STATEMENT MULTI-WEEK PARSER FOR WALK-IN CARD PAYOUTS ---

@@ -310,6 +310,88 @@ export function HungryBirdsDashboard() {
 
   if(realOffersData.length === 0) realOffersData.push({ id: 'none', startDate: '-', notes: '', platform: 'No active marketing spend found for this period', spend: 0, orders: 0, grossSales: 0, deductions: 0, deductionPercent: '0.0', revenue: 0, ROI: 'N/A' });
 
+// --- Weekly Comparison Data Logic ---
+  const uniqueWeeksSet = new Set<string>();
+  rawSales.forEach((s: any) => { if (s.weekStart) uniqueWeeksSet.add(s.weekStart); });
+  const uniqueWeeks = Array.from(uniqueWeeksSet).sort((a: any, b: any) => new Date(b).getTime() - new Date(a).getTime());
+
+  // We want the last 6 weeks (from the latest available date)
+  const latest6WeeksDates = uniqueWeeks.slice(0, 6).reverse(); // oldest to newest
+  const previous6WeeksDates = uniqueWeeks.slice(6, 12).reverse();
+
+  const getWeeklyStats = (weekDates: string[]) => {
+    const weeklyData = weekDates.map(dateStr => {
+      const weekSales = rawSales.filter((s: any) => s.weekStart === dateStr);
+      const wSales = weekSales.reduce((sum: number, s: any) => sum + (s.grossSales || 0), 0);
+      const wOrders = weekSales.reduce((sum: number, s: any) => sum + (s.totalOrders || 0), 0);
+      const wNetPaid = weekSales.reduce((sum: number, s: any) => sum + (s.netPaid || 0), 0);
+      const wAdSpends = weekSales.reduce((sum: number, s: any) => sum + (s.adSpends || 0), 0);
+      const wOtherFees = weekSales.reduce((sum: number, s: any) => sum + (s.otherFees || 0), 0);
+      
+      const wProfit = wNetPaid - wAdSpends - wOtherFees;
+      const mapKey = dateStr.split('T')[0];
+        const wSuppliers = weeklyMap[mapKey]?.suppliers || 0;
+        
+        const d = new Date(dateStr);
+        const endD = new Date(d);
+        endD.setDate(d.getDate() + 6);
+      const formatD = (date: Date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      
+      const w1 = new Date(d.getFullYear(), 0, 4);
+      const isoWeek = 1 + Math.round(((d.getTime() - w1.getTime()) / 86400000 - 3 + (w1.getDay() + 6) % 7) / 7);
+
+            return {
+        dateStr,
+        name: `Week ${isoWeek}`,
+        dateRange: `${formatD(d)} - ${formatD(endD)}`,
+        sales: wSales,
+        orders: wOrders,
+        aov: wOrders > 0 ? wSales / wOrders : 0,
+        profit: wProfit,
+        suppliers: wSuppliers
+      };
+    });
+
+    const totalSales = weeklyData.reduce((sum, w) => sum + w.sales, 0);
+    const totalOrders = weeklyData.reduce((sum, w) => sum + w.orders, 0);
+    const totalProfit = weeklyData.reduce((sum, w) => sum + w.profit, 0);
+    const totalAov = totalOrders > 0 ? totalSales / totalOrders : 0;
+
+    return { weeklyData, totalSales, totalOrders, totalProfit, aov: totalAov };
+  };
+
+  const curr6Stats = getWeeklyStats(latest6WeeksDates);
+  const prev6Stats = getWeeklyStats(previous6WeeksDates);
+
+  const calcTrend = (curr: number, prev: number) => {
+    if (prev === 0) return curr > 0 ? 100 : 0;
+    return ((curr - prev) / prev) * 100;
+  };
+
+  const trendSales = calcTrend(curr6Stats.totalSales, prev6Stats.totalSales);
+  const trendOrders = calcTrend(curr6Stats.totalOrders, prev6Stats.totalOrders);
+  const trendAov = calcTrend(curr6Stats.aov, prev6Stats.aov);
+  const trendProfit = calcTrend(curr6Stats.totalProfit, prev6Stats.totalProfit);
+
+  
+
+  const customExpensePieData = [
+    { name: 'Supplier Purchases', value: totalSuppliers },
+    { name: 'Staff Wages', value: staffWages },
+    { name: 'Utilities', value: utilities },
+    { name: 'Ad Spend', value: adSpends },
+    { name: 'Other Expenses', value: Math.max(0, otherExpenses) }
+  ].filter(e => e.value > 0);
+  const customExpensePieTotal = customExpensePieData.reduce((sum, e) => sum + e.value, 0);
+
+  const customSalesPieData = platformData.map((p: any) => ({
+    name: p.name,
+    value: p.sales
+  })).filter((e: any) => e.value > 0);
+  const customSalesPieTotal = customSalesPieData.reduce((sum, e) => sum + e.value, 0);
+
+  const chartColors = ['#3b82f6', '#10b981', '#f97316', '#ec4899', '#a855f7', '#eab308', '#06b6d4'];
+
   const getDynamicSubtitle = () => {
     let parts: string[] = []
     if (filter.preset === 'specific_period' && filter.year !== 'all') {
@@ -776,7 +858,367 @@ export function HungryBirdsDashboard() {
       </div>
       </div>
 
+        {/* --- WEEKLY TAB --- */}
+          <div className={activeTab === 'weekly' ? 'block' : 'hidden'}>
+            {curr6Stats.weeklyData.length > 0 ? (
+            <div className="w-full mt-2">
 
+              {/* Main Chart (Dark Theme) */}
+              <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-white font-bold uppercase tracking-wide text-sm">
+                    <span className="text-blue-400 mr-2">1.</span>WEEKLY SALES & ORDERS
+                  </h2>
+                  <div className="flex items-center gap-6 text-[13px] font-bold">
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span> 
+                      <span className="text-slate-300">Sales (£)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-[#f97316]"></span> 
+                      <span className="text-slate-300">Orders</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex-1 min-h-0 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: 0, left: 0, bottom: 40 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
+                      <XAxis 
+                        dataKey="name" 
+                        stroke="#64748b" 
+                        tick={(props: any) => {
+                          const { x, y, payload } = props;
+                          const data = curr6Stats.weeklyData.find((d: any) => d.name === payload.value);
+                          return (
+                            <g transform={`translate(${x},${y})`}>
+                              <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={12} fontWeight="bold">{payload.value}</text>
+                              {data?.dateRange && <text x={0} y={0} dy={32} textAnchor="middle" fill="#64748b" fontSize={11}>{data.dateRange}</text>}
+                            </g>
+                          );
+                        }}
+                        tickMargin={12} 
+                        axisLine={false} 
+                        tickLine={false} 
+                      />
+                      <YAxis 
+                        yAxisId="left" 
+                        stroke="#64748b" 
+                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} 
+                        dx={-10}
+                      />
+                      <YAxis 
+                        yAxisId="right" 
+                        orientation="right" 
+                        stroke="#64748b" 
+                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        axisLine={false} 
+                        tickLine={false} 
+                        dx={10}
+                      />
+                      <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any, name: string) => name === 'sales' ? gbp(v as number) : v} />
+                      
+                      <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60}>
+                        <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                      </Bar>
+                      <Bar yAxisId="right" dataKey="orders" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
+                        <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                      </Bar>
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+                {/* 3 Bottom Widgets */}
+                <div className="flex flex-col gap-6 w-full mb-8">
+                  {/* Top Row: 2 Pies */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+                  {/* Sales Mix */}
+                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
+                    <div className="flex w-full items-center">
+                      <div className="w-[220px] h-[220px] relative">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie data={customSalesPieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
+                              {customSalesPieData.map((e, i) => <Cell key={i} fill={chartColors[i % chartColors.length]} />)}
+                            </Pie>
+                            <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customSalesPieTotal)}</span>
+                          <span className="text-[10px] text-slate-400 font-bold uppercase">Total Sales</span>
+                        </div>
+                      </div>
+                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                        {customSalesPieData.map((d, i) => (
+                          <div key={i} className="flex justify-between items-center text-[13px]">
+                            <div className="flex items-center gap-2">
+                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-300 font-medium">{d.name}</span>
+                            </div>
+                            <span className="text-slate-400">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expense Breakdown */}
+                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
+                    <div className="flex w-full items-center">
+                      <div className="w-[220px] h-[220px] relative">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie data={customExpensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
+                              {customExpensePieData.map((e, i) => <Cell key={i} fill={chartColors[i % chartColors.length]} />)}
+                            </Pie>
+                            <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customExpensePieTotal)}</span>
+                          <span className="text-[10px] text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
+                        </div>
+                      </div>
+                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                        {customExpensePieData.map((d, i) => (
+                          <div key={i} className="flex justify-between items-center text-[13px]">
+                            <div className="flex items-center gap-2">
+                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-300 font-medium truncate max-w-[90px]" title={d.name}>{d.name}</span>
+                            </div>
+                            <span className="text-slate-400 shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  </div>
+
+                  {/* Bottom Row: Supplier Purchases */}
+                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
+                    <div className="flex justify-between items-center mb-6">
+                      <h2 className="text-white font-bold text-lg">Supplier Purchases</h2>
+                      <span className="text-xs bg-[#1f2947] text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Weeks</span>
+                    </div>
+                    <div className="flex-1 min-h-0 w-full mt-2">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <BarChart data={curr6Stats.weeklyData} margin={{ top: 15, right: 0, left: -25, bottom: 40 }}>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
+                          <XAxis 
+                            dataKey="name" 
+                            stroke="#64748b" 
+                            tick={(props: any) => {
+                              const { x, y, payload } = props;
+                              const data = curr6Stats.weeklyData.find((d: any) => d.name === payload.value);
+                              return (
+                                <g transform={`translate(${x},${y})`}>
+                                  <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={12} fontWeight="bold">{payload.value}</text>
+                                  {data?.dateRange && <text x={0} y={0} dy={32} textAnchor="middle" fill="#64748b" fontSize={11}>{data.dateRange}</text>}
+                                </g>
+                              );
+                            }}
+                            tickMargin={12} 
+                            axisLine={false} 
+                            tickLine={false} 
+                          />
+                          <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
+                          <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
+                          <Bar dataKey="suppliers" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={60}>
+                            <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                          </Bar>
+                        </BarChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                </div>
+
+                          </div>
+            ) : (
+              <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
+                <h2 className="text-3xl font-black text-white mb-3">No Data Available</h2>
+                <p className="text-slate-400 max-w-md">There are no sales records available for the selected period.</p>
+              </div>
+            )}
+          </div>
+
+        {/* --- MONTHLY TAB --- */}
+          <div className={activeTab === 'monthly' ? 'block' : 'hidden'}>
+            {displayMonthlyData.length > 0 ? (
+            <div className="w-full mt-2">
+
+              {/* Main Chart (Dark Theme) */}
+              <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
+                <div className="flex justify-between items-center mb-6">
+                  <h2 className="text-white font-bold uppercase tracking-wide text-sm">
+                    <span className="text-blue-400 mr-2">1.</span>MONTHLY SALES & ORDERS
+                  </h2>
+                  <div className="flex items-center gap-6 text-[13px] font-bold">
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span> 
+                      <span className="text-slate-300">Sales (£)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-[#f97316]"></span> 
+                      <span className="text-slate-300">Orders</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex-1 min-h-0 w-full">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <ComposedChart data={displayMonthlyData} margin={{ top: 20, right: 0, left: 0, bottom: 20 }}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
+                      <XAxis 
+                        dataKey="name" 
+                        stroke="#64748b" 
+                        tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 'bold' }} 
+                        tickMargin={12} 
+                        axisLine={false} 
+                        tickLine={false} 
+                      />
+                      <YAxis 
+                        yAxisId="left" 
+                        stroke="#64748b" 
+                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        axisLine={false} 
+                        tickLine={false} 
+                        tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} 
+                        dx={-10}
+                      />
+                      <YAxis 
+                        yAxisId="right" 
+                        orientation="right" 
+                        stroke="#64748b" 
+                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        axisLine={false} 
+                        tickLine={false} 
+                        dx={10}
+                      />
+                      <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any, name: string) => name === 'sales' ? gbp(v as number) : v} />
+                      
+                      <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60}>
+                        <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                      </Bar>
+                      <Bar yAxisId="right" dataKey="orders" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
+                        <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                      </Bar>
+                    </ComposedChart>
+                  </ResponsiveContainer>
+                </div>
+              </div>
+
+              {/* 3 Bottom Widgets */}
+              <div className="flex flex-col gap-6 w-full mb-8">
+                {/* Top Row: 2 Pies */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+                  {/* Sales Mix */}
+                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
+                    <div className="flex w-full items-center">
+                      <div className="w-[220px] h-[220px] relative">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie data={customSalesPieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
+                              {customSalesPieData.map((e, i) => <Cell key={i} fill={chartColors[i % chartColors.length]} />)}
+                            </Pie>
+                            <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-2">
+                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customSalesPieTotal)}</span>
+                          <span className="text-[11px] text-slate-400 font-bold uppercase mt-1">Total Sales</span>
+                        </div>
+                      </div>
+                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                        {customSalesPieData.map((d, i) => (
+                          <div key={i} className="flex justify-between items-center text-[13px]">
+                            <div className="flex items-center gap-3">
+                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-300 font-medium">{d.name}</span>
+                            </div>
+                            <span className="text-slate-400 font-semibold">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expense Breakdown */}
+                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
+                    <div className="flex w-full items-center">
+                      <div className="w-[220px] h-[220px] relative">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <PieChart>
+                            <Pie data={customExpensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
+                              {customExpensePieData.map((e, i) => <Cell key={i} fill={chartColors[i % chartColors.length]} />)}
+                            </Pie>
+                            <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
+                          </PieChart>
+                        </ResponsiveContainer>
+                        <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-2">
+                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customExpensePieTotal)}</span>
+                          <span className="text-[11px] text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
+                        </div>
+                      </div>
+                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                        {customExpensePieData.map((d, i) => (
+                          <div key={i} className="flex justify-between items-center text-[13px]">
+                            <div className="flex items-center gap-3">
+                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-300 font-medium whitespace-nowrap" title={d.name}>{d.name}</span>
+                            </div>
+                            <span className="text-slate-400 font-semibold shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Bottom Row: Supplier Purchases */}
+                <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
+                  <div className="flex justify-between items-center mb-6">
+                    <h2 className="text-white font-bold text-lg">Supplier Purchases</h2>
+                    <span className="text-xs bg-[#1f2947] text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Months</span>
+                  </div>
+                  <div className="flex-1 min-h-0 w-full mt-2">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={displayMonthlyData} margin={{ top: 15, right: 0, left: -25, bottom: 20 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
+                        <XAxis 
+                          dataKey="name" 
+                          stroke="#64748b" 
+                          tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 'bold' }}
+                          tickMargin={12} 
+                          axisLine={false} 
+                          tickLine={false} 
+                        />
+                        <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
+                        <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
+                        <Bar dataKey="suppliers" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={60}>
+                          <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
+            </div>
+            ) : (
+            <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
+              <h2 className="text-3xl font-black text-white mb-3">No Data Available</h2>
+              <p className="text-slate-400 max-w-md">There are no sales records available for the selected period.</p>
+            </div>
+          )}
+          </div>
 
       {/* --- OFFERS TAB --- */}
       <div className={activeTab === 'offers' ? 'block' : 'hidden'}>

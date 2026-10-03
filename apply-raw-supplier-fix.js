@@ -2,39 +2,16 @@ const fs = require('fs');
 const file = 'app/dashboard/HenleyDashboard.tsx';
 let content = fs.readFileSync(file, 'utf8');
 
-const target = `      return {
-        dateStr,
-        name: \`Week \${isoWeek}\`,
-        dateRange: \`\${formatD(d)} - \${formatD(endD)}\`,
-        sales: wSales,
-        orders: wOrders,
-        aov: wOrders > 0 ? wSales / wOrders : 0,
-        profit: wProfit
-      };`;
+// I am replacing the entire `const wSuppliers = ...` block with a direct weeklyMap lookup.
+const targetRegex = /const getUTCMidnight = \(iso: string \| Date\) => \{[\s\S]*?\}, 0\);/;
 
-const replacement = `      return {
-        dateStr,
-        name: \`Week \${isoWeek}\`,
-        dateRange: \`\${formatD(d)} - \${formatD(endD)}\`,
-        sales: wSales,
-        orders: wOrders,
-        aov: wOrders > 0 ? wSales / wOrders : 0,
-        profit: wProfit,
-        suppliers: wSuppliers
-      };`;
+const replacement = `const mapKey = dateStr.split('T')[0];
+        const wSuppliers = weeklyMap[mapKey]?.suppliers || 0;`;
 
-if (content.includes(target)) {
-    content = content.replace(target, replacement);
+if (targetRegex.test(content)) {
+    content = content.replace(targetRegex, replacement);
     fs.writeFileSync(file, content);
-    console.log('Replaced successfully.');
+    console.log('Replaced wSuppliers calculation successfully.');
 } else {
-    // try to match with regex just in case formatting is different
-    const regex = /return \{\s*dateStr,\s*name: `Week \$\{isoWeek\}`,\s*dateRange: `\$\{formatD\(d\)\} - \$\{formatD\(endD\)\}`,\s*sales: wSales,\s*orders: wOrders,\s*aov: wOrders > 0 \? wSales \/ wOrders : 0,\s*profit: wProfit\s*\};/;
-    if (regex.test(content)) {
-        content = content.replace(regex, replacement);
-        fs.writeFileSync(file, content);
-        console.log('Replaced successfully with regex.');
-    } else {
-        console.log('Target string not found.');
-    }
+    console.log('Target block not found!');
 }

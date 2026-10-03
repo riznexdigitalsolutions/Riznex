@@ -1014,7 +1014,52 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
               </table>
               </div>
 
-              {/* Visual Distribution Charts Stacked Vertically under Platform Performance */}
+              
+                      )
+                    })}
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+          {/* Supplier Purchases Table */}
+          <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col relative overflow-hidden z-0 mt-8">
+            <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-orange-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
+            <h2 className="text-xl font-black text-white mb-8 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center border border-orange-500/20 shadow-inner">
+                🛒
+              </span>
+              Supplier Purchases
+            </h2>
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-sm whitespace-nowrap">
+                <thead>
+                  <tr className="text-slate-400 border-b-2 border-[#1f2947]">
+                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Supplier</th>
+                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Category</th>
+                    <th className="pb-4 font-bold uppercase tracking-wider text-xs text-right">Total Amount</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#1f2947]">
+                  {supplierData.length === 0 ? (
+                    <tr>
+                      <td colSpan={3} className="py-8 text-center text-slate-500">No supplier purchases found</td>
+                    </tr>
+                  ) : (
+                    supplierData.map((s: any, i: number) => (
+                      <tr key={i} className="hover:bg-white/5 transition-colors group">
+                        <td className="py-4 font-semibold text-white">{s.name}</td>
+                        <td className="py-4 text-slate-400 capitalize">{s.category}</td>
+                        <td className="py-4 text-orange-400 text-right font-bold">{gbp(s.amount)}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+{/* Visual Distribution Charts Stacked Vertically under Platform Performance */}
               <div className="mt-8 pt-6 border-t border-[#1f2947] flex flex-col gap-5">
                 
                 {/* Sales Distribution */}
@@ -1063,50 +1108,6 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                             ></div>
                           </div>
                         </div>
-                      )
-                    })}
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-          {/* Supplier Purchases Table */}
-          <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col relative overflow-hidden z-0 mt-8">
-            <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-orange-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
-            <h2 className="text-xl font-black text-white mb-8 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center border border-orange-500/20 shadow-inner">
-                🛒
-              </span>
-              Supplier Purchases
-            </h2>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm whitespace-nowrap">
-                <thead>
-                  <tr className="text-slate-400 border-b-2 border-[#1f2947]">
-                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Supplier</th>
-                    <th className="pb-4 font-bold uppercase tracking-wider text-xs">Category</th>
-                    <th className="pb-4 font-bold uppercase tracking-wider text-xs text-right">Total Amount</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#1f2947]">
-                  {supplierData.length === 0 ? (
-                    <tr>
-                      <td colSpan={3} className="py-8 text-center text-slate-500">No supplier purchases found</td>
-                    </tr>
-                  ) : (
-                    supplierData.map((s: any, i: number) => (
-                      <tr key={i} className="hover:bg-white/5 transition-colors group">
-                        <td className="py-4 font-semibold text-white">{s.name}</td>
-                        <td className="py-4 text-slate-400 capitalize">{s.category}</td>
-                        <td className="py-4 text-orange-400 text-right font-bold">{gbp(s.amount)}</td>
-                      </tr>
-                    ))
-                  )}
-                </tbody>
-              </table>
-            </div>
           </div>
         </div>
         </div>

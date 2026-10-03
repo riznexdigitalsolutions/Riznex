@@ -1015,12 +1015,6 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
               </div>
 
               
-                      )
-                    })}
-                  </div>
-                </div>
-
-              </div>
 
             </div>
 
@@ -1059,7 +1053,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </tbody>
               </table>
             </div>
-{/* Visual Distribution Charts Stacked Vertically under Platform Performance */}
+              {/* Visual Distribution Charts Stacked Vertically under Platform Performance */}
               <div className="mt-8 pt-6 border-t border-[#1f2947] flex flex-col gap-5">
                 
                 {/* Sales Distribution */}
@@ -1108,6 +1102,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                             ></div>
                           </div>
                         </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+              </div>
           </div>
         </div>
         </div>

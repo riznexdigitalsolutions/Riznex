@@ -268,15 +268,24 @@ IMPORTANT:
     if (!geminiData) {
       if (invoice.fileType === "pdf") {
         // PDF text extraction using standalone worker to avoid Next.js bundling crashes (bad XRef entry)
-        const { stdout, stderr } = await execAsync(
-          `node "${path.join(process.cwd(), 'scripts', 'pdf-worker.js')}" "${filePath}"`
-        );
+        let stdout, stderr;
+        try {
+          const result = await execAsync(
+            `node "${path.join(process.cwd(), 'scripts', 'pdf-worker.js')}" "${filePath}"`,
+            { maxBuffer: 10 * 1024 * 1024 }
+          );
+          stdout = result.stdout;
+          stderr = result.stderr;
+        } catch (execErr: any) {
+          throw new Error("PDF Worker crashed: " + (execErr.stderr || execErr.stdout || execErr.message));
+        }
+        
         try {
           const res = JSON.parse(stdout.trim());
           if (!res.success) throw new Error(res.error);
           extractedText = res.text;
         } catch (parseErr: any) {
-          throw new Error("PDF Worker failed: " + (stderr || parseErr.message));
+          throw new Error("PDF Worker parse failed: " + (stderr || parseErr.message));
         }
       } else {
         // Tesseract OCR for images

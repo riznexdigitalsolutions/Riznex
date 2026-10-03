@@ -259,6 +259,13 @@ IMPORTANT:
         } else if (geminiRes) {
           const errorText = await geminiRes.text();
           console.error("Gemini API Error:", geminiRes.status, errorText);
+          if (geminiRes.status === 401 || geminiRes.status === 403) {
+            await prisma.invoice.update({
+               where: { id },
+               data: { ocrStatus: 'error', notes: 'CRASHED: Your Gemini API Key is invalid, expired, or has no quota. Please check the GOOGLE_AI_API_KEY in your Hostinger environment variables.' }
+            });
+            return NextResponse.json({ error: 'Invalid API Key' }, { status: 500 });
+          }
         } else {
           console.error("Gemini API Error: No response received");
         }

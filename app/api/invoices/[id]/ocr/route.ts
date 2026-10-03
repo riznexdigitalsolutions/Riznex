@@ -34,7 +34,9 @@ export async function POST(
     let geminiData: any = null;
 
     const apiKey = process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY;
-    if (!apiKey) {
+    const openaiKey = process.env.OPENAI_API_KEY;
+    const useOpenAI = !!openaiKey;
+    if (!apiKey && !useOpenAI) {
       await prisma.invoice.update({ where: { id }, data: { ocrStatus: 'error', notes: 'CRASHED: GEMINI_API_KEY is missing from Hostinger environment variables!' } });
       return NextResponse.json({ error: 'API Key missing' }, { status: 500 });
     }
@@ -42,7 +44,7 @@ export async function POST(
     const isHungryBirdsPosPdf = (invoice.type === "pos" && invoice.fileType === "pdf" && (invoice.platform?.includes("Hungry Birds") || invoice.platform?.includes("Online Web"))) || isBankStatementPdf;
     const isHerbiesPosPdf = invoice.type === "pos" && invoice.fileType === "pdf" && invoice.platform?.includes("Herbies");
 
-    if (apiKey && !isHungryBirdsPosPdf && !isHerbiesPosPdf) {
+    if ((apiKey || useOpenAI) && !isHungryBirdsPosPdf && !isHerbiesPosPdf) {
       try {
         const fileBuffer = await readFile(filePath);
         const base64Data = fileBuffer.toString("base64");
@@ -198,38 +200,66 @@ IMPORTANT:
         let backoff = 10000; // Start with 10s backoff for 429
 
         while (retries < maxRetries) {
-          geminiRes = await fetch(
-            `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
-            {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                contents: [
-                  {
-                    parts: [
-                      { text: prompt },
-                      { inline_data: { mime_type: mimeType, data: base64Data } }
+          if (useOpenAI) {
+               geminiRes = await fetch("https://api.openai.com/v1/chat/completions", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${openaiKey}`
+                  },
+                  body: JSON.stringify({
+                    model: "gpt-4o",
+                    messages: [
+                      {
+                        role: "user",
+                        content: [
+                          { type: "text", text: prompt },
+                          { type: "image_url", image_url: { url: `data:${mimeType};base64,${base64Data}` } }
+                        ]
+                      }
+                    ],
+                    max_tokens: 1000,
+                    response_format: { type: "json_object" }
+                  })
+               });
+            } else {
+              geminiRes = await fetch(
+                `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`,
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    contents: [
+                      {
+                        parts: [
+                          { text: prompt },
+                          { inline_data: { mime_type: mimeType, data: base64Data } }
+                        ]
+                      }
                     ]
-                  }
-                ]
-              })
+                  })
+                }
+              );
             }
-          );
 
-          if (geminiRes.status === 429) {
-            console.log(`Gemini Rate Limit (429) hit. Retrying in ${backoff / 1000}s... (Attempt ${retries + 1}/${maxRetries})`);
-            await new Promise((resolve) => setTimeout(resolve, backoff));
-            retries++;
-            backoff *= 1.5; // Exponential backoff (10s, 15s, 22.5s, 33s...)
-          } else {
-            break; // Break if success or a non-rate-limit error (e.g. 400)
-          }
+            if (geminiRes.status === 429) {
+              console.log(`AI Rate Limit (429) hit. Retrying in ${backoff / 1000}s...`);
+              await new Promise((resolve) => setTimeout(resolve, backoff));
+              retries++;
+              backoff *= 1.5;
+            } else {
+              break;
+            }
         }
 
         if (geminiRes && geminiRes.ok) {
           const geminiJson = await geminiRes.ok ? await geminiRes.json() : null;
-          const rawText =
-            geminiJson?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+          let rawText = "";
+            if (useOpenAI) {
+               rawText = geminiJson?.choices?.[0]?.message?.content || "";
+            } else {
+               rawText = geminiJson?.candidates?.[0]?.content?.parts?.[0]?.text || "";
+            }
           const cleaned = rawText
             .replace(/```json\n?/g, "")
             .replace(/```\n?/g, "")

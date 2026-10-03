@@ -244,7 +244,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
             </div>
           </div>
           <button
-            onClick={() => signOut({ callbackUrl: '/login' })}
+            onClick={() => signOut({ callbackUrl: '/client-login' })}
             className="w-full flex items-center gap-2 text-sm text-slate-400 hover:text-red-400 px-3 py-2 rounded-xl hover:bg-red-500/10 transition-colors"
           >
             <span>🚪</span> Sign Out

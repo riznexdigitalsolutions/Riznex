@@ -102,7 +102,7 @@ export default function SettingsPage() {
       <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-5">
         <h2 className="font-bold text-red-400 mb-1">Sign Out</h2>
         <p className="text-sm text-slate-500 mb-3">Sign out of your account on this device.</p>
-        <button onClick={() => signOut({ callbackUrl: '/login' })}
+        <button onClick={() => signOut({ callbackUrl: '/client-login' })}
           className="border border-red-500/30 text-red-400 hover:bg-red-500/10 px-4 py-2 rounded-xl text-sm font-semibold transition">
           Sign Out
         </button>

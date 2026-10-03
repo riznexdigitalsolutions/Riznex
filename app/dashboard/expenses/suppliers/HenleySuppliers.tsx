@@ -681,17 +681,7 @@ export function HenleySuppliers() {
                 </select>
               </div>
 
-              {selectedSupplier?.franchise === 'Combined' && (
-                <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Assign to Store (Optional)</label>
-                  <select value={invForm.store} onChange={e => setInvForm({ ...invForm, store: e.target.value })}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition mt-4">
-                    <option value="Combined">Split 50/50 (Combined)</option>
-                    <option value="Herbies Pizza">Herbies Pizza (100%)</option>
-                    <option value="Tasty Bun">Tasty Bun (100%)</option>
-                  </select>
-                </div>
-              )}
+              
 
               {/* File Upload - only shown in Upload mode */}
               {!manualEntry && (

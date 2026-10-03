@@ -407,14 +407,15 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
       const w1 = new Date(d.getFullYear(), 0, 4);
       const isoWeek = 1 + Math.round(((d.getTime() - w1.getTime()) / 86400000 - 3 + (w1.getDay() + 6) % 7) / 7);
 
-      return {
+            return {
         dateStr,
         name: `Week ${isoWeek}`,
         dateRange: `${formatD(d)} - ${formatD(endD)}`,
         sales: wSales,
         orders: wOrders,
         aov: wOrders > 0 ? wSales / wOrders : 0,
-        profit: wProfit
+        profit: wProfit,
+        suppliers: wSuppliers
       };
     });
 

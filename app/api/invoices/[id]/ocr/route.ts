@@ -251,7 +251,7 @@ IMPORTANT:
             } else {
               extractedText = `[Gemini Vision] ${JSON.stringify(geminiData)}`;
             }
-          } catch (e) {
+          } catch (e: any) {
             extractedText = rawText;
             require('fs').writeFileSync(path.join(process.cwd(), 'public', 'uploads', 'debug_gemini.txt'), "GEMINI RAW RESPONSE: " + rawText + " | ERROR: " + e.message);
             console.error("Gemini failed to return valid JSON:", rawText);
@@ -317,7 +317,7 @@ IMPORTANT:
           const { stdout } = await execAsync(`node "${path.join(process.cwd(), 'scripts', 'pdf-worker.js')}" "${filePath}"`);
           const res = JSON.parse(stdout.trim());
           if (res.success) extractedText = res.text;
-        } catch (e) {
+        } catch (e: any) {
           console.error("PDF worker error:", e);
         }
       }

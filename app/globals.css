@@ -89,3 +89,56 @@ body {
     text-shadow: none !important;
   }
 }
+
+
+/* GLOBAL LIGHT MODE TOGGLE */
+.theme-light {
+  --bg-main: #f8fafc;
+  --bg-card: #ffffff;
+  --bg-input: #f1f5f9;
+  --border-main: #e2e8f0;
+  --border-card: #cbd5e1;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --text-lighter: #94a3b8;
+}
+
+.theme-light body { background-color: var(--bg-main) !important; color: var(--text-main) !important; }
+.theme-light .bg-\[\#0a0c14\] { background-color: var(--bg-main) !important; }
+.theme-light .bg-\[\#07080B\] { background-color: var(--bg-main) !important; }
+.theme-light .bg-\[\#111520\] { background-color: var(--bg-card) !important; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05) !important; }
+.theme-light .bg-\[\#161b2c\] { background-color: var(--bg-input) !important; }
+.theme-light .bg-\[\#1c2238\] { background-color: #e2e8f0 !important; }
+.theme-light .border-\[\#1f2947\] { border-color: var(--border-main) !important; }
+.theme-light .border-\[\#2a3441\] { border-color: var(--border-card) !important; }
+.theme-light .border-\[\#161b2c\] { border-color: var(--border-main) !important; }
+
+.theme-light .text-white { color: var(--text-main) !important; }
+.theme-light .text-slate-200 { color: var(--text-main) !important; }
+.theme-light .text-slate-300 { color: var(--text-main) !important; }
+.theme-light .text-slate-400 { color: var(--text-muted) !important; }
+.theme-light .text-slate-500 { color: var(--text-lighter) !important; }
+
+/* Preserve text color on colored backgrounds */
+.theme-light .bg-blue-500,
+.theme-light .bg-emerald-500,
+.theme-light .bg-purple-500,
+.theme-light .bg-red-500,
+.theme-light .bg-rose-500,
+.theme-light .bg-indigo-500,
+.theme-light .bg-amber-500,
+.theme-light .bg-green-500,
+.theme-light .from-blue-600,
+.theme-light .from-emerald-600 {
+  color: #ffffff !important;
+}
+.theme-light .bg-blue-500 .text-white,
+.theme-light .bg-emerald-500 .text-white,
+.theme-light .bg-purple-500 .text-white {
+  color: #ffffff !important;
+}
+
+/* Fix inputs */
+.theme-light input, .theme-light select {
+  color: var(--text-main) !important;
+}

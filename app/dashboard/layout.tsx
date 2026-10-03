@@ -1,6 +1,7 @@
 'use client'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
+import ThemeToggle from '../components/ThemeToggle'
 import { usePathname, useSearchParams } from 'next/navigation'
 import { useState, useEffect, Suspense } from 'react'
 
@@ -269,7 +270,8 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
           </button>
           <div className="flex-1" />
           <div className="flex items-center gap-3 text-sm text-slate-400">
-            <span className="hidden sm:block">{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
+            <ThemeToggle />
+              <span className="hidden sm:block">{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
           </div>
         </header>
 

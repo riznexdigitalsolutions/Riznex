@@ -57,7 +57,7 @@ export default function ClientLogin() {
               type="text" 
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Henley.Thames" 
+              placeholder="sample@email.com" 
               className="w-full bg-[#EBF1F7] border-none px-4 py-3.5 text-black focus:outline-none focus:ring-2 focus:ring-[#D1A041] transition-all text-sm rounded-sm placeholder:text-gray-500 font-medium" 
               required
             />

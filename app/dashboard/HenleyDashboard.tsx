@@ -480,6 +480,15 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   ].filter(e => e.value > 0);
   const customExpensePieTotal = customExpensePieData.reduce((sum, e) => sum + e.value, 0);
 
+  const maxSales = Math.max(...platformData.map((p: any) => p.sales), 1);
+  const combinedTotalCost = totalExpenses;
+  const expenseDistributionList = customExpensePieData.map((e, i) => ({
+    name: e.name,
+    amount: e.value,
+    color: ['bg-amber-500', 'bg-pink-500', 'bg-cyan-500', 'bg-rose-500', 'bg-violet-500', 'bg-teal-500'][i % 6]
+  }));
+
+
   const customSalesPieData = platformData.map((p: any) => ({
     name: p.name,
     value: p.sales
@@ -956,7 +965,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
         <div className="lg:col-span-2 space-y-8 flex flex-col">
 
           {/* Platform Table */}
-          <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-8 shadow-2xl flex-1 flex flex-col relative overflow-hidden z-0">
+          <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col relative overflow-hidden z-0">
             <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
             <h2 className="text-xl font-black text-white mb-8 flex items-center gap-3">
               <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 shadow-inner">
@@ -964,7 +973,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
               </span>
               Platform Performance
             </h2>
-            <div className="overflow-x-auto flex-1">
+            <div className="overflow-x-auto">
               <table className="w-full text-left text-sm whitespace-nowrap">
                 <thead>
                   <tr className="text-slate-400 border-b-2 border-[#1f2947]">
@@ -1003,11 +1012,68 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   )}
                 </tbody>
               </table>
+              </div>
+
+              {/* Visual Distribution Charts Stacked Vertically under Platform Performance */}
+              <div className="mt-8 pt-6 border-t border-[#1f2947] flex flex-col gap-5">
+                
+                {/* Sales Distribution */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm font-bold text-slate-200">
+                    <span className="flex items-center gap-2"><span className="text-blue-400">📊</span> Sales Distribution</span>
+                    <span className="text-blue-400 font-bold text-xs">{gbp(totalSales)}</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {platformData.map((p: any, idx: number) => (
+                      <div key={idx} className="space-y-1">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="text-slate-500 font-medium">{p.name}</span>
+                          <span className="text-blue-400 font-bold text-xs">{gbp(p.sales)}</span>
+                        </div>
+                        <div className="w-full h-1.5 bg-[#0e121b] rounded-full overflow-hidden border border-[#1f2947]">
+                          <div 
+                            style={{ width: `${Math.min(100, Math.max(3, (p.sales / maxSales) * 100))}%` }} 
+                            className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full"
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Expense Distribution */}
+                <div className="space-y-2">
+                  <div className="flex justify-between items-center text-sm font-bold text-slate-200">
+                    <span className="flex items-center gap-2"><span className="text-purple-400">📉</span> Expense Distribution</span>
+                    <span className="text-purple-400 font-bold text-xs">{gbp(combinedTotalCost)}</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {expenseDistributionList.map((item: any, idx: number) => {
+                      const pct = combinedTotalCost > 0 ? ((item.amount / combinedTotalCost) * 100).toFixed(1) : '0.0'
+                      return (
+                        <div key={idx} className="space-y-1">
+                          <div className="flex justify-between items-center text-xs">
+                            <span className="text-slate-500 font-medium">{item.name}</span>
+                            <span className="text-slate-400 font-bold text-xs">{pct}% <span className="text-slate-500 font-normal">({gbp(item.amount)})</span></span>
+                          </div>
+                          <div className="w-full h-1.5 bg-[#0e121b] rounded-full overflow-hidden border border-[#1f2947]">
+                            <div 
+                              style={{ width: `${combinedTotalCost > 0 ? Math.min(100, Math.max(3, (item.amount / combinedTotalCost) * 100)) : 0}%` }} 
+                              className={`h-full ${item.color} rounded-full`}
+                            ></div>
+                          </div>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
+
+              </div>
+
             </div>
-          </div>
 
           {/* Supplier Purchases Table */}
-          <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-8 shadow-2xl flex-1 flex flex-col relative overflow-hidden z-0 mt-8">
+          <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col relative overflow-hidden z-0 mt-8">
             <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-orange-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
             <h2 className="text-xl font-black text-white mb-8 flex items-center gap-3">
               <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center border border-orange-500/20 shadow-inner">
@@ -1015,7 +1081,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
               </span>
               Supplier Purchases
             </h2>
-            <div className="overflow-x-auto flex-1">
+            <div className="overflow-x-auto">
               <table className="w-full text-left text-sm whitespace-nowrap">
                 <thead>
                   <tr className="text-slate-400 border-b-2 border-[#1f2947]">

@@ -502,7 +502,7 @@ export function HungryBirdsDashboard() {
         {/* Tier 2: Filter Toolbar (Single Brand - No Store Tabs) */}
         <div className="bg-[#111520]/50 border border-[#1f2947] rounded-2xl p-3 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 print:hidden shadow-lg backdrop-blur-sm">
           {/* Left Side: Platform toggle tabs & selector */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 w-full lg:w-auto overflow-x-auto hide-scrollbar">
+          <div className="flex flex-wrap items-center gap-3">
             
             <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} />
             </div>

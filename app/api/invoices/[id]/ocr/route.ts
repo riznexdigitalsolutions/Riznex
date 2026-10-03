@@ -270,14 +270,28 @@ IMPORTANT:
         // PDF text extraction using standalone worker to avoid Next.js bundling crashes (bad XRef entry)
         let stdout, stderr;
         try {
+          let workerPath = path.join(process.cwd(), 'scripts', 'pdf-worker.js');
+          if (!require('fs').existsSync(workerPath)) {
+             workerPath = path.join(process.cwd(), '..', '..', 'scripts', 'pdf-worker.js');
+          }
+          if (!require('fs').existsSync(workerPath)) {
+             workerPath = path.join(process.cwd(), '..', 'scripts', 'pdf-worker.js');
+          }
           const result = await execAsync(
-            `node "${path.join(process.cwd(), 'scripts', 'pdf-worker.js')}" "${filePath}"`,
+            `node "${workerPath}" "${filePath}"`,
             { maxBuffer: 10 * 1024 * 1024 }
           );
           stdout = result.stdout;
           stderr = result.stderr;
         } catch (execErr: any) {
-          throw new Error("PDF Worker crashed: " + (execErr.stderr || execErr.stdout || execErr.message));
+          try {
+             const pdfParse = require("pdf-parse");
+             const fsLib = require("fs");
+             const data = await pdfParse(fsLib.readFileSync(filePath));
+             stdout = JSON.stringify({ success: true, text: data.text });
+          } catch(nativeErr: any) {
+             throw new Error("PDF Worker crashed AND native parse failed: " + execErr.message + " | " + nativeErr.message);
+          }
         }
         
         try {
@@ -289,8 +303,15 @@ IMPORTANT:
         }
       } else {
         // Tesseract OCR for images
+        let ocrWorkerPath = path.join(process.cwd(), 'scripts', 'ocr-worker.js');
+        if (!require('fs').existsSync(ocrWorkerPath)) {
+            ocrWorkerPath = path.join(process.cwd(), '..', '..', 'scripts', 'ocr-worker.js');
+        }
+        if (!require('fs').existsSync(ocrWorkerPath)) {
+             ocrWorkerPath = path.join(process.cwd(), '..', 'scripts', 'ocr-worker.js');
+        }
         const { stdout, stderr } = await execAsync(
-          `node "${path.join(process.cwd(), 'scripts', 'ocr-worker.js')}" "${filePath}"`,
+          `node "${ocrWorkerPath}" "${filePath}"`,
         );
         try {
           const res = JSON.parse(stdout.trim());

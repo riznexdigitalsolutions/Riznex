@@ -813,7 +813,7 @@ IMPORTANT:
       } else if (invoice.platform?.includes("Just Eat")) {
         ocrData = parseJustEatInvoice(extractedText);
       } else if (invoice.platform?.includes("Deliveroo")) {
-        require('fs').writeFileSync(require('path').join(process.cwd(), 'public', 'debug_deliveroo_text.txt'), extractedText);
+        await prisma.invoice.update({ where: { id }, data: { notes: 'DEBUG_TEXT: ' + extractedText.substring(0, 1500) } });
           ocrData = parseDeliverooInvoice(extractedText);
       } else {
         ocrData = parseInvoiceText(extractedText, invoice.platform);

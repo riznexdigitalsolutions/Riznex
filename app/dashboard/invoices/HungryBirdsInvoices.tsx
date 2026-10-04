@@ -316,7 +316,7 @@ function InvoicesContent() {
                 <option value="Deliveroo" className="bg-[#111520] text-white">Deliveroo</option>
                 <option value="Cash" className="bg-[#111520] text-emerald-400 font-bold">💵 Walk-in Cash</option>
                 <option value="Card" className="bg-[#111520] text-purple-400 font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-[#111520] text-blue-400 font-bold">🖥️ POS Sales</option>
+                <option value="Online Web" className="bg-[#111520] text-blue-400 font-bold">🌐 Online Web</option>
               </select>
               <div className="w-[1px] h-4 bg-[#1f2947]"></div>
             </>
@@ -346,7 +346,7 @@ function InvoicesContent() {
                 <option value="" className="bg-[#111520] text-white">All POS & Walk-in Sales</option>
                 <option value="Cash" className="bg-[#111520] text-emerald-400 font-bold">💵 Walk-in Cash</option>
                 <option value="Card" className="bg-[#111520] text-purple-400 font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-[#111520] text-blue-400 font-bold">🖥️ POS Sales</option>
+                <option value="Online Web" className="bg-[#111520] text-blue-400 font-bold">🌐 Online Web</option>
               </select>
               <div className="w-[1px] h-4 bg-[#1f2947]"></div>
             </>
@@ -574,7 +574,7 @@ function InvoicesContent() {
                   <select value={posName} onChange={e => setPosName(e.target.value)} className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm">
                     <option value="Walk-in Card">Walk-in Card</option>
                     <option value="Walk-in Cash">Walk-in Cash</option>
-                    <option value="POS Sales">POS Sales</option>
+                    
                     <option value="Online Web">Online Web</option>
                   </select>
                 </div>

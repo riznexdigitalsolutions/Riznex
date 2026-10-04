@@ -1266,7 +1266,7 @@ IMPORTANT:
               data: {
                 clientId: invoice.clientId,
             is2025: invoice.is2025,
-                platform: `${storeName} Website`,
+                platform: storeName === 'POS Sales' || storeName === 'Online Web' ? 'Online Web' : `${storeName} Website`,
                 store: storeName,
                 weekStart,
                 weekEnd,

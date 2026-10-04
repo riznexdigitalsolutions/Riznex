@@ -11,7 +11,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Public routes
-  if (pathname === '/' || pathname === '/login' || pathname === '/client-login') {
+  if (pathname === '/' || pathname === '/login' || pathname === '/client-login' || pathname.startsWith('/demo')) {
     if (token && pathname === '/login') {
       // Already logged in — redirect to appropriate dashboard
       const role = (token as any).role

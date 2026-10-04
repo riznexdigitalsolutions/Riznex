@@ -159,13 +159,18 @@ export default function LandingPage() {
               { label: 'Services', href: '#services' },
               { label: 'Platforms', href: '#platforms' },
               { label: 'Packages', href: '#packages' },
+              { label: '⚡ Live Demo', href: '/demo' },
               { label: 'How It Works', href: '#how-it-works' },
               { label: 'Contact', href: '#contact' },
             ].map(item => (
               <a 
                 key={item.label} 
                 href={item.href}
-                className="px-4 py-1.5 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/[0.06] rounded-full transition-all"
+                className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${
+                  item.href === '/demo'
+                    ? 'text-[#E5B869] font-bold bg-[#E5B869]/10 border border-[#E5B869]/30 hover:bg-[#E5B869]/20'
+                    : 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
+                }`}
               >
                 {item.label}
               </a>
@@ -208,6 +213,14 @@ export default function LandingPage() {
         {/* Mobile Slide-Down Navigation Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden mt-2 mx-3.5 p-5 rounded-2xl bg-[#0D0F17]/98 border border-white/15 backdrop-blur-2xl shadow-2xl flex flex-col gap-3 animate-in fade-in slide-in-from-top-3 duration-200">
+            <Link
+              href="/demo"
+              onClick={() => setMobileMenuOpen(false)}
+              className="py-3 px-3.5 rounded-xl text-xs font-black text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] shadow-md flex items-center justify-between"
+            >
+              <span className="flex items-center gap-2">⚡ Explore Interactive Live Demo</span>
+              <Icons.ArrowRight />
+            </Link>
             {[
               { label: 'Services Overview', href: '#services' },
               { label: 'Supported Platforms', href: '#platforms' },
@@ -274,15 +287,21 @@ export default function LandingPage() {
 
               {/* CTA Action Buttons */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-8">
+                <Link 
+                  href="/demo" 
+                  className="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] shadow-xl shadow-[#E5B869]/25 hover:scale-[1.02] active:scale-[0.98] transition-all text-center flex items-center justify-center gap-2 group"
+                >
+                  <Icons.Sparkles /> <span>Explore Live Demo</span> <Icons.ArrowRight />
+                </Link>
                 <a 
                   href="#services" 
-                  className="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] shadow-xl shadow-[#E5B869]/20 hover:scale-[1.02] active:scale-[0.98] transition-all text-center flex items-center justify-center gap-2"
+                  className="px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-slate-200 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] hover:border-white/20 transition-all text-center flex items-center justify-center gap-2"
                 >
-                  Explore Services <Icons.ArrowRight />
+                  View Services
                 </a>
                 <Link 
                   href="/client-login" 
-                  className="px-6 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-slate-200 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] hover:border-white/20 transition-all text-center flex items-center justify-center gap-2"
+                  className="px-4 py-3.5 rounded-xl font-medium text-xs sm:text-sm text-slate-400 hover:text-white transition-all text-center flex items-center justify-center gap-1.5"
                 >
                   <Icons.Lock /> Client Portal
                 </Link>
@@ -317,9 +336,12 @@ export default function LandingPage() {
                       <p className="text-[9px] sm:text-[10px] text-slate-400 truncate">Consolidated Weekly Metrics</p>
                     </div>
                   </div>
-                  <span className="text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-full bg-white/[0.05] text-[#E5B869] border border-[#E5B869]/30 shrink-0">
-                    Active Client
-                  </span>
+                  <Link 
+                    href="/demo"
+                    className="text-[9px] sm:text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#E5B869]/15 text-[#E5B869] border border-[#E5B869]/30 hover:bg-[#E5B869]/25 transition-all shrink-0 flex items-center gap-1"
+                  >
+                    <span>Try Demo</span> <Icons.ArrowRight />
+                  </Link>
                 </div>
 
                 {/* 4 Stat KPIs */}
@@ -408,6 +430,44 @@ export default function LandingPage() {
                   </div>
                 </div>
 
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ── INTERACTIVE LIVE DEMO (COMPACT & CLEAR SHOWCASE) ── */}
+      <section id="demo-showcase" className="py-8 sm:py-12 bg-gradient-to-r from-[#0A0C13] via-[#101422] to-[#0A0C13] border-t border-white/[0.08]">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-white/[0.03] via-[#E5B869]/[0.08] to-white/[0.03] border border-[#E5B869]/30 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+            
+            {/* Left Content */}
+            <div className="flex-1 text-center md:text-left">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5B869]/15 text-[#E5B869] text-[11px] font-bold uppercase tracking-wider mb-2.5 border border-[#E5B869]/30">
+                <span className="w-2 h-2 rounded-full bg-[#E5B869] animate-pulse"></span>
+                <span>⚡ Interactive Demo</span>
+              </div>
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight">
+                See How Your Restaurant Dashboard Will Look
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-xl leading-relaxed">
+                Test-drive our system before purchasing. Explore realistic UK delivery splits (Uber Eats, Just Eat, Deliveroo), staff payroll, OCR supplier invoices, and net profit calculations.
+              </p>
+            </div>
+
+            {/* Right Action Button */}
+            <div className="flex flex-col items-center md:items-end gap-2.5 shrink-0 w-full md:w-auto">
+              <Link
+                href="/demo"
+                className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-black text-xs sm:text-sm text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] shadow-xl shadow-[#E5B869]/25 hover:scale-[1.03] active:scale-[0.98] transition-all text-center flex items-center justify-center gap-2 group cursor-pointer"
+              >
+                <span>⚡ Explore Live Demo</span>
+                <Icons.ArrowRight />
+              </Link>
+              <div className="flex items-center gap-2 text-[11px] text-slate-400">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+                <span>Instant Access • No Login Required</span>
               </div>
             </div>
 
@@ -751,6 +811,25 @@ export default function LandingPage() {
               </a>
             </div>
 
+          </div>
+
+          {/* Interactive Demo Callout Banner */}
+          <div className="mt-10 sm:mt-12 max-w-4xl mx-auto p-4 sm:p-6 rounded-3xl bg-gradient-to-r from-white/[0.04] via-[#E5B869]/10 to-white/[0.04] border border-[#E5B869]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-xl shadow-black/40">
+            <div className="flex items-center gap-3.5">
+              <div className="w-11 h-11 rounded-2xl bg-[#E5B869]/20 flex items-center justify-center text-[#E5B869] shrink-0 border border-[#E5B869]/30">
+                <Icons.Sparkles />
+              </div>
+              <div>
+                <h4 className="text-sm sm:text-base font-bold text-white">Want to test-drive before subscribing?</h4>
+                <p className="text-xs text-slate-400 mt-0.5">Explore our live simulated dashboard with realistic UK restaurant sales, charts, and OCR invoices.</p>
+              </div>
+            </div>
+            <Link 
+              href="/demo"
+              className="px-6 py-3 rounded-xl font-bold text-xs text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-[1.02] active:scale-[0.98] transition-all whitespace-nowrap shadow-lg shadow-[#E5B869]/20 flex items-center gap-1.5"
+            >
+              <span>Explore Live Demo</span> <Icons.ArrowRight />
+            </Link>
           </div>
 
         </div>

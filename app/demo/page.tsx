@@ -305,6 +305,12 @@ function DemoContent() {
   const [selectedInvoice, setSelectedInvoice] = useState<any>(null)
   const [showOrderModal, setShowOrderModal] = useState(false)
   const [toastMessage, setToastMessage] = useState<string | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 150)
+    return () => clearTimeout(timer)
+  }, [])
 
   const currentData = DEMO_STORE_DATA[store]
 
@@ -1087,32 +1093,82 @@ function DemoContent() {
                   </div>
                 </div>
 
-                <div className="h-64 flex items-end justify-around gap-4 pt-6 pb-2 border-b border-[#1f2947]">
-                  {[
-                    { week: 'Wk 33', date: '10 Aug - 16 Aug', sales: 6200, orders: 280 },
-                    { week: 'Wk 34', date: '17 Aug - 23 Aug', sales: 6850, orders: 310 },
-                    { week: 'Wk 35', date: '24 Aug - 30 Aug', sales: 6400, orders: 290 },
-                    { week: 'Wk 36', date: '31 Aug - 6 Sept', sales: 7100, orders: 325 },
-                    { week: 'Wk 37', date: '7 Sept - 13 Sept', sales: 6650, orders: 300 },
-                    { week: 'Wk 38', date: '14 Sept - 20 Sept', sales: 6150, orders: 275 },
-                  ].map((d, i) => (
-                    <div key={i} className="flex-1 flex flex-col items-center justify-end h-full gap-2">
-                      <div className="flex items-end justify-center gap-1.5 w-full h-full">
-                        <div 
-                          style={{ height: `${(d.sales / 7500) * 100}%` }}
-                          className="w-4 sm:w-6 bg-gradient-to-t from-blue-600 to-blue-400 rounded-t-sm shadow"
-                        />
-                        <div 
-                          style={{ height: `${(d.orders / 350) * 100}%` }}
-                          className="w-4 sm:w-6 bg-gradient-to-t from-orange-600 to-orange-400 rounded-t-sm shadow"
-                        />
+                <div className="relative h-72 w-full pt-10 pb-8 flex mb-4">
+                  {/* Y-axis Labels (Left - Sales) */}
+                  <div className="absolute left-0 top-10 bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-slate-500 font-mono pr-2">
+                    <span>£7.5k</span>
+                    <span>£5k</span>
+                    <span>£2.5k</span>
+                    <span>£0</span>
+                  </div>
+                  
+                  {/* Horizontal Grid Lines */}
+                  <div className="absolute inset-0 left-10 right-8 top-10 bottom-8 flex flex-col justify-between pointer-events-none">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="w-full border-t border-white/[0.03]"></div>
+                    ))}
+                  </div>
+
+                  {/* Y-axis Labels (Right - Orders) */}
+                  <div className="absolute right-0 top-10 bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-slate-500 font-mono pl-2 text-right">
+                    <span>350</span>
+                    <span>230</span>
+                    <span>115</span>
+                    <span>0</span>
+                  </div>
+
+                  {/* Bars Container */}
+                  <div className="flex-1 ml-10 mr-8 flex items-end justify-around h-full z-10 relative border-b border-[#1f2947]">
+                    {[
+                      { week: 'Wk 33', date: '10 Aug - 16 Aug', sales: 6200, orders: 280 },
+                      { week: 'Wk 34', date: '17 Aug - 23 Aug', sales: 6850, orders: 310 },
+                      { week: 'Wk 35', date: '24 Aug - 30 Aug', sales: 6400, orders: 290 },
+                      { week: 'Wk 36', date: '31 Aug - 6 Sept', sales: 7100, orders: 325 },
+                      { week: 'Wk 37', date: '7 Sept - 13 Sept', sales: 6650, orders: 300 },
+                      { week: 'Wk 38', date: '14 Sept - 20 Sept', sales: 6150, orders: 275 },
+                    ].map((d, i) => (
+                      <div key={i} className="flex-1 flex flex-col items-center justify-end h-full relative group">
+                        
+                        {/* Bars Area */}
+                        <div className="flex items-end justify-center gap-1.5 w-full h-full relative">
+                          {/* Sales Bar */}
+                          <div className="relative w-4 sm:w-8 flex flex-col items-center justify-end h-full">
+                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-blue-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
+                              {gbp(d.sales)}
+                            </div>
+                            <div 
+                              style={{ 
+                                height: mounted ? `${(d.sales / 7500) * 100}%` : '0%',
+                                transition: `height 1s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 100}ms`
+                              }}
+                              className="w-full bg-gradient-to-t from-blue-700 to-blue-400 rounded-t-md shadow-lg"
+                            />
+                          </div>
+
+                          {/* Orders Bar */}
+                          <div className="relative w-4 sm:w-8 flex flex-col items-center justify-end h-full">
+                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-orange-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
+                              {d.orders}
+                            </div>
+                            <div 
+                              style={{ 
+                                height: mounted ? `${(d.orders / 350) * 100}%` : '0%',
+                                transition: `height 1s cubic-bezier(0.34, 1.56, 0.64, 1) ${(i * 100) + 50}ms`
+                              }}
+                              className="w-full bg-gradient-to-t from-orange-700 to-orange-400 rounded-t-md shadow-lg"
+                            />
+                          </div>
+                        </div>
+
+                        {/* X-axis Labels */}
+                        <div className="absolute -bottom-10 text-center w-full">
+                          <div className="text-[10px] sm:text-xs font-bold text-slate-300">{d.week}</div>
+                          <div className="text-[8px] sm:text-[9px] text-slate-500 hidden sm:block whitespace-nowrap">{d.date}</div>
+                        </div>
+
                       </div>
-                      <div className="text-center mt-2">
-                        <div className="text-xs font-bold text-white">{d.week}</div>
-                        <div className="text-[9px] text-slate-500 hidden sm:block whitespace-nowrap">{d.date}</div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -1188,30 +1244,81 @@ function DemoContent() {
                   </div>
                 </div>
 
-                <div className="h-64 flex items-end justify-around gap-6 pt-6 pb-2 border-b border-[#1f2947]">
-                  {[
-                    { month: 'Jun 2026', sales: 34500, orders: 1540 },
-                    { month: 'Jul 2026', sales: 38200, orders: 1720 },
-                    { month: 'Aug 2026', sales: 36800, orders: 1650 },
-                    { month: 'Sept 2026', sales: 33150, orders: 1510 },
-                  ].map((m, i) => (
-                    <div key={i} className="flex-1 flex flex-col items-center justify-end h-full gap-2">
-                      <div className="flex items-end justify-center gap-2.5 w-full h-full">
-                        <div 
-                          style={{ height: `${(m.sales / 42000) * 100}%` }}
-                          className="w-6 sm:w-10 bg-gradient-to-t from-blue-600 to-blue-400 rounded-t-sm shadow"
-                        />
-                        <div 
-                          style={{ height: `${(m.orders / 1900) * 100}%` }}
-                          className="w-6 sm:w-10 bg-gradient-to-t from-orange-600 to-orange-400 rounded-t-sm shadow"
-                        />
+                <div className="relative h-72 w-full pt-10 pb-8 flex mb-4">
+                  {/* Y-axis Labels (Left - Sales) */}
+                  <div className="absolute left-0 top-10 bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-slate-500 font-mono pr-2">
+                    <span>£40k</span>
+                    <span>£30k</span>
+                    <span>£20k</span>
+                    <span>£10k</span>
+                    <span>£0</span>
+                  </div>
+                  
+                  {/* Horizontal Grid Lines */}
+                  <div className="absolute inset-0 left-10 right-10 top-10 bottom-8 flex flex-col justify-between pointer-events-none">
+                    {[1, 2, 3, 4, 5].map((i) => (
+                      <div key={i} className="w-full border-t border-white/[0.03]"></div>
+                    ))}
+                  </div>
+
+                  {/* Y-axis Labels (Right - Orders) */}
+                  <div className="absolute right-0 top-10 bottom-8 flex flex-col justify-between text-[10px] sm:text-xs text-slate-500 font-mono pl-2 text-right">
+                    <span>1800</span>
+                    <span>1350</span>
+                    <span>900</span>
+                    <span>450</span>
+                    <span>0</span>
+                  </div>
+
+                  {/* Bars Container */}
+                  <div className="flex-1 ml-10 mr-10 flex items-end justify-around h-full z-10 relative border-b border-[#1f2947]">
+                    {[
+                      { month: 'Jun 2026', sales: 34500, orders: 1540 },
+                      { month: 'Jul 2026', sales: 38200, orders: 1720 },
+                      { month: 'Aug 2026', sales: 36800, orders: 1650 },
+                      { month: 'Sept 2026', sales: 33150, orders: 1510 },
+                    ].map((m, i) => (
+                      <div key={i} className="flex-1 flex flex-col items-center justify-end h-full relative group">
+                        
+                        {/* Bars Area */}
+                        <div className="flex items-end justify-center gap-2.5 w-full h-full relative">
+                          {/* Sales Bar */}
+                          <div className="relative w-6 sm:w-12 flex flex-col items-center justify-end h-full">
+                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-blue-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
+                              {gbp(m.sales)}
+                            </div>
+                            <div 
+                              style={{ 
+                                height: mounted ? `${(m.sales / 40000) * 100}%` : '0%',
+                                transition: `height 1s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 150}ms`
+                              }}
+                              className="w-full bg-gradient-to-t from-blue-700 to-blue-400 rounded-t-md shadow-lg"
+                            />
+                          </div>
+
+                          {/* Orders Bar */}
+                          <div className="relative w-6 sm:w-12 flex flex-col items-center justify-end h-full">
+                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-orange-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
+                              {m.orders}
+                            </div>
+                            <div 
+                              style={{ 
+                                height: mounted ? `${(m.orders / 1800) * 100}%` : '0%',
+                                transition: `height 1s cubic-bezier(0.34, 1.56, 0.64, 1) ${(i * 150) + 75}ms`
+                              }}
+                              className="w-full bg-gradient-to-t from-orange-700 to-orange-400 rounded-t-md shadow-lg"
+                            />
+                          </div>
+                        </div>
+
+                        {/* X-axis Labels */}
+                        <div className="absolute -bottom-10 text-center w-full">
+                          <div className="text-[10px] sm:text-xs font-bold text-slate-300">{m.month}</div>
+                        </div>
+
                       </div>
-                      <div className="text-center mt-2">
-                        <div className="text-xs font-bold text-white">{m.month}</div>
-                        <div className="text-[10px] text-blue-400 font-mono">£{m.sales.toLocaleString()}</div>
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

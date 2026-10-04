@@ -1235,9 +1235,9 @@ IMPORTANT:
           const websiteOtherFees = 0; // Removing the 3.5% bank fee per user request
 
           const ordersPOS = ocrData.ordersInStore ?? ((ocrData.totalOrders ?? 0) - ordersWebsite);
-          const posGross = (ocrData.grossSales ?? 0) - websiteGross;
-          const posVat = (ocrData.vat ?? 0) - websiteVat;
-          const posNet = (ocrData.netPaid ?? 0) - websiteNet;
+          const posGross = Math.max(0, (ocrData.grossSales ?? 0) - websiteGross);
+          const posVat = Math.max(0, (ocrData.vat ?? 0) - websiteVat);
+          const posNet = Math.max(0, (ocrData.netPaid ?? 0) - websiteNet);
           const posCommission = 0; // 0% commission from net sales
 
           await prisma.sale.create({

@@ -86,6 +86,12 @@ export default function LandingPage() {
   const [activePricingTab, setActivePricingTab] = useState<'month1' | 'growth'>('month1');
   const [formSent, setFormSent] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setMounted(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
   const [activeLegalModal, setActiveLegalModal] = useState<'privacy' | 'terms' | 'cookies' | null>(null);
 
   useEffect(() => {
@@ -381,14 +387,17 @@ export default function LandingPage() {
                     <span className="font-semibold text-slate-300">Weekly Revenue Rhythm</span>
                     <span className="text-[9px] text-slate-500 font-mono">May 2026</span>
                   </div>
-                  <div className="flex items-end justify-between gap-1.5 h-16 pt-2 border-b border-white/[0.06] w-full">
+                  <div className="flex items-end justify-between gap-1.5 h-16 pt-2 border-b border-white/[0.06] w-full relative">
                     {[45, 60, 50, 75, 55, 88, 70, 95, 65, 100].map((val, i) => (
                       <div key={i} className="flex-1 flex flex-col items-center justify-end h-full min-w-0">
                         <div 
-                          style={{ height: `${val}%` }} 
-                          className={`w-full rounded-t-sm transition-all ${
+                          style={{ 
+                            height: mounted ? `${val}%` : '0%',
+                            transition: `height 1s cubic-bezier(0.34, 1.56, 0.64, 1) ${i * 75}ms`
+                          }} 
+                          className={`w-full rounded-t-sm ${
                             val >= 85 
-                              ? 'bg-gradient-to-t from-[#C89B3C] to-[#E5B869]' 
+                              ? 'bg-gradient-to-t from-[#C89B3C] to-[#E5B869] shadow-lg shadow-[#E5B869]/20' 
                               : 'bg-white/20'
                           }`}
                         />

@@ -266,11 +266,7 @@ export default function LandingPage() {
             {/* Left Content */}
             <div className="lg:col-span-7 flex flex-col items-start text-left w-full min-w-0">
               
-              {/* Badge */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#E5B869]/10 border border-[#E5B869]/25 text-[#E5B869] text-[11px] sm:text-xs font-semibold tracking-wide mb-5">
-                <Icons.Sparkles />
-                <span>Next-Gen UK Restaurant Intelligence</span>
-              </div>
+
 
               {/* Headline */}
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12] mb-5 break-words w-full">

@@ -174,7 +174,7 @@ export default function LandingPage() {
                 href={item.href}
                 className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${
                   item.href === '/demo'
-                    ? 'text-[#E5B869] font-bold bg-[#E5B869]/10 border border-[#E5B869]/30 hover:bg-[#E5B869]/20'
+                    ? 'text-[#E5B869] font-bold bg-[#E5B869]/10 border border-[#E5B869]/40 hover:bg-[#E5B869]/20 animate-pulse drop-shadow-[0_0_8px_rgba(229,184,105,0.6)]'
                     : 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
                 }`}
               >
@@ -222,7 +222,7 @@ export default function LandingPage() {
             <Link
               href="/demo"
               onClick={() => setMobileMenuOpen(false)}
-              className="py-3 px-3.5 rounded-xl text-xs font-black text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] shadow-md flex items-center justify-between"
+              className="py-3 px-3.5 rounded-xl text-xs font-black text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] shadow-[0_0_15px_rgba(229,184,105,0.4)] flex items-center justify-between animate-pulse"
             >
               <span className="flex items-center gap-2">⚡ Explore Interactive Live Demo</span>
               <Icons.ArrowRight />

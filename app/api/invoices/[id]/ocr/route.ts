@@ -127,43 +127,46 @@ IMPORTANT:
 - All monetary values should be positive numbers.
 - Return ONLY the JSON, no markdown, no explanation.`;
   } else {
-    prompt = `You are an invoice data extractor. Analyse this POS report and extract ALL financial data. 
-
-Return ONLY a valid JSON object with these fields (use null or 0 if not found):
-{
-  "dateTill": "YYYY-MM-DD",
-  "s4dRegister": { "gross": 0, "net": 0 },
-  "consumerApp": { "gross": 0, "net": 0 },
-  "website": { "gross": 0, "net": 0 },
-  "salesGross": 0,
-  "salesNet": 0,
-  "ordersDelivery": 0,
-  "ordersInStore": 0,
-  "receipts": {
-    "cash": 0,
-    "pdq": 0,
-    "webCard": 0
-  },
-  "expenses": {
-    "oneStop": 0,
-    "petrol": 0,
-    "wages": 0,
-    "other": 0
-  },
-  "isTastyBunAndromeda": false,
-  "andromedaPOS": { "sales": 0, "orders": 0 },
-  "androweb": { "sales": 0, "orders": 0 },
-  "app": { "sales": 0, "orders": 0 }
-}
-
-IMPORTANT: 
-- "dateTill" should be the Week Ending date on the report.
-- If the report has a "Sales per channel report" table, YOU MUST extract the "Total" Net and "Total" Gross for "S4D Register", "ConsumerApp", and "Website". DO NOT SKIP THIS.
-- Extract "ordersDelivery" and "ordersInStore" from the Order Amount row at the top.
-- Extract any expenses listed (like One Stop, Petrol Money, Wages, etc.). If an expense isn't listed, put 0.
-- If the invoice contains "Aggregators Sales by Channel", it is a Tasty Bun Andromeda report. You MUST set "isTastyBunAndromeda" to true, and extract the Net Sales (Sales £) and Orders for "Andromeda POS", "Androweb", and "APP" into the respective objects.
-- All monetary values should be numbers.
-- Return ONLY the JSON, no markdown, no explanation.`;
+    prompt = `You are an invoice data extractor. Analyse this POS report image and extract ALL financial data. 
+  
+  IMPORTANT: You may receive two different types of images:
+  Type 1: A Z-Report summary with 'Gross Sales', 'Net Sales', 'Cash', 'Card', etc.
+  Type 2: An 'Order history' list showing individual rows with 'Total. £[Amount]' and 'Place on [Date]'.
+  
+  IF it is Type 2 (Order history list):
+  - Ignore any 'Total Orders £XXXX' at the top as it is an all-time total.
+  - You MUST manually extract the amount from EVERY SINGLE ROW ('Total. £[Amount]') and SUM them together to get the salesGross.
+  - Count the number of rows to get ordersInStore.
+  - Find the earliest and latest 'Place on [Date]' to determine the dateTill.
+  
+  Return ONLY a valid JSON object with these fields (use null or 0 if not found):
+  {
+    "dateTill": "YYYY-MM-DD",
+    "s4dRegister": { "gross": 0, "net": 0 },
+    "consumerApp": { "gross": 0, "net": 0 },
+    "website": { "gross": 0, "net": 0 },
+    "salesGross": 0, // Put the manual SUM of all rows here if it's Type 2!
+    "salesNet": 0,
+    "ordersDelivery": 0,
+    "ordersInStore": 0, // Put the total row count here if it's Type 2!
+    "receipts": {
+      "cash": 0,
+      "pdq": 0,
+      "webCard": 0 // Put the manual SUM of all rows here if it's Type 2!
+    },
+    "expenses": {
+      "oneStop": 0,
+      "petrol": 0,
+      "wages": 0,
+      "other": 0
+    },
+    "isTastyBunAndromeda": false,
+    "andromedaPOS": { "sales": 0, "orders": 0 },
+    "androweb": { "sales": 0, "orders": 0 }
+  }
+  
+  - All monetary values should be positive numbers.
+  - Return ONLY the JSON, no markdown, no explanation.`;
   }
 } else {
   prompt = `You are an invoice data extractor. Analyse this Uber Eats / food delivery platform invoice screenshot and extract ALL financial data. 

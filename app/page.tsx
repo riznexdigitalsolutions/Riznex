@@ -688,15 +688,15 @@ export default function LandingPage() {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
-                    1st Month
+                    Phase 1: Foundation
                   </span>
                   <h3 className="text-lg sm:text-2xl font-black text-white">Restaurant Setup & Reporting</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">We help restaurants improve their menus, set up social media accounts, and provide easy-to-understand business reports.</p>
+                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">We help restaurants improve their menus, set up social media accounts, and provide easy-to-understand business reports. A custom setup will be expertly engineered based on your specific requirements.</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£250</span>
-                  <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">£200</div>
-                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Special Offer</span>
+                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£500</span>
+                  <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">£300</div>
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Save £200</span>
                 </div>
               </div>
 
@@ -742,6 +742,7 @@ export default function LandingPage() {
                     <li className="flex items-center gap-2"><Icons.Check /> Top Selling Items</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Business Performance Review</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Comparison</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access for Real-Time Tracking</li>
                   </ul>
                 </div>
               </div>
@@ -758,25 +759,21 @@ export default function LandingPage() {
             <div className={`rounded-3xl p-5 sm:p-8 bg-gradient-to-b from-[#131622] to-[#0A0C14] border border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/15 flex flex-col relative w-full ${
               activePricingTab === 'month1' ? 'hidden sm:flex' : 'flex'
             }`}>
-              
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-gradient-to-r from-[#E5B869] to-[#C89B3C] text-black text-[9px] sm:text-[10px] font-black uppercase tracking-widest shadow-md shrink-0">
-                Most Popular Ongoing
-              </div>
 
               <div className="flex justify-between items-start mb-6 pt-2">
                 <div>
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#E5B869]/20 text-[#E5B869] border border-[#E5B869]/30 mb-2">
-                    2nd Month
+                    Phase 2: Continuous Growth
                   </span>
                   <h3 className="text-lg sm:text-2xl font-black text-white">Monthly Growth Package</h3>
                   <p className="text-[11px] sm:text-xs text-slate-400 mt-1">We help restaurants grow their business, increase online visibility, boost sales, and manage everything for continuous growth.</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£180</span>
+                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£300</span>
                   <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">
-                    £150 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
+                    £250 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
                   </div>
-                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Special Offer</span>
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Cancel Anytime</span>
                 </div>
               </div>
 
@@ -786,10 +783,10 @@ export default function LandingPage() {
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Advertising
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> 3 Posts Per Week (6 Static & 6 Reels/mo)</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 4 Strategic Posts Per Week (8 Static & 8 Reels/mo)</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Content Creation & Publishing</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Management</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Ad Campaign & Promotions Setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Monthly Deals, Offers & Promo Campaign Setup</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Brand Consistency Across All Platforms</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Performance Report</li>
                   </ul>
@@ -819,6 +816,7 @@ export default function LandingPage() {
                     <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report & Top Selling Items</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Business Performance & Customer Growth</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Comparison</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access for Real-Time Tracking</li>
                   </ul>
                 </div>
               </div>

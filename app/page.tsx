@@ -688,51 +688,60 @@ export default function LandingPage() {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
-                    Phase 1: Foundation
+                    1st Month
                   </span>
-                  <h3 className="text-lg sm:text-2xl font-black text-white">Restaurant Setup & Audit</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">Complete digital overhaul, platform setup, and clean baseline reports.</p>
+                  <h3 className="text-lg sm:text-2xl font-black text-white">Restaurant Setup & Reporting</h3>
+                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">We help restaurants improve their menus, set up social media accounts, and provide easy-to-understand business reports.</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£500</span>
-                  <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">£300</div>
-                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Save £200</span>
+                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£250</span>
+                  <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">£200</div>
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Special Offer</span>
                 </div>
               </div>
 
               <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
                 <div>
                   <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Menu & Platform Setup
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Delivery Platform Menu Setup
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Full menu digital setup across Uber Eats & Just Eat</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Add categories, dish descriptions & modifier add-ons</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Competitor pricing review & margin optimization</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Initial promotion & meal-deal configuration</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Professional Menu Setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Add Categories & Items</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Extras & Add-ons Setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Price & Competitor Review</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Offers & Discounts Setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Sales-Boosting Menu Improvements</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Ongoing Support & Updates</li>
                   </ul>
                 </div>
 
                 <div>
                   <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Business Profile Optimization
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Business Profile Setup
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Create or claim Google Business & Maps profiles</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Update verified restaurant hours, phone & address</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> High-resolution logo and food image curation</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Initial customer review response strategy</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Create New Accounts</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Review Existing Accounts</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Update Business Information</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Set Up Business Profiles</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Improve Profile Appearance</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Customer Review Management</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Branding & Profile Consistency</li>
                   </ul>
                 </div>
 
                 <div>
                   <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Consolidated Reporting Baseline
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Sales & Business Reports
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Baseline sales & commission analysis report</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Supplier invoice structure setup</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Full month performance recap & action plan</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Fees</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Top Selling Items</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Business Performance Review</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Monthly Comparison</li>
                   </ul>
                 </div>
               </div>
@@ -757,53 +766,59 @@ export default function LandingPage() {
               <div className="flex justify-between items-start mb-6 pt-2">
                 <div>
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#E5B869]/20 text-[#E5B869] border border-[#E5B869]/30 mb-2">
-                    Phase 2: Continuous Growth
+                    2nd Month
                   </span>
                   <h3 className="text-lg sm:text-2xl font-black text-white">Monthly Growth Package</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">Daily platform management, proactive marketing, and weekly P&L.</p>
+                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">We help restaurants grow their business, increase online visibility, boost sales, and manage everything for continuous growth.</p>
                 </div>
                 <div className="text-right shrink-0">
-                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£300</span>
+                  <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£180</span>
                   <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">
-                    £250 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
+                    £150 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
                   </div>
-                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Cancel Anytime</span>
+                  <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Special Offer</span>
                 </div>
               </div>
 
               <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
                 <div>
                   <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Content & Promotions
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Advertising
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> 3 strategic posts per week (Instagram, FB & TikTok)</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> 6 static creative graphics & 6 reels / month</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Continuous ad campaign & promo management</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Monthly social reach & customer audit</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 3 Posts Per Week (6 Static & 6 Reels/mo)</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Content Creation & Publishing</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Management</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Ad Campaign & Promotions Setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Brand Consistency Across All Platforms</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Monthly Performance Report</li>
                   </ul>
                 </div>
 
                 <div>
                   <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Dedicated Daily Management
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Customer Support & Account Management
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Up to 12 hours daily operational support availability</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> 7 days a week customer review replies & resolution</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Instant menu price tweaks, item 86-ing & additions</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Dedicated WhatsApp manager for direct contact</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Up to 12 Hours Daily Support (7 Days/Week)</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Daily Review Replies & Monitoring</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Menu Updates & Amendments</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Price Changes, Additions & Removals</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Platform Settings Adjustments</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Business Support & Guidance</li>
                   </ul>
                 </div>
 
                 <div>
                   <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Automated Weekly Reports
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Sales & Business Reports
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Weekly sales breakdown (Uber Eats, Just Eat, Deliveroo)</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Expense tracking: supplier invoices, staff wages, utilities</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Clear net profit margin calculation sent every Monday</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Charges</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report & Top Selling Items</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Business Performance & Customer Growth</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Monthly Comparison</li>
                   </ul>
                 </div>
               </div>

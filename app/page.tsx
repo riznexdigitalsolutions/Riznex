@@ -691,7 +691,6 @@ export default function LandingPage() {
                     Phase 1: Foundation
                   </span>
                   <h3 className="text-lg sm:text-2xl font-black text-white">Restaurant Setup & Reporting</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">We help restaurants improve their menus, set up social media accounts, and provide easy-to-understand business reports. A custom setup will be expertly engineered based on your specific requirements.</p>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£500</span>
@@ -707,8 +706,7 @@ export default function LandingPage() {
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Professional Menu Setup</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Add Categories & Items</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Extras & Add-ons Setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Add Categories, Items, Extras & Add-ons</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Price & Competitor Review</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Offers & Discounts Setup</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Sales-Boosting Menu Improvements</li>
@@ -721,8 +719,7 @@ export default function LandingPage() {
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Business Profile Setup
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Create New Accounts</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Review Existing Accounts</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Create New & Review Existing Accounts</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Update Business Information</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Set Up Business Profiles</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Improve Profile Appearance</li>
@@ -738,8 +735,7 @@ export default function LandingPage() {
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Fees</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Top Selling Items</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report & Top Selling Items</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Business Performance Review</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Comparison</li>
                     <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access for Real-Time Tracking</li>
@@ -766,7 +762,6 @@ export default function LandingPage() {
                     Phase 2: Continuous Growth
                   </span>
                   <h3 className="text-lg sm:text-2xl font-black text-white">Monthly Growth Package</h3>
-                  <p className="text-[11px] sm:text-xs text-slate-400 mt-1">We help restaurants grow their business, increase online visibility, boost sales, and manage everything for continuous growth.</p>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£300</span>

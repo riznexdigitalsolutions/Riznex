@@ -83,7 +83,7 @@ const Icons = {
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [activePricingTab, setActivePricingTab] = useState<'month1' | 'growth'>('month1');
+  const [activePricingTab, setActivePricingTab] = useState<'month1' | 'growth' | 'social'>('month1');
   const [formSent, setFormSent] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -653,48 +653,52 @@ export default function LandingPage() {
             </p>
 
             {/* Mobile Tab Switcher */}
-            <div className="sm:hidden flex items-center justify-center mt-6 p-1 rounded-xl bg-white/[0.05] border border-white/10 max-w-xs mx-auto">
+            <div className="sm:hidden flex items-center justify-center mt-6 p-1 rounded-xl bg-white/[0.05] border border-white/10 mx-auto w-full max-w-[20rem]">
               <button
                 onClick={() => setActivePricingTab('month1')}
-                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
-                  activePricingTab === 'month1' 
-                    ? 'bg-[#E5B869] text-black shadow-md' 
-                    : 'text-slate-400 hover:text-white'
+                className={`flex-1 py-2 px-1 text-center rounded-lg text-[10px] font-bold transition-all ${
+                  activePricingTab === 'month1' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-400 hover:text-white'
                 }`}
               >
-                1st Month (£300)
+                1st Month
               </button>
               <button
                 onClick={() => setActivePricingTab('growth')}
-                className={`flex-1 py-2 rounded-lg text-xs font-bold transition-all ${
-                  activePricingTab === 'growth' 
-                    ? 'bg-[#E5B869] text-black shadow-md' 
-                    : 'text-slate-400 hover:text-white'
+                className={`flex-1 py-2 px-1 text-center rounded-lg text-[10px] font-bold transition-all ${
+                  activePricingTab === 'growth' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-400 hover:text-white'
                 }`}
               >
-                Ongoing (£250/mo)
+                Growth
+              </button>
+              <button
+                onClick={() => setActivePricingTab('social')}
+                className={`flex-1 py-2 px-1 text-center rounded-lg text-[10px] font-bold transition-all ${
+                  activePricingTab === 'social' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                Social
               </button>
             </div>
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 items-stretch max-w-7xl mx-auto w-full">
             
             {/* Plan 1: 1st Month Setup & Reporting */}
             <div className={`rounded-3xl p-5 sm:p-8 bg-[#0D0F17]/90 border transition-all flex flex-col relative w-full ${
               activePricingTab === 'month1' ? 'border-[#E5B869]/50 shadow-2xl shadow-[#E5B869]/10' : 'border-white/10'
-            } ${activePricingTab === 'growth' ? 'hidden sm:flex' : 'flex'}`}>
+            } ${activePricingTab !== 'month1' ? 'hidden lg:flex' : 'flex'}`}>
               
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
                     Phase 1: Foundation
                   </span>
-                  <h3 className="text-lg sm:text-2xl font-black text-white">Restaurant Setup & Reporting</h3>
+                  <h3 className="text-lg sm:text-xl font-black text-white leading-tight">Restaurant Setup & Reporting</h3>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£500</span>
-                  <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">£300</div>
+                  <div className="text-2xl sm:text-3xl font-black text-[#E5B869] tracking-tight">£300</div>
                   <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Save £200</span>
                 </div>
               </div>
@@ -716,7 +720,7 @@ export default function LandingPage() {
 
                 <div>
                   <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Business Profile Setup
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Profile Setup
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Create New & Review Existing Accounts</li>
@@ -729,25 +733,23 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Sales & Business Reports
                   </h4>
-                  
-                  <div className="mt-2.5 mb-3.5 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
-                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
-                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
-                      <Icons.Sparkles /> View Demo
-                    </Link>
-                  </div>
-
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Fees</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report & Top Selling Items</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Business Performance Review</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Comparison</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access for Real-Time Tracking</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access</li>
                   </ul>
+                  <div className="mt-4 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
+                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
+                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
+                      <Icons.Sparkles /> View Demo
+                    </Link>
+                  </div>
                 </div>
               </div>
 
@@ -761,7 +763,7 @@ export default function LandingPage() {
 
             {/* Plan 2: 2nd Month+ Monthly Growth Package */}
             <div className={`rounded-3xl p-5 sm:p-8 bg-gradient-to-b from-[#131622] to-[#0A0C14] border border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/15 flex flex-col relative w-full ${
-              activePricingTab === 'month1' ? 'hidden sm:flex' : 'flex'
+              activePricingTab !== 'growth' ? 'hidden lg:flex' : 'flex'
             }`}>
 
               <div className="flex justify-between items-start mb-6 pt-2">
@@ -769,11 +771,11 @@ export default function LandingPage() {
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#E5B869]/20 text-[#E5B869] border border-[#E5B869]/30 mb-2">
                     Phase 2: Continuous Growth
                   </span>
-                  <h3 className="text-lg sm:text-2xl font-black text-white">Monthly Growth Package</h3>
+                  <h3 className="text-lg sm:text-xl font-black text-white leading-tight">Monthly Growth Package</h3>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£300</span>
-                  <div className="text-2xl sm:text-4xl font-black text-[#E5B869] tracking-tight">
+                  <div className="text-2xl sm:text-3xl font-black text-[#E5B869] tracking-tight">
                     £250 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
                   </div>
                   <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Cancel Anytime</span>
@@ -786,10 +788,10 @@ export default function LandingPage() {
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Advertising
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> 4 Strategic Posts Per Week (8 Static & 8 Reels/mo)</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 4 Strategic Posts Per Week (8 Static & 8 Reels)</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Content Creation & Publishing</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Management</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Monthly Deals, Offers & Promo Campaign Setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> FB, Instagram & TikTok Management</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Deals, Offers & Promo Campaign Setup</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Brand Consistency Across All Platforms</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Performance Report</li>
                   </ul>
@@ -797,10 +799,10 @@ export default function LandingPage() {
 
                 <div>
                   <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Customer Support & Account Management
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Customer Support & Management
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Up to 12 Hours Daily Support (7 Days/Week)</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Up to 12 Hours Daily Support (7 Days)</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Daily Review Replies & Monitoring</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Menu Updates & Amendments</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Price Changes, Additions & Removals</li>
@@ -810,25 +812,23 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Sales & Business Reports
                   </h4>
-                  
-                  <div className="mt-2.5 mb-3.5 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
-                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
-                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
-                      <Icons.Sparkles /> View Demo
-                    </Link>
-                  </div>
-
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Charges</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report & Top Selling Items</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Business Performance & Customer Growth</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Comparison</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access for Real-Time Tracking</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access</li>
                   </ul>
+                  <div className="mt-4 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
+                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
+                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
+                      <Icons.Sparkles /> View Demo
+                    </Link>
+                  </div>
                 </div>
               </div>
 
@@ -837,6 +837,79 @@ export default function LandingPage() {
                 className="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] text-center shadow-lg shadow-[#E5B869]/30"
               >
                 Choose Monthly Growth Package
+              </a>
+            </div>
+
+            {/* Plan 3: Social Media Growth Package */}
+            <div className={`rounded-3xl p-5 sm:p-8 bg-[#0D0F17]/90 border border-white/10 transition-all flex flex-col relative w-full ${
+              activePricingTab !== 'social' ? 'hidden lg:flex' : 'flex'
+            }`}>
+
+              <div className="flex justify-between items-start mb-6 pt-2">
+                <div>
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
+                    Social Media & Advertising
+                  </span>
+                  <h3 className="text-lg sm:text-xl font-black text-white leading-tight">Social Media Growth Package</h3>
+                </div>
+                <div className="text-right shrink-0">
+                  <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                    £200 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Social Media Management
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> 12 Professional Posts Per Month</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 12 Reels Per Month</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Management</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Content Creation & Publishing</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Captions, Hashtags & Content Scheduling</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Promotional & Offer Content</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Food & Product Promotional Content</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Monthly Content Calendar</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Social Media Growth
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> Brand Consistency Across All Platforms</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Profile & Bio Optimisation</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Trending Content & Reel Ideas</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Best Posting Time Optimisation</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Customer Comments & Engagement Support</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Competitor & Social Media Review</li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Paid Advertising
+                  </h4>
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                    <li className="flex items-center gap-2"><Icons.Check /> Facebook & Instagram Ad Campaign Setup</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Monthly Promotional Ad Campaigns</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Audience Targeting & Location Targeting</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Ad Creative & Copy Preparation</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Campaign Monitoring & Optimisation</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Monthly Advertising Performance Report</li>
+                  </ul>
+                </div>
+              </div>
+
+              <a 
+                href="#contact" 
+                className="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-white hover:bg-slate-200 text-center shadow-lg transition-colors"
+              >
+                Choose Social Media Package
               </a>
             </div>
 

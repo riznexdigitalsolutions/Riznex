@@ -729,9 +729,17 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 border-b border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Sales & Business Reports
                   </h4>
+                  
+                  <div className="mt-2.5 mb-3.5 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
+                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
+                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
+                      <Icons.Sparkles /> View Demo
+                    </Link>
+                  </div>
+
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Fees</li>
@@ -802,9 +810,17 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 border-b border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Sales & Business Reports
                   </h4>
+                  
+                  <div className="mt-2.5 mb-3.5 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
+                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
+                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
+                      <Icons.Sparkles /> View Demo
+                    </Link>
+                  </div>
+
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Charges</li>

@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
@@ -205,7 +205,7 @@ model ConsultationRequest {
   contactName    String
   emailAddress   String
   phoneNumber    String?
-  message        String
+  message        String   @db.Text
   status         String   @default("new") // "new", "contacted", "closed"
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt

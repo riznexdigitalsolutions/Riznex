@@ -835,7 +835,7 @@ export default function LandingPage() {
               activePricingTab !== 'social' ? 'hidden sm:flex' : 'flex'
             }`}>
 
-              <div className="flex justify-between items-start mb-6 pt-2">
+              <div className="flex justify-between items-start mb-6 pt-2 h-[7.5rem]">
                 <div>
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
                     Social Media & Advertising
@@ -879,16 +879,10 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Paid Advertising
                   </h4>
 
-                  <div className="mt-2.5 mb-3.5 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
-                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
-                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
-                      <Icons.Sparkles /> View Demo
-                    </Link>
-                  </div>
 
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Facebook & Instagram Ad Campaign Setup</li>
@@ -914,7 +908,7 @@ export default function LandingPage() {
               activePricingTab !== 'custom' ? 'hidden sm:flex' : 'flex'
             }`}>
 
-              <div className="flex flex-col items-start mb-6 pt-2">
+              <div className="flex flex-col items-start mb-6 pt-2 h-[7.5rem]">
                 <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
                   CUSTOM BUSINESS SOLUTION
                 </span>
@@ -954,16 +948,10 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Business Support
                   </h4>
 
-                  <div className="mt-2.5 mb-3.5 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
-                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
-                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
-                      <Icons.Sparkles /> View Demo
-                    </Link>
-                  </div>
 
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Reporting & Analytics</li>

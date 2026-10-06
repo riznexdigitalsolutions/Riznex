@@ -127,12 +127,18 @@ export default function LandingPage() {
       emailAddress: formData.get('emailAddress'),
       phoneNumber: formData.get('phoneNumber'),
       message: formData.get('message'),
+      _subject: `New Consultation Request from ${formData.get('restaurantName')}`,
+      _captcha: "false" // Disable captcha for smooth UX
     };
 
     try {
-      const response = await fetch('/api/contact', {
+      // Using FormSubmit for zero-config email sending
+      const response = await fetch('https://formsubmit.co/ajax/riznexdigitalsolutions@gmail.com', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify(data),
       });
 

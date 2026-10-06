@@ -528,9 +528,6 @@ export default function LandingPage() {
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
                 Keep menus synced across Uber Eats, Just Eat, and Deliveroo. We add categories, modify prices, configure modifier add-ons, and optimize dishes to maximize order basket values.
               </p>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
-                <Icons.Check /> Instant multi-platform sync
-              </div>
             </div>
 
             {/* 2. Social Media Management */}
@@ -542,9 +539,6 @@ export default function LandingPage() {
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
                 Engage hungry locals through eye-catching food reels, static posts, and strategic story campaigns on Instagram, TikTok, and Facebook that convert browsers into repeat diners.
               </p>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
-                <Icons.Check /> 3+ weekly posts & targeted reels
-              </div>
             </div>
 
             {/* 3. Business Profiles & Maps */}
@@ -556,9 +550,6 @@ export default function LandingPage() {
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
                 Optimize your Google Business Profile, Apple Maps, and local search presence. Verified opening hours, location details, high-res menus, and local search visibility.
               </p>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
-                <Icons.Check /> Top Google search ranking
-              </div>
             </div>
 
             {/* 4. Customer Support & Reviews */}
@@ -570,9 +561,6 @@ export default function LandingPage() {
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
                 We safeguard your restaurant's 5-star reputation. We handle online guest reviews, reply politely to feedback across platforms, and promptly resolve customer inquiries.
               </p>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
-                <Icons.Check /> 7-day-a-week review management
-              </div>
             </div>
 
             {/* 5. Business & Financial Reporting */}
@@ -584,9 +572,6 @@ export default function LandingPage() {
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
                 No more guessing where your money goes. Receive weekly consolidated P&L statements that break down platform commissions, VAT, supplier invoices, staff wages, and genuine profits.
               </p>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
-                <Icons.Check /> Clear weekly profit calculation
-              </div>
             </div>
 
             {/* 6. Growth & Order Surges */}
@@ -598,9 +583,6 @@ export default function LandingPage() {
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
                 Launch data-driven meal deals, promotional discounts, and localized ad campaigns on Uber Eats and social media to capture high-volume orders during peak dinner rushes.
               </p>
-              <div className="pt-3 border-t border-white/[0.06] flex items-center gap-2 text-xs font-medium text-slate-400">
-                <Icons.Check /> Return on ad spend (ROAS) focus
-              </div>
             </div>
 
           </div>
@@ -873,13 +855,11 @@ export default function LandingPage() {
                     <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Social Media Management
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> 12 Professional Posts Per Month</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> 12 Reels Per Month</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> 12 Professional Posts & 12 Reels Per Month</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Management</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Content Creation & Publishing</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Captions, Hashtags & Content Scheduling</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Promotional & Offer Content</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Food & Product Promotional Content</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Food, Product & Promotional Offer Content</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Content Calendar</li>
                   </ul>
                 </div>
@@ -899,9 +879,17 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 border-b border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Paid Advertising
                   </h4>
+
+                  <div className="mt-2.5 mb-3.5 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
+                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
+                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
+                      <Icons.Sparkles /> View Demo
+                    </Link>
+                  </div>
+
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Facebook & Instagram Ad Campaign Setup</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Promotional Ad Campaigns</li>
@@ -932,7 +920,7 @@ export default function LandingPage() {
                 </span>
                 <h3 className="text-lg sm:text-xl font-black text-white leading-tight">Build Your Own Package</h3>
                 <p className="text-[10px] sm:text-[11px] text-slate-400 mt-2 leading-relaxed">
-                  Choose only the services your business needs. We create a package around your goals, budget and requirements.
+                  Pricing depends on the services, workload and support required. Tell us what you need &mdash; we will create the right package for your business.
                 </p>
               </div>
 
@@ -942,14 +930,11 @@ export default function LandingPage() {
                     <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Custom Services
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Choose Your Required Services</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Food & Restaurant Photography</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Choose Required Services & Photography</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Social Media Management</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Custom Number of Posts & Reels</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Management</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Custom Posts, Reels & Content</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Menu & Platform Management</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Customer Review Management</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> Business Profile Management</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Customer Review & Profile Management</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Sales & Business Reporting</li>
                   </ul>
                 </div>
@@ -959,8 +944,7 @@ export default function LandingPage() {
                     <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Marketing & Advertising
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
-                    <li className="flex items-center gap-2"><Icons.Check /> Facebook & Instagram Advertising</li>
-                    <li className="flex items-center gap-2"><Icons.Check /> TikTok Advertising</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Advertising</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Campaign Setup</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Audience & Location Targeting</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Ad Creative & Copywriting</li>
@@ -970,9 +954,17 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 border-b border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Business Support
                   </h4>
+
+                  <div className="mt-2.5 mb-3.5 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
+                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
+                    <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
+                      <Icons.Sparkles /> View Demo
+                    </Link>
+                  </div>
+
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Reporting & Analytics</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Competitor & Market Research</li>
@@ -981,13 +973,6 @@ export default function LandingPage() {
                     <li className="flex items-center gap-2"><Icons.Check /> Ongoing Business Support</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Flexible Monthly Requirements</li>
                   </ul>
-                </div>
-
-                <div className="mt-4 p-3 rounded-lg bg-white/[0.03] border border-white/[0.08]">
-                  <p className="text-[10px] sm:text-[11px] text-slate-300 leading-relaxed text-center">
-                    <span className="text-[#E5B869] font-bold block mb-1 tracking-wider uppercase">Custom Quote</span>
-                    Pricing depends on the services, workload and support required. Tell us what you need &mdash; we will create the right package for your business.
-                  </p>
                 </div>
               </div>
 
@@ -1067,31 +1052,6 @@ export default function LandingPage() {
             ))}
           </div>
 
-        </div>
-      </section>
-
-      {/* CLIENT PORTAL CTA BANNER */}
-      <section className="py-12 sm:py-16 px-3.5 sm:px-6 lg:px-8 w-full overflow-hidden">
-        <div className="max-w-5xl mx-auto rounded-3xl bg-gradient-to-r from-[#111420] via-[#0E111A] to-[#161B29] border border-white/10 p-6 sm:p-12 relative overflow-hidden shadow-2xl w-full">
-          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6 sm:gap-8">
-            <div className="text-left max-w-xl">
-              <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#E5B869] block mb-2 flex items-center gap-1.5">
-                <Icons.Lock /> Secure Client Portal
-              </span>
-              <h2 className="text-xl sm:text-3xl font-black text-white tracking-tight mb-2">
-                Already a Riznex Client?
-              </h2>
-              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Log into your personalized dashboard to inspect live delivery platform sales, OCR scanned invoices, staff wages, and weekly profit margins.
-              </p>
-            </div>
-            <Link 
-              href="/client-login" 
-              className="w-full sm:w-auto px-7 py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] shadow-lg shadow-[#E5B869]/25 text-center shrink-0 flex items-center justify-center gap-2"
-            >
-              Access Dashboard <Icons.ArrowRight />
-            </Link>
-          </div>
         </div>
       </section>
 

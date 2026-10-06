@@ -690,7 +690,7 @@ export default function LandingPage() {
           </div>
 
           {/* Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6 items-stretch max-w-[100rem] mx-auto w-full px-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto w-full">
             
             {/* Plan 1: 1st Month Setup & Reporting */}
             <div className={`rounded-3xl p-5 sm:p-7 bg-[#0D0F17]/90 border transition-all flex flex-col relative w-full ${
@@ -943,6 +943,7 @@ export default function LandingPage() {
                   </h4>
                   <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Choose Your Required Services</li>
+                    <li className="flex items-center gap-2"><Icons.Check /> Food & Restaurant Photography</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Social Media Management</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Number of Posts & Reels</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Management</li>

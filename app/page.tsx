@@ -306,10 +306,8 @@ export default function LandingPage() {
 
               {/* Headline */}
               <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12] mb-5 break-words w-full">
-                Run Smarter. <br />
-                <span className="bg-gradient-to-r from-white via-slate-200 to-[#E5B869] bg-clip-text text-transparent">
-                  Grow Faster Online.
-                </span>
+                Stop Wasting Hours on Delivery Apps. <br />
+                We Run Your Entire Digital Operation So You Can Focus on <span className="text-[#E5B869]">the Food.</span>
               </h1>
 
               {/* Subtitle */}

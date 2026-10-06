@@ -116,13 +116,37 @@ export default function LandingPage() {
     }
   }, [activeLegalModal, mobileMenuOpen]);
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setFormSubmitting(true);
-    setTimeout(() => {
+    
+    const formData = new FormData(e.currentTarget);
+    const data = {
+      restaurantName: formData.get('restaurantName'),
+      yourName: formData.get('yourName'),
+      emailAddress: formData.get('emailAddress'),
+      phoneNumber: formData.get('phoneNumber'),
+      message: formData.get('message'),
+    };
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setFormSent(true);
+      } else {
+        alert('Failed to send request. Please try again later.');
+      }
+    } catch (error) {
+      console.error('Error sending form:', error);
+      alert('Failed to send request. Please try again later.');
+    } finally {
       setFormSubmitting(false);
-      setFormSent(true);
-    }, 900);
+    }
   };
 
   return (
@@ -559,7 +583,7 @@ export default function LandingPage() {
               </div>
               <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Customer Support & Reviews</h3>
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
-                We safeguard your restaurant's 5-star reputation. We handle online guest reviews, reply politely to feedback across platforms, and promptly resolve customer inquiries.
+                We safeguard your restaurant&apos;s 5-star reputation. We handle online guest reviews, reply politely to feedback across platforms, and promptly resolve customer inquiries.
               </p>
             </div>
 
@@ -1049,7 +1073,7 @@ export default function LandingPage() {
           
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869] block mb-2">Get Started Today</span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight break-words">Ready to Take Control of Your Restaurant's Growth?</h2>
+            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight break-words">Ready to Take Control of Your Restaurant&apos;s Growth?</h2>
             <p className="mt-2 text-slate-400 text-xs sm:text-sm">Send us a quick message. Our team will review your menu and delivery platforms and get in touch within 24 hours.</p>
           </div>
 
@@ -1071,6 +1095,7 @@ export default function LandingPage() {
                     <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Restaurant Name</label>
                     <input 
                       type="text" 
+                      name="restaurantName"
                       required 
                       placeholder="e.g. Spice Lounge UK" 
                       className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
@@ -1080,6 +1105,7 @@ export default function LandingPage() {
                     <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Your Name</label>
                     <input 
                       type="text" 
+                      name="yourName"
                       required 
                       placeholder="e.g. Tariq Khan" 
                       className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
@@ -1092,6 +1118,7 @@ export default function LandingPage() {
                     <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Email Address</label>
                     <input 
                       type="email" 
+                      name="emailAddress"
                       required 
                       placeholder="manager@restaurant.co.uk" 
                       className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
@@ -1101,6 +1128,7 @@ export default function LandingPage() {
                     <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Phone Number</label>
                     <input 
                       type="tel" 
+                      name="phoneNumber"
                       required 
                       placeholder="e.g. +44 7911 123456" 
                       className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
@@ -1111,6 +1139,7 @@ export default function LandingPage() {
                 <div>
                   <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">How can we assist you?</label>
                   <textarea 
+                    name="message"
                     rows={4} 
                     required 
                     placeholder="Tell us about your current delivery platforms, weekly issues, or goals..." 

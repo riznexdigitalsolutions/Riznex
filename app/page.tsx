@@ -122,45 +122,34 @@ export default function LandingPage() {
     
     const formData = new FormData(e.currentTarget);
     const data = {
-      restaurantName: formData.get('restaurantName') as string,
-      yourName: formData.get('yourName') as string,
-      emailAddress: formData.get('emailAddress') as string,
-      phoneNumber: formData.get('phoneNumber') as string,
-      message: formData.get('message') as string,
+      restaurantName: formData.get('restaurantName'),
+      yourName: formData.get('yourName'),
+      emailAddress: formData.get('emailAddress'),
+      phoneNumber: formData.get('phoneNumber'),
+      message: formData.get('message'),
+      _subject: `New Consultation Request from ${formData.get('restaurantName')}`,
+      _captcha: "false" // Disable captcha for smooth UX
     };
 
     try {
-      // 1. Save to database via our API
-      await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      // 2. Send email via FormSubmit.co
-      const emailData = {
-        ...data,
-        _subject: `New Consultation Request from ${data.restaurantName}`,
-        _captcha: "false"
-      };
-      
+      // Using FormSubmit for zero-config email sending
       const response = await fetch('https://formsubmit.co/ajax/riznexdigitalsolutions@gmail.com', {
         method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
           'Accept': 'application/json'
         },
-        body: JSON.stringify(emailData),
+        body: JSON.stringify(data),
       });
 
       if (response.ok) {
         setFormSent(true);
       } else {
-        alert('Failed to send email. Please try again later.');
+        alert('Failed to send request. Please try again later.');
       }
     } catch (error) {
       console.error('Error sending form:', error);
-      alert('Failed to process request. Please try again later.');
+      alert('Failed to send request. Please try again later.');
     } finally {
       setFormSubmitting(false);
     }

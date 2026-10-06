@@ -1,13 +1,12 @@
-﻿'use client'
+'use client'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 
 const navItems = [
-  { href: '/admin', icon: 'ðŸ“Š', label: 'All Clients' },
-  { href: '/admin/requests', icon: '📝', label: 'Consultations' },
-  { href: '/admin/settings', icon: 'âš™ï¸', label: 'Admin Settings' },
+  { href: '/admin', icon: '📊', label: 'All Clients' },
+  { href: '/admin/settings', icon: '⚙️', label: 'Admin Settings' },
 ]
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -49,7 +48,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       {open && <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={() => setOpen(false)} />}
       <div className="flex-1 lg:ml-60 flex flex-col min-h-screen">
         <header className="sticky top-0 z-30 bg-[#0a0c14]/80 backdrop-blur border-b border-[#1f2947] px-6 py-3 flex items-center h-14 lg:hidden">
-          <button className="text-slate-400 hover:text-white p-1" onClick={() => setOpen(true)}>â˜°</button>
+          <button className="text-slate-400 hover:text-white p-1" onClick={() => setOpen(true)}>☰</button>
         </header>
         <main className="flex-1 p-6 lg:pt-8">{children}</main>
       </div>

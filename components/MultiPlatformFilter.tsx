@@ -89,28 +89,28 @@ export default function MultiPlatformFilter({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="bg-[#0a0c14] border border-[#1f2947] hover:border-blue-500/50 rounded-xl px-3.5 py-2 flex items-center gap-2 text-xs font-bold text-slate-200 hover:text-white transition-all shadow-sm cursor-pointer"
+        className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] hover:border-blue-500/50 rounded-xl px-3.5 py-2 flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-all shadow-sm cursor-pointer"
       >
         <span className="text-sm opacity-80">📱</span>
         <span>{getTriggerLabel()}</span>
         {!isAllSelected && (
-          <span className="bg-blue-500/20 text-blue-400 border border-blue-500/30 text-[10px] font-black px-1.5 py-0.5 rounded-full">
+          <span className="bg-blue-500/20 text-blue-700 dark:text-blue-400 border border-blue-500/30 text-[10px] font-black px-1.5 py-0.5 rounded-full">
             {currentArray.length}
           </span>
         )}
-        <span className={`text-[10px] text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+        <span className={`text-[10px] text-slate-500 dark:text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
       </button>
 
       {/* Custom Dropdown Menu */}
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-64 bg-[#111520] border border-[#1f2947] rounded-2xl shadow-2xl z-50 p-3 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1.5 flex items-center justify-between border-b border-[#1f2947]/60 mb-2">
+        <div className="absolute left-0 mt-2 w-64 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl shadow-2xl z-50 p-3 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-2 py-1.5 flex items-center justify-between border-b border-slate-200/60 dark:border-[#1f2947]/60 mb-2">
             <span>Filter Platforms</span>
             {currentArray.length > 0 && (
               <button
                 type="button"
                 onClick={() => onChange('')}
-                className="text-blue-400 hover:text-blue-300 font-bold lowercase text-[11px]"
+                className="text-blue-700 dark:text-blue-400 hover:text-blue-300 font-bold lowercase text-[11px]"
               >
                 reset
               </button>
@@ -122,14 +122,14 @@ export default function MultiPlatformFilter({
             <label
               onClick={handleToggleAll}
               className={`flex items-center gap-3 px-2.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-colors ${
-                isAllSelected ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' : 'text-slate-300 hover:bg-[#161b2c]'
+                isAllSelected ? 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20' : 'text-slate-600 dark:text-slate-300 hover:bg-[#161b2c]'
               }`}
             >
               <input
                 type="checkbox"
                 checked={isAllSelected}
                 onChange={() => {}}
-                className="w-4 h-4 rounded border-[#2d3b5e] bg-[#1a2235] text-blue-500 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-200 dark:bg-[#1a2235] text-blue-500 focus:ring-blue-500 cursor-pointer"
               />
               <span>All Platforms</span>
             </label>
@@ -145,7 +145,7 @@ export default function MultiPlatformFilter({
                     handleToggleOption(opt.value)
                   }}
                   className={`flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors ${
-                    isChecked ? 'bg-blue-500/10 text-white border border-blue-500/20' : 'text-slate-300 hover:bg-[#161b2c]'
+                    isChecked ? 'bg-blue-500/10 text-slate-900 dark:text-white border border-blue-500/20' : 'text-slate-600 dark:text-slate-300 hover:bg-[#161b2c]'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -153,7 +153,7 @@ export default function MultiPlatformFilter({
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => {}}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-[#1a2235] text-blue-500 focus:ring-blue-500 cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-200 dark:bg-[#1a2235] text-blue-500 focus:ring-blue-500 cursor-pointer"
                     />
                     <span className="flex items-center gap-2">
                       {opt.color && (
@@ -162,7 +162,7 @@ export default function MultiPlatformFilter({
                       {opt.label}
                     </span>
                   </div>
-                  {isChecked && <span className="text-blue-400 text-xs font-bold">✓</span>}
+                  {isChecked && <span className="text-blue-700 dark:text-blue-400 text-xs font-bold">✓</span>}
                 </label>
               )
             })}
@@ -172,3 +172,4 @@ export default function MultiPlatformFilter({
     </div>
   )
 }
+

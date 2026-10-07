@@ -93,12 +93,12 @@ export function HungryBirdsExpenses() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white">Expenses</h1>
-          <p className="text-slate-400 text-sm mt-1">Track wages, utilities, fuel, rent and more</p>
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white">Expenses</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Track wages, utilities, fuel, rent and more</p>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
-          <div className="flex gap-1.5 bg-[#111520] border border-[#1f2947] rounded-xl p-1.5 shadow-sm">
-            <button onClick={() => setStoreFilter('')} className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>Overall</button>
+          <div className="flex gap-1.5 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-1.5 shadow-sm">
+            <button onClick={() => setStoreFilter('')} className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>Overall</button>
           </div>
           {selectedIds.size > 0 && (
             <button 
@@ -112,7 +112,7 @@ export function HungryBirdsExpenses() {
           <button
             id="add-expense-btn"
             onClick={() => { setShowForm(true); setEditId(null); setForm(EMPTY_FORM) }}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition"
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition"
           >
             + Add Expense
           </button>
@@ -122,7 +122,7 @@ export function HungryBirdsExpenses() {
       {/* Category totals */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {Object.entries(catTotals).map(([cat, total]) => (
-          <div key={cat} className="bg-[#111520] border border-[#1f2947] rounded-xl p-3">
+          <div key={cat} className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-3">
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">{expenseCategoryLabel(cat)}</div>
             <div className="text-lg font-black text-red-400">{gbp(total)}</div>
           </div>
@@ -134,27 +134,27 @@ export function HungryBirdsExpenses() {
       </div>
 
       {/* Filter */}
-      <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-4 flex gap-3 flex-wrap items-center">
+      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 flex gap-3 flex-wrap items-center">
         <select
           value={filter.category}
           onChange={e => setFilter(f => ({ ...f, category: e.target.value }))}
-          className="bg-transparent text-white px-2 py-1 text-sm focus:outline-none"
+          className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-sm focus:outline-none"
         >
-          <option value="" className="bg-[#111520] text-white">All Categories</option>
-          {EXPENSE_CATEGORIES.map(c => <option key={c.value} value={c.value} className="bg-[#111520] text-white">{c.label}</option>)}
+          <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Categories</option>
+          {EXPENSE_CATEGORIES.map(c => <option key={c.value} value={c.value} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">{c.label}</option>)}
         </select>
-        <div className="w-[1px] h-4 bg-[#1f2947]"></div>
+        <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
         <DateFilter filter={filter} setFilter={setFilter} />
-        <div className="w-[1px] h-4 bg-[#1f2947]"></div>
-        <button onClick={() => setFilter({ category: '', ...defaultDateFilter() })} className="text-slate-400 hover:text-white text-xs px-2 py-1 font-semibold transition">Reset</button>
+        <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
+        <button onClick={() => setFilter({ category: '', ...defaultDateFilter() })} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs px-2 py-1 font-semibold transition">Reset</button>
       </div>
 
       {/* Table */}
-      <div className="bg-[#111520] border border-[#1f2947] rounded-2xl overflow-hidden">
+      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#161b2c] border-b border-[#1f2947]">
+              <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
                 <th className="px-4 py-3 w-12 text-center">
                   <input 
                     type="checkbox" 
@@ -163,7 +163,7 @@ export function HungryBirdsExpenses() {
                       if (e.target.checked) setSelectedIds(new Set(filteredExpenses.map(x => x.id)))
                       else setSelectedIds(new Set())
                     }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-[#1f2947] text-blue-500 cursor-pointer"
+                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 cursor-pointer"
                   />
                 </th>
                 {['Category', 'Subcategory', 'Amount', 'Period', 'Week', 'Month', 'Notes', 'Actions'].map(h => (
@@ -186,7 +186,7 @@ export function HungryBirdsExpenses() {
 
                 const isSelected = selectedIds.has(e.id);
                 return (
-                <tr key={e.id} className={`border-b border-[#1f2947] transition-colors ${isSelected ? 'bg-blue-500/5' : 'hover:bg-[#161b2c]'}`}>
+                <tr key={e.id} className={`border-b border-slate-200 dark:border-[#1f2947] transition-colors ${isSelected ? 'bg-blue-500/5' : 'hover:bg-[#161b2c]'}`}>
                   <td className="px-4 py-3 w-12 text-center">
                     <input 
                       type="checkbox"
@@ -197,26 +197,26 @@ export function HungryBirdsExpenses() {
                         else next.add(e.id)
                         setSelectedIds(next)
                       }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-[#1f2947] text-blue-500 cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 cursor-pointer"
                     />
                   </td>
                   <td className="px-4 py-3">
-                    <span className="inline-block bg-purple-500/10 text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded-full text-[11px] font-bold">
+                    <span className="inline-block bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded-full text-[11px] font-bold">
                       {expenseCategoryLabel(e.category)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-300">{e.subcategory || '—'}</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{e.subcategory || '—'}</td>
                   <td className="px-4 py-3 font-bold text-red-400">{gbp(e.amount)}</td>
-                  <td className="px-4 py-3 text-slate-400 capitalize">{e.period}</td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">{weekStr}</td>
-                  <td className="px-4 py-3 text-slate-400 whitespace-nowrap">{monthStr}</td>
+                  <td className="px-4 py-3 text-slate-500 dark:text-slate-400 capitalize">{e.period}</td>
+                  <td className="px-4 py-3 text-slate-500 dark:text-slate-400 whitespace-nowrap">{weekStr}</td>
+                  <td className="px-4 py-3 text-slate-500 dark:text-slate-400 whitespace-nowrap">{monthStr}</td>
                   <td className="px-4 py-3 text-slate-500 text-xs">{e.notes || '—'}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
                       <button onClick={() => {
                         setForm({ category: e.category, subcategory: e.subcategory ?? '', amount: e.amount.toString(), period: e.period, date: e.date.split('T')[0], notes: e.notes ?? '' })
                         setEditId(e.id); setShowForm(true)
-                      }} className="text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      }} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                       <button onClick={() => handleDelete(e.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
                     </div>
                   </td>
@@ -229,55 +229,55 @@ export function HungryBirdsExpenses() {
 
       {/* Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
-            <h2 className="text-lg font-bold text-white mb-5">{editId ? 'Edit' : 'Add'} Expense</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Expense</h2>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Category</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Category</label>
                   <select value={form.category} onChange={e => setForm(f => ({ ...f, category: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
                     {EXPENSE_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Subcategory / Name</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Subcategory / Name</label>
                   <input type="text" value={form.subcategory} onChange={e => setForm(f => ({ ...f, subcategory: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="e.g. Staff name" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="e.g. Staff name" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Amount (£)</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Amount (£)</label>
                   <input type="number" step="0.01" value={form.amount} onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0.00" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0.00" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Period</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Period</label>
                   <select value={form.period} onChange={e => setForm(f => ({ ...f, period: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
                     <option value="weekly">Weekly</option>
                     <option value="monthly">Monthly</option>
                   </select>
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Sales Week Ending Date (Sunday)</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Sales Week Ending Date (Sunday)</label>
                 <input type="date" value={form.date} onChange={e => setForm(f => ({ ...f, date: e.target.value }))}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Notes</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Notes</label>
                 <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Optional notes" />
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Optional notes" />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
               <button onClick={() => { setShowForm(false); setEditId(null) }}
-                className="flex-1 border border-[#1f2947] text-slate-400 hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+                className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
               <button onClick={handleSave} disabled={saving}
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
+                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
                 {saving ? 'Saving…' : 'Save'}
               </button>
             </div>

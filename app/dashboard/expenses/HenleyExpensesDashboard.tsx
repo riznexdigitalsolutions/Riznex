@@ -19,8 +19,8 @@ const GRAD: Record<string,string> = {
   emerald:'from-emerald-500 to-green-500',
 }
 const CLR: Record<string,string> = {
-  blue:'text-blue-400', purple:'text-purple-400', orange:'text-orange-400',
-  cyan:'text-cyan-400', emerald:'text-emerald-400',
+  blue:'text-blue-700 dark:text-blue-400', purple:'text-purple-600 dark:text-purple-400', orange:'text-orange-700 dark:text-orange-400',
+  cyan:'text-cyan-700 dark:text-cyan-400', emerald:'text-emerald-600 dark:text-emerald-400',
 }
 const BORDER: Record<string,string> = {
   blue:'border-blue-500/30 bg-blue-500/5', purple:'border-purple-500/30 bg-purple-500/5',
@@ -153,7 +153,7 @@ export function HenleyExpensesDashboard() {
   useEffect(() => { fetchData() }, [fetchData])
 
   const TH = ({ cols }: { cols: string[] }) => (
-    <thead><tr className="bg-[#161b2c] border-b border-[#1f2947]">
+    <thead><tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
       {cols.map(h => <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">{h}</th>)}
     </tr></thead>
   )
@@ -169,64 +169,64 @@ export function HenleyExpensesDashboard() {
       <div className="space-y-4">
         {/* Top Row: Centered Title & Subtitle */}
         <div className="text-center space-y-1">
-          <h1 className="text-3xl font-black text-white tracking-tight">Expenses Summary</h1>
-          <p className="text-slate-400 text-sm font-medium">Full breakdown of all outgoing cash</p>
+          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Expenses Summary</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Full breakdown of all outgoing cash</p>
         </div>
 
         {/* Middle Row: Centered Filter Toolbar */}
         <div className="flex justify-center items-center print:hidden">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
             {/* Store toggle */}
-            <div className="flex items-center gap-1.5 bg-[#0a0c14] border border-[#1f2947] p-1 rounded-xl">
+            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
               <button 
                 onClick={() => setStoreFilter('')} 
-                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
               >
                 Combined
               </button>
               <button 
                 onClick={() => setStoreFilter('Herbies Pizza')} 
-                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
               >
                 Herbies Pizza
               </button>
               <button 
                 onClick={() => setStoreFilter('Tasty Bun')} 
-                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
               >
                 Tasty Bun
               </button>
             </div>
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             {/* Date Filter */}
             <DateFilter filter={filter} setFilter={setFilter} />
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             {/* Reset Button */}
             <button 
               onClick={() => { setFilter(defaultDateFilter()); setStoreFilter(''); }} 
-              className="text-slate-400 hover:text-white hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               Reset
             </button>
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             {/* Unified Auto-Fill & Export PDF */}
             <div data-html2canvas-ignore="true" className="flex gap-2">
               <button 
                 onClick={() => setShowUnifiedAutoFill(true)}
-                className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 transition flex items-center gap-1.5 cursor-pointer"
+                className="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 transition flex items-center gap-1.5 cursor-pointer"
               >
                 <span>⚡</span> Auto-Add All
               </button>
               <button 
                 onClick={() => exportToPDF('expenses-export-area', `Henley_Expenses_${storeFilter || 'Combined'}_${filter.to || 'All_Time'}`)}
-                className="bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                className="bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
               >
                 <span>📄</span> Export PDF
               </button>
@@ -237,51 +237,51 @@ export function HenleyExpensesDashboard() {
 
       {loading ? (
         <div className="flex items-center justify-center py-24">
-          <div className="w-10 h-10 border-2 border-[#1f2947] border-t-blue-500 rounded-full animate-spin" />
+          <div className="w-10 h-10 border-2 border-slate-200 dark:border-[#1f2947] border-t-blue-500 rounded-full animate-spin" />
         </div>
       ) : (
         <div className="space-y-5">
 
           {/* ── Quick Stats Row ─────────────────────────────── */}
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-            <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
+            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Staff Wages</div>
-              <div className="text-lg font-black text-purple-400">{gbp(totals.wages)}</div>
+              <div className="text-lg font-black text-purple-600 dark:text-purple-400">{gbp(totals.wages)}</div>
             </div>
-            <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
+            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Suppliers</div>
-              <div className="text-lg font-black text-orange-400">{gbp(totals.suppliers)}</div>
+              <div className="text-lg font-black text-orange-700 dark:text-orange-400">{gbp(totals.suppliers)}</div>
             </div>
-            <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
+            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Utilities</div>
-              <div className="text-lg font-black text-cyan-400">{gbp(totals.utilities)}</div>
+              <div className="text-lg font-black text-cyan-700 dark:text-cyan-400">{gbp(totals.utilities)}</div>
             </div>
-            <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
+            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Marketing</div>
-              <div className="text-lg font-black text-pink-400">{gbp(totals.marketing)}</div>
+              <div className="text-lg font-black text-pink-700 dark:text-pink-400">{gbp(totals.marketing)}</div>
             </div>
-            <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
+            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Other</div>
-              <div className="text-lg font-black text-emerald-400">{gbp(totals.other)}</div>
+              <div className="text-lg font-black text-emerald-600 dark:text-emerald-400">{gbp(totals.other)}</div>
             </div>
             <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex flex-col justify-center relative overflow-hidden group">
               <div className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 opacity-50" />
               <div className="text-[10px] font-bold text-red-400/80 uppercase tracking-widest mb-1">Total Outgoing</div>
-              <div className="text-xl font-black text-white">{gbp(totals.grandTotal)}</div>
+              <div className="text-xl font-black text-slate-900 dark:text-white">{gbp(totals.grandTotal)}</div>
             </div>
           </div>
           {storeFilter && <div className="mb-4 inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-1.5 rounded-full text-xs font-bold z-10">½ split applied for shared {storeFilter} expenses</div>}
 
           {activeTab === 'overview' && (
-            <div className="mt-8 bg-[#111520] border border-[#1f2947] rounded-2xl overflow-hidden shadow-2xl">
-              <div className="px-6 py-4 border-b border-[#1f2947] bg-[#161b2c] flex items-center justify-between">
-                <h3 className="text-lg font-black text-white">Master Ledger: All Outgoing Cash</h3>
+            <div className="mt-8 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden shadow-2xl">
+              <div className="px-6 py-4 border-b border-slate-200 dark:border-[#1f2947] bg-[#161b2c] flex items-center justify-between">
+                <h3 className="text-lg font-black text-slate-900 dark:text-white">Master Ledger: All Outgoing Cash</h3>
                 <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Single Sheet View</div>
               </div>
               <div className="overflow-x-auto max-h-[600px]">
                 <table className="w-full text-sm">
                   <thead className="sticky top-0 bg-[#161b2c] shadow-md z-10">
-                    <tr className="border-b border-[#1f2947]">
+                    <tr className="border-b border-slate-200 dark:border-[#1f2947]">
                       <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Date</th>
                       <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Type</th>
                       <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Store</th>
@@ -291,22 +291,22 @@ export function HenleyExpensesDashboard() {
                   </thead>
                   <tbody>
                     {[
-                      ...wageItems.map(w => ({ id: w.id, date: w.weekEnd, type: 'Staff Wage', name: w.staff?.name || 'Staff', store: w.store, amount: w.amount, color: 'text-purple-400', bg: 'bg-purple-500/10 border-purple-500/20' })),
-                      ...supplierItems.map(s => ({ id: s.id, date: s.invoiceDate, type: 'Supplier', name: s.supplier?.name || 'Unknown', store: s.store || s.supplier?.franchise || 'Combined', amount: s.amount, color: 'text-orange-400', bg: 'bg-orange-500/10 border-orange-500/20' })),
-                      ...utilityItems.map(u => ({ id: u.id, date: u.date, type: 'Utility', name: u.subcategory || u.category, store: u.store, amount: u.displayAmount || u.amount, color: 'text-cyan-400', bg: 'bg-cyan-500/10 border-cyan-500/20' })),
-                      ...marketingItems.map(m => ({ id: m.id, date: m.date, type: 'Marketing', name: m.subcategory || m.category, store: m.store, amount: m.displayAmount || m.amount, color: 'text-pink-400', bg: 'bg-pink-500/10 border-pink-500/20' })),
-                      ...otherItems.map(o => ({ id: o.id, date: o.date, type: 'Other', name: o.subcategory || o.notes || o.category, store: o.store, amount: o.displayAmount || o.amount, color: 'text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' }))
+                      ...wageItems.map(w => ({ id: w.id, date: w.weekEnd, type: 'Staff Wage', name: w.staff?.name || 'Staff', store: w.store, amount: w.amount, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-500/10 border-purple-500/20' })),
+                      ...supplierItems.map(s => ({ id: s.id, date: s.invoiceDate, type: 'Supplier', name: s.supplier?.name || 'Unknown', store: s.store || s.supplier?.franchise || 'Combined', amount: s.amount, color: 'text-orange-700 dark:text-orange-400', bg: 'bg-orange-500/10 border-orange-500/20' })),
+                      ...utilityItems.map(u => ({ id: u.id, date: u.date, type: 'Utility', name: u.subcategory || u.category, store: u.store, amount: u.displayAmount || u.amount, color: 'text-cyan-700 dark:text-cyan-400', bg: 'bg-cyan-500/10 border-cyan-500/20' })),
+                      ...marketingItems.map(m => ({ id: m.id, date: m.date, type: 'Marketing', name: m.subcategory || m.category, store: m.store, amount: m.displayAmount || m.amount, color: 'text-pink-700 dark:text-pink-400', bg: 'bg-pink-500/10 border-pink-500/20' })),
+                      ...otherItems.map(o => ({ id: o.id, date: o.date, type: 'Other', name: o.subcategory || o.notes || o.category, store: o.store, amount: o.displayAmount || o.amount, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' }))
                     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((item, i) => (
-                      <tr key={i} className="border-b border-[#1f2947] hover:bg-[#161b2c] transition-colors">
-                        <td className="px-4 py-3 text-slate-300 font-medium">{item.date ? new Date(item.date).toLocaleDateString('en-GB') : '-'}</td>
+                      <tr key={i} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors">
+                        <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-medium">{item.date ? new Date(item.date).toLocaleDateString('en-GB') : '-'}</td>
                         <td className="px-4 py-3">
                           <span className={`text-[10px] px-2 py-0.5 rounded border font-bold ${item.bg} ${item.color}`}>
                             {item.type}
                           </span>
                         </td>
-                        <td className="px-4 py-3 text-slate-400 text-xs font-bold">{item.store || 'Combined'}</td>
-                        <td className="px-4 py-3 text-slate-200">{item.name}</td>
-                        <td className="px-4 py-3 text-right font-black text-white">{gbp(item.amount)}</td>
+                        <td className="px-4 py-3 text-slate-500 dark:text-slate-400 text-xs font-bold">{item.store || 'Combined'}</td>
+                        <td className="px-4 py-3 text-slate-700 dark:text-slate-200">{item.name}</td>
+                        <td className="px-4 py-3 text-right font-black text-slate-900 dark:text-white">{gbp(item.amount)}</td>
                       </tr>
                     ))}
                     {totals.grandTotal === 0 && (
@@ -325,35 +325,35 @@ export function HenleyExpensesDashboard() {
 
       {/* UNIFIED AUTO-FILL MODAL */}
       {showUnifiedAutoFill && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
-            <h2 className="text-xl font-black text-white mb-2 flex items-center gap-2">⚡ Auto-Add All Fixed Costs</h2>
-            <p className="text-slate-400 text-sm mb-4">Select the Week Ending date to instantly generate <b>all</b> auto-wages and auto-expenses in one click.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+            <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2 flex items-center gap-2">⚡ Auto-Add All Fixed Costs</h2>
+            <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">Select the Week Ending date to instantly generate <b>all</b> auto-wages and auto-expenses in one click.</p>
             
-            <div className="bg-[#161b2c]/80 border border-[#1f2947] rounded-xl p-4 mb-6 space-y-4 max-h-[50vh] overflow-y-auto">
-              <h3 className="text-xs font-black text-white uppercase tracking-wider mb-2 sticky top-0 bg-[#161b2c]/90 py-1 backdrop-blur-sm z-10">What will be generated:</h3>
+            <div className="bg-[#161b2c]/80 border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 mb-6 space-y-4 max-h-[50vh] overflow-y-auto">
+              <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2 sticky top-0 bg-[#161b2c]/90 py-1 backdrop-blur-sm z-10">What will be generated:</h3>
               
               <div>
                 <div className="flex justify-between items-center text-sm mb-1.5">
-                  <span className="text-white font-bold">Staff Wages (Herbies Only)</span>
-                  <span className="text-white font-bold">£1,625.00</span>
+                  <span className="text-slate-900 dark:text-white font-bold">Staff Wages (Herbies Only)</span>
+                  <span className="text-slate-900 dark:text-white font-bold">£1,625.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Owner Ali</span><span>£625.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Pavan</span><span>£600.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Lovely</span><span>£400.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Owner Ali</span><span>£625.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Pavan</span><span>£600.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Lovely</span><span>£400.00</span></li>
                 </ul>
               </div>
 
               <div>
                 <div className="flex justify-between items-center text-sm mb-1.5">
-                  <span className="text-orange-400 font-bold">Herbies Only Expenses</span>
-                  <span className="text-orange-400 font-bold">£340.00</span>
+                  <span className="text-orange-700 dark:text-orange-400 font-bold">Herbies Only Expenses</span>
+                  <span className="text-orange-700 dark:text-orange-400 font-bold">£340.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Herbies Franchise Fee</span><span>£250.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Herbies Head Office Mktg</span><span>£30.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• One Stop Supplier (Added)</span><span>£60.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Herbies Franchise Fee</span><span>£250.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Herbies Head Office Mktg</span><span>£30.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• One Stop Supplier (Added)</span><span>£60.00</span></li>
                 </ul>
               </div>
 
@@ -363,8 +363,8 @@ export function HenleyExpensesDashboard() {
                   <span className="text-yellow-400 font-bold">£90.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Tasty Bun Franchise Fee</span><span>£50.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Tasty Bun POS Fee</span><span>£40.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Tasty Bun Franchise Fee</span><span>£50.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Tasty Bun POS Fee</span><span>£40.00</span></li>
                 </ul>
               </div>
 
@@ -374,39 +374,39 @@ export function HenleyExpensesDashboard() {
                   <span className="text-indigo-400 font-bold">£285.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Water, Gas & Electricity</span><span>£125.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Other Supplier</span><span>£50.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Car Installment</span><span>£45.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Bin Collection</span><span>£30.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Social Media Handling</span><span>£25.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-400"><span>• Road Tax</span><span>£10.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Water, Gas & Electricity</span><span>£125.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Other Supplier</span><span>£50.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Car Installment</span><span>£45.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Bin Collection</span><span>£30.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Social Media Handling</span><span>£25.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Road Tax</span><span>£10.00</span></li>
                 </ul>
               </div>
 
-              <div className="pt-3 border-t border-[#1f2947] flex justify-between items-center sticky bottom-0 bg-[#161b2c] py-2">
-                <span className="text-xs font-bold text-slate-300 uppercase">Total Weekly Outgoing</span>
-                <span className="text-emerald-400 font-black text-base">£2,340.00</span>
+              <div className="pt-3 border-t border-slate-200 dark:border-[#1f2947] flex justify-between items-center sticky bottom-0 bg-[#161b2c] py-2">
+                <span className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase">Total Weekly Outgoing</span>
+                <span className="text-emerald-600 dark:text-emerald-400 font-black text-base">£2,340.00</span>
               </div>
             </div>
             
             <div className="mb-6">
-              <label className="block text-xs font-semibold text-slate-400 mb-2">Sales Week Ending Date (Sunday)</label>
+              <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Sales Week Ending Date (Sunday)</label>
               <input type="date" value={unifiedAutoFillDate} onChange={e => {
                 const d = new Date(e.target.value);
                 const day = d.getDay();
                 if (day !== 0) d.setDate(d.getDate() + (7 - day));
                 setUnifiedAutoFillDate(d.toISOString().split('T')[0]);
               }}
-                className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500" />
+                className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500" />
             </div>
 
             <div className="flex gap-3">
               <button onClick={() => setShowUnifiedAutoFill(false)}
-                className="flex-1 bg-[#161b2c] hover:bg-[#1f2947] text-white rounded-xl py-2.5 text-sm font-bold transition">
+                className="flex-1 bg-[#161b2c] hover:bg-slate-300 dark:hover:bg-[#1f2947] text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold transition">
                 Cancel
               </button>
               <button onClick={handleUnifiedAutoFill} disabled={isAutoFillingUnified}
-                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
                 {isAutoFillingUnified ? 'Generating...' : 'Confirm'}
               </button>
             </div>

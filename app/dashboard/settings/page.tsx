@@ -49,12 +49,12 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6 max-w-2xl">
       <div>
-        <h1 className="text-2xl font-black text-white">Settings</h1>
-        <p className="text-slate-400 text-sm mt-1">Manage your business profile and commission rates</p>
+        <h1 className="text-2xl font-black text-slate-900 dark:text-white">Settings</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage your business profile and commission rates</p>
       </div>
 
-      <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 space-y-4">
-        <h2 className="font-bold text-white text-base">Business Profile</h2>
+      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 space-y-4">
+        <h2 className="font-bold text-slate-900 dark:text-white text-base">Business Profile</h2>
         {[
           { label: 'Business Name', key: 'name', placeholder: 'Hungry Birds' },
           { label: 'Address', key: 'address', placeholder: '12 High St, Manchester' },
@@ -62,15 +62,15 @@ export default function SettingsPage() {
           { label: 'Email', key: 'email', placeholder: 'business@email.com' },
         ].map(f => (
           <div key={f.key}>
-            <label className="block text-xs font-semibold text-slate-400 mb-1">{f.label}</label>
+            <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">{f.label}</label>
             <input value={(form as any)[f.key]} onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
-              className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder={f.placeholder} />
+              className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder={f.placeholder} />
           </div>
         ))}
       </div>
 
-      <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 space-y-4">
-        <h2 className="font-bold text-white text-base">Platform Commission Rates (%)</h2>
+      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 space-y-4">
+        <h2 className="font-bold text-slate-900 dark:text-white text-base">Platform Commission Rates (%)</h2>
         <p className="text-xs text-slate-500">These are used to auto-calculate commissions when you enter gross sales.</p>
         <div className="grid grid-cols-3 gap-4">
           {[
@@ -83,7 +83,7 @@ export default function SettingsPage() {
               <div className="relative">
                 <input type="number" step="0.1" min="0" max="100"
                   value={(form as any)[p.key]} onChange={e => setForm(fm => ({ ...fm, [p.key]: e.target.value }))}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm pr-8 focus:outline-none focus:border-blue-500" />
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm pr-8 focus:outline-none focus:border-blue-500" />
                 <span className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs">%</span>
               </div>
             </div>
@@ -93,10 +93,10 @@ export default function SettingsPage() {
 
       <div className="flex items-center gap-3">
         <button onClick={save} disabled={saving}
-          className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 disabled:opacity-50 transition">
+          className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 disabled:opacity-50 transition">
           {saving ? 'Saving…' : 'Save Changes'}
         </button>
-        {saved && <span className="text-emerald-400 text-sm font-semibold">✅ Saved!</span>}
+        {saved && <span className="text-emerald-600 dark:text-emerald-400 text-sm font-semibold">✅ Saved!</span>}
       </div>
 
       <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-5">

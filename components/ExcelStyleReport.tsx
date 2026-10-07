@@ -11,7 +11,7 @@ export function ExcelStyleReport({
   const gbp = (val: number) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(val || 0)
 
   return (
-    <div className="w-full bg-white text-black font-sans">
+    <div className="w-full bg-black dark:bg-white text-black font-sans">
       {/* Header */}
       <div className="mb-8 border-b-2 border-black pb-4">
         <h1 className="text-2xl font-bold uppercase">{title}</h1>
@@ -226,3 +226,4 @@ export function ExcelStyleReport({
     </div>
   )
 }
+

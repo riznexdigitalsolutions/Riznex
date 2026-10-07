@@ -296,29 +296,29 @@ function InvoicesContent() {
     <div className="space-y-6">
       {/* Centered Title & Description */}
       <div className="text-center space-y-1.5 py-2">
-        <h1 className="text-3xl font-black text-white tracking-tight">{header.title}</h1>
-        <p className="text-slate-400 text-sm font-medium">{header.desc}</p>
+        <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{header.title}</h1>
+        <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{header.desc}</p>
       </div>
 
       {/* Filter Toolbar & Upload Action Underneath */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-[#111520]/50 border border-[#1f2947] rounded-2xl p-4 backdrop-blur-sm shadow-lg">
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-100/50 dark:bg-[#111520]/50 border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 backdrop-blur-sm shadow-lg">
         <div className="flex gap-3 flex-wrap items-center w-full sm:w-auto">
           {activeTab === 'all' && (
             <>
               <select
                 value={storeFilter}
                 onChange={e => setStoreFilter(e.target.value)}
-                className="bg-transparent text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
+                className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
               >
-                <option value="" className="bg-[#111520] text-white">All Platforms</option>
-                <option value="Just Eat" className="bg-[#111520] text-white">Just Eat</option>
-                <option value="Uber Eats" className="bg-[#111520] text-white">Uber Eats</option>
-                <option value="Deliveroo" className="bg-[#111520] text-white">Deliveroo</option>
-                <option value="Cash" className="bg-[#111520] text-emerald-400 font-bold">💵 Walk-in Cash</option>
-                <option value="Card" className="bg-[#111520] text-purple-400 font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-[#111520] text-blue-400 font-bold">🖥️ POS Sales</option>
+                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
+                <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
+                <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
+                <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
+                <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-emerald-600 dark:text-emerald-400 font-bold">💵 Walk-in Cash</option>
+                <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-purple-600 dark:text-purple-400 font-bold">💳 Walk-in Card</option>
+                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-blue-700 dark:text-blue-400 font-bold">🖥️ POS Sales</option>
               </select>
-              <div className="w-[1px] h-4 bg-[#1f2947]"></div>
+              <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
           )}
           {activeTab === 'platform' && (
@@ -326,14 +326,14 @@ function InvoicesContent() {
               <select
                 value={platformFilter}
                 onChange={e => setPlatformFilter(e.target.value)}
-                className="bg-transparent text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
+                className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
               >
-                <option value="" className="bg-[#111520] text-white">All Delivery Platforms</option>
-                <option value="Uber Eats" className="bg-[#111520] text-white">Uber Eats</option>
-                <option value="Just Eat" className="bg-[#111520] text-white">Just Eat</option>
-                <option value="Deliveroo" className="bg-[#111520] text-white">Deliveroo</option>
+                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Delivery Platforms</option>
+                <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
+                <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
+                <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
               </select>
-              <div className="w-[1px] h-4 bg-[#1f2947]"></div>
+              <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
           )}
           {activeTab === 'pos' && (
@@ -341,14 +341,14 @@ function InvoicesContent() {
               <select
                 value={posFilter}
                 onChange={e => setPosFilter(e.target.value)}
-                className="bg-transparent text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
+                className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
               >
-                <option value="" className="bg-[#111520] text-white">All POS & Walk-in Sales</option>
-                <option value="Cash" className="bg-[#111520] text-emerald-400 font-bold">💵 Walk-in Cash</option>
-                <option value="Card" className="bg-[#111520] text-purple-400 font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-[#111520] text-blue-400 font-bold">🖥️ POS Sales</option>
+                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All POS & Walk-in Sales</option>
+                <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-emerald-600 dark:text-emerald-400 font-bold">💵 Walk-in Cash</option>
+                <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-purple-600 dark:text-purple-400 font-bold">💳 Walk-in Card</option>
+                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-blue-700 dark:text-blue-400 font-bold">🖥️ POS Sales</option>
               </select>
-              <div className="w-[1px] h-4 bg-[#1f2947]"></div>
+              <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
           )}
           <DateFilter filter={filter} setFilter={setFilter} />
@@ -371,7 +371,7 @@ function InvoicesContent() {
                 setIsModalOpen(true)
               }}
               disabled={uploading}
-              className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer whitespace-nowrap"
+              className="bg-gradient-to-r from-blue-600 to-violet-600 hover:from-blue-500 hover:to-violet-500 text-slate-900 dark:text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-lg transition flex items-center gap-2 cursor-pointer whitespace-nowrap"
             >
               {header.buttonText}
             </button>
@@ -380,15 +380,15 @@ function InvoicesContent() {
       </div>
 
       {filteredInvoices.length === 0 ? (
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-12 text-center">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-12 text-center">
           <div className="text-4xl mb-4">🧾</div>
-          <h3 className="text-lg font-bold text-white mb-2">No invoices found</h3>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">No invoices found</h3>
           <p className="text-slate-500 text-sm">There are no invoices matching this category.</p>
         </div>
       ) : (
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl overflow-hidden">
-          <table className="w-full text-left text-sm text-slate-300">
-            <thead className="bg-[#161b2c] border-b border-[#1f2947] text-xs uppercase text-slate-500">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
+          <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+            <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-5 py-4 w-12 text-center">
                   <input 
@@ -398,7 +398,7 @@ function InvoicesContent() {
                       if (e.target.checked) setSelectedIds(filteredInvoices.map((inv: any) => inv.id))
                       else setSelectedIds([])
                     }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-[#1f2947] text-blue-500 focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
+                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
                   />
                 </th>
                 <th className="px-5 py-4 font-bold">Date</th>
@@ -442,30 +442,30 @@ function InvoicesContent() {
                       onChange={() => {
                         setSelectedIds(prev => prev.includes(inv.id) ? prev.filter(id => id !== inv.id) : [...prev, inv.id])
                       }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-[#1f2947] text-blue-500 focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
                     />
                   </td>
-                  <td className="px-5 py-4 font-medium text-white">
+                  <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
                     {isEditing ? (
                       <input 
                         type="date" 
                         value={editForm.invoiceDate} 
                         onChange={e => setEditForm({ ...editForm, invoiceDate: e.target.value })}
-                        className="bg-[#1f2947] border border-[#2d3b5e] text-white text-xs rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-[110px]"
+                        className="bg-slate-300 dark:bg-[#1f2947] border border-[#2d3b5e] text-slate-900 dark:text-white text-xs rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-[110px]"
                         style={{ colorScheme: 'dark' }}
                       />
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-400 inline-block" title="Click to edit date">
+                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-block" title="Click to edit date">
                         {dateColStr}
                       </div>
                     )}
                   </td>
-                  <td className="px-5 py-4 text-slate-400 whitespace-nowrap">{weekStr}</td>
-                  <td className="px-5 py-4 text-slate-400 whitespace-nowrap">{monthStr}</td>
+                  <td className="px-5 py-4 text-slate-500 dark:text-slate-400 whitespace-nowrap">{weekStr}</td>
+                  <td className="px-5 py-4 text-slate-500 dark:text-slate-400 whitespace-nowrap">{monthStr}</td>
                   <td className="px-5 py-4">
                     <div className="flex flex-col gap-1.5">
                       {inv.platform ? (
-                        <span className="font-semibold text-white">
+                        <span className="font-semibold text-slate-900 dark:text-white">
                           {inv.platform.replace(/^Hungry Birds\s*/i, '')}
                         </span>
                       ) : (
@@ -479,28 +479,28 @@ function InvoicesContent() {
                       )}
                     </div>
                   </td>
-                  <td className="px-5 py-4 text-right font-black text-white">
+                  <td className="px-5 py-4 text-right font-black text-slate-900 dark:text-white">
                     {isEditing ? (
                       <div className="flex items-center justify-end gap-1">
-                        <span className="text-slate-400 text-xs font-normal">£</span>
+                        <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">£</span>
                         <input 
                           type="number" 
                           step="0.01"
                           value={editForm.amount} 
                           onChange={e => setEditForm({ ...editForm, amount: e.target.value })}
-                          className="bg-[#1f2947] border border-[#2d3b5e] text-white text-xs rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-20 text-right font-normal"
+                          className="bg-slate-300 dark:bg-[#1f2947] border border-[#2d3b5e] text-slate-900 dark:text-white text-xs rounded px-2 py-1 focus:outline-none focus:border-blue-500 w-20 text-right font-normal"
                         />
                       </div>
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-400 inline-block" title="Click to edit amount">
+                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-block" title="Click to edit amount">
                         {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
                       </div>
                     )}
                   </td>
                   <td className="px-5 py-4">
-                    {inv.ocrStatus === 'done' ? <span className="text-emerald-400 font-semibold text-xs" title="Data extracted successfully">Extracted ✅</span> :
+                    {inv.ocrStatus === 'done' ? <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-xs" title="Data extracted successfully">Extracted ✅</span> :
                      (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing') ? <span className="text-amber-400 font-semibold text-xs" title="Processing with AI...">Processing ⏳</span> :
-                     (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-orange-400 font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
+                     (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-orange-700 dark:text-orange-400 font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
                      <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>}
                   </td>
                   <td className="px-5 py-4 text-right">
@@ -509,9 +509,9 @@ function InvoicesContent() {
                         <>
                           {isEditing ? (
                             <>
-                              <button onClick={handleSaveEdit} className="text-emerald-400 hover:text-emerald-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Save</button>
+                              <button onClick={handleSaveEdit} className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Save</button>
                               <span className="text-slate-700">|</span>
-                              <button onClick={() => setEditingId(null)} className="text-slate-400 hover:text-slate-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Cancel</button>
+                              <button onClick={() => setEditingId(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Cancel</button>
                             </>
                           ) : (
                             <button 
@@ -525,7 +525,7 @@ function InvoicesContent() {
                         </>
                       )}
                       
-                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
+                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-700 dark:text-blue-400 hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
                         View File
                       </a>
                       
@@ -551,16 +551,16 @@ function InvoicesContent() {
 
       {/* Upload Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
-            <h2 className="text-lg font-bold text-white mb-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">
               {type === 'pos' ? 'Upload POS / Bank Statement' : 'Upload Delivery Platform Invoice'}
             </h2>
             <form onSubmit={handleUpload} className="space-y-4">
               {type === 'platform' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Select Delivery Platform</label>
-                  <select value={platformName} onChange={e => setPlatformName(e.target.value)} className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm">
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Select Delivery Platform</label>
+                  <select value={platformName} onChange={e => setPlatformName(e.target.value)} className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm">
                     <option value="Deliveroo">Deliveroo</option>
                     <option value="Just Eat">Just Eat</option>
                     <option value="Uber Eats">Uber Eats</option>
@@ -570,8 +570,8 @@ function InvoicesContent() {
               
               {type === 'pos' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Select Statement Source</label>
-                  <select value={posName} onChange={e => setPosName(e.target.value)} className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm">
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Select Statement Source</label>
+                  <select value={posName} onChange={e => setPosName(e.target.value)} className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm">
                     <option value="Walk-in Card">Walk-in Card</option>
                     <option value="Walk-in Cash">Walk-in Cash</option>
                     <option value="POS Sales">POS Sales</option>
@@ -581,13 +581,13 @@ function InvoicesContent() {
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Upload File (PDF/Image)</label>
-                <input ref={fileInputRef} type="file" multiple accept=".pdf,image/*" required className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-500/20 file:text-blue-400 hover:file:bg-blue-500/30 transition cursor-pointer" />
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Upload File (PDF/Image)</label>
+                <input ref={fileInputRef} type="file" multiple accept=".pdf,image/*" required className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-500/20 file:text-blue-700 dark:text-blue-400 hover:file:bg-blue-500/30 transition cursor-pointer" />
               </div>
 
               <div className="flex gap-3 mt-6 pt-2">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-[#1f2947] text-slate-400 hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
-                <button type="submit" disabled={uploading} className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition flex items-center justify-center gap-2">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+                <button type="submit" disabled={uploading} className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition flex items-center justify-center gap-2">
                   {uploading ? (uploadProgress || 'Uploading...') : 'Upload & Process'}
                 </button>
               </div>

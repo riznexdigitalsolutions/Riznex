@@ -205,8 +205,8 @@ function SalesContent() {
       {/* Top Header Row: Title on Left, Action Buttons on Right */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black text-white tracking-tight">Sales</h1>
-          <p className="text-slate-400 text-xs font-medium mt-0.5">Weekly platform sales records</p>
+          <h1 className="text-2xl font-black text-slate-900 dark:text-white tracking-tight">Sales</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mt-0.5">Weekly platform sales records</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -220,7 +220,7 @@ function SalesContent() {
           <button
             onClick={() => fileInputRef.current?.click()}
             disabled={isUploading}
-            className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 disabled:opacity-50 transition whitespace-nowrap cursor-pointer"
+            className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 disabled:opacity-50 transition whitespace-nowrap cursor-pointer"
           >
             {isUploading ? 'Uploading...' : '+ Upload Orders (PDF/Img)'}
           </button>
@@ -234,7 +234,7 @@ function SalesContent() {
                 store: activeTab 
               }) 
             }}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer"
+            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer"
           >
             + Add Sales Record
           </button>
@@ -242,36 +242,36 @@ function SalesContent() {
       </div>
 
       {/* Filter Toolbar Row (Positioned Cleanly Under Top Header) */}
-      <div className="bg-[#111520] border border-[#1f2947] rounded-xl px-3 py-2 flex flex-wrap items-center justify-between gap-3 shadow-md">
+      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3 py-2 flex flex-wrap items-center justify-between gap-3 shadow-md">
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={() => router.push('/dashboard/sales')}
-            className="px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-gradient-to-r from-blue-500 to-purple-600 text-white shadow-md cursor-pointer"
+            className="px-3 py-1.5 text-xs font-bold rounded-lg transition-all bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white shadow-md cursor-pointer"
           >
             Weekly Overview
           </button>
-          <div className="w-[1px] h-4 bg-[#1f2947]"></div>
+          <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
           <select
             value={filter.platform}
             onChange={e => setFilter(f => ({ ...f, platform: e.target.value }))}
-            className="bg-transparent text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
+            className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
           >
-            <option value="" className="bg-[#111520] text-white">All Platforms</option>
-            <option value="just_eat" className="bg-[#111520] text-white">Just Eat</option>
-            <option value="uber_eats" className="bg-[#111520] text-white">Uber Eats</option>
-            <option value="deliveroo" className="bg-[#111520] text-white">Deliveroo</option>
-            <option value="walk_in_cash" className="bg-[#111520] text-white">Walk-in Cash</option>
-            <option value="walk_in_card" className="bg-[#111520] text-white">Walk-in Card</option>
-            <option value="pos_sales" className="bg-[#111520] text-white">POS Sales</option>
-            <option value="online_web" className="bg-[#111520] text-white">Online Web</option>
+            <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
+            <option value="just_eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
+            <option value="uber_eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
+            <option value="deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
+            <option value="walk_in_cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Walk-in Cash</option>
+            <option value="walk_in_card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Walk-in Card</option>
+            <option value="pos_sales" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS Sales</option>
+            <option value="online_web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Online Web</option>
           </select>
-          <div className="w-[1px] h-4 bg-[#1f2947]"></div>
+          <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
           <DateFilter filter={filter} setFilter={setFilter} />
         </div>
 
         <button 
           onClick={() => setFilter({ platform: '', ...defaultDateFilter() })} 
-          className="text-slate-400 hover:text-white text-xs px-2.5 py-1 font-bold transition bg-[#0e121b] border border-[#1f2947] rounded-lg cursor-pointer"
+          className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs px-2.5 py-1 font-bold transition bg-slate-50 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] rounded-lg cursor-pointer"
         >
           Reset
         </button>
@@ -285,9 +285,9 @@ function SalesContent() {
           { label: filter.platform ? `${platformLabel(filter.platform)} Avg Deduction %` : 'Avg Deduction % (All)', value: getAvgDeductionPercent(), icon: '📊', color: '#a78bfa' },
           { label: 'Net Received', value: gbp(totals.net), icon: '✅', color: '#22d3a5' },
         ].map(c => (
-          <div key={c.label} className="bg-[#111520] border border-[#1f2947] rounded-2xl p-4">
+          <div key={c.label} className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4">
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">{c.label}</div>
-            <div className="text-xl font-black text-white">{c.value}</div>
+            <div className="text-xl font-black text-slate-900 dark:text-white">{c.value}</div>
           </div>
         ))}
       </div>
@@ -295,11 +295,11 @@ function SalesContent() {
 
 
       {/* Table */}
-      <div className="bg-[#111520] border border-[#1f2947] rounded-2xl overflow-hidden">
+      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#161b2c] border-b border-[#1f2947]">
+              <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
                 {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Deduction %', 'Net Paid', 'Actions'].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
                 ))}
@@ -311,24 +311,24 @@ function SalesContent() {
               ) : sales.length === 0 ? (
                 <tr><td colSpan={10} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
               ) : sales.map(s => (
-                <tr key={s.id} className="border-b border-[#1f2947] hover:bg-[#161b2c] transition-colors">
+                <tr key={s.id} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors">
                   <td className="px-4 py-3">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold"
                       style={{ background: `${platformColor(s.platform)}1a`, color: platformColor(s.platform), border: `1px solid ${platformColor(s.platform)}33` }}>
                       {platformLabel(s.platform)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-300 whitespace-nowrap">{fmtDate(s.weekStart)} – {fmtDate(s.weekEnd)}</td>
-                  <td className="px-4 py-3 font-semibold text-white">{s.totalOrders}</td>
-                  <td className="px-4 py-3 font-semibold text-white">{gbp(s.grossSales)}</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">{fmtDate(s.weekStart)} – {fmtDate(s.weekEnd)}</td>
+                  <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{s.totalOrders}</td>
+                  <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{gbp(s.grossSales)}</td>
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp(s.commission ?? 0)}</td>
-                  <td className="px-4 py-3 text-purple-400 font-semibold">{gbp((s.adSpends ?? 0) + (s.topRankFee ?? 0))}</td>
+                  <td className="px-4 py-3 text-purple-600 dark:text-purple-400 font-semibold">{gbp((s.adSpends ?? 0) + (s.topRankFee ?? 0))}</td>
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp((s.grossSales - s.netPaid) - (s.commission ?? 0) - ((s.adSpends ?? 0) + (s.topRankFee ?? 0)))}</td>
-                  <td className="px-4 py-3 text-slate-300 font-semibold">{getRowDeductionPercent(s)}</td>
-                  <td className="px-4 py-3 text-emerald-400 font-bold">{gbp(s.netPaid)}</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-semibold">{getRowDeductionPercent(s)}</td>
+                  <td className="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-bold">{gbp(s.netPaid)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(s)} className="text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      <button onClick={() => openEdit(s)} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                     </div>
                   </td>
                 </tr>
@@ -340,47 +340,47 @@ function SalesContent() {
 
       {/* Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 w-full max-w-lg shadow-2xl">
-            <h2 className="text-lg font-bold text-white mb-5">{editId ? 'Edit' : 'Add'} Sales Record</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-lg shadow-2xl">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Sales Record</h2>
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Platform</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Platform</label>
                   <select value={form.platform} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
-                    {PLATFORMS.map(p => <option key={p.value} value={p.value} className="bg-[#111520] text-white">{p.label}</option>)}
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    {PLATFORMS.map(p => <option key={p.value} value={p.value} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">{p.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Store / Tab</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Store / Tab</label>
                   <select value={form.store} onChange={e => setForm(f => ({ ...f, store: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
                     <option value="Combined">Weekly Overview</option>
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Total Orders</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Total Orders</label>
                   <input type="number" value={form.totalOrders} onChange={e => setForm(f => ({ ...f, totalOrders: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Week Start</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Week Start</label>
                   <input type="date" value={form.weekStart} onChange={e => setForm(f => ({ ...f, weekStart: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Week End</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Week End</label>
                   <input type="date" value={form.weekEnd} onChange={e => setForm(f => ({ ...f, weekEnd: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Gross Sales (£)</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Gross Sales (£)</label>
                 <input type="number" step="0.01" value={form.grossSales} onChange={e => handleGrossChange(e.target.value)}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0.00" />
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0.00" />
                 <p className="text-[11px] text-slate-500 mt-1">Commission & Net auto-calculated below</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -397,24 +397,24 @@ function SalesContent() {
                   { label: 'VAT (£)', key: 'vat' },
                 ].map(f => (
                   <div key={f.key}>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">{f.label}</label>
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">{f.label}</label>
                     <input type="number" step="0.01" value={(form as any)[f.key]}
                       onChange={e => setForm(fm => ({ ...fm, [f.key]: e.target.value }))}
-                      className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                      className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                   </div>
                 ))}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Notes (optional)</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Notes (optional)</label>
                 <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Any notes…" />
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Any notes…" />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
               <button onClick={() => { setShowForm(false); setEditId(null) }}
-                className="flex-1 border border-[#1f2947] text-slate-400 hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+                className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
               <button onClick={handleSave} disabled={saving}
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
+                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
                 {saving ? 'Saving…' : 'Save Record'}
               </button>
             </div>
@@ -427,7 +427,7 @@ function SalesContent() {
 
 export function HungryBirdsSales() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0a0c14]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14]" />}>
       <SalesContent />
     </Suspense>
   )

@@ -79,34 +79,34 @@ function MultiSelectPlatformFilter({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between gap-2 text-white bg-transparent px-3 py-1 text-sm font-semibold rounded-lg hover:bg-[#1c2238] transition focus:outline-none"
+        className="flex items-center justify-between gap-2 text-slate-900 dark:text-white bg-transparent px-3 py-1 text-sm font-semibold rounded-lg hover:bg-[#1c2238] transition focus:outline-none"
       >
         <span>{getLabel()}</span>
-        <span className="text-[9px] text-slate-400">▼</span>
+        <span className="text-[9px] text-slate-500 dark:text-slate-400">▼</span>
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-56 bg-[#111520] border border-[#1f2947] rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
+        <div className="absolute left-0 mt-2 w-56 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
           <button
             type="button"
             onClick={() => { onChange([]); setIsOpen(false); }}
-            className="text-left text-xs text-blue-400 hover:text-blue-300 font-bold px-2 py-1.5 rounded hover:bg-[#161b2c] transition"
+            className="text-left text-xs text-blue-700 dark:text-blue-400 hover:text-blue-300 font-bold px-2 py-1.5 rounded hover:bg-[#161b2c] transition"
           >
             Clear All (All Platforms)
           </button>
-          <div className="h-[1px] bg-[#1f2947] my-1" />
+          <div className="h-[1px] bg-slate-300 dark:bg-[#1f2947] my-1" />
           {options.map(opt => {
             const isChecked = selected.includes(opt.value)
             return (
               <label
                 key={opt.value}
-                className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-[#161b2c] text-slate-300 hover:text-white text-xs font-semibold cursor-pointer select-none transition"
+                className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-[#161b2c] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-semibold cursor-pointer select-none transition"
               >
                 <input
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => handleToggle(opt.value)}
-                  className="rounded border-[#1f2947] bg-[#161b2c] text-blue-500 cursor-pointer"
+                  className="rounded border-slate-200 dark:border-[#1f2947] bg-[#161b2c] text-blue-500 cursor-pointer"
                 />
                 <span>{opt.label}</span>
               </label>
@@ -332,18 +332,18 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
       <div className="space-y-4">
         {/* Top Row: Centered Title & Subtitle */}
         <div className="text-center space-y-1">
-          <h1 className="text-3xl font-black text-white tracking-tight">Sales</h1>
-          <p className="text-slate-400 text-sm font-medium">Weekly platform sales records</p>
+          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Sales</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Weekly platform sales records</p>
         </div>
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
         <div className="flex justify-center items-center print:hidden">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
             {!is2025 && (
-              <div className="flex items-center gap-1.5 bg-[#0a0c14] border border-[#1f2947] p-1 rounded-xl">
+              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
                 <button
                   onClick={() => router.push(`/dashboard/sales?tab=${activeTab.startsWith('Monthly ') ? 'Monthly Combined' : 'Combined'}`)}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${(activeTab === 'Combined' || activeTab === 'Monthly Combined') ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${(activeTab === 'Combined' || activeTab === 'Monthly Combined') ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                   Combined
                 </button>
@@ -351,7 +351,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
                   <button
                     key={store}
                     onClick={() => router.push(`/dashboard/sales?tab=${activeTab.startsWith('Monthly ') ? `Monthly ${store}` : store}`)}
-                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${(activeTab === store || activeTab === `Monthly ${store}`) ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}
+                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${(activeTab === store || activeTab === `Monthly ${store}`) ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                   >
                     {store}
                   </button>
@@ -359,7 +359,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
               </div>
             )}
 
-            {!is2025 && <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>}
+            {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
 
             <MultiSelectPlatformFilter
               selected={filter.platform ? filter.platform.split(',') : []}
@@ -367,26 +367,26 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
               is2025={!!is2025}
             />
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             <DateFilter filter={filter} setFilter={setFilter} />
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             <button 
               onClick={() => setFilter({ platform: '', ...defaultDateFilter() })} 
-              className="text-slate-400 hover:text-white hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               Reset
             </button>
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             <div data-html2canvas-ignore="true">
               <button 
                 onClick={() => exportToPDF('sales-export-area', `Henley_Sales_${storeFilter || 'Combined'}_${filter.to || 'All_Time'}`)} 
-                className="bg-blue-500/10 text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                className="bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
               >
                 <span>📄</span> Export PDF
               </button>
@@ -402,7 +402,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
                   store: activeTab 
                 }) 
               }}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer flex items-center gap-1.5"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer flex items-center gap-1.5"
             >
               <span>+</span> Add Sales Record
             </button>
@@ -418,9 +418,9 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
           { label: filter.platform ? `${platformLabel(filter.platform)} Avg Ded %` : 'Avg Ded % (All)', value: getAvgCommPercent(), icon: '📊', color: '#a78bfa' },
           { label: 'Net Received', value: gbp(totals.net), icon: '✅', color: '#22d3a5' },
         ].map(c => (
-          <div key={c.label} className="bg-[#111520] border border-[#1f2947] rounded-2xl p-4">
+          <div key={c.label} className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4">
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">{c.label}</div>
-            <div className="text-xl font-black text-white">{c.value}</div>
+            <div className="text-xl font-black text-slate-900 dark:text-white">{c.value}</div>
           </div>
         ))}
       </div>
@@ -428,11 +428,11 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
 
 
       {/* Table */}
-      <div className="bg-[#111520] border border-[#1f2947] rounded-2xl overflow-hidden">
+      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="bg-[#161b2c] border-b border-[#1f2947]">
+              <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
                 {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Ded %', 'Net Paid', 'Actions'].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
                 ))}
@@ -444,24 +444,24 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
               ) : sales.length === 0 ? (
                 <tr><td colSpan={10} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
               ) : sales.map(s => (
-                <tr key={s.id} className="border-b border-[#1f2947] hover:bg-[#161b2c] transition-colors">
+                <tr key={s.id} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors">
                   <td className="px-4 py-3">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold"
                       style={{ background: `${platformColor(s.platform)}1a`, color: platformColor(s.platform), border: `1px solid ${platformColor(s.platform)}33` }}>
                       {platformLabel(s.platform, s.store)}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-slate-300 whitespace-nowrap">{fmtDate(s.weekStart)} – {fmtDate(s.weekEnd)}</td>
-                  <td className="px-4 py-3 font-semibold text-white">{s.totalOrders}</td>
-                  <td className="px-4 py-3 font-semibold text-white">{gbp(s.grossSales)}</td>
+                  <td className="px-4 py-3 text-slate-600 dark:text-slate-300 whitespace-nowrap">{fmtDate(s.weekStart)} – {fmtDate(s.weekEnd)}</td>
+                  <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{s.totalOrders}</td>
+                  <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{gbp(s.grossSales)}</td>
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp(s.commission ?? 0)}</td>
-                  <td className="px-4 py-3 text-purple-400 font-semibold">{gbp((s.adSpends ?? 0) + (s.topRankFee ?? 0))}</td>
+                  <td className="px-4 py-3 text-purple-600 dark:text-purple-400 font-semibold">{gbp((s.adSpends ?? 0) + (s.topRankFee ?? 0))}</td>
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp((s.otherFees || 0) + (s.adminFee || 0) + (s.offersOnItems || 0) + (s.offerRedemptionFee || 0) - (s.refunds || 0))}</td>
-                  <td className="px-4 py-3 text-slate-400">{getRowCommPercent(s)}</td>
-                  <td className="px-4 py-3 text-emerald-400 font-bold">{gbp(s.netPaid)}</td>
+                  <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{getRowCommPercent(s)}</td>
+                  <td className="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-bold">{gbp(s.netPaid)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(s)} className="text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      <button onClick={() => openEdit(s)} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                       <button onClick={() => handleDelete(s.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
                     </div>
                   </td>
@@ -474,22 +474,22 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
 
       {/* Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 w-full max-w-lg shadow-2xl">
-            <h2 className="text-lg font-bold text-white mb-5">{editId ? 'Edit' : 'Add'} Sales Record</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-lg shadow-2xl">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Sales Record</h2>
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Platform</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Platform</label>
                   <select value={form.platform} onChange={e => setForm(f => ({ ...f, platform: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
-                    {PLATFORMS.map(p => <option key={p.value} value={p.value} className="bg-[#111520] text-white">{p.label}</option>)}
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    {PLATFORMS.map(p => <option key={p.value} value={p.value} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">{p.label}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Store / Tab</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Store / Tab</label>
                   <select value={form.store} onChange={e => setForm(f => ({ ...f, store: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
                     {!activeTab.startsWith('Monthly') ? (
                       <>
                         <option value="Combined">Combined (Weekly)</option>
@@ -506,27 +506,27 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Total Orders</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Total Orders</label>
                   <input type="number" value={form.totalOrders} onChange={e => setForm(f => ({ ...f, totalOrders: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0" />
                 </div>
               </div>
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Week Start</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Week Start</label>
                   <input type="date" value={form.weekStart} onChange={e => setForm(f => ({ ...f, weekStart: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Week End</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Week End</label>
                   <input type="date" value={form.weekEnd} onChange={e => setForm(f => ({ ...f, weekEnd: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                 </div>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Gross Sales (£)</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Gross Sales (£)</label>
                 <input type="number" step="0.01" value={form.grossSales} onChange={e => handleGrossChange(e.target.value)}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0.00" />
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0.00" />
                 <p className="text-[11px] text-slate-500 mt-1">Commission & Net auto-calculated below</p>
               </div>
               <div className="grid grid-cols-2 gap-3">
@@ -548,24 +548,24 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
                   return true
                 }).map(f => (
                   <div key={f.key}>
-                    <label className="block text-xs font-semibold text-slate-400 mb-1">{f.label}</label>
+                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">{f.label}</label>
                     <input type="number" step="0.01" value={(form as any)[f.key]}
                       onChange={e => handleFieldChange(f.key, e.target.value)}
-                      className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                      className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                   </div>
                 ))}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Notes (optional)</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Notes (optional)</label>
                 <input type="text" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Any notes…" />
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Any notes…" />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
               <button onClick={() => { setShowForm(false); setEditId(null) }}
-                className="flex-1 border border-[#1f2947] text-slate-400 hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+                className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
               <button onClick={handleSave} disabled={saving}
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
+                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
                 {saving ? 'Saving…' : 'Save Record'}
               </button>
             </div>
@@ -578,7 +578,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
 
 export function HenleySales({ is2025 }: { is2025?: boolean }) {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[#0a0c14]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14]" />}>
       <SalesContent is2025={is2025} />
     </Suspense>
   )

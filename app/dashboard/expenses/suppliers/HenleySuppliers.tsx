@@ -291,31 +291,31 @@ export function HenleySuppliers() {
       <div className="space-y-4">
         {/* Top Row: Centered Title & Subtitle */}
         <div className="text-center space-y-1">
-          <h1 className="text-3xl font-black text-white tracking-tight">Suppliers</h1>
-          <p className="text-slate-400 text-sm font-medium">Track supplier invoices and spending</p>
+          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Suppliers</h1>
+          <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Track supplier invoices and spending</p>
         </div>
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
         <div className="flex justify-center items-center print:hidden">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
             {/* Store toggle */}
-            <div className="flex items-center gap-1.5 bg-[#0a0c14] border border-[#1f2947] p-1 rounded-xl">
-              <button onClick={() => setStoreFilter('')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>Combined</button>
-              <button onClick={() => setStoreFilter('Herbies Pizza')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>Herbies Pizza</button>
-              <button onClick={() => setStoreFilter('Tasty Bun')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-white/5'}`}>Tasty Bun</button>
+            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+              <button onClick={() => setStoreFilter('')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>Combined</button>
+              <button onClick={() => setStoreFilter('Herbies Pizza')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>Herbies Pizza</button>
+              <button onClick={() => setStoreFilter('Tasty Bun')} className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>Tasty Bun</button>
             </div>
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             {/* Date Filter */}
             <DateFilter filter={filter} setFilter={setFilter} />
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             {/* Reset Button */}
             <button 
               onClick={() => { setFilter(defaultDateFilter()); setStoreFilter(''); setSupplierFilter(''); }} 
-              className="text-slate-400 hover:text-white hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
               Reset
@@ -323,7 +323,7 @@ export function HenleySuppliers() {
 
             {selectedIds.length > 0 && (
               <>
-                <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+                <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
                 <button 
                   onClick={async () => {
                     if (!confirm(`Are you sure you want to completely delete ${selectedIds.length} invoices? All associated financial data will be instantly removed.`)) return
@@ -340,12 +340,12 @@ export function HenleySuppliers() {
               </>
             )}
 
-            <div className="w-[1px] h-5 bg-[#1f2947] hidden sm:block"></div>
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             {/* Upload Invoice Button */}
             <button 
               onClick={() => { setSelectedSupplier(null); setShowInvoiceForm(true) }}
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center gap-1.5"
+              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center gap-1.5"
             >
               <span>+</span> Upload Invoice
             </button>
@@ -353,7 +353,7 @@ export function HenleySuppliers() {
             {/* Add Supplier Button */}
             <button 
               onClick={() => { setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }); setShowSupplierForm(true) }}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-blue-500/20 cursor-pointer flex items-center gap-1.5"
+              className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-blue-500/20 cursor-pointer flex items-center gap-1.5"
             >
               <span>+</span> Add Supplier
             </button>
@@ -373,21 +373,21 @@ export function HenleySuppliers() {
           }, 0)
           return (
             <>
-              <div className="bg-[#111520] border border-orange-500/20 rounded-2xl p-4 flex items-center gap-4 flex-1 min-w-[160px]">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-orange-500/20 rounded-2xl p-4 flex items-center gap-4 flex-1 min-w-[160px]">
                 <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center text-xl">📦</div>
                 <div>
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Combined Spend</div>
-                  <div className="text-2xl font-black text-orange-400">{gbp(combinedSpend)}</div>
+                  <div className="text-2xl font-black text-orange-700 dark:text-orange-400">{gbp(combinedSpend)}</div>
                 </div>
               </div>
-              <div className="bg-[#111520] border border-red-500/20 rounded-2xl p-4 flex items-center gap-4 flex-1 min-w-[160px]">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-red-500/20 rounded-2xl p-4 flex items-center gap-4 flex-1 min-w-[160px]">
                 <div className="w-10 h-10 bg-red-500/10 rounded-xl flex items-center justify-center text-xl">🍕</div>
                 <div>
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Herbies Pizza</div>
                   <div className="text-2xl font-black text-red-400">{gbp(herbiesSpend)}</div>
                 </div>
               </div>
-              <div className="bg-[#111520] border border-yellow-500/20 rounded-2xl p-4 flex items-center gap-4 flex-1 min-w-[160px]">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-yellow-500/20 rounded-2xl p-4 flex items-center gap-4 flex-1 min-w-[160px]">
                 <div className="w-10 h-10 bg-yellow-500/10 rounded-xl flex items-center justify-center text-xl">🍔</div>
                 <div>
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Tasty Bun</div>
@@ -400,11 +400,11 @@ export function HenleySuppliers() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-32"><div className="w-8 h-8 border-2 border-[#1f2947] border-t-blue-500 rounded-full animate-spin" /></div>
+        <div className="flex items-center justify-center h-32"><div className="w-8 h-8 border-2 border-slate-200 dark:border-[#1f2947] border-t-blue-500 rounded-full animate-spin" /></div>
       ) : filteredSuppliers.length === 0 ? (
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-12 text-center">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-12 text-center">
           <div className="text-4xl mb-4">🛒</div>
-          <h3 className="text-lg font-bold text-white mb-2">No suppliers found</h3>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">No suppliers found</h3>
           <p className="text-slate-500 text-sm">You haven't added any suppliers yet.</p>
         </div>
       ) : null}
@@ -412,12 +412,12 @@ export function HenleySuppliers() {
       {!loading && filteredSuppliers.length > 0 && (
         <div className="mt-8 space-y-4">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-bold text-white">All Supplier Invoices</h3>
+            <h3 className="text-lg font-bold text-slate-900 dark:text-white">All Supplier Invoices</h3>
             <div className="flex items-center gap-3">
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
-                className="bg-[#161b2c] border border-[#1f2947] text-slate-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500 transition cursor-pointer"
+                className="bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500 transition cursor-pointer"
               >
                 <option value="uploadDate">Sort: Upload Date (Newest)</option>
                 <option value="uploadDateAsc">Sort: Upload Date (Oldest)</option>
@@ -429,7 +429,7 @@ export function HenleySuppliers() {
               <select
                 value={supplierFilter}
                 onChange={e => setSupplierFilter(e.target.value)}
-                className="bg-[#161b2c] border border-[#1f2947] text-slate-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500 transition cursor-pointer"
+                className="bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500 transition cursor-pointer"
               >
                 <option value="">All Suppliers</option>
                 {Array.from(new Set(suppliers.map(s => s.name))).sort().map(name => (
@@ -447,9 +447,9 @@ export function HenleySuppliers() {
               )}
             </div>
           </div>
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl overflow-hidden shadow-xl">
-            <table className="w-full text-left text-sm text-slate-300">
-              <thead className="bg-[#161b2c] border-b border-[#1f2947] text-xs uppercase text-slate-500">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden shadow-xl">
+            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+              <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
                 <tr>
                   <th className="px-5 py-4 w-12 text-center">
                     <input 
@@ -462,7 +462,7 @@ export function HenleySuppliers() {
                         const allIds = displayedInvoices.map((i: any) => i.id)
                         setSelectedIds(e.target.checked ? allIds : [])
                       }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-[#1f2947] text-blue-500 focus:ring-blue-500 cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 focus:ring-blue-500 cursor-pointer"
                     />
                   </th>
                   <th className="px-5 py-4 font-bold">Date</th>
@@ -499,26 +499,26 @@ export function HenleySuppliers() {
                         onChange={() => {
                           setSelectedIds(prev => prev.includes(inv.id) ? prev.filter(id => id !== inv.id) : [...prev, inv.id])
                         }}
-                        className="w-4 h-4 rounded border-[#2d3b5e] bg-[#1f2947] text-blue-500 cursor-pointer"
+                        className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 cursor-pointer"
                       />
                     </td>
-                    <td className="px-5 py-4 font-medium text-white">
+                    <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
                       {isEditing ? (
                         <input 
                           type="date" 
                           value={editForm.invoiceDate} 
                           onChange={e => setEditForm({ ...editForm, invoiceDate: e.target.value })}
-                          className="bg-[#1f2947] border border-[#2d3b5e] text-white text-xs rounded px-2 py-1 w-[110px]"
+                          className="bg-slate-300 dark:bg-[#1f2947] border border-[#2d3b5e] text-slate-900 dark:text-white text-xs rounded px-2 py-1 w-[110px]"
                           style={{ colorScheme: 'dark' }}
                         />
                       ) : (
-                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-400 inline-block">
+                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-block">
                           {dateColStr}
                         </div>
                       )}
                     </td>
-                    <td className="px-5 py-4 text-slate-400 whitespace-nowrap">{weekStr}</td>
-                    <td className="px-5 py-4 text-slate-400 whitespace-nowrap">{monthStr}</td>
+                    <td className="px-5 py-4 text-slate-500 dark:text-slate-400 whitespace-nowrap">{weekStr}</td>
+                    <td className="px-5 py-4 text-slate-500 dark:text-slate-400 whitespace-nowrap">{monthStr}</td>
                     <td className="px-5 py-4">
                       <div className="flex flex-col gap-1.5">
                         {supplier?.name ? (
@@ -534,20 +534,20 @@ export function HenleySuppliers() {
                         )}
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-right font-black text-white">
+                    <td className="px-5 py-4 text-right font-black text-slate-900 dark:text-white">
                       {isEditing ? (
                         <div className="flex items-center justify-end gap-1">
-                          <span className="text-slate-400 text-xs font-normal">AA£</span>
+                          <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">AA£</span>
                           <input 
                             type="number" 
                             step="0.01"
                             value={editForm.amount} 
                             onChange={e => setEditForm({ ...editForm, amount: e.target.value })}
-                            className="bg-[#1f2947] border border-[#2d3b5e] text-white text-xs rounded px-2 py-1 w-20 text-right font-normal"
+                            className="bg-slate-300 dark:bg-[#1f2947] border border-[#2d3b5e] text-slate-900 dark:text-white text-xs rounded px-2 py-1 w-20 text-right font-normal"
                           />
                         </div>
                       ) : (
-                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-400 inline-flex items-center gap-1.5">
+                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-flex items-center gap-1.5">
                           {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
                           {inv._isSplit && <span className="text-[9px] font-bold text-slate-500 bg-slate-500/10 border border-slate-500/20 px-1.5 py-0.5 rounded-full">A£ split</span>}
                           {inv._isSplit && <span className="text-[9px] font-bold text-slate-500 bg-slate-500/10 border border-slate-500/20 px-1.5 py-0.5 rounded-full">½ split</span>}
@@ -555,24 +555,24 @@ export function HenleySuppliers() {
                       )}
                     </td>
                     <td className="px-5 py-4">
-                      {inv.ocrStatus === 'done' ? <span className="text-emerald-400 font-semibold text-xs">Extracted ✅</span> :
+                      {inv.ocrStatus === 'done' ? <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-xs">Extracted ✅</span> :
                        (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing') ? <span className="text-amber-400 font-semibold text-xs">Processing ⏳</span> :
-                       (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-orange-400 font-semibold text-xs">Duplicate ⚠️</span> :
+                       (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-orange-700 dark:text-orange-400 font-semibold text-xs">Duplicate ⚠️</span> :
                        <span className="text-red-400 font-semibold text-xs">Failed ❌</span>}
                     </td>
                     <td className="px-5 py-4 text-right">
                       <div className="flex items-center justify-end gap-2.5">
                         {isEditing ? (
                           <>
-                            <button onClick={handleSaveEdit} className="text-emerald-400 hover:text-emerald-300 font-semibold text-xs">Save</button>
+                            <button onClick={handleSaveEdit} className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-300 font-semibold text-xs">Save</button>
                             <span className="text-slate-700">|</span>
-                            <button onClick={() => setEditingId(null)} className="text-slate-400 hover:text-slate-300 font-semibold text-xs">Cancel</button>
+                            <button onClick={() => setEditingId(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-semibold text-xs">Cancel</button>
                           </>
                         ) : (
                           <button onClick={() => handleEditClick(inv)} className="text-amber-400 hover:text-amber-300 font-semibold text-xs">Edit</button>
                         )}
                         <span className="text-slate-700">|</span>
-                        <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-400 hover:text-blue-300 font-semibold text-xs">View</a>
+                        <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-700 dark:text-blue-400 hover:text-blue-300 font-semibold text-xs">View</a>
                         <span className="text-slate-700">|</span>
                         <button onClick={async () => {
                           if (!confirm('Are you sure you want to completely delete this invoice? All associated financial data will be instantly removed from the dashboard and overview.')) return
@@ -591,14 +591,14 @@ export function HenleySuppliers() {
 
       {/* Add Supplier Modal */}
       {showSupplierForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
-            <h2 className="text-lg font-bold text-white mb-5">{editSupplierId ? 'Edit Supplier' : 'Add New Supplier'}</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editSupplierId ? 'Edit Supplier' : 'Add New Supplier'}</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Franchise</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Franchise</label>
                 <select value={supForm.franchise} onChange={e => setSupForm({ ...supForm, franchise: e.target.value })}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
                   <option value="Combined">Both / Combined</option>
                   <option value="Herbies Pizza">Herbies Pizza</option>
                   <option value="Tasty Bun">Tasty Bun</option>
@@ -606,14 +606,14 @@ export function HenleySuppliers() {
               </div>
               
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Supplier Name</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Supplier Name</label>
                 {editSupplierId ? (
                   <input value={supForm.name} onChange={e => setSupForm({ ...supForm, name: e.target.value })}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500 transition" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500 transition" />
                 ) : (
                   <>
                     <select value={supForm.name} onChange={e => setSupForm(f => ({ ...f, name: e.target.value }))}
-                      className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 mb-2">
+                      className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 mb-2">
                       <option value="" disabled>Select a supplier...</option>
                       {Array.from(new Set(suppliers.map(s => s.name))).map(name => (
                         <option key={name} value={name}>{name}</option>
@@ -623,23 +623,23 @@ export function HenleySuppliers() {
                     {supForm.name === 'Custom' && (
                       <input value={supForm.customName} onChange={e => setSupForm({ ...supForm, customName: e.target.value })}
                         placeholder="Type new supplier name..."
-                        className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500 transition mt-2" />
+                        className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500 transition mt-2" />
                     )}
                   </>
                 )}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Category</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Category</label>
                 <select value={supForm.category} onChange={e => setSupForm(f => ({ ...f, category: e.target.value }))}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
                   {['food','packaging','cleaning','equipment','other'].map(c => <option key={c} value={c} className="capitalize">{c.charAt(0).toUpperCase()+c.slice(1)}</option>)}
                 </select>
               </div>
             </div>
               <div className="flex gap-3 mt-6 pt-2">
-                <button onClick={() => { setShowSupplierForm(false); setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }) }} className="flex-1 border border-[#1f2947] text-slate-400 hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+                <button onClick={() => { setShowSupplierForm(false); setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }) }} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
                 <button onClick={saveSupplier} disabled={saving || (!supForm.name || (supForm.name === 'Custom' && !supForm.customName))}
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition">
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition">
                   {saving ? 'Saving...' : 'Save Supplier'}
                 </button>
               </div>
@@ -649,21 +649,21 @@ export function HenleySuppliers() {
 
       {/* Add Invoice Modal */}
       {showInvoiceForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
-            <h2 className="text-lg font-bold text-white mb-4">Add Invoice</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Add Invoice</h2>
 
             {/* Toggle Tabs */}
             <div className="flex bg-[#161b2c] rounded-xl p-1 mb-5 gap-1">
               <button
                 onClick={() => setManualEntry(false)}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${!manualEntry ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${!manualEntry ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white shadow' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
               >
                 📎 Upload File
               </button>
               <button
                 onClick={() => setManualEntry(true)}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${manualEntry ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${manualEntry ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
               >
                 ✏️ Manual Entry
               </button>
@@ -671,9 +671,9 @@ export function HenleySuppliers() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Select Supplier</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Select Supplier</label>
                 <select value={selectedSupplier?.id || ''} onChange={e => setSelectedSupplier(suppliers.find(s => s.id === e.target.value) || null)}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
                   <option value="" disabled>Select a supplier...</option>
                   {suppliers.map(s => (
                     <option key={s.id} value={s.id}>{s.name} {s.franchise && s.franchise !== 'Combined' ? `(${s.franchise})` : ''}</option>
@@ -686,9 +686,9 @@ export function HenleySuppliers() {
               {/* File Upload - only shown in Upload mode */}
               {!manualEntry && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Invoice File(s) (PDF or Image)</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Invoice File(s) (PDF or Image)</label>
                   <div 
-                    className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition ${isDragging ? 'border-emerald-400 bg-emerald-500/10' : 'border-[#1f2947] hover:border-blue-500 bg-[#161b2c]/50'}`}
+                    className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition ${isDragging ? 'border-emerald-400 bg-emerald-500/10' : 'border-slate-200 dark:border-[#1f2947] hover:border-blue-500 bg-[#161b2c]/50'}`}
                     onClick={() => document.getElementById('inv-file-input')?.click()}
                     onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); }}
                     onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); }}
@@ -702,14 +702,14 @@ export function HenleySuppliers() {
                     }}
                   >
                     {invFiles.length > 0 ? (
-                      <div className="text-sm font-bold text-emerald-400">
+                      <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
                         ✅ {invFiles.length} file(s) selected: {invFiles.map(f => f.name).slice(0, 2).join(', ')}{invFiles.length > 2 ? '...' : ''}
                       </div>
                     ) : (
                       <>
                         <div className="text-3xl mb-1">📎</div>
-                        <div className="text-sm font-bold text-white mb-0.5">Drag & drop your files here</div>
-                        <div className="text-xs text-slate-400">or click to browse PDF or image files</div>
+                        <div className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">Drag & drop your files here</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400">or click to browse PDF or image files</div>
                       </>
                     )}
                   </div>
@@ -730,9 +730,9 @@ export function HenleySuppliers() {
               )}
               
               <div>
-                <label className="block text-xs font-semibold text-slate-400 mb-1">Franchise / Store</label>
+                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Franchise / Store</label>
                 <select value={invForm.store} onChange={e => setInvForm({ ...invForm, store: e.target.value })}
-                  className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
+                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
                   <option value="Combined">Combined</option>
                   <option value="Herbies Pizza">Herbies Pizza</option>
                   <option value="Tasty Bun">Tasty Bun</option>
@@ -741,33 +741,33 @@ export function HenleySuppliers() {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Amount (£) — optional</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Amount (£) — optional</label>
                   <input type="number" step="0.01" value={invForm.amount} onChange={e => setInvForm(f => ({ ...f, amount: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Auto from OCR" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Auto from OCR" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-400 mb-1">Invoice Date</label>
+                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Invoice Date</label>
                   <input type="date" value={invForm.invoiceDate} onChange={e => setInvForm(f => ({ ...f, invoiceDate: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
                 </div>
               </div>
               {ocrResult && (
                 <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-sm">
-                  <div className="font-bold text-emerald-400 mb-2">✅ OCR Extracted Data</div>
+                  <div className="font-bold text-emerald-600 dark:text-emerald-400 mb-2">✅ OCR Extracted Data</div>
                   {Object.entries(ocrResult).filter(([k]) => k !== 'rawText' && k !== 'items').map(([k, v]) => (
                     <div key={k} className="flex justify-between text-xs">
-                      <span className="text-slate-400 capitalize">{k.replace(/([A-Z])/g, ' $1')}</span>
-                      <span className="text-white font-semibold">{String(v)}</span>
+                      <span className="text-slate-500 dark:text-slate-400 capitalize">{k.replace(/([A-Z])/g, ' $1')}</span>
+                      <span className="text-slate-900 dark:text-white font-semibold">{String(v)}</span>
                     </div>
                   ))}
                   {ocrResult.items && ocrResult.items.length > 0 && (
                     <div className="mt-3 pt-3 border-t border-emerald-500/20">
-                      <div className="text-xs font-bold text-emerald-400 mb-2">Line Items ({ocrResult.items.length})</div>
+                      <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-2">Line Items ({ocrResult.items.length})</div>
                       <div className="space-y-1">
                         {ocrResult.items.map((item: any, idx: number) => (
-                          <div key={idx} className="flex justify-between text-[11px] bg-black/20 rounded px-2 py-1">
-                            <span className="text-slate-300 truncate max-w-[160px]">{item.quantity}x {item.description}</span>
-                            <span className="text-white">{item.isVat ? '(VAT)' : ''} £{item.netAmount}</span>
+                          <div key={idx} className="flex justify-between text-[11px] bg-white/20 dark:bg-black/20 rounded px-2 py-1">
+                            <span className="text-slate-600 dark:text-slate-300 truncate max-w-[160px]">{item.quantity}x {item.description}</span>
+                            <span className="text-slate-900 dark:text-white">{item.isVat ? '(VAT)' : ''} £{item.netAmount}</span>
                           </div>
                         ))}
                       </div>
@@ -777,11 +777,11 @@ export function HenleySuppliers() {
               )}
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => { setShowInvoiceForm(false); setOcrResult(null); setManualEntry(false) }} className="flex-1 border border-[#1f2947] text-slate-400 hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+              <button onClick={() => { setShowInvoiceForm(false); setOcrResult(null); setManualEntry(false) }} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
               <button 
                 onClick={saveInvoice} 
                 disabled={saving || (!manualEntry && invFiles.length === 0)} 
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition"
+                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition"
               >
                 {saving 
                   ? (manualEntry ? 'Saving…' : 'Uploading & Scanning…') 

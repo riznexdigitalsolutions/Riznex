@@ -191,52 +191,52 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
       <select
         value={filter.preset}
         onChange={e => handlePresetChange(e.target.value)}
-        className="bg-transparent text-white px-2 py-1 text-sm focus:outline-none"
+        className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-sm focus:outline-none"
       >
-        <option value="last_week" className="bg-[#111520] text-white">Last Week</option>
-        <option value="last_4_weeks" className="bg-[#111520] text-white">Last 4 Weeks</option>
-        <option value="this_month" className="bg-[#111520] text-white">This Month</option>
-        <option value="last_month" className="bg-[#111520] text-white">Last Month</option>
-        <option value="all_time" className="bg-[#111520] text-white">All Time</option>
-        <option value="custom" className="bg-[#111520] text-white">Custom Range</option>
+        <option value="last_week" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Last Week</option>
+        <option value="last_4_weeks" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Last 4 Weeks</option>
+        <option value="this_month" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">This Month</option>
+        <option value="last_month" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Last Month</option>
+        <option value="all_time" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Time</option>
+        <option value="custom" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Custom Range</option>
         <option value="specific_period" className="hidden">Specific Period</option>
       </select>
 
-      <div className="w-[1px] h-4 bg-[#1f2947] mx-1"></div>
+      <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947] mx-1"></div>
 
       <select
         value={filter.year || 'all'}
         onChange={e => handleYearChange(e.target.value)}
-        className="bg-transparent text-slate-300 hover:text-white px-2 py-1 text-sm focus:outline-none font-medium cursor-pointer transition-colors"
+        className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-2 py-1 text-sm focus:outline-none font-medium cursor-pointer transition-colors"
       >
-        <option value="all" className="bg-[#111520] text-white">All Years</option>
+        <option value="all" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Years</option>
         {years.map(y => (
-          <option key={y} value={y} className="bg-[#111520] text-white">{y}</option>
+          <option key={y} value={y} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">{y}</option>
         ))}
       </select>
 
-      <div className="w-[1px] h-4 bg-[#1f2947] mx-1"></div>
+      <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947] mx-1"></div>
 
       <select
         value={filter.month || 'all'}
         onChange={e => handleMonthChange(e.target.value)}
-        className="bg-transparent text-slate-300 hover:text-white px-2 py-1 text-sm focus:outline-none font-medium cursor-pointer transition-colors"
+        className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-2 py-1 text-sm focus:outline-none font-medium cursor-pointer transition-colors"
       >
-        <option value="all" className="bg-[#111520] text-white">All Months</option>
+        <option value="all" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Months</option>
         {displayedMonths.map(m => (
-          <option key={m.value} value={m.value} className="bg-[#111520] text-white">{m.label}</option>
+          <option key={m.value} value={m.value} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">{m.label}</option>
         ))}
       </select>
 
       {filter.month && filter.month !== 'all' && (
         <>
-          <div className="w-[1px] h-4 bg-[#1f2947] mx-1"></div>
+          <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947] mx-1"></div>
           
           <div className="relative flex items-center" ref={dropdownRef}>
             <button
               type="button"
               onClick={() => setShowWeekDropdown(!showWeekDropdown)}
-              className="bg-transparent text-slate-300 hover:text-white px-2 py-1 text-sm focus:outline-none font-medium cursor-pointer transition-colors flex items-center gap-1"
+              className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white px-2 py-1 text-sm focus:outline-none font-medium cursor-pointer transition-colors flex items-center gap-1"
             >
               {Array.isArray(filter.week) && filter.week.length > 0
                 ? `${filter.week.length} Weeks`
@@ -247,8 +247,8 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
             </button>
             
             {showWeekDropdown && (
-              <div className="absolute top-full mt-1 left-0 bg-[#111520] border border-[#1f2947] rounded-lg shadow-2xl p-2 z-50 min-w-[260px] flex flex-col gap-1">
-                <label className="flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg cursor-pointer text-sm text-slate-200 transition-colors">
+              <div className="absolute top-full mt-1 left-0 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-lg shadow-2xl p-2 z-50 min-w-[260px] flex flex-col gap-1">
+                <label className="flex items-center gap-3 px-3 py-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg cursor-pointer text-sm text-slate-700 dark:text-slate-200 transition-colors">
                   <input
                     type="checkbox"
                     checked={filter.week === 'all' || !filter.week || filter.week.length === 0}
@@ -257,18 +257,18 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
                       setFilter((f: any) => ({ ...f, weekRanges: undefined }))
                       setShowWeekDropdown(false)
                     }}
-                    className="w-4 h-4 rounded border-[#1f2947] bg-[#0a0c14] text-blue-500 focus:ring-blue-500/20 focus:ring-offset-0"
+                    className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#0a0c14] text-blue-500 focus:ring-blue-500/20 focus:ring-offset-0"
                   />
                   <span className="font-semibold">All Weeks</span>
                 </label>
-                <div className="h-[1px] bg-[#1f2947] my-1 mx-2"></div>
+                <div className="h-[1px] bg-slate-300 dark:bg-[#1f2947] my-1 mx-2"></div>
                 {getSundaysInMonth(
                   parseInt((filter.year && filter.year !== 'all') ? filter.year : new Date().getFullYear().toString()),
                   parseInt(filter.month)
                 ).map((w: any) => {
                   const isChecked = Array.isArray(filter.week) ? filter.week.includes(w.value) : filter.week === w.value
                   return (
-                    <label key={w.value} className="flex items-center gap-3 px-3 py-2 hover:bg-white/5 rounded-lg cursor-pointer text-sm text-slate-300 transition-colors">
+                    <label key={w.value} className="flex items-center gap-3 px-3 py-2 hover:bg-black/5 dark:hover:bg-white/5 rounded-lg cursor-pointer text-sm text-slate-600 dark:text-slate-300 transition-colors">
                       <input
                         type="checkbox"
                         checked={isChecked}
@@ -291,7 +291,7 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
                             handleMultiWeekChange(next)
                           }
                         }}
-                        className="w-4 h-4 rounded border-[#1f2947] bg-[#0a0c14] text-blue-500 focus:ring-blue-500/20 focus:ring-offset-0"
+                        className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#0a0c14] text-blue-500 focus:ring-blue-500/20 focus:ring-offset-0"
                       />
                       {w.label}
                     </label>
@@ -305,14 +305,16 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
 
       {filter.preset === 'custom' && (!filter.year || filter.year === 'all') && (
         <>
-          <div className="w-[1px] h-4 bg-[#1f2947] mx-1"></div>
+          <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947] mx-1"></div>
           <input type="date" value={filter.from} onChange={e => setFilter((f: any) => ({ ...f, from: e.target.value, preset: 'custom' }))}
-            className="bg-transparent text-slate-300 text-sm focus:outline-none [color-scheme:dark] cursor-pointer" />
+            className="bg-transparent text-slate-600 dark:text-slate-300 text-sm focus:outline-none dark:[color-scheme:dark] cursor-pointer" />
           <span className="text-slate-500 text-xs font-semibold px-1">to</span>
           <input type="date" value={filter.to} onChange={e => setFilter((f: any) => ({ ...f, to: e.target.value, preset: 'custom' }))}
-            className="bg-transparent text-slate-300 text-sm focus:outline-none [color-scheme:dark] cursor-pointer" />
+            className="bg-transparent text-slate-600 dark:text-slate-300 text-sm focus:outline-none dark:[color-scheme:dark] cursor-pointer" />
         </>
       )}
     </>
   )
 }
+
+

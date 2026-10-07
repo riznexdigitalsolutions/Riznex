@@ -1,10 +1,22 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { useTheme } from 'next-themes';
 import Link from 'next/link';
 
 // --- Premium Inline SVGs ---
 const Icons = {
+    Sun: () => (
+      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+    ),
+    Moon: () => (
+      <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+    ),
+
   Menu: () => (
     <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -81,6 +93,8 @@ const Icons = {
 };
 
 export default function LandingPage() {
+  const { theme, setTheme } = useTheme();
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activePricingTab, setActivePricingTab] = useState<'month1' | 'growth' | 'social' | 'custom'>('month1');
@@ -156,7 +170,7 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen w-full max-w-full bg-[#07080B] text-slate-100 font-sans selection:bg-[#E5B869] selection:text-black overflow-x-hidden antialiased">
+    <div className="min-h-screen w-full max-w-full bg-slate-50 dark:bg-[#07080B] text-slate-800 dark:text-slate-100 font-sans selection:bg-[#E5B869] selection:text-black overflow-x-hidden antialiased">
       
       {/* AMBIENT GLOW EFFECTS (STRICTLY CONTAINED) */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[350px] bg-gradient-to-b from-[#E5B869]/10 via-[#C89B3C]/5 to-transparent blur-[120px] pointer-events-none -z-10 overflow-hidden" />
@@ -164,14 +178,14 @@ export default function LandingPage() {
       {/* TOP NAVIGATION HEADER */}
       <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 w-full ${
         scrolled 
-          ? 'bg-[#07080B]/90 backdrop-blur-xl border-b border-white/[0.08] py-3 shadow-2xl shadow-black/80' 
-          : 'bg-[#07080B]/60 backdrop-blur-md py-3.5 sm:py-5 border-b border-white/[0.04]'
+          ? 'bg-slate-50/90 dark:bg-[#07080B]/90 backdrop-blur-xl border-b border-slate-200/[0.08] dark:border-white/[0.08] py-3 shadow-2xl shadow-black/80' 
+          : 'bg-slate-50/60 dark:bg-[#07080B]/60 backdrop-blur-md py-3.5 sm:py-5 border-b border-slate-200/[0.04] dark:border-white/[0.04]'
       }`}>
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 flex justify-between items-center gap-2">
           
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group shrink-0">
-            <div className="relative p-1 rounded-xl bg-gradient-to-br from-white/10 to-white/5 border border-white/10 group-hover:border-[#E5B869]/40 transition-colors">
+            <div className="relative p-1 rounded-xl bg-gradient-to-br from-black/10 dark:from-white/10 to-black/5 dark:to-white/5 border border-slate-200/10 dark:border-white/10 group-hover:border-[#E5B869]/40 transition-colors">
               <img 
                 src="/images/new-logo.jpg" 
                 alt="Riznex Logo" 
@@ -179,7 +193,7 @@ export default function LandingPage() {
               />
             </div>
             <div className="flex flex-col">
-              <span className="font-extrabold text-base sm:text-xl tracking-tight text-white flex items-center gap-1.5 leading-none">
+              <span className="font-extrabold text-base sm:text-xl tracking-tight text-slate-900 dark:text-white flex items-center gap-1.5 leading-none">
                 Riznex
                 <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869] animate-pulse"></span>
               </span>
@@ -190,7 +204,7 @@ export default function LandingPage() {
           </Link>
 
           {/* Desktop Nav Items */}
-          <nav className="hidden lg:flex items-center gap-1 bg-white/[0.03] border border-white/[0.08] px-3 py-1.5 rounded-full backdrop-blur-md">
+          <nav className="hidden lg:flex items-center gap-1 bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] px-3 py-1.5 rounded-full backdrop-blur-md">
             {[
               { label: 'Services', href: '#services' },
               { label: 'Platforms', href: '#platforms' },
@@ -205,7 +219,7 @@ export default function LandingPage() {
                 className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${
                   item.href === '/demo'
                     ? 'text-[#E5B869] font-bold bg-[#E5B869]/10 border border-[#E5B869]/40 hover:bg-[#E5B869]/20 animate-pulse drop-shadow-[0_0_8px_rgba(229,184,105,0.6)]'
-                    : 'text-slate-300 hover:text-white hover:bg-white/[0.06]'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.06] dark:hover:bg-white/[0.06]'
                 }`}
               >
                 {item.label}
@@ -219,10 +233,19 @@ export default function LandingPage() {
             {/* Direct Client Login Button (Always Visible On Mobile & Desktop) */}
             <Link 
               href="/client-login" 
-              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[11px] sm:text-xs font-semibold text-slate-200 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] hover:border-white/20 transition-all shadow-sm"
+              className="flex items-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl text-[11px] sm:text-xs font-semibold text-slate-700 dark:text-slate-200 bg-black/[0.05] dark:bg-white/[0.05] border border-slate-200/10 dark:border-white/10 hover:bg-black/[0.1] dark:hover:bg-white/[0.1] hover:border-slate-200/20 dark:hover:border-white/20 transition-all shadow-sm"
             >
               <Icons.Lock /> <span>Client Login</span>
-            </Link>
+              </Link>
+
+              {/* Theme Toggle */}
+              <button
+                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                className="p-1.5 sm:p-2 rounded-xl text-slate-900 dark:text-slate-200 bg-black/5 dark:bg-white/[0.05] border border-slate-200 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/[0.1] transition-all shadow-sm"
+                aria-label="Toggle Theme"
+              >
+                {mounted ? (theme === 'dark' ? <Icons.Sun /> : <Icons.Moon />) : <div className="w-5 h-5 sm:w-6 sm:h-6" />}
+              </button>
 
             {/* Desktop Get Started */}
             <a 
@@ -237,7 +260,7 @@ export default function LandingPage() {
             {/* Mobile Menu Hamburger Button */}
             <button 
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl bg-white/[0.05] border border-white/10 text-slate-200 hover:text-white focus:outline-none"
+              className="lg:hidden p-2 rounded-xl bg-black/[0.05] dark:bg-white/[0.05] border border-slate-200/10 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white focus:outline-none"
               aria-label="Toggle Navigation Menu"
             >
               {mobileMenuOpen ? <Icons.Close /> : <Icons.Menu />}
@@ -248,7 +271,7 @@ export default function LandingPage() {
 
         {/* Mobile Slide-Down Navigation Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden mt-2 mx-3.5 p-5 rounded-2xl bg-[#0D0F17]/98 border border-white/15 backdrop-blur-2xl shadow-2xl flex flex-col gap-3 animate-in fade-in slide-in-from-top-3 duration-200">
+          <div className="lg:hidden mt-2 mx-3.5 p-5 rounded-2xl bg-white/98 dark:bg-[#0D0F17]/98 border border-slate-200/15 dark:border-white/15 backdrop-blur-2xl shadow-2xl flex flex-col gap-3 animate-in fade-in slide-in-from-top-3 duration-200">
             <Link
               href="/demo"
               onClick={() => setMobileMenuOpen(false)}
@@ -268,17 +291,17 @@ export default function LandingPage() {
                 key={item.label} 
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="py-2.5 px-3 rounded-lg text-sm font-semibold text-slate-200 hover:bg-white/[0.06] hover:text-[#E5B869] transition-all flex items-center justify-between"
+                className="py-2.5 px-3 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-200 hover:bg-black/[0.06] dark:hover:bg-white/[0.06] hover:text-[#E5B869] transition-all flex items-center justify-between"
               >
                 <span>{item.label}</span>
                 <Icons.ArrowRight />
               </a>
             ))}
-            <div className="pt-3 border-t border-white/[0.08] flex flex-col gap-2.5">
+            <div className="pt-3 border-t border-slate-200/[0.08] dark:border-white/[0.08] flex flex-col gap-2.5">
               <Link 
                 href="/client-login" 
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold text-slate-200 bg-white/[0.06] border border-white/10"
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-bold text-slate-700 dark:text-slate-200 bg-black/[0.06] dark:bg-white/[0.06] border border-slate-200/10 dark:border-white/10"
               >
                 <Icons.Lock /> Access Client Portal
               </Link>
@@ -305,13 +328,13 @@ export default function LandingPage() {
 
 
               {/* Headline */}
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white leading-[1.12] mb-5 break-words w-full">
-                Stop Wasting Hours on Delivery Apps. <br />
-                We Run Your Entire Digital Operation So You Can Focus on <span className="text-[#E5B869]">the Food.</span>
+              <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.12] mb-5 break-words w-full">
+                We Manage Your Entire Digital Operation. <br />
+                So You Can Focus on <span className="text-[#E5B869]">the Food.</span>
               </h1>
 
               {/* Subtitle */}
-              <p className="text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed mb-7 max-w-2xl font-normal">
+              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed mb-7 max-w-2xl font-normal">
                 Riznex delivers end-to-end digital operations for ambitious UK restaurants. We unify your delivery platforms, streamline menus, manage customer reputation, and automate weekly profit reporting.
               </p>
 
@@ -325,27 +348,27 @@ export default function LandingPage() {
                 </Link>
                 <a 
                   href="#services" 
-                  className="px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-slate-200 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] hover:border-white/20 transition-all text-center flex items-center justify-center gap-2"
+                  className="px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-slate-700 dark:text-slate-200 bg-black/[0.05] dark:bg-white/[0.05] border border-slate-200/10 dark:border-white/10 hover:bg-black/[0.1] dark:hover:bg-white/[0.1] hover:border-slate-200/20 dark:hover:border-white/20 transition-all text-center flex items-center justify-center gap-2"
                 >
                   View Services
                 </a>
                 <Link 
                   href="/client-login" 
-                  className="px-4 py-3.5 rounded-xl font-medium text-xs sm:text-sm text-slate-400 hover:text-white transition-all text-center flex items-center justify-center gap-1.5"
+                  className="px-4 py-3.5 rounded-xl font-medium text-xs sm:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all text-center flex items-center justify-center gap-1.5"
                 >
                   <Icons.Lock /> Client Portal
                 </Link>
               </div>
 
               {/* Value Points */}
-              <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-5 border-t border-white/[0.08] w-full">
+              <div className="grid grid-cols-2 gap-2 sm:gap-3 pt-5 border-t border-slate-200/[0.08] dark:border-white/[0.08] w-full">
                 {[
                   'Delivery Platforms',
                   'Social & Marketing',
                   'Weekly P&L Reports',
                   'Dedicated Manager'
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-slate-300 min-w-0">
+                  <div key={idx} className="flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-slate-600 dark:text-slate-300 min-w-0">
                     <Icons.CheckBadge />
                     <span className="truncate">{item}</span>
                   </div>
@@ -355,15 +378,15 @@ export default function LandingPage() {
 
             {/* Right Live Hub Visual (Completely Overflow Proof) */}
             <div className="lg:col-span-5 w-full min-w-0">
-              <div className="relative rounded-2xl bg-[#0D0F17]/95 border border-white/[0.12] p-4 sm:p-6 backdrop-blur-xl shadow-2xl w-full overflow-hidden">
+              <div className="relative rounded-2xl bg-white/95 dark:bg-[#0D0F17]/95 border border-slate-200/[0.12] dark:border-white/[0.12] p-4 sm:p-6 backdrop-blur-xl shadow-2xl w-full overflow-hidden">
                 
                 {/* Header */}
-                <div className="flex justify-between items-center pb-3.5 mb-4 border-b border-white/[0.08]">
+                <div className="flex justify-between items-center pb-3.5 mb-4 border-b border-slate-200/[0.08] dark:border-white/[0.08]">
                   <div className="flex items-center gap-2.5 min-w-0">
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-md shadow-emerald-500/50 shrink-0" />
                     <div className="min-w-0">
-                      <h2 className="text-[11px] sm:text-xs font-bold text-white tracking-wide uppercase truncate">Live Performance Hub</h2>
-                      <p className="text-[9px] sm:text-[10px] text-slate-400 truncate">Consolidated Weekly Metrics</p>
+                      <h2 className="text-[11px] sm:text-xs font-bold text-slate-900 dark:text-white tracking-wide uppercase truncate">Live Performance Hub</h2>
+                      <p className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 truncate">Consolidated Weekly Metrics</p>
                     </div>
                   </div>
                   <Link 
@@ -376,33 +399,33 @@ export default function LandingPage() {
 
                 {/* 4 Stat KPIs */}
                 <div className="grid grid-cols-2 gap-2.5 mb-4">
-                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] min-w-0">
-                    <span className="text-[10px] font-medium text-slate-400 block mb-0.5 truncate">Gross Sales</span>
-                    <div className="text-lg sm:text-2xl font-black text-white tracking-tight truncate">£18,420</div>
+                  <div className="p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.06] dark:border-white/[0.06] min-w-0">
+                    <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block mb-0.5 truncate">Gross Sales</span>
+                    <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate">£18,420</div>
                     <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
                       <Icons.TrendingUp /> +12.5%
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] min-w-0">
-                    <span className="text-[10px] font-medium text-slate-400 block mb-0.5 truncate">Total Orders</span>
-                    <div className="text-lg sm:text-2xl font-black text-white tracking-tight truncate">1,284</div>
+                  <div className="p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.06] dark:border-white/[0.06] min-w-0">
+                    <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block mb-0.5 truncate">Total Orders</span>
+                    <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate">1,284</div>
                     <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
                       <Icons.TrendingUp /> +8.7%
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] min-w-0">
-                    <span className="text-[10px] font-medium text-slate-400 block mb-0.5 truncate">Net Profit</span>
+                  <div className="p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.06] dark:border-white/[0.06] min-w-0">
+                    <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block mb-0.5 truncate">Net Profit</span>
                     <div className="text-lg sm:text-2xl font-black text-[#E5B869] tracking-tight truncate">£4,280</div>
                     <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
                       <Icons.TrendingUp /> 23.2%
                     </div>
                   </div>
 
-                  <div className="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] min-w-0">
-                    <span className="text-[10px] font-medium text-slate-400 block mb-0.5 truncate">Expenses / Ops</span>
-                    <div className="text-lg sm:text-2xl font-black text-slate-200 tracking-tight truncate">£3,840</div>
+                  <div className="p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.06] dark:border-white/[0.06] min-w-0">
+                    <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block mb-0.5 truncate">Expenses / Ops</span>
+                    <div className="text-lg sm:text-2xl font-black text-slate-700 dark:text-slate-200 tracking-tight truncate">£3,840</div>
                     <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-rose-400 font-semibold mt-1">
                       ↓ 7.1%
                     </div>
@@ -410,12 +433,12 @@ export default function LandingPage() {
                 </div>
 
                 {/* Revenue Rhythm Bar Visual */}
-                <div className="p-3 rounded-xl bg-white/[0.02] border border-white/[0.06] mb-4 w-full">
+                <div className="p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-slate-200/[0.06] dark:border-white/[0.06] mb-4 w-full">
                   <div className="flex justify-between items-center mb-2 text-[11px]">
-                    <span className="font-semibold text-slate-300">Weekly Revenue Rhythm</span>
+                    <span className="font-semibold text-slate-600 dark:text-slate-300">Weekly Revenue Rhythm</span>
                     <span className="text-[9px] text-slate-500 font-mono">May 2026</span>
                   </div>
-                  <div className="flex items-end justify-between gap-1.5 h-16 pt-2 border-b border-white/[0.06] w-full relative">
+                  <div className="flex items-end justify-between gap-1.5 h-16 pt-2 border-b border-slate-200/[0.06] dark:border-white/[0.06] w-full relative">
                     {[45, 60, 50, 75, 55, 88, 70, 95, 65, 100].map((val, i) => (
                       <div key={i} className="flex-1 flex flex-col items-center justify-end h-full min-w-0">
                         <div 
@@ -426,7 +449,7 @@ export default function LandingPage() {
                           className={`w-full rounded-t-sm ${
                             val >= 85 
                               ? 'bg-gradient-to-t from-[#C89B3C] to-[#E5B869] shadow-lg shadow-[#E5B869]/20' 
-                              : 'bg-white/20'
+                              : 'bg-black/20 dark:bg-white/20'
                           }`}
                         />
                       </div>
@@ -442,23 +465,23 @@ export default function LandingPage() {
 
                 {/* Platform Split Responsive Grid (2 cols on mobile, 4 on desktop) */}
                 <div>
-                  <span className="text-[10px] font-semibold text-slate-400 block mb-2">Active Platform Share</span>
+                  <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 block mb-2">Active Platform Share</span>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center w-full">
                     <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
                       <span className="text-[9px] font-bold text-emerald-400 block truncate">Uber Eats</span>
-                      <span className="text-xs font-black text-white">42%</span>
+                      <span className="text-xs font-black text-slate-900 dark:text-white">42%</span>
                     </div>
                     <div className="p-1.5 sm:p-2 rounded-lg bg-orange-500/10 border border-orange-500/20">
                       <span className="text-[9px] font-bold text-orange-400 block truncate">Just Eat</span>
-                      <span className="text-xs font-black text-white">28%</span>
+                      <span className="text-xs font-black text-slate-900 dark:text-white">28%</span>
                     </div>
                     <div className="p-1.5 sm:p-2 rounded-lg bg-teal-500/10 border border-teal-500/20">
                       <span className="text-[9px] font-bold text-teal-400 block truncate">Deliveroo</span>
-                      <span className="text-xs font-black text-white">19%</span>
+                      <span className="text-xs font-black text-slate-900 dark:text-white">19%</span>
                     </div>
                     <div className="p-1.5 sm:p-2 rounded-lg bg-slate-500/10 border border-slate-500/20">
-                      <span className="text-[9px] font-bold text-slate-400 block truncate">In-Store</span>
-                      <span className="text-xs font-black text-white">11%</span>
+                      <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 block truncate">In-Store</span>
+                      <span className="text-xs font-black text-slate-900 dark:text-white">11%</span>
                     </div>
                   </div>
                 </div>
@@ -471,9 +494,9 @@ export default function LandingPage() {
       </section>
 
       {/* ── INTERACTIVE LIVE DEMO (COMPACT & CLEAR SHOWCASE) ── */}
-      <section id="demo-showcase" className="py-8 sm:py-12 bg-gradient-to-r from-[#0A0C13] via-[#101422] to-[#0A0C13] border-t border-white/[0.08]">
+      <section id="demo-showcase" className="py-8 sm:py-12 bg-gradient-to-r from-slate-50 dark:from-[#0A0C13] via-slate-100 dark:via-[#101422] to-slate-50 dark:to-[#0A0C13] border-t border-slate-200/[0.08] dark:border-white/[0.08]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-white/[0.03] via-[#E5B869]/[0.08] to-white/[0.03] border border-[#E5B869]/30 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-black/[0.03] dark:from-white/[0.03] via-[#E5B869]/[0.08] to-black/[0.03] dark:to-white/[0.03] border border-[#E5B869]/30 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
             
             {/* Left Content */}
             <div className="flex-1 text-center md:text-left">
@@ -481,10 +504,10 @@ export default function LandingPage() {
                 <span className="w-2 h-2 rounded-full bg-[#E5B869] animate-pulse"></span>
                 <span>⚡ Interactive Demo</span>
               </div>
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-white tracking-tight">
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
                 See How Your Restaurant Dashboard Will Look
               </h3>
-              <p className="text-xs sm:text-sm text-slate-300 mt-2 max-w-xl leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 mt-2 max-w-xl leading-relaxed">
                 Test-drive our system before purchasing. Explore realistic UK delivery splits (Uber Eats, Just Eat, Deliveroo), staff payroll, OCR supplier invoices, and net profit calculations.
               </p>
             </div>
@@ -498,7 +521,7 @@ export default function LandingPage() {
                 <span>⚡ Explore Live Demo</span>
                 <Icons.ArrowRight />
               </Link>
-              <div className="flex items-center gap-2 text-[11px] text-slate-400">
+              <div className="flex items-center gap-2 text-[11px] text-slate-500 dark:text-slate-400">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
                 <span>Instant Access • No Login Required</span>
               </div>
@@ -509,19 +532,19 @@ export default function LandingPage() {
       </section>
 
       {/* PLATFORMS BANNER */}
-      <section id="platforms" className="py-8 sm:py-12 border-y border-white/[0.08] bg-[#0A0C13] w-full overflow-hidden">
+      <section id="platforms" className="py-8 sm:py-12 border-y border-slate-200/[0.08] dark:border-white/[0.08] bg-slate-50 dark:bg-[#0A0C13] w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center">
-          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 mb-6">
+          <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 mb-6">
             Seamlessly Integrated With Top UK Delivery Platforms & Social Channels
           </p>
           <div className="flex flex-wrap items-center justify-center gap-5 sm:gap-10">
-            <span className="text-lg sm:text-2xl font-black text-emerald-400 tracking-tight">Uber <span className="font-light text-white">Eats</span></span>
+            <span className="text-lg sm:text-2xl font-black text-emerald-400 tracking-tight">Uber <span className="font-light text-slate-900 dark:text-white">Eats</span></span>
             <span className="text-lg sm:text-2xl font-black text-orange-500 tracking-wider">JUST EAT</span>
             <span className="text-lg sm:text-2xl font-black text-teal-400 tracking-tight">deliveroo</span>
             <span className="text-base sm:text-xl font-bold text-blue-500">Facebook</span>
             <span className="text-base sm:text-xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-amber-400 bg-clip-text text-transparent">Instagram</span>
-            <span className="text-base sm:text-xl font-bold text-white">TikTok</span>
-            <span className="text-sm sm:text-lg font-bold text-slate-300 flex items-center gap-1">
+            <span className="text-base sm:text-xl font-bold text-slate-900 dark:text-white">TikTok</span>
+            <span className="text-sm sm:text-lg font-bold text-slate-600 dark:text-slate-300 flex items-center gap-1">
               <span className="text-blue-400 font-extrabold">G</span>oogle Business
             </span>
           </div>
@@ -536,11 +559,11 @@ export default function LandingPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5B869]/10 border border-[#E5B869]/25 text-[#E5B869] text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-3">
               Comprehensive Services
             </div>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight break-words">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight break-words">
               One Dedicated Partner. <br />
               <span className="text-[#E5B869]">Your Complete Digital Operation.</span>
             </h2>
-            <p className="mt-3 text-slate-400 text-xs sm:text-base leading-relaxed max-w-xl mx-auto">
+            <p className="mt-3 text-slate-500 dark:text-slate-400 text-xs sm:text-base leading-relaxed max-w-xl mx-auto">
               We take the heavy digital burden off your shoulders so your staff can focus 100% on cooking exceptional food.
             </p>
           </div>
@@ -548,67 +571,67 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full">
             
             {/* 1. Menu Management */}
-            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.MenuBook />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Menu Management</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Menu Management</h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
                 Keep menus synced across Uber Eats, Just Eat, and Deliveroo. We add categories, modify prices, configure modifier add-ons, and optimize dishes to maximize order basket values.
               </p>
             </div>
 
             {/* 2. Social Media Management */}
-            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Share />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Social Media Marketing</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Social Media Marketing</h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
                 Engage hungry locals through eye-catching food reels, static posts, and strategic story campaigns on Instagram, TikTok, and Facebook that convert browsers into repeat diners.
               </p>
             </div>
 
             {/* 3. Business Profiles & Maps */}
-            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.MapPin />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Business Profiles & Maps</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Business Profiles & Maps</h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
                 Optimize your Google Business Profile, Apple Maps, and local search presence. Verified opening hours, location details, high-res menus, and local search visibility.
               </p>
             </div>
 
             {/* 4. Customer Support & Reviews */}
-            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Headset />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Customer Support & Reviews</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Customer Support & Reviews</h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
                 We safeguard your restaurant&apos;s 5-star reputation. We handle online guest reviews, reply politely to feedback across platforms, and promptly resolve customer inquiries.
               </p>
             </div>
 
             {/* 5. Business & Financial Reporting */}
-            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.ChartBar />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Automated Financial Reporting</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Automated Financial Reporting</h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
                 No more guessing where your money goes. Receive weekly consolidated P&L statements that break down platform commissions, VAT, supplier invoices, staff wages, and genuine profits.
               </p>
             </div>
 
             {/* 6. Growth & Order Surges */}
-            <div className="rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Rocket />
               </div>
-              <h3 className="text-base sm:text-lg font-bold text-white mb-1.5">Growth & Order Surges</h3>
-              <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-4 flex-grow">
+              <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Growth & Order Surges</h3>
+              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
                 Launch data-driven meal deals, promotional discounts, and localized ad campaigns on Uber Eats and social media to capture high-volume orders during peak dinner rushes.
               </p>
             </div>
@@ -619,7 +642,7 @@ export default function LandingPage() {
       </section>
 
       {/* CLIENT TESTIMONIAL LOGOS */}
-      <section className="py-10 sm:py-14 bg-[#050608] border-y border-white/[0.06] w-full overflow-hidden">
+      <section className="py-10 sm:py-14 bg-white dark:bg-[#050608] border-y border-slate-200/[0.06] dark:border-white/[0.06] w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center mb-6">
           <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869]">
             Trusted By Established UK Restaurants
@@ -634,7 +657,7 @@ export default function LandingPage() {
           ].map((client, i) => (
             <div 
               key={i} 
-              className="flex items-center justify-center p-3 rounded-2xl bg-white/[0.03] border border-white/[0.08]"
+              className="flex items-center justify-center p-3 rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08]"
             >
               <img 
                 src={client.src} 
@@ -654,20 +677,20 @@ export default function LandingPage() {
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5B869]/10 border border-[#E5B869]/25 text-[#E5B869] text-[10px] sm:text-xs font-semibold uppercase tracking-wider mb-3">
               Clear & Transparent Pricing
             </div>
-            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-white tracking-tight leading-tight break-words">
+            <h2 className="text-2xl sm:text-4xl lg:text-5xl font-black text-slate-900 dark:text-white tracking-tight leading-tight break-words">
               Choose The Right Level <br />
               <span className="text-[#E5B869]">Of Growth & Support.</span>
             </h2>
-            <p className="mt-3 text-slate-400 text-xs sm:text-base">
+            <p className="mt-3 text-slate-500 dark:text-slate-400 text-xs sm:text-base">
               No hidden fees, no long-term lock-ins. Simple investment that pays for itself in higher sales.
             </p>
 
             {/* Mobile Tab Switcher */}
-            <div className="sm:hidden flex items-center justify-center mt-6 p-1 rounded-xl bg-white/[0.05] border border-white/10 mx-auto w-full max-w-[24rem]">
+            <div className="sm:hidden flex items-center justify-center mt-6 p-1 rounded-xl bg-black/[0.05] dark:bg-white/[0.05] border border-slate-200/10 dark:border-white/10 mx-auto w-full max-w-[24rem]">
               <button
                 onClick={() => setActivePricingTab('month1')}
                 className={`flex-1 py-2 px-0.5 text-center rounded-lg text-[9px] font-bold transition-all ${
-                  activePricingTab === 'month1' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-400 hover:text-white'
+                  activePricingTab === 'month1' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 1st Month
@@ -675,7 +698,7 @@ export default function LandingPage() {
               <button
                 onClick={() => setActivePricingTab('growth')}
                 className={`flex-1 py-2 px-0.5 text-center rounded-lg text-[9px] font-bold transition-all ${
-                  activePricingTab === 'growth' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-400 hover:text-white'
+                  activePricingTab === 'growth' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Growth
@@ -683,7 +706,7 @@ export default function LandingPage() {
               <button
                 onClick={() => setActivePricingTab('social')}
                 className={`flex-1 py-2 px-0.5 text-center rounded-lg text-[9px] font-bold transition-all ${
-                  activePricingTab === 'social' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-400 hover:text-white'
+                  activePricingTab === 'social' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Social
@@ -691,7 +714,7 @@ export default function LandingPage() {
               <button
                 onClick={() => setActivePricingTab('custom')}
                 className={`flex-1 py-2 px-0.5 text-center rounded-lg text-[9px] font-bold transition-all ${
-                  activePricingTab === 'custom' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-400 hover:text-white'
+                  activePricingTab === 'custom' ? 'bg-[#E5B869] text-black shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
                 }`}
               >
                 Custom
@@ -703,16 +726,16 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto w-full">
             
             {/* Plan 1: 1st Month Setup & Reporting */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-[#0D0F17]/90 border transition-all flex flex-col relative w-full ${
-              activePricingTab === 'month1' ? 'border-[#E5B869]/50 shadow-2xl shadow-[#E5B869]/10' : 'border-white/10'
+            <div className={`rounded-3xl p-5 sm:p-7 bg-white/90 dark:bg-[#0D0F17]/90 border transition-all flex flex-col relative w-full ${
+              activePricingTab === 'month1' ? 'border-[#E5B869]/50 shadow-2xl shadow-[#E5B869]/10' : 'border-slate-200/10 dark:border-white/10'
             } ${activePricingTab !== 'month1' ? 'hidden sm:flex' : 'flex'}`}>
               
               <div className="flex justify-between items-start mb-6">
                 <div>
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-black/[0.06] dark:bg-white/[0.06] text-slate-600 dark:text-slate-300 border border-slate-200/10 dark:border-white/10 mb-2">
                     Phase 1: Foundation
                   </span>
-                  <h3 className="text-lg sm:text-xl font-black text-white leading-tight">Restaurant Setup & Reporting</h3>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-tight">Restaurant Setup & Reporting</h3>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£500</span>
@@ -723,10 +746,10 @@ export default function LandingPage() {
 
               <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Delivery Platform Menu Setup
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Professional Menu Setup</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Add Categories, Items, Extras & Add-ons</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Price & Competitor Review</li>
@@ -737,10 +760,10 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Profile Setup
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Create New & Review Existing Accounts</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Update Business Information</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Set Up Business Profiles</li>
@@ -751,10 +774,10 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Sales & Business Reports
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Fees</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report & Top Selling Items</li>
@@ -763,7 +786,7 @@ export default function LandingPage() {
                     <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access</li>
                   </ul>
                   <div className="mt-4 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
-                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
+                    <span className="text-[10px] text-slate-900 dark:text-white font-medium leading-tight">Experience your future dashboard in action.</span>
                     <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
                       <Icons.Sparkles /> View Demo
                     </Link>
@@ -780,7 +803,7 @@ export default function LandingPage() {
             </div>
 
             {/* Plan 2: 2nd Month+ Monthly Growth Package */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-b from-[#131622] to-[#0A0C14] border border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/15 flex flex-col relative w-full ${
+            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-b from-slate-100 dark:from-[#131622] to-white dark:to-[#0A0C14] border border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/15 flex flex-col relative w-full ${
               activePricingTab !== 'growth' ? 'hidden sm:flex' : 'flex'
             }`}>
 
@@ -789,12 +812,12 @@ export default function LandingPage() {
                   <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-[#E5B869]/20 text-[#E5B869] border border-[#E5B869]/30 mb-2">
                     Phase 2: Continuous Growth
                   </span>
-                  <h3 className="text-lg sm:text-xl font-black text-white leading-tight">Monthly Growth Package</h3>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-tight">Monthly Growth Package</h3>
                 </div>
                 <div className="text-right shrink-0">
                   <span className="text-[10px] sm:text-xs text-slate-500 line-through block font-medium">£300</span>
                   <div className="text-2xl sm:text-3xl font-black text-[#E5B869] tracking-tight">
-                    £250 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
+                    £250 <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal">/mo</span>
                   </div>
                   <span className="text-[9px] sm:text-[10px] font-semibold text-emerald-400">Cancel Anytime</span>
                 </div>
@@ -802,10 +825,10 @@ export default function LandingPage() {
 
               <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Social Media & Advertising
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> 4 Strategic Posts Per Week (8 Static & 8 Reels)</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Content Creation & Publishing</li>
                     <li className="flex items-center gap-2"><Icons.Check /> FB, Instagram & TikTok Management</li>
@@ -816,10 +839,10 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Customer Support & Management
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Up to 12 Hours Daily Support (7 Days)</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Daily Review Replies & Monitoring</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Menu Updates & Amendments</li>
@@ -830,10 +853,10 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-[#E5B869] pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869]"></span> Sales & Business Reports
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Sales & Expenses Summary</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Supplier Purchases & Platform Charges</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Profit & Loss Report & Top Selling Items</li>
@@ -842,7 +865,7 @@ export default function LandingPage() {
                     <li className="flex items-center gap-2"><Icons.Check /> 24/7 Live Dashboard Access</li>
                   </ul>
                   <div className="mt-4 p-2.5 rounded-lg bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-between gap-3">
-                    <span className="text-[10px] text-white font-medium leading-tight">Experience your future dashboard in action.</span>
+                    <span className="text-[10px] text-slate-900 dark:text-white font-medium leading-tight">Experience your future dashboard in action.</span>
                     <Link href="/demo" className="shrink-0 px-3 py-1.5 rounded text-[9px] font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:scale-105 transition-transform flex items-center gap-1 shadow-md shadow-[#E5B869]/20">
                       <Icons.Sparkles /> View Demo
                     </Link>
@@ -859,30 +882,33 @@ export default function LandingPage() {
             </div>
 
             {/* Plan 3: Social Media Growth Package */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-[#0D0F17]/90 border border-white/10 transition-all flex flex-col relative w-full ${
+            <div className={`rounded-3xl p-5 sm:p-7 bg-white/90 dark:bg-[#0D0F17]/90 border border-slate-200/10 dark:border-white/10 transition-all flex flex-col relative w-full ${
               activePricingTab !== 'social' ? 'hidden sm:flex' : 'flex'
             }`}>
 
               <div className="flex justify-between items-start mb-6 pt-2 h-[7.5rem]">
                 <div>
-                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
+                  <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-black/[0.06] dark:bg-white/[0.06] text-slate-600 dark:text-slate-300 border border-slate-200/10 dark:border-white/10 mb-2">
                     Social Media & Advertising
                   </span>
-                  <h3 className="text-lg sm:text-xl font-black text-white leading-tight">Social Media Growth Package</h3>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-tight">Social Media Growth Package</h3>
+                    <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed pr-2">
+                      Professional posts, reels, and local ad campaigns to turn scrollers into loyal diners.
+                    </p>
                 </div>
                 <div className="text-right shrink-0">
-                  <div className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                    £200 <span className="text-[10px] sm:text-xs text-slate-400 font-normal">/mo</span>
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+                    £200 <span className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-normal">/mo</span>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Social Media Management
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white"></span> Social Media Management
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> 12 Professional Posts & 12 Reels Per Month</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Management</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Content Creation & Publishing</li>
@@ -893,10 +919,10 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Social Media Growth
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white"></span> Social Media Growth
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Brand Consistency Across All Platforms</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Profile & Bio Optimisation</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Trending Content & Reel Ideas</li>
@@ -907,12 +933,12 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Paid Advertising
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white"></span> Paid Advertising
                   </h4>
 
 
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Facebook & Instagram Ad Campaign Setup</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Monthly Promotional Ad Campaigns</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Audience Targeting & Location Targeting</li>
@@ -925,33 +951,33 @@ export default function LandingPage() {
 
               <a 
                 href="#contact" 
-                className="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-black bg-white hover:bg-slate-200 text-center shadow-lg transition-colors"
+                className="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white dark:text-black bg-slate-900 dark:bg-white hover:bg-slate-800 dark:hover:bg-slate-200 text-center shadow-lg transition-colors"
               >
                 Choose Social Media Package
               </a>
             </div>
 
             {/* Plan 4: Custom Business Solution */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-[#0D0F17]/90 border border-white/10 transition-all flex flex-col relative w-full ${
+            <div className={`rounded-3xl p-5 sm:p-7 bg-white/90 dark:bg-[#0D0F17]/90 border border-slate-200/10 dark:border-white/10 transition-all flex flex-col relative w-full ${
               activePricingTab !== 'custom' ? 'hidden sm:flex' : 'flex'
             }`}>
 
               <div className="flex flex-col items-start mb-6 pt-2 h-[7.5rem]">
-                <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-white/[0.06] text-slate-300 border border-white/10 mb-2">
+                <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-black/[0.06] dark:bg-white/[0.06] text-slate-600 dark:text-slate-300 border border-slate-200/10 dark:border-white/10 mb-2">
                   CUSTOM BUSINESS SOLUTION
                 </span>
-                <h3 className="text-lg sm:text-xl font-black text-white leading-tight">Build Your Own Package</h3>
-                <p className="text-[10px] sm:text-[11px] text-slate-400 mt-2 leading-relaxed">
+                <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-tight">Build Your Own Package</h3>
+                <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
                   Pricing depends on the services, workload and support required. Tell us what you need &mdash; we will create the right package for your business.
                 </p>
               </div>
 
               <div className="space-y-5 flex-grow mb-6 text-xs sm:text-sm">
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Custom Services
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white"></span> Custom Services
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Choose Required Services & Photography</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Social Media Management</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Posts, Reels & Content</li>
@@ -962,10 +988,10 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Marketing & Advertising
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white"></span> Marketing & Advertising
                   </h4>
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Facebook, Instagram & TikTok Advertising</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Campaign Setup</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Audience & Location Targeting</li>
@@ -976,12 +1002,12 @@ export default function LandingPage() {
                 </div>
 
                 <div>
-                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-200 pb-1.5 mb-2.5 border-b border-white/[0.08] flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-white"></span> Business Support
+                  <h4 className="text-[11px] font-bold uppercase tracking-wider text-slate-700 dark:text-slate-200 pb-1.5 mb-2.5 border-b border-slate-200/[0.08] dark:border-white/[0.08] flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-black dark:bg-white"></span> Business Support
                   </h4>
 
 
-                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-300">
+                  <ul className="space-y-1.5 text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
                     <li className="flex items-center gap-2"><Icons.Check /> Custom Reporting & Analytics</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Competitor & Market Research</li>
                     <li className="flex items-center gap-2"><Icons.Check /> Offers & Promotions Setup</li>
@@ -994,7 +1020,7 @@ export default function LandingPage() {
 
               <a 
                 href="#contact" 
-                className="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-white border border-white/20 hover:bg-white/10 text-center shadow-lg transition-colors"
+                className="w-full py-3.5 rounded-xl font-bold text-xs uppercase tracking-wider text-slate-900 dark:text-white border border-slate-200/20 dark:border-white/20 hover:bg-black/10 dark:hover:bg-white/10 text-center shadow-lg transition-colors"
               >
                 Request Custom Quote
               </a>
@@ -1003,14 +1029,14 @@ export default function LandingPage() {
           </div>
 
           {/* Interactive Demo Callout Banner */}
-          <div className="mt-10 sm:mt-12 max-w-4xl mx-auto p-4 sm:p-6 rounded-3xl bg-gradient-to-r from-white/[0.04] via-[#E5B869]/10 to-white/[0.04] border border-[#E5B869]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-xl shadow-black/40">
+          <div className="mt-10 sm:mt-12 max-w-4xl mx-auto p-4 sm:p-6 rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left shadow-xl shadow-black/40">
             <div className="flex items-center gap-3.5">
               <div className="w-11 h-11 rounded-2xl bg-[#E5B869]/20 flex items-center justify-center text-[#E5B869] shrink-0 border border-[#E5B869]/30">
                 <Icons.Sparkles />
               </div>
               <div>
-                <h4 className="text-sm sm:text-base font-bold text-white">Want to test-drive before subscribing?</h4>
-                <p className="text-xs text-slate-400 mt-0.5">Explore our live simulated dashboard with realistic UK restaurant sales, charts, and OCR invoices.</p>
+                <h4 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white">Want to test-drive before subscribing?</h4>
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Explore our live simulated dashboard with realistic UK restaurant sales, charts, and OCR invoices.</p>
               </div>
             </div>
             <Link 
@@ -1025,13 +1051,13 @@ export default function LandingPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-white/[0.08] bg-[#0A0C13] w-full overflow-hidden">
+      <section id="how-it-works" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-slate-200/[0.08] dark:border-white/[0.08] bg-slate-50 dark:bg-[#0A0C13] w-full overflow-hidden">
         <div className="max-w-7xl mx-auto w-full">
           
           <div className="text-center max-w-2xl mx-auto mb-12">
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869] block mb-2">Simple Onboarding</span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight break-words">How Riznex Powers Your Restaurant</h2>
-            <p className="mt-2 text-slate-400 text-xs sm:text-sm">We handle all technical hurdles so you can focus entirely on food quality.</p>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight break-words">How Riznex Powers Your Restaurant</h2>
+            <p className="mt-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">We handle all technical hurdles so you can focus entirely on food quality.</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 w-full">
@@ -1059,11 +1085,11 @@ export default function LandingPage() {
             ].map((step, idx) => (
               <div 
                 key={idx} 
-                className="p-5 sm:p-6 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex flex-col"
+                className="p-5 sm:p-6 rounded-2xl bg-black/[0.02] dark:bg-white/[0.02] border border-slate-200/[0.06] dark:border-white/[0.06] flex flex-col"
               >
                 <div className="text-2xl sm:text-3xl font-black text-[#E5B869] mb-2.5 font-mono">{step.step}</div>
-                <h3 className="text-sm sm:text-base font-bold text-white mb-1.5">{step.title}</h3>
-                <p className="text-xs text-slate-400 leading-relaxed">{step.desc}</p>
+                <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mb-1.5">{step.title}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -1072,23 +1098,23 @@ export default function LandingPage() {
       </section>
 
       {/* CONTACT & CONSULTATION FORM */}
-      <section id="contact" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-white/[0.08] relative w-full overflow-hidden">
+      <section id="contact" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-slate-200/[0.08] dark:border-white/[0.08] relative w-full overflow-hidden">
         <div className="max-w-4xl mx-auto w-full">
           
           <div className="text-center max-w-2xl mx-auto mb-10">
             <span className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869] block mb-2">Get Started Today</span>
-            <h2 className="text-2xl sm:text-4xl font-black text-white tracking-tight break-words">Ready to Take Control of Your Restaurant&apos;s Growth?</h2>
-            <p className="mt-2 text-slate-400 text-xs sm:text-sm">Send us a quick message. Our team will review your menu and delivery platforms and get in touch within 24 hours.</p>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight break-words">Ready to Take Control of Your Restaurant&apos;s Growth?</h2>
+            <p className="mt-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">Send us a quick message. Our team will review your menu and delivery platforms and get in touch within 24 hours.</p>
           </div>
 
-          <div className="p-5 sm:p-10 rounded-3xl bg-[#0D0F17]/95 border border-white/10 backdrop-blur-xl shadow-2xl w-full">
+          <div className="p-5 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0D0F17]/95 border border-slate-200/10 dark:border-white/10 backdrop-blur-xl shadow-2xl w-full">
             {formSent ? (
               <div className="py-10 text-center">
                 <div className="w-12 h-12 rounded-full bg-[#E5B869]/20 text-[#E5B869] mx-auto flex items-center justify-center mb-3">
                   <Icons.Check />
                 </div>
-                <h3 className="text-lg sm:text-xl font-bold text-white mb-2">Thank you! Your inquiry has been received.</h3>
-                <p className="text-xs text-slate-400 max-w-md mx-auto">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white mb-2">Thank you! Your inquiry has been received.</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 max-w-md mx-auto">
                   A Riznex restaurant specialist will review your details and contact you shortly to schedule your introductory walkthrough.
                 </p>
               </div>
@@ -1096,58 +1122,58 @@ export default function LandingPage() {
               <form onSubmit={handleFormSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Restaurant Name</label>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Restaurant Name</label>
                     <input 
                       type="text" 
                       name="restaurantName"
                       required 
                       placeholder="e.g. Spice Lounge UK" 
-                      className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
+                      className="w-full bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200/[0.1] dark:border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Your Name</label>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Your Name</label>
                     <input 
                       type="text" 
                       name="yourName"
                       required 
                       placeholder="e.g. Tariq Khan" 
-                      className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
+                      className="w-full bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200/[0.1] dark:border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Email Address</label>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Email Address</label>
                     <input 
                       type="email" 
                       name="emailAddress"
                       required 
                       placeholder="manager@restaurant.co.uk" 
-                      className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
+                      className="w-full bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200/[0.1] dark:border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">Phone Number</label>
+                    <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">Phone Number</label>
                     <input 
                       type="tel" 
                       name="phoneNumber"
                       required 
                       placeholder="e.g. +44 7911 123456" 
-                      className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
+                      className="w-full bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200/[0.1] dark:border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-300 mb-1">How can we assist you?</label>
+                  <label className="block text-[11px] font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-300 mb-1">How can we assist you?</label>
                   <textarea 
                     name="message"
                     rows={4} 
                     required 
                     placeholder="Tell us about your current delivery platforms, weekly issues, or goals..." 
-                    className="w-full bg-white/[0.04] border border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors resize-none"
+                    className="w-full bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200/[0.1] dark:border-white/[0.1] rounded-xl px-3.5 py-3 text-xs text-slate-900 dark:text-white placeholder-slate-500 focus:outline-none focus:border-[#E5B869] focus:ring-1 focus:ring-[#E5B869] transition-colors resize-none"
                   />
                 </div>
 
@@ -1166,7 +1192,7 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER (PROMINENT, 100% VISIBLE & RESPONSIVE) */}
-      <footer className="py-12 sm:py-16 border-t border-white/[0.08] bg-[#050609] text-xs text-slate-400 w-full overflow-hidden">
+      <footer className="py-12 sm:py-16 border-t border-slate-200/[0.08] dark:border-white/[0.08] bg-white dark:bg-[#050609] text-xs text-slate-500 dark:text-slate-400 w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 w-full">
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 w-full">
@@ -1175,7 +1201,7 @@ export default function LandingPage() {
             <div className="space-y-3">
               <div className="flex items-center gap-2">
                 <img src="/images/new-logo.jpg" alt="Riznex Logo" className="h-7 w-auto object-contain rounded" />
-                <span className="font-bold text-white text-sm">Riznex Digital Solutions</span>
+                <span className="font-bold text-slate-900 dark:text-white text-sm">Riznex Digital Solutions</span>
               </div>
               <p className="text-slate-500 text-[11px] leading-relaxed">
                 Dedicated digital management, marketing, and reporting software for ambitious UK restaurants.
@@ -1187,22 +1213,22 @@ export default function LandingPage() {
 
             {/* Column 2: Navigation */}
             <div>
-              <h4 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Quick Navigation</h4>
+              <h4 className="text-slate-900 dark:text-white font-semibold text-xs mb-3 uppercase tracking-wider">Quick Navigation</h4>
               <ul className="space-y-2 text-[11px]">
-                <li><a href="#services" className="hover:text-white transition-colors">Services Overview</a></li>
-                <li><a href="#platforms" className="hover:text-white transition-colors">Platform Integrations</a></li>
-                <li><a href="#packages" className="hover:text-white transition-colors">Packages & Pricing</a></li>
-                <li><a href="#how-it-works" className="hover:text-white transition-colors">How It Works</a></li>
-                <li><a href="#contact" className="hover:text-white transition-colors">Contact Us</a></li>
+                <li><a href="#services" className="hover:text-slate-900 dark:hover:text-white transition-colors">Services Overview</a></li>
+                <li><a href="#platforms" className="hover:text-slate-900 dark:hover:text-white transition-colors">Platform Integrations</a></li>
+                <li><a href="#packages" className="hover:text-slate-900 dark:hover:text-white transition-colors">Packages & Pricing</a></li>
+                <li><a href="#how-it-works" className="hover:text-slate-900 dark:hover:text-white transition-colors">How It Works</a></li>
+                <li><a href="#contact" className="hover:text-slate-900 dark:hover:text-white transition-colors">Contact Us</a></li>
               </ul>
             </div>
 
             {/* Column 3: Client Area & Legal */}
             <div>
-              <h4 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Client & Legal</h4>
+              <h4 className="text-slate-900 dark:text-white font-semibold text-xs mb-3 uppercase tracking-wider">Client & Legal</h4>
               <ul className="space-y-2 text-[11px]">
                 <li><Link href="/client-login" className="hover:text-[#E5B869] transition-colors font-medium">Client Login</Link></li>
-                <li><Link href="/login" className="hover:text-white transition-colors">Admin Portal</Link></li>
+                <li><Link href="/login" className="hover:text-slate-900 dark:hover:text-white transition-colors">Admin Portal</Link></li>
                 <li>
                   <button 
                     onClick={() => setActiveLegalModal('privacy')} 
@@ -1232,8 +1258,8 @@ export default function LandingPage() {
 
             {/* Column 4: Contact */}
             <div>
-              <h4 className="text-white font-semibold text-xs mb-3 uppercase tracking-wider">Direct Contact</h4>
-              <p className="text-slate-400 text-[11px] mb-2">
+              <h4 className="text-slate-900 dark:text-white font-semibold text-xs mb-3 uppercase tracking-wider">Direct Contact</h4>
+              <p className="text-slate-500 dark:text-slate-400 text-[11px] mb-2">
                 Email: <br />
                 <a href="mailto:riznexdigitalsolutions@gmail.com" className="text-[#E5B869] hover:underline font-mono text-[11px] break-all">
                   riznexdigitalsolutions@gmail.com
@@ -1248,7 +1274,7 @@ export default function LandingPage() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="pt-6 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500 text-center sm:text-left">
+          <div className="pt-6 border-t border-slate-200/[0.06] dark:border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-3 text-[11px] text-slate-500 text-center sm:text-left">
             <span>&copy; {new Date().getFullYear()} Riznex Digital Solutions. All rights reserved.</span>
             <div className="flex flex-wrap items-center justify-center gap-3">
               <button 
@@ -1279,20 +1305,20 @@ export default function LandingPage() {
       {/* INTERACTIVE LEGAL MODAL */}
       {activeLegalModal && (
         <div 
-          className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-3.5 sm:p-6 animate-in fade-in duration-200"
+          className="fixed inset-0 z-[100] bg-white/80 dark:bg-black/80 backdrop-blur-md flex items-center justify-center p-3.5 sm:p-6 animate-in fade-in duration-200"
           onClick={() => setActiveLegalModal(null)}
         >
           <div 
-            className="relative w-full max-w-2xl max-h-[85vh] rounded-3xl bg-[#0D0F17] border border-white/15 p-5 sm:p-8 shadow-2xl flex flex-col overflow-hidden text-slate-200"
+            className="relative w-full max-w-2xl max-h-[85vh] rounded-3xl bg-white dark:bg-[#0D0F17] border border-slate-200/15 dark:border-white/15 p-5 sm:p-8 shadow-2xl flex flex-col overflow-hidden text-slate-700 dark:text-slate-200"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Modal Header */}
-            <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-white/10 shrink-0">
+            <div className="flex items-center justify-between pb-3.5 mb-3.5 border-b border-slate-200/10 dark:border-white/10 shrink-0">
               <div>
                 <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-[#E5B869] block mb-0.5">
                   Legal Compliance · UK GDPR
                 </span>
-                <h3 className="text-lg sm:text-2xl font-black text-white">
+                <h3 className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white">
                   {activeLegalModal === 'privacy' && 'Privacy Policy'}
                   {activeLegalModal === 'terms' && 'Terms of Service'}
                   {activeLegalModal === 'cookies' && 'Cookie Policy'}
@@ -1300,7 +1326,7 @@ export default function LandingPage() {
               </div>
               <button 
                 onClick={() => setActiveLegalModal(null)}
-                className="p-1.5 sm:p-2 rounded-xl bg-white/[0.05] border border-white/10 text-slate-400 hover:text-white transition-colors"
+                className="p-1.5 sm:p-2 rounded-xl bg-black/[0.05] dark:bg-white/[0.05] border border-slate-200/10 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-colors"
                 aria-label="Close Modal"
               >
                 <Icons.Close />
@@ -1308,33 +1334,33 @@ export default function LandingPage() {
             </div>
 
             {/* Modal Body */}
-            <div className="overflow-y-auto pr-1 sm:pr-2 space-y-3.5 text-xs sm:text-sm text-slate-300 leading-relaxed font-normal">
+            <div className="overflow-y-auto pr-1 sm:pr-2 space-y-3.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
               {activeLegalModal === 'privacy' && (
                 <>
-                  <p className="text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. Introduction & Overview</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. Introduction & Overview</h4>
                     <p>Riznex Digital Solutions (&quot;Riznex&quot;, &quot;we&quot;, &quot;our&quot;) is dedicated to protecting the privacy and security of our restaurant partners and their clients. We adhere strictly to the UK General Data Protection Regulation (UK GDPR) and Data Protection Act 2018.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. Restaurant Data We Collect</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. Restaurant Data We Collect</h4>
                     <p>To provide unified restaurant management and reporting services, we process:</p>
-                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-400 text-xs">
+                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-500 dark:text-slate-400 text-xs">
                       <li>Business contact details (restaurant name, manager name, email, phone number).</li>
                       <li>Delivery platform data via authorized access (Uber Eats, Just Eat, Deliveroo sales figures, order counts, and commission statements).</li>
                       <li>Invoices, supplier statements, and operational expenses uploaded for automated profit analysis.</li>
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. How We Use Your Data</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. How We Use Your Data</h4>
                     <p>We process restaurant data exclusively to deliver agreed business management services: updating and synchronizing menus, generating weekly consolidated profit-and-loss reports, replying to online guest reviews, and executing promotional marketing.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">4. Data Confidentiality & Security</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">4. Data Confidentiality & Security</h4>
                     <p>Your financial metrics, sales numbers, and customer feedback are treated with strict commercial confidentiality. We implement industry-standard encryption protocols and never sell, trade, or share client restaurant data with unauthorized third parties.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">5. Your Rights & Inquiries</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">5. Your Rights & Inquiries</h4>
                     <p>Under UK GDPR, you have the right to request access to, correction of, or complete deletion of your business records. For any data inquiries, contact our Data Protection Officer at <a href="mailto:riznexdigitalsolutions@gmail.com" className="text-[#E5B869] underline">riznexdigitalsolutions@gmail.com</a>.</p>
                   </div>
                 </>
@@ -1342,29 +1368,29 @@ export default function LandingPage() {
 
               {activeLegalModal === 'terms' && (
                 <>
-                  <p className="text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. Agreement to Terms</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. Agreement to Terms</h4>
                     <p>By engaging Riznex Digital Solutions or accessing our reporting dashboard, you agree to comply with and be bound by these Terms of Service. These terms apply to all restaurant operators and clients.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. Scope of Services</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. Scope of Services</h4>
                     <p>Riznex acts as an authorized digital manager for food & beverage establishments across the UK. Services include delivery aggregator synchronization (Uber Eats, Just Eat, Deliveroo), social media marketing, local SEO profile management, and weekly financial reporting.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. Pricing, Invoicing & Billing</h4>
-                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-400 text-xs">
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. Pricing, Invoicing & Billing</h4>
+                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-500 dark:text-slate-400 text-xs">
                       <li><strong>Phase 1 (1st Month Setup & Reporting):</strong> £300 one-time fee (standard £500) covering complete digital overhaul, menu restructuring, and baseline reports.</li>
                       <li><strong>Phase 2 (Ongoing Monthly Growth):</strong> £250 per month on a rolling basis, covering daily account management, social content, and weekly P&L summaries.</li>
                       <li>Payments are invoiced monthly. Services can be paused or cancelled with 14 days written notice prior to the next billing cycle.</li>
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">4. Account Ownership & Client Responsibilities</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">4. Account Ownership & Client Responsibilities</h4>
                     <p>Clients retain full legal ownership of their primary delivery platform accounts and commercial trademarks. Clients are responsible for notifying Riznex of price adjustments, stock shortages (86-ing items), or altered trading hours.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">5. Governing Law</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">5. Governing Law</h4>
                     <p>These terms and any dispute arising from them shall be governed by and construed in accordance with the laws of England and Wales.</p>
                   </div>
                 </>
@@ -1372,20 +1398,20 @@ export default function LandingPage() {
 
               {activeLegalModal === 'cookies' && (
                 <>
-                  <p className="text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
+                  <p className="text-slate-500 dark:text-slate-400 text-[11px] italic">Last Updated: September 2026</p>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. What Are Cookies?</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">1. What Are Cookies?</h4>
                     <p>Cookies are small text files placed on your device by websites that you visit. They are widely used to make websites work efficiently, provide secure authentication, and supply reporting insights to site operators.</p>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. How Riznex Uses Cookies</h4>
-                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-400 text-xs">
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">2. How Riznex Uses Cookies</h4>
+                    <ul className="list-disc pl-5 space-y-1 mt-1 text-slate-500 dark:text-slate-400 text-xs">
                       <li><strong>Strictly Necessary Cookies:</strong> Essential for authenticating restaurant managers into the Riznex Client Dashboard and maintaining secure session tokens.</li>
                       <li><strong>Performance & Analytics Cookies:</strong> Anonymous telemetry that helps us optimize page load speed, mobile navigation responsiveness, and report generation times.</li>
                     </ul>
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. Managing Your Cookies</h4>
+                    <h4 className="font-bold text-slate-900 dark:text-white mb-1 text-xs sm:text-sm text-[#E5B869]">3. Managing Your Cookies</h4>
                     <p>You can adjust your browser settings to refuse all or some browser cookies, or to alert you when websites set cookies. Please note that disabling essential cookies will prevent successful login to your Riznex Dashboard.</p>
                   </div>
                 </>
@@ -1393,7 +1419,7 @@ export default function LandingPage() {
             </div>
 
             {/* Modal Footer */}
-            <div className="pt-3.5 mt-3.5 border-t border-white/10 flex items-center justify-between shrink-0">
+            <div className="pt-3.5 mt-3.5 border-t border-slate-200/10 dark:border-white/10 flex items-center justify-between shrink-0">
               <span className="text-[10px] text-slate-500">Riznex Digital Solutions UK</span>
               <button 
                 onClick={() => setActiveLegalModal(null)}
@@ -1409,3 +1435,6 @@ export default function LandingPage() {
     </div>
   );
 }
+
+
+

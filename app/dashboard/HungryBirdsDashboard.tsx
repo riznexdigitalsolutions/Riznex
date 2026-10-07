@@ -69,7 +69,7 @@ export function HungryBirdsDashboard() {
 
   if (loading && !report) return (
     <div className="flex items-center justify-center h-64">
-      <div className="w-10 h-10 border-2 border-[#1f2947] border-t-blue-500 rounded-full animate-spin" />
+      <div className="w-10 h-10 border-2 border-slate-200 dark:border-[#1f2947] border-t-blue-500 rounded-full animate-spin" />
     </div>
   )
 
@@ -493,17 +493,17 @@ export function HungryBirdsDashboard() {
         {/* Tier 1: Centered Title & PDF Export Button */}
         <div className="flex justify-center items-start relative">
           <div className="w-full text-center flex flex-col items-center justify-center">
-            <h1 className="text-3xl font-black text-white tracking-tight flex items-center justify-center gap-3">
+            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center justify-center gap-3">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/hungry-birds-logo.jpg" alt="Hungry Birds Logo" className="h-12 w-auto rounded-xl shadow-md border border-[#1f2947] inline-block" />
+              <img src="/hungry-birds-logo.jpg" alt="Hungry Birds Logo" className="h-12 w-auto rounded-xl shadow-md border border-slate-200 dark:border-[#1f2947] inline-block" />
               <span>{session?.user?.clientName ?? 'Hungry Birds'}</span>
             </h1>
-            <p className="text-slate-400 mt-1.5 font-medium">{getDynamicSubtitle()}</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-1.5 font-medium">{getDynamicSubtitle()}</p>
           </div>
           <div className="print:hidden absolute top-0 right-0" data-html2canvas-ignore="true">
             <button
               onClick={() => exportToPDF('hungry-birds-export-area', getPdfFilename())}
-              className="bg-[#111520] border border-[#1f2947] rounded-xl px-4 py-2 text-blue-400 hover:text-blue-300 hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer"
+              className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 text-blue-700 dark:text-blue-400 hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer"
             >
               <span>📄</span> Export PDF Report
             </button>
@@ -511,7 +511,7 @@ export function HungryBirdsDashboard() {
         </div>
 
         {/* Tier 2: Filter Toolbar (Single Brand - No Store Tabs) */}
-        <div className="bg-[#111520]/50 border border-[#1f2947] rounded-2xl p-3 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 print:hidden shadow-lg backdrop-blur-sm">
+        <div className="bg-slate-100/50 dark:bg-[#111520]/50 border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 print:hidden shadow-lg backdrop-blur-sm">
           {/* Left Side: Platform toggle tabs & selector */}
           <div className="flex flex-wrap items-center gap-3">
             
@@ -520,14 +520,14 @@ export function HungryBirdsDashboard() {
 
             {/* Right Side: DateFilter & Reset */}
           <div className="flex flex-wrap items-center gap-3">
-            <div className="bg-[#0e121b] border border-[#1f2947] rounded-xl px-4 py-2 flex gap-2 items-center">
-              <div className="text-slate-400 opacity-70 mr-1 text-sm">📅</div>
+            <div className="bg-slate-50 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 flex gap-2 items-center">
+              <div className="text-slate-500 dark:text-slate-400 opacity-70 mr-1 text-sm">📅</div>
               <DateFilter filter={filter} setFilter={setFilter} />
             </div>
             
             <button
               onClick={() => { setFilter(defaultDateFilter()); setPlatform(''); }}
-              className="bg-[#0e121b] border border-[#1f2947] rounded-xl px-4 py-2 text-slate-400 hover:text-white text-xs font-bold transition cursor-pointer"
+              className="bg-slate-50 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs font-bold transition cursor-pointer"
             >
               Reset
             </button>
@@ -538,58 +538,58 @@ export function HungryBirdsDashboard() {
       <div className={activeTab === 'overview' ? 'flex flex-col gap-8' : 'hidden'}>
         {/* Primary KPIs - 5 cards */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-5 shadow-lg">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Orders</div>
-          <div className="text-2xl font-black text-orange-400">{orders}</div>
+          <div className="text-2xl font-black text-orange-700 dark:text-orange-400">{orders}</div>
         </div>
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-5 shadow-lg">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Sales</div>
-          <div className="text-2xl font-black text-blue-400">{gbp(totalSales)}</div>
+          <div className="text-2xl font-black text-blue-700 dark:text-blue-400">{gbp(totalSales)}</div>
         </div>
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-5 shadow-lg">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Sales</div>
-          <div className="text-2xl font-black text-cyan-400">{gbp(r?.sales?.totalNetPaid ?? 0)}</div>
+          <div className="text-2xl font-black text-cyan-700 dark:text-cyan-400">{gbp(r?.sales?.totalNetPaid ?? 0)}</div>
         </div>
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-5 shadow-lg">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Expenses</div>
-          <div className="text-2xl font-black text-purple-400">{gbp(totalExpenses + totalSuppliers)}</div>
+          <div className="text-2xl font-black text-purple-600 dark:text-purple-400">{gbp(totalExpenses + totalSuppliers)}</div>
         </div>
 
-        <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-900/40 border border-emerald-500/30 rounded-2xl p-5 shadow-emerald-500/10 shadow-xl">
-          <div className="text-[11px] font-bold text-emerald-500 uppercase tracking-widest mb-1">Net Profit</div>
-          <div className={`text-3xl font-black ${netProfit >= 0 ? 'text-emerald-400' : 'text-emerald-400'}`}>{gbp(netProfit)}</div>
+        <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-900/40 border border-emerald-500/30 rounded-2xl p-5 shadow-sm dark:shadow-emerald-500/10 dark:shadow-xl">
+          <div className="text-[11px] font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-widest mb-1">Net Profit</div>
+          <div className={`text-3xl font-black ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-emerald-600 dark:text-emerald-400'}`}>{gbp(netProfit)}</div>
         </div>
       </div>
 
       {/* Expense Breakdown Strip — 7 tiles */}
       <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-3">
-        <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
+        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Commissions</div>
           <div className="text-base font-black text-red-400">{gbp(totalCommission)}</div>
         </div>
-        <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
+        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ad Spend</div>
           <div className="text-base font-black text-yellow-400">{gbp(adSpends)}</div>
         </div>
-        <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
+        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Utilities</div>
-          <div className="text-base font-black text-cyan-400">{gbp(utilities)}</div>
+          <div className="text-base font-black text-cyan-700 dark:text-cyan-400">{gbp(utilities)}</div>
         </div>
-        <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
+        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Wages</div>
-          <div className="text-base font-black text-pink-400">{gbp(staffWages)}</div>
+          <div className="text-base font-black text-pink-700 dark:text-pink-400">{gbp(staffWages)}</div>
         </div>
-        <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
+        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Supplier Purchases</div>
           <div className="text-base font-black text-amber-400">{gbp(totalSuppliers)}</div>
         </div>
-        <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
+        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Others</div>
           <div className="text-base font-black text-indigo-400">{gbp(otherExpenses)}</div>
         </div>
-        <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1 bg-purple-500/10 border-purple-500/20">
-          <div className="text-[10px] font-bold text-purple-400 uppercase tracking-widest">Total Expenses</div>
-          <div className="text-base font-black text-purple-300">{gbp(totalExpenses + totalSuppliers)}</div>
+        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1 bg-purple-500/10 border-purple-500/20">
+          <div className="text-[10px] font-bold text-slate-500 dark:text-purple-400 uppercase tracking-widest">Total Expenses</div>
+          <div className="text-base font-black text-purple-800 dark:text-purple-300">{gbp(totalExpenses + totalSuppliers)}</div>
         </div>
       </div>
 
@@ -597,39 +597,39 @@ export function HungryBirdsDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         
         {/* Left Column: Waterfall Profit Summary */}
-        <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-0">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-0">
           <div className="absolute -top-32 -left-32 w-80 h-80 bg-emerald-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
           <div>
-            <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 shadow-inner text-lg">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20 shadow-inner text-lg">
                 💰
               </span>
               Profit Summary
             </h2>
             
-            <div className="mb-6 border-b border-[#1f2947] pb-4 flex justify-between items-end">
-              <span className="text-slate-300 font-bold text-lg">Gross Sales</span>
-              <span className="text-blue-400 font-bold text-2xl">{gbp(totalSales)}</span>
+            <div className="mb-6 border-b border-slate-200 dark:border-[#1f2947] pb-4 flex justify-between items-end">
+              <span className="text-slate-600 dark:text-slate-300 font-bold text-lg">Gross Sales</span>
+              <span className="text-blue-700 dark:text-blue-400 font-bold text-2xl">{gbp(totalSales)}</span>
             </div>
 
             <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">LESS:</div>
             <ul className="space-y-3.5 font-normal">
               <li className="text-sm">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-slate-200 font-semibold flex items-center gap-2 text-sm">
+                  <span className="text-slate-700 dark:text-slate-200 font-semibold flex items-center gap-2 text-sm">
                     <span className="w-2 h-2 rounded-full bg-red-400"></span>
                     Commission
                   </span>
                   <span className="text-red-400 font-bold text-sm">-{gbp(totalCommission)}</span>
                 </div>
                 {Object.entries(r?.sales?.byPlatform || {}).some(([_, d]: any) => d.commission > 0) && (
-                  <ul className="pl-4 space-y-1 border-l border-[#1f2947]/50 ml-1 my-1">
+                  <ul className="pl-4 space-y-1 border-l border-slate-200/50 dark:border-[#1f2947]/50 ml-1 my-1">
                     {Object.entries(r?.sales?.byPlatform || {}).map(([name, data]: any) => {
                       if (!data.commission) return null
                       return (
-                        <li key={name} className="flex justify-between items-center text-xs text-slate-400">
+                        <li key={name} className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
                           <span>{PLATFORM_LABELS[name] ?? name}</span>
-                          <span className="font-medium text-slate-300">-{gbp(data.commission)}</span>
+                          <span className="font-medium text-slate-600 dark:text-slate-300">-{gbp(data.commission)}</span>
                         </li>
                       )
                     })}
@@ -639,20 +639,20 @@ export function HungryBirdsDashboard() {
 
               <li className="text-sm">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-slate-200 font-semibold flex items-center gap-2 text-sm">
+                  <span className="text-slate-700 dark:text-slate-200 font-semibold flex items-center gap-2 text-sm">
                     <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
                     Ad Spends & Promoted
                   </span>
                   <span className="text-red-400 font-bold text-sm">-{gbp(adSpends)}</span>
                 </div>
                 {Object.entries(r?.sales?.byPlatform || {}).some(([_, d]: any) => d.adSpends > 0) && (
-                  <ul className="pl-4 space-y-1 border-l border-[#1f2947]/50 ml-1 my-1">
+                  <ul className="pl-4 space-y-1 border-l border-slate-200/50 dark:border-[#1f2947]/50 ml-1 my-1">
                     {Object.entries(r?.sales?.byPlatform || {}).map(([name, data]: any) => {
                       if (!data.adSpends) return null
                       return (
-                        <li key={name} className="flex justify-between items-center text-xs text-slate-400">
+                        <li key={name} className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
                           <span>{PLATFORM_LABELS[name] ?? name}</span>
-                          <span className="font-medium text-slate-300">-{gbp(data.adSpends)}</span>
+                          <span className="font-medium text-slate-600 dark:text-slate-300">-{gbp(data.adSpends)}</span>
                         </li>
                       )
                     })}
@@ -662,21 +662,21 @@ export function HungryBirdsDashboard() {
 
               <li className="text-sm">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-slate-200 font-semibold flex items-center gap-2 text-sm">
+                  <span className="text-slate-700 dark:text-slate-200 font-semibold flex items-center gap-2 text-sm">
                     <span className="w-2 h-2 rounded-full bg-pink-400"></span>
                     Other Deductions
                   </span>
                   <span className="text-red-400 font-bold text-sm">-{gbp(vat)}</span>
                 </div>
                 {Object.entries(r?.sales?.byPlatform || {}).some(([_, d]: any) => (d.grossSales - d.netPaid - d.commission - d.adSpends) > 0) && (
-                  <ul className="pl-4 space-y-1 border-l border-[#1f2947]/50 ml-1 my-1">
+                  <ul className="pl-4 space-y-1 border-l border-slate-200/50 dark:border-[#1f2947]/50 ml-1 my-1">
                     {Object.entries(r?.sales?.byPlatform || {}).map(([name, data]: any) => {
                       const otherDed = data.grossSales - data.netPaid - (data.commission || 0) - (data.adSpends || 0)
                       if (otherDed <= 0) return null
                       return (
-                        <li key={name} className="flex justify-between items-center text-xs text-slate-400">
+                        <li key={name} className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
                           <span>{PLATFORM_LABELS[name] ?? name}</span>
-                          <span className="font-medium text-slate-300">-{gbp(otherDed)}</span>
+                          <span className="font-medium text-slate-600 dark:text-slate-300">-{gbp(otherDed)}</span>
                         </li>
                       )
                     })}
@@ -686,18 +686,18 @@ export function HungryBirdsDashboard() {
 
               <li className="text-sm">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-slate-200 font-semibold flex items-center gap-2 text-sm">
+                  <span className="text-slate-700 dark:text-slate-200 font-semibold flex items-center gap-2 text-sm">
                     <span className="w-2 h-2 rounded-full bg-cyan-400"></span>
                     Utilities
                   </span>
                   <span className="text-red-400 font-bold text-sm">-{gbp(utilities)}</span>
                 </div>
                 {Object.keys(utilitiesBreakdown).length > 0 && (
-                  <ul className="pl-4 space-y-1 border-l border-[#1f2947]/50 ml-1 my-1">
+                  <ul className="pl-4 space-y-1 border-l border-slate-200/50 dark:border-[#1f2947]/50 ml-1 my-1">
                     {Object.entries(utilitiesBreakdown).map(([name, amount]: any) => (
-                      <li key={name} className="flex justify-between items-center text-xs text-slate-400">
+                      <li key={name} className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
                         <span>{name}</span>
-                        <span className="font-medium text-slate-300">-{gbp(amount)}</span>
+                        <span className="font-medium text-slate-600 dark:text-slate-300">-{gbp(amount)}</span>
                       </li>
                     ))}
                   </ul>
@@ -706,15 +706,15 @@ export function HungryBirdsDashboard() {
 
               <li className="text-sm">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-slate-200 font-semibold text-sm">Supplier Purchases</span>
+                  <span className="text-slate-700 dark:text-slate-200 font-semibold text-sm">Supplier Purchases</span>
                   <span className="text-red-400 font-bold text-sm">-{gbp(totalSuppliers)}</span>
                 </div>
                 {Object.keys(suppliersBreakdown).length > 0 && (
-                  <ul className="pl-4 space-y-1 border-l border-[#1f2947]/50 ml-1 my-1">
+                  <ul className="pl-4 space-y-1 border-l border-slate-200/50 dark:border-[#1f2947]/50 ml-1 my-1">
                     {Object.entries(suppliersBreakdown).map(([name, amount]: any) => (
-                      <li key={name} className="flex justify-between items-center text-xs text-slate-400">
+                      <li key={name} className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
                         <span>{name}</span>
-                        <span className="font-medium text-slate-300">-{gbp(amount)}</span>
+                        <span className="font-medium text-slate-600 dark:text-slate-300">-{gbp(amount)}</span>
                       </li>
                     ))}
                   </ul>
@@ -723,15 +723,15 @@ export function HungryBirdsDashboard() {
 
               <li className="text-sm">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-slate-200 font-semibold text-sm">Staff Wages</span>
+                  <span className="text-slate-700 dark:text-slate-200 font-semibold text-sm">Staff Wages</span>
                   <span className="text-red-400 font-bold text-sm">-{gbp(staffWages)}</span>
                 </div>
                 {Object.keys(wagesBreakdown).length > 0 && (
-                  <ul className="pl-4 space-y-1 border-l border-[#1f2947]/50 ml-1 my-1">
+                  <ul className="pl-4 space-y-1 border-l border-slate-200/50 dark:border-[#1f2947]/50 ml-1 my-1">
                     {Object.entries(wagesBreakdown).map(([name, amount]: any) => (
-                      <li key={name} className="flex justify-between items-center text-xs text-slate-400">
+                      <li key={name} className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
                         <span>{name}</span>
-                        <span className="font-medium text-slate-300">-{gbp(amount)}</span>
+                        <span className="font-medium text-slate-600 dark:text-slate-300">-{gbp(amount)}</span>
                       </li>
                     ))}
                   </ul>
@@ -740,15 +740,15 @@ export function HungryBirdsDashboard() {
 
               <li className="text-sm">
                 <div className="flex justify-between items-center mb-1">
-                  <span className="text-slate-200 font-semibold text-sm">Other Expenses</span>
+                  <span className="text-slate-700 dark:text-slate-200 font-semibold text-sm">Other Expenses</span>
                   <span className="text-red-400 font-bold text-sm">-{gbp(otherExpenses)}</span>
                 </div>
                 {Object.keys(otherBreakdown).length > 0 && (
-                  <ul className="pl-4 space-y-1 border-l border-[#1f2947]/50 ml-1 my-1">
+                  <ul className="pl-4 space-y-1 border-l border-slate-200/50 dark:border-[#1f2947]/50 ml-1 my-1">
                     {Object.entries(otherBreakdown).map(([name, amount]: any) => (
-                      <li key={name} className="flex justify-between items-center text-xs text-slate-400">
+                      <li key={name} className="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
                         <span>{name}</span>
-                        <span className="font-medium text-slate-300">-{gbp(amount)}</span>
+                        <span className="font-medium text-slate-600 dark:text-slate-300">-{gbp(amount)}</span>
                       </li>
                     ))}
                   </ul>
@@ -758,17 +758,17 @@ export function HungryBirdsDashboard() {
           </div>
 
           <div className="mt-8 pt-6 border-t border-emerald-500/20 flex justify-between items-center">
-            <span className="text-emerald-400 font-bold text-xl tracking-tight">= Net Profit</span>
-            <span className="text-emerald-400 font-bold text-2xl">{gbp(netProfit)}</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-xl tracking-tight">= Net Profit</span>
+            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-2xl">{gbp(netProfit)}</span>
           </div>
         </div>
 
         {/* Right Column (2 cols wide): Platform Performance Table */}
-        <div className="lg:col-span-2 bg-[#111520] border border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-0">
+        <div className="lg:col-span-2 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-0">
           <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
           <div>
-            <h2 className="text-xl font-bold text-white mb-8 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 shadow-inner text-lg">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-8 flex items-center gap-3">
+              <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-700 dark:text-blue-400 flex items-center justify-center border border-blue-500/20 shadow-inner text-lg">
                 📊
               </span>
               Platform Performance
@@ -776,13 +776,13 @@ export function HungryBirdsDashboard() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-sm whitespace-nowrap">
                 <thead>
-                  <tr className="text-slate-400 border-b border-[#1f2947]">
+                  <tr className="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-[#1f2947]">
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs">Platform</th>
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right">Orders</th>
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right">Sales</th>
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right">Deductions</th>
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right">%</th>
-                    <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right text-emerald-400">Net Received</th>
+                    <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right text-emerald-600 dark:text-emerald-400">Net Received</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#1f2947]/50">
@@ -792,15 +792,15 @@ export function HungryBirdsDashboard() {
                     </tr>
                   ) : (
                     platformData.map((p: any, i: number) => (
-                      <tr key={i} className="hover:bg-white/5 transition-colors group">
-                        <td className="py-3.5 font-semibold text-slate-200 text-sm">{p.name}</td>
-                        <td className="py-3.5 text-slate-300 text-right font-medium text-sm">{p.orders}</td>
-                        <td className="py-3.5 text-blue-400 text-right font-bold text-sm">{gbp(p.sales)}</td>
+                      <tr key={i} className="hover:bg-black/5 dark:hover:bg-white/5 transition-colors group">
+                        <td className="py-3.5 font-semibold text-slate-700 dark:text-slate-200 text-sm">{p.name}</td>
+                        <td className="py-3.5 text-slate-600 dark:text-slate-300 text-right font-medium text-sm">{p.orders}</td>
+                        <td className="py-3.5 text-blue-700 dark:text-blue-400 text-right font-bold text-sm">{gbp(p.sales)}</td>
                         <td className="py-3.5 text-red-400 text-right font-bold text-sm">{gbp(p.deductions)}</td>
-                        <td className="py-3.5 text-slate-400 text-right font-medium text-xs">
+                        <td className="py-3.5 text-slate-500 dark:text-slate-400 text-right font-medium text-xs">
                           {p.sales > 0 ? ((p.deductions / p.sales) * 100).toFixed(1) : '0.0'}%
                         </td>
-                        <td className="py-3.5 text-emerald-400 text-right font-bold text-sm">{gbp(p.net)}</td>
+                        <td className="py-3.5 text-emerald-600 dark:text-emerald-400 text-right font-bold text-sm">{gbp(p.net)}</td>
                       </tr>
                     ))
                   )}
@@ -809,22 +809,22 @@ export function HungryBirdsDashboard() {
             </div>
 
             {/* Visual Distribution Charts Stacked Vertically under Platform Performance */}
-            <div className="mt-8 pt-6 border-t border-[#1f2947] flex flex-col gap-5">
+            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-[#1f2947] flex flex-col gap-5">
               
               {/* Sales Distribution */}
               <div className="space-y-2">
-                <div className="flex justify-between items-center text-sm font-bold text-white">
-                  <span className="flex items-center gap-2"><span className="text-blue-400">📈</span> Sales Distribution</span>
-                  <span className="text-blue-400 font-bold text-xs">{gbp(totalSales)}</span>
+                <div className="flex justify-between items-center text-sm font-bold text-slate-900 dark:text-white">
+                  <span className="flex items-center gap-2"><span className="text-blue-700 dark:text-blue-400">📈</span> Sales Distribution</span>
+                  <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">{gbp(totalSales)}</span>
                 </div>
                 <div className="space-y-1.5">
                   {platformData.map((p: any, idx: number) => (
                     <div key={idx} className="space-y-1">
                       <div className="flex justify-between items-center text-xs">
-                        <span className="text-slate-300 font-medium">{p.name}</span>
-                        <span className="text-blue-400 font-bold text-xs">{gbp(p.sales)}</span>
+                        <span className="text-slate-600 dark:text-slate-300 font-medium">{p.name}</span>
+                        <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">{gbp(p.sales)}</span>
                       </div>
-                      <div className="w-full h-1.5 bg-[#0e121b] rounded-full overflow-hidden border border-[#1f2947]">
+                      <div className="w-full h-1.5 bg-slate-50 dark:bg-[#0e121b] rounded-full overflow-hidden border border-slate-200 dark:border-[#1f2947]">
                         <div 
                           style={{ width: `${Math.min(100, Math.max(3, (p.sales / maxSales) * 100))}%` }} 
                           className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full"
@@ -837,9 +837,9 @@ export function HungryBirdsDashboard() {
 
               {/* Expense Distribution */}
               <div className="space-y-2">
-                <div className="flex justify-between items-center text-sm font-bold text-white">
-                  <span className="flex items-center gap-2"><span className="text-purple-400">💸</span> Expense Distribution</span>
-                  <span className="text-purple-400 font-bold text-xs">{gbp(combinedTotalCost)}</span>
+                <div className="flex justify-between items-center text-sm font-bold text-slate-900 dark:text-white">
+                  <span className="flex items-center gap-2"><span className="text-purple-600 dark:text-purple-400">💸</span> Expense Distribution</span>
+                  <span className="text-purple-600 dark:text-purple-400 font-bold text-xs">{gbp(combinedTotalCost)}</span>
                 </div>
                 <div className="space-y-1.5">
                   {expenseDistributionList.map((item: any, idx: number) => {
@@ -847,10 +847,10 @@ export function HungryBirdsDashboard() {
                     return (
                       <div key={idx} className="space-y-1">
                         <div className="flex justify-between items-center text-xs">
-                          <span className="text-slate-300 font-medium">{item.name}</span>
-                          <span className="text-slate-200 font-bold text-xs">{pct}% <span className="text-slate-500 font-normal">({gbp(item.amount)})</span></span>
+                          <span className="text-slate-600 dark:text-slate-300 font-medium">{item.name}</span>
+                          <span className="text-slate-700 dark:text-slate-200 font-bold text-xs">{pct}% <span className="text-slate-500 font-normal">({gbp(item.amount)})</span></span>
                         </div>
-                        <div className="w-full h-1.5 bg-[#0e121b] rounded-full overflow-hidden border border-[#1f2947]">
+                        <div className="w-full h-1.5 bg-slate-50 dark:bg-[#0e121b] rounded-full overflow-hidden border border-slate-200 dark:border-[#1f2947]">
                           <div 
                             style={{ width: `${combinedTotalCost > 0 ? Math.min(100, Math.max(3, (item.amount / combinedTotalCost) * 100)) : 0}%` }} 
                             className={`h-full ${item.color} rounded-full`}
@@ -875,19 +875,19 @@ export function HungryBirdsDashboard() {
             <div className="w-full mt-2">
 
               {/* Main Chart (Dark Theme) */}
-              <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-white font-bold uppercase tracking-wide text-sm">
-                    <span className="text-blue-400 mr-2">1.</span>WEEKLY SALES & ORDERS
+                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
+                    <span className="text-blue-700 dark:text-blue-400 mr-2">1.</span>WEEKLY SALES & ORDERS
                   </h2>
                   <div className="flex items-center gap-6 text-[13px] font-bold">
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span> 
-                      <span className="text-slate-300">Sales (£)</span>
+                      <span className="text-slate-600 dark:text-slate-300">Sales (£)</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full bg-[#f97316]"></span> 
-                      <span className="text-slate-300">Orders</span>
+                      <span className="text-slate-600 dark:text-slate-300">Orders</span>
                     </div>
                   </div>
                 </div>
@@ -948,8 +948,8 @@ export function HungryBirdsDashboard() {
                   {/* Top Row: 2 Pies */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
+                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
                     <div className="flex w-full items-center">
                       <div className="w-[220px] h-[220px] relative">
                         <ResponsiveContainer width="100%" height="100%">
@@ -961,8 +961,8 @@ export function HungryBirdsDashboard() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customSalesPieTotal)}</span>
-                          <span className="text-[10px] text-slate-400 font-bold uppercase">Total Sales</span>
+                          <span className="text-slate-900 dark:text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customSalesPieTotal)}</span>
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase">Total Sales</span>
                         </div>
                       </div>
                       <div className="flex-1 pl-8 flex flex-col gap-3">
@@ -970,9 +970,9 @@ export function HungryBirdsDashboard() {
                           <div key={i} className="flex justify-between items-center text-[13px]">
                             <div className="flex items-center gap-2">
                               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-300 font-medium">{d.name}</span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium">{d.name}</span>
                             </div>
-                            <span className="text-slate-400">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -980,8 +980,8 @@ export function HungryBirdsDashboard() {
                   </div>
 
                   {/* Expense Breakdown */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
+                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
                     <div className="flex w-full items-center">
                       <div className="w-[220px] h-[220px] relative">
                         <ResponsiveContainer width="100%" height="100%">
@@ -993,8 +993,8 @@ export function HungryBirdsDashboard() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customExpensePieTotal)}</span>
-                          <span className="text-[10px] text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
+                          <span className="text-slate-900 dark:text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customExpensePieTotal)}</span>
+                          <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
                       <div className="flex-1 pl-8 flex flex-col gap-3">
@@ -1002,9 +1002,9 @@ export function HungryBirdsDashboard() {
                           <div key={i} className="flex justify-between items-center text-[13px]">
                             <div className="flex items-center gap-2">
                               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-300 font-medium truncate max-w-[90px]" title={d.name}>{d.name}</span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate max-w-[90px]" title={d.name}>{d.name}</span>
                             </div>
-                            <span className="text-slate-400 shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1014,10 +1014,10 @@ export function HungryBirdsDashboard() {
                   </div>
 
                   {/* Bottom Row: Supplier Purchases */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
+                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
                     <div className="flex justify-between items-center mb-6">
-                      <h2 className="text-white font-bold text-lg">Supplier Purchases</h2>
-                      <span className="text-xs bg-[#1f2947] text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Weeks</span>
+                      <h2 className="text-slate-900 dark:text-white font-bold text-lg">Supplier Purchases</h2>
+                      <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Weeks</span>
                     </div>
                     <div className="flex-1 min-h-0 w-full mt-2">
                       <ResponsiveContainer width="100%" height="100%">
@@ -1053,9 +1053,9 @@ export function HungryBirdsDashboard() {
 
                           </div>
             ) : (
-              <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
-                <h2 className="text-3xl font-black text-white mb-3">No Data Available</h2>
-                <p className="text-slate-400 max-w-md">There are no sales records available for the selected period.</p>
+              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
+                <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-3">No Data Available</h2>
+                <p className="text-slate-500 dark:text-slate-400 max-w-md">There are no sales records available for the selected period.</p>
               </div>
             )}
           </div>
@@ -1066,19 +1066,19 @@ export function HungryBirdsDashboard() {
             <div className="w-full mt-2">
 
               {/* Main Chart (Dark Theme) */}
-              <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
                 <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-white font-bold uppercase tracking-wide text-sm">
-                    <span className="text-blue-400 mr-2">1.</span>MONTHLY SALES & ORDERS
+                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
+                    <span className="text-blue-700 dark:text-blue-400 mr-2">1.</span>MONTHLY SALES & ORDERS
                   </h2>
                   <div className="flex items-center gap-6 text-[13px] font-bold">
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span> 
-                      <span className="text-slate-300">Sales (£)</span>
+                      <span className="text-slate-600 dark:text-slate-300">Sales (£)</span>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full bg-[#f97316]"></span> 
-                      <span className="text-slate-300">Orders</span>
+                      <span className="text-slate-600 dark:text-slate-300">Orders</span>
                     </div>
                   </div>
                 </div>
@@ -1130,8 +1130,8 @@ export function HungryBirdsDashboard() {
                 {/* Top Row: 2 Pies */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
+                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
                     <div className="flex w-full items-center">
                       <div className="w-[220px] h-[220px] relative">
                         <ResponsiveContainer width="100%" height="100%">
@@ -1143,8 +1143,8 @@ export function HungryBirdsDashboard() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-2">
-                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customSalesPieTotal)}</span>
-                          <span className="text-[11px] text-slate-400 font-bold uppercase mt-1">Total Sales</span>
+                          <span className="text-slate-900 dark:text-white font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customSalesPieTotal)}</span>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-1">Total Sales</span>
                         </div>
                       </div>
                       <div className="flex-1 pl-8 flex flex-col gap-3">
@@ -1152,9 +1152,9 @@ export function HungryBirdsDashboard() {
                           <div key={i} className="flex justify-between items-center text-[13px]">
                             <div className="flex items-center gap-3">
                               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-300 font-medium">{d.name}</span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium">{d.name}</span>
                             </div>
-                            <span className="text-slate-400 font-semibold">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1162,8 +1162,8 @@ export function HungryBirdsDashboard() {
                   </div>
 
                   {/* Expense Breakdown */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
+                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
                     <div className="flex w-full items-center">
                       <div className="w-[220px] h-[220px] relative">
                         <ResponsiveContainer width="100%" height="100%">
@@ -1175,8 +1175,8 @@ export function HungryBirdsDashboard() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-2">
-                          <span className="text-white font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customExpensePieTotal)}</span>
-                          <span className="text-[11px] text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
+                          <span className="text-slate-900 dark:text-white font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customExpensePieTotal)}</span>
+                          <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
                       <div className="flex-1 pl-8 flex flex-col gap-3">
@@ -1184,9 +1184,9 @@ export function HungryBirdsDashboard() {
                           <div key={i} className="flex justify-between items-center text-[13px]">
                             <div className="flex items-center gap-3">
                               <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-300 font-medium whitespace-nowrap" title={d.name}>{d.name}</span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap" title={d.name}>{d.name}</span>
                             </div>
-                            <span className="text-slate-400 font-semibold shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1195,10 +1195,10 @@ export function HungryBirdsDashboard() {
                 </div>
 
                 {/* Bottom Row: Supplier Purchases */}
-                <div className="bg-[#111520] border border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
+                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-white font-bold text-lg">Supplier Purchases</h2>
-                    <span className="text-xs bg-[#1f2947] text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Months</span>
+                    <h2 className="text-slate-900 dark:text-white font-bold text-lg">Supplier Purchases</h2>
+                    <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Months</span>
                   </div>
                   <div className="flex-1 min-h-0 w-full mt-2">
                     <ResponsiveContainer width="100%" height="100%">
@@ -1224,26 +1224,26 @@ export function HungryBirdsDashboard() {
               </div>
             </div>
             ) : (
-            <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
-              <h2 className="text-3xl font-black text-white mb-3">No Data Available</h2>
-              <p className="text-slate-400 max-w-md">There are no sales records available for the selected period.</p>
+            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
+              <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-3">No Data Available</h2>
+              <p className="text-slate-500 dark:text-slate-400 max-w-md">There are no sales records available for the selected period.</p>
             </div>
           )}
           </div>
 
       {/* --- OFFERS TAB --- */}
       <div className={activeTab === 'offers' ? 'block' : 'hidden'}>
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-8 shadow-xl mt-6 w-full">
+        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-8 shadow-xl mt-6 w-full">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-white">Marketing & Offers ROI</h2>
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Marketing & Offers ROI</h2>
             {session?.user?.role === 'admin' && (
-              <button onClick={() => { setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Combined', amount: '', startDate: '', type: 'weekly', notes: '' }); setShowOfferModal(true); }} className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">+ Add Offer</button>
+              <button onClick={() => { setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Combined', amount: '', startDate: '', type: 'weekly', notes: '' }); setShowOfferModal(true); }} className="bg-blue-600 hover:bg-blue-500 text-slate-900 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">+ Add Offer</button>
             )}
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead>
-                <tr className="text-slate-400 border-b border-[#1f2947]">
+                <tr className="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-[#1f2947]">
                   <th className="pb-4">Start Date</th>
                   <th className="pb-4">Platform</th>
                   <th className="pb-4 text-right">Spend</th>
@@ -1259,18 +1259,18 @@ export function HungryBirdsDashboard() {
               <tbody className="divide-y divide-[#1f2947]">
                 {realOffersData.map((o, i) => (
                   <tr key={i} className="group">
-                    <td className="py-4 text-slate-300 font-medium whitespace-nowrap">{o.startDate}</td>
-                    <td className="py-4 text-white font-medium">
+                    <td className="py-4 text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap">{o.startDate}</td>
+                    <td className="py-4 text-slate-900 dark:text-white font-medium">
                       {o.platform}
-                      {o.notes && <div className="text-xs text-slate-400 mt-1">{o.notes}</div>}
+                      {o.notes && <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{o.notes}</div>}
                     </td>
                     <td className="py-4 text-red-400 text-right">{o.spend > 0 ? gbp(o.spend) : '-'}</td>
-                    <td className="py-4 text-white text-right font-medium">{o.orders}</td>
-                    <td className="py-4 text-white text-right font-medium">{o.grossSales > 0 ? gbp(o.grossSales) : '-'}</td>
-                    <td className="py-4 text-orange-400 text-right">{o.deductions > 0 ? gbp(o.deductions) : '-'}</td>
-                    <td className="py-4 text-slate-400 text-right">{o.grossSales > 0 ? `${o.deductionPercent}%` : '-'}</td>
-                    <td className="py-4 text-blue-400 text-right">{o.revenue > 0 ? gbp(o.revenue) : '-'}</td>
-                    <td className="py-4 text-emerald-400 font-bold text-right">{o.ROI}</td>
+                    <td className="py-4 text-slate-900 dark:text-white text-right font-medium">{o.orders}</td>
+                    <td className="py-4 text-slate-900 dark:text-white text-right font-medium">{o.grossSales > 0 ? gbp(o.grossSales) : '-'}</td>
+                    <td className="py-4 text-orange-700 dark:text-orange-400 text-right">{o.deductions > 0 ? gbp(o.deductions) : '-'}</td>
+                    <td className="py-4 text-slate-500 dark:text-slate-400 text-right">{o.grossSales > 0 ? `${o.deductionPercent}%` : '-'}</td>
+                    <td className="py-4 text-blue-700 dark:text-blue-400 text-right">{o.revenue > 0 ? gbp(o.revenue) : '-'}</td>
+                    <td className="py-4 text-emerald-600 dark:text-emerald-400 font-bold text-right">{o.ROI}</td>
                     {session?.user?.role === 'admin' && (
                       <td className="py-4 text-right">
                         {o.id !== 'none' && (
@@ -1289,7 +1289,7 @@ export function HungryBirdsDashboard() {
                                 });
                                 setShowOfferModal(true);
                               }
-                            }} className="text-slate-500 hover:text-blue-400 text-lg transition-colors" title="Edit Offer">
+                            }} className="text-slate-500 hover:text-blue-700 dark:text-blue-400 text-lg transition-colors" title="Edit Offer">
                               ✎
                             </button>
                             <button onClick={() => {
@@ -1313,14 +1313,14 @@ export function HungryBirdsDashboard() {
 
         {/* --- ADD/EDIT OFFER MODAL --- */}
         {showOfferModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm px-4">
-            <div className="bg-[#111520] border border-[#1f2947] rounded-xl w-full max-w-md p-6 shadow-2xl relative">
-              <button onClick={() => { setShowOfferModal(false); setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Combined', amount: '', startDate: '', type: 'weekly', notes: '' }); }} className="absolute top-4 right-4 text-slate-400 hover:text-white">✕</button>
-              <h2 className="text-xl font-bold text-white mb-6">{editingOfferId ? 'Edit Marketing Offer' : 'Add Marketing Offer'}</h2>
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-sm px-4">
+            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl w-full max-w-md p-6 shadow-2xl relative">
+              <button onClick={() => { setShowOfferModal(false); setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Combined', amount: '', startDate: '', type: 'weekly', notes: '' }); }} className="absolute top-4 right-4 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">✕</button>
+              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{editingOfferId ? 'Edit Marketing Offer' : 'Add Marketing Offer'}</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1">Platform</label>
-                  <select value={offerForm.platform} onChange={(e) => setOfferForm({...offerForm, platform: e.target.value})} className="w-full bg-[#0a0c14] border border-[#1f2947] rounded-lg p-2.5 text-white text-sm outline-none focus:border-blue-500">
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Platform</label>
+                  <select value={offerForm.platform} onChange={(e) => setOfferForm({...offerForm, platform: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
                     <option value="just_eat">Just Eat</option>
                     <option value="uber_eats">Uber Eats</option>
                     <option value="deliveroo">Deliveroo</option>
@@ -1329,25 +1329,25 @@ export function HungryBirdsDashboard() {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1">Offer Title (e.g. 30% off, BOGO)</label>
-                  <input type="text" value={offerForm.notes} onChange={(e) => setOfferForm({...offerForm, notes: e.target.value})} className="w-full bg-[#0a0c14] border border-[#1f2947] rounded-lg p-2.5 text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 30% off Burgers" />
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Offer Title (e.g. 30% off, BOGO)</label>
+                  <input type="text" value={offerForm.notes} onChange={(e) => setOfferForm({...offerForm, notes: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 30% off Burgers" />
                 </div>
                 <div className="flex gap-4">
                   <div className="w-1/2">
-                    <label className="block text-xs font-medium text-slate-400 mb-1">Start Date</label>
-                    <input type="date" value={offerForm.startDate} onChange={(e) => setOfferForm({...offerForm, startDate: e.target.value})} className="w-full bg-[#0a0c14] border border-[#1f2947] rounded-lg p-2.5 text-white text-sm outline-none focus:border-blue-500 [color-scheme:dark]" />
+                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Start Date</label>
+                    <input type="date" value={offerForm.startDate} onChange={(e) => setOfferForm({...offerForm, startDate: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500 [color-scheme:dark]" />
                   </div>
                   <div className="w-1/2">
-                    <label className="block text-xs font-medium text-slate-400 mb-1">Duration</label>
-                    <select value={offerForm.type} onChange={(e) => setOfferForm({...offerForm, type: e.target.value})} className="w-full bg-[#0a0c14] border border-[#1f2947] rounded-lg p-2.5 text-white text-sm outline-none focus:border-blue-500">
+                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Duration</label>
+                    <select value={offerForm.type} onChange={(e) => setOfferForm({...offerForm, type: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-slate-400 mb-1">Spend Amount (£) <span className="text-slate-500 font-normal">(Optional)</span></label>
-                  <input type="number" step="0.01" value={offerForm.amount} onChange={(e) => setOfferForm({...offerForm, amount: e.target.value})} className="w-full bg-[#0a0c14] border border-[#1f2947] rounded-lg p-2.5 text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 200" />
+                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Spend Amount (£) <span className="text-slate-500 font-normal">(Optional)</span></label>
+                  <input type="number" step="0.01" value={offerForm.amount} onChange={(e) => setOfferForm({...offerForm, amount: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 200" />
                 </div>
                 <div className="pt-4">
                   <button onClick={() => {
@@ -1375,7 +1375,7 @@ export function HungryBirdsDashboard() {
                       setEditingOfferId(null)
                       setOfferForm({ platform: 'just_eat', store: 'Combined', amount: '', startDate: '', type: 'weekly', notes: '' })
                     })
-                  }} disabled={savingOffer || !offerForm.startDate || (!offerForm.amount && !offerForm.notes)} className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold py-3 rounded-lg transition-colors">
+                  }} disabled={savingOffer || !offerForm.startDate || (!offerForm.amount && !offerForm.notes)} className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-slate-900 dark:text-white font-bold py-3 rounded-lg transition-colors">
                     {savingOffer ? 'Saving...' : (editingOfferId ? 'Update Offer' : 'Save Offer')}
                   </button>
                 </div>

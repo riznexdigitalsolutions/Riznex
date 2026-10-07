@@ -18,8 +18,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark scroll-smooth overflow-x-hidden">
-      <body className={`${inter.className} overflow-x-hidden w-full max-w-full bg-[#07080B]`}>
+    <html lang="en" className="scroll-smooth overflow-x-hidden" suppressHydrationWarning>
+      <body className={`${inter.className} overflow-x-hidden w-full max-w-full bg-slate-50 dark:bg-[#07080B]`}>
         <Providers>{children}</Providers>
       </body>
     </html>

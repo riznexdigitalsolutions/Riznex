@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import { useTheme } from 'next-themes';
 import Link from 'next/link'
 
 // Formatting helper
@@ -284,13 +285,15 @@ import { useSearchParams } from 'next/navigation'
 
 export default function AuthenticDemoPage() {
   return (
-    <React.Suspense fallback={<div className="min-h-screen bg-[#0a0c14]" />}>
+    <React.Suspense fallback={<div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14]" />}>
       <DemoContent />
     </React.Suspense>
   )
 }
 
 function DemoContent() {
+  const { theme, setTheme } = useTheme();
+
   const searchParams = useSearchParams()
   const initialTab = searchParams.get('tab') as any
   const [activeTab, setActiveTab] = useState<
@@ -334,12 +337,12 @@ function DemoContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0c14] text-slate-200 flex flex-col font-sans selection:bg-[#E5B869] selection:text-black">
+    <div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14] text-slate-700 dark:text-slate-200 flex flex-col font-sans selection:bg-[#E5B869] selection:text-black">
       
       {/* ── TOP DEMO CALLOUT BANNER ────────────────────────────────────────── */}
       <div className="sticky top-0 z-50 bg-gradient-to-r from-[#D9A336] via-[#F5CB6C] to-[#C89B3C] text-black px-3.5 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-xl">
         <div className="flex items-center gap-2 text-xs sm:text-sm font-black">
-          <span className="bg-black text-[#E5B869] text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider shadow">
+          <span className="bg-white dark:bg-black text-[#E5B869] text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider shadow">
             Simulated Demo
           </span>
           <span className="hidden sm:inline font-bold">
@@ -350,7 +353,7 @@ function DemoContent() {
         <div className="flex items-center gap-2 ml-auto">
           <button 
             onClick={() => setShowOrderModal(true)}
-            className="px-3.5 py-1 text-xs font-black bg-black text-[#E5B869] hover:bg-black/85 rounded-lg transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+            className="px-3.5 py-1 text-xs font-black bg-white dark:bg-black text-[#E5B869] hover:bg-white/85 dark:hover:bg-black/85 rounded-lg transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
           >
             <span>Get Your Setup (£300)</span>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -367,18 +370,18 @@ function DemoContent() {
       <div className="flex flex-1 relative">
 
         {/* ── SIDEBAR NAVIGATION (Matching Authentic Client Layout) ──────────── */}
-        <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-[#111520] border-r border-[#1f2947] flex flex-col transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0 pt-10' : '-translate-x-full'}`}>
+        <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-100 dark:bg-[#111520] border-r border-slate-200 dark:border-[#1f2947] flex flex-col transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0 pt-10' : '-translate-x-full'}`}>
           {/* Sidebar Header */}
-          <div className="flex items-center gap-3 px-5 py-6 border-b border-[#1f2947]">
+          <div className="flex items-center gap-3 px-5 py-6 border-b border-slate-200 dark:border-[#1f2947]">
             <img 
               src="/images/new-logo.jpg" 
               alt="Riznex Logo" 
-              className="w-11 h-11 rounded-xl object-contain bg-white p-1 flex-shrink-0 shadow"
+              className="w-11 h-11 rounded-xl object-contain bg-black dark:bg-white p-1 flex-shrink-0 shadow"
             />
             <div>
-              <div className="font-extrabold text-white text-sm tracking-wide">RIZNEX</div>
+              <div className="font-extrabold text-slate-900 dark:text-white text-sm tracking-wide">RIZNEX</div>
               <div className="text-[11px] text-[#E5B869] font-medium leading-tight">The Royal Grill & Lounge</div>
-              <div className="text-[9px] text-slate-400 font-mono">Sample Client Demo</div>
+              <div className="text-[9px] text-slate-500 dark:text-slate-400 font-mono">Sample Client Demo</div>
             </div>
           </div>
 
@@ -390,7 +393,7 @@ function DemoContent() {
 
             {/* 1. Overview Group */}
             <div className="space-y-1">
-              <div className="px-3 py-2 text-xs font-bold text-blue-400 flex items-center justify-between rounded-xl bg-blue-500/10 border border-blue-500/20">
+              <div className="px-3 py-2 text-xs font-bold text-blue-700 dark:text-blue-400 flex items-center justify-between rounded-xl bg-blue-500/10 border border-blue-500/20">
                 <span className="flex items-center gap-2">
                   <span>📊</span> Overview
                 </span>
@@ -401,8 +404,8 @@ function DemoContent() {
                   onClick={() => { setActiveTab('main_overview'); setSidebarOpen(false) }}
                   className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
                     activeTab === 'main_overview' 
-                      ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/30' 
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   <span>• Main Overview</span>
@@ -411,8 +414,8 @@ function DemoContent() {
                   onClick={() => { setActiveTab('weekly_comparison'); setSidebarOpen(false) }}
                   className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
                     activeTab === 'weekly_comparison' 
-                      ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/30' 
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   <span>• Weekly Comparison</span>
@@ -421,8 +424,8 @@ function DemoContent() {
                   onClick={() => { setActiveTab('monthly_comparison'); setSidebarOpen(false) }}
                   className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
                     activeTab === 'monthly_comparison' 
-                      ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/30' 
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   <span>• Monthly Comparison</span>
@@ -431,8 +434,8 @@ function DemoContent() {
                   onClick={() => { setActiveTab('current_offers'); setSidebarOpen(false) }}
                   className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
                     activeTab === 'current_offers' 
-                      ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/30' 
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   <span>• Current Offers</span>
@@ -442,19 +445,19 @@ function DemoContent() {
 
             {/* 2. Sales Invoices Group (Exact 3 Sub-Sections Requested By User!) */}
             <div className="space-y-1">
-              <div className="px-3 py-2 text-xs font-bold text-slate-300 flex items-center justify-between rounded-xl bg-white/[0.04] border border-white/[0.08]">
+              <div className="px-3 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center justify-between rounded-xl bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200/[0.08] dark:border-white/[0.08]">
                 <span className="flex items-center gap-2">
                   <span>🧾</span> Sales Invoices
                 </span>
-                <span className="text-[10px] text-slate-400">▼</span>
+                <span className="text-[10px] text-slate-500 dark:text-slate-400">▼</span>
               </div>
               <div className="pl-4 pr-1 py-1 space-y-1">
                 <button
                   onClick={() => { setActiveTab('invoices_combined'); setSidebarOpen(false) }}
                   className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
                     activeTab === 'invoices_combined'
-                      ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/30'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   <span className="truncate">• Combined Invoices Data</span>
@@ -463,8 +466,8 @@ function DemoContent() {
                   onClick={() => { setActiveTab('invoices_platform'); setSidebarOpen(false) }}
                   className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
                     activeTab === 'invoices_platform'
-                      ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/30'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   <span className="truncate leading-tight">• Uber Eats, Just Eat, Deliveroo Invoices</span>
@@ -473,8 +476,8 @@ function DemoContent() {
                   onClick={() => { setActiveTab('invoices_pos'); setSidebarOpen(false) }}
                   className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
                     activeTab === 'invoices_pos'
-                      ? 'bg-blue-600 text-white font-bold shadow-lg shadow-blue-600/30'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30'
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   <span className="truncate leading-tight">• Prime Pizza & Smash Burger POS Invoices</span>
@@ -485,18 +488,18 @@ function DemoContent() {
           </nav>
 
           {/* User Profile in Sidebar */}
-          <div className="p-4 border-t border-[#1f2947] bg-[#0d1019] space-y-3">
+          <div className="p-4 border-t border-slate-200 dark:border-[#1f2947] bg-white dark:bg-[#0d1019] space-y-3">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-purple-600/30 border border-purple-500/40 text-purple-300 font-black flex items-center justify-center text-sm">
+              <div className="w-9 h-9 rounded-xl bg-purple-600/30 border border-purple-500/40 text-purple-600 dark:text-purple-300 font-black flex items-center justify-center text-sm">
                 R
               </div>
               <div className="min-w-0 flex-1">
-                <div className="text-xs font-bold text-white truncate">Royal Grill Admin</div>
-                <div className="text-[10px] text-slate-400 truncate">Demo Client Portal</div>
+                <div className="text-xs font-bold text-slate-900 dark:text-white truncate">Royal Grill Admin</div>
+                <div className="text-[10px] text-slate-500 dark:text-slate-400 truncate">Demo Client Portal</div>
               </div>
             </div>
-            <div className="flex items-center justify-between pt-1 text-[11px] text-slate-400">
-              <Link href="/" className="hover:text-white flex items-center gap-1">
+            <div className="flex items-center justify-between pt-1 text-[11px] text-slate-500 dark:text-slate-400">
+              <Link href="/" className="hover:text-slate-900 dark:hover:text-white flex items-center gap-1">
                 <span>🚪</span> Sign Out
               </Link>
               <button 
@@ -510,18 +513,18 @@ function DemoContent() {
         </aside>
 
         {/* ── MAIN DASHBOARD VIEWPORT ────────────────────────────────────────── */}
-        <main className="flex-1 bg-[#0e121b] p-3.5 sm:p-6 lg:p-8 overflow-y-auto pb-64 sm:pb-72">
+        <main className="flex-1 bg-slate-50 dark:bg-[#0e121b] p-3.5 sm:p-6 lg:p-8 overflow-y-auto pb-64 sm:pb-72">
           
           {/* Top Bar: Mobile Hamburger & Live Date */}
-          <div className="flex items-center justify-between mb-4 pb-2 border-b border-[#1f2947]/50 lg:border-none">
+          <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-200/50 dark:border-[#1f2947]/50 lg:border-none">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 rounded-xl bg-[#111520] border border-[#1f2947] text-white flex items-center gap-2 text-xs font-bold"
+              className="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white flex items-center gap-2 text-xs font-bold"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
               <span>Menu</span>
             </button>
-            <div className="ml-auto text-xs font-medium text-slate-400 font-mono">
+            <div className="ml-auto text-xs font-medium text-slate-500 dark:text-slate-400 font-mono">
               Saturday, 3 October 2026
             </div>
           </div>
@@ -530,7 +533,7 @@ function DemoContent() {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
               <div className="flex items-center gap-2">
-                <div className="w-11 h-11 rounded-xl bg-orange-600/20 border border-orange-500/40 p-1 flex items-center justify-center text-lg font-black text-orange-400 shadow-md">
+                <div className="w-11 h-11 rounded-xl bg-orange-600/20 border border-orange-500/40 p-1 flex items-center justify-center text-lg font-black text-orange-700 dark:text-orange-400 shadow-md">
                   🍕
                 </div>
                 <div className="w-11 h-11 rounded-xl bg-amber-600/20 border border-amber-500/40 p-1 flex items-center justify-center text-lg font-black text-amber-400 shadow-md">
@@ -538,13 +541,13 @@ function DemoContent() {
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2.5">
+                <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
                   The Royal Grill & Lounge
-                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
+                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
                     Live Demo Sync
                   </span>
                 </h1>
-                <p className="text-slate-400 text-xs sm:text-sm font-medium mt-0.5">
+                <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm font-medium mt-0.5">
                   {store} | {selectedPeriod} | {selectedPlatform}
                 </p>
               </div>
@@ -553,7 +556,7 @@ function DemoContent() {
             <div className="flex items-center gap-2.5">
               <button 
                 onClick={() => triggerToast('Generating sample PDF report for Royal Grill & Lounge...')}
-                className="bg-[#111520] border border-[#1f2947] rounded-xl px-3.5 py-2 text-blue-400 hover:text-blue-300 hover:bg-[#1a2235] text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer"
+                className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2 text-blue-700 dark:text-blue-400 hover:text-blue-300 hover:bg-[#1a2235] text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer"
               >
                 <span>📄</span> Export PDF Report
               </button>
@@ -567,16 +570,16 @@ function DemoContent() {
           </div>
 
           {/* Tier 2: Filter Toolbar (Store Pills, Platform Filter, Date Filter) */}
-          <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 mb-6 shadow-xl">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 mb-6 shadow-xl">
             {/* Store Pills */}
             <div className="flex flex-wrap items-center gap-2.5">
-              <div className="flex items-center gap-1 bg-[#0a0c14] border border-[#1f2947] p-1 rounded-xl">
+              <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
                 <button
                   onClick={() => setStore('Combined')}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                     store === 'Combined' 
-                      ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md' 
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   Combined
@@ -585,8 +588,8 @@ function DemoContent() {
                   onClick={() => setStore('Prime Pizza')}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                     store === 'Prime Pizza' 
-                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md' 
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   Prime Pizza
@@ -595,8 +598,8 @@ function DemoContent() {
                   onClick={() => setStore('Smash Burger')}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                     store === 'Smash Burger' 
-                      ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-md' 
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
+                      ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                   }`}
                 >
                   Smash Burger
@@ -609,7 +612,7 @@ function DemoContent() {
               <select
                 value={selectedPlatform}
                 onChange={(e) => setSelectedPlatform(e.target.value)}
-                className="bg-[#0a0c14] border border-[#1f2947] text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer focus:outline-none focus:border-blue-500"
+                className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer focus:outline-none focus:border-blue-500"
               >
                 <option value="All Platforms">All Platforms (Consolidated)</option>
                 <option value="Deliveroo">Deliveroo</option>
@@ -625,7 +628,7 @@ function DemoContent() {
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="bg-[#0a0c14] border border-[#1f2947] text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer focus:outline-none focus:border-blue-500"
+                className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer focus:outline-none focus:border-blue-500"
               >
                 <option value="All Time">All Time</option>
                 <option value="This Month">This Month (Oct 2026)</option>
@@ -635,7 +638,7 @@ function DemoContent() {
 
               <button 
                 onClick={() => { setStore('Combined'); setSelectedPlatform('All Platforms'); setSelectedPeriod('All Time'); }}
-                className="text-slate-400 hover:text-white hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
               >
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 Reset
@@ -651,57 +654,57 @@ function DemoContent() {
 
               {/* Primary 5 KPI Cards */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
-                <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
+                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Orders</div>
-                  <div className="text-2xl sm:text-3xl font-black text-orange-400">{currentData.orders.toLocaleString()}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-orange-700 dark:text-orange-400">{currentData.orders.toLocaleString()}</div>
                 </div>
-                <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
+                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Sales</div>
-                  <div className="text-2xl sm:text-3xl font-black text-blue-400">{gbp(currentData.grossSales)}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-blue-700 dark:text-blue-400">{gbp(currentData.grossSales)}</div>
                 </div>
-                <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
+                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Sales</div>
-                  <div className="text-2xl sm:text-3xl font-black text-cyan-400">{gbp(currentData.netSales)}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-cyan-700 dark:text-cyan-400">{gbp(currentData.netSales)}</div>
                 </div>
-                <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
+                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Expenses</div>
-                  <div className="text-2xl sm:text-3xl font-black text-purple-400">{gbp(currentData.totalExpenses)}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400">{gbp(currentData.totalExpenses)}</div>
                 </div>
-                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br from-emerald-500/20 to-emerald-900/40 border border-emerald-500/40 rounded-2xl p-4 sm:p-5 shadow-emerald-500/10 shadow-xl">
-                  <div className="text-[11px] font-bold text-emerald-400 uppercase tracking-widest mb-1">Net Profit</div>
-                  <div className="text-2xl sm:text-3xl font-black text-emerald-400">{gbp(currentData.netProfit)}</div>
+                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br from-white dark:from-emerald-500/20 to-slate-50 dark:to-emerald-900/40 border border-slate-200 dark:border-emerald-500/40 rounded-2xl p-4 sm:p-5 shadow-sm dark:shadow-emerald-500/10 dark:shadow-xl">
+                  <div className="text-[11px] font-bold text-slate-500 dark:text-emerald-400 uppercase tracking-widest mb-1">Net Profit</div>
+                  <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">{gbp(currentData.netProfit)}</div>
                 </div>
               </div>
 
               {/* Expense Breakdown Strip — 7 Tiles */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2.5">
-                <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
+                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Franchise & POS</div>
                   <div className="text-sm sm:text-base font-black text-indigo-400">{gbp(currentData.franchiseFees)}</div>
                 </div>
-                <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
+                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Utilities</div>
                   <div className="text-sm sm:text-base font-black text-sky-400">{gbp(currentData.utilities)}</div>
                 </div>
-                <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
+                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Wages</div>
-                  <div className="text-sm sm:text-base font-black text-pink-400">{gbp(currentData.wages)}</div>
+                  <div className="text-sm sm:text-base font-black text-pink-700 dark:text-pink-400">{gbp(currentData.wages)}</div>
                 </div>
-                <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
+                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Supplier Purchases</div>
                   <div className="text-sm sm:text-base font-black text-amber-400">{gbp(currentData.supplierPurchases)}</div>
                 </div>
-                <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
+                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Marketing</div>
-                  <div className="text-sm sm:text-base font-black text-pink-400">{gbp(currentData.marketing)}</div>
+                  <div className="text-sm sm:text-base font-black text-pink-700 dark:text-pink-400">{gbp(currentData.marketing)}</div>
                 </div>
-                <div className="bg-[#0e1420] border border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
+                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Others</div>
-                  <div className="text-sm sm:text-base font-black text-slate-400">{gbp(currentData.others)}</div>
+                  <div className="text-sm sm:text-base font-black text-slate-500 dark:text-slate-400">{gbp(currentData.others)}</div>
                 </div>
-                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br from-purple-500/20 to-purple-900/30 border border-purple-500/40 rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-purple-400 uppercase tracking-wider truncate">Total Expenses</div>
-                  <div className="text-sm sm:text-base font-black text-purple-300">{gbp(currentData.totalExpenses)}</div>
+                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br from-white dark:from-purple-500/20 to-slate-50 dark:to-purple-900/30 border border-slate-200 dark:border-purple-500/40 rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
+                  <div className="text-[10px] font-bold text-slate-500 dark:text-purple-400 uppercase tracking-wider truncate">Total Expenses</div>
+                  <div className="text-sm sm:text-base font-black text-purple-600 dark:text-purple-300">{gbp(currentData.totalExpenses)}</div>
                 </div>
               </div>
 
@@ -709,17 +712,17 @@ function DemoContent() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* Left Column: Profit Summary Waterfall */}
-                <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col relative overflow-hidden">
+                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col relative overflow-hidden">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-sm">
+                      <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-sm">
                         💰
                       </span>
-                      <h2 className="text-lg font-black text-white">Profit Summary</h2>
+                      <h2 className="text-lg font-black text-slate-900 dark:text-white">Profit Summary</h2>
                     </div>
                     <button 
                       onClick={() => setExpandProfitSummary(!expandProfitSummary)} 
-                      className="p-1.5 rounded-lg hover:bg-white/5 text-slate-400 hover:text-white transition"
+                      className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition"
                       title={expandProfitSummary ? "Collapse All" : "Expand All"}
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d={expandProfitSummary ? "m18 15-6-6-6 6" : "m6 9 6 6 6-6"}/></svg>
@@ -727,11 +730,11 @@ function DemoContent() {
                   </div>
 
                   <div className="flex justify-between items-center mb-4">
-                    <span className="text-slate-300 font-bold text-base">Gross Sales</span>
-                    <span className="text-blue-400 font-black text-base">{gbp(currentData.grossSales)}</span>
+                    <span className="text-slate-600 dark:text-slate-300 font-bold text-base">Gross Sales</span>
+                    <span className="text-blue-700 dark:text-blue-400 font-black text-base">{gbp(currentData.grossSales)}</span>
                   </div>
 
-                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 border-b border-[#1f2947] pb-1.5">
+                  <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 border-b border-slate-200 dark:border-[#1f2947] pb-1.5">
                     LESS:
                   </div>
 
@@ -740,11 +743,11 @@ function DemoContent() {
                     {/* Commissions */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Commissions (3rd Parties)</span>
+                        <span className="text-slate-500 dark:text-slate-400">Commissions (3rd Parties)</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.commissions)}</span>
                       </div>
                       {expandProfitSummary && (
-                        <div className="pl-3 pt-1 space-y-1 border-b border-[#1f2947]/50 pb-2 mt-1">
+                        <div className="pl-3 pt-1 space-y-1 border-b border-slate-200/50 dark:border-[#1f2947]/50 pb-2 mt-1">
                           {currentData.commBreakdown.map((item, i) => (
                             <div key={i} className="flex justify-between text-[11px] text-slate-500">
                               <span>• {item.name}</span>
@@ -758,11 +761,11 @@ function DemoContent() {
                     {/* Other Deductions */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Other Deductions</span>
+                        <span className="text-slate-500 dark:text-slate-400">Other Deductions</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.otherDeductions)}</span>
                       </div>
                       {expandProfitSummary && (
-                        <div className="pl-3 pt-1 space-y-1 border-b border-[#1f2947]/50 pb-2 mt-1">
+                        <div className="pl-3 pt-1 space-y-1 border-b border-slate-200/50 dark:border-[#1f2947]/50 pb-2 mt-1">
                           {currentData.dedBreakdown.map((item, i) => (
                             <div key={i} className="flex justify-between text-[11px] text-slate-500">
                               <span>• {item.name}</span>
@@ -776,11 +779,11 @@ function DemoContent() {
                     {/* Ad Spends */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">3rd Party Ad Spends</span>
+                        <span className="text-slate-500 dark:text-slate-400">3rd Party Ad Spends</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.adSpends)}</span>
                       </div>
                       {expandProfitSummary && (
-                        <div className="pl-3 pt-1 space-y-1 border-b border-[#1f2947]/50 pb-2 mt-1">
+                        <div className="pl-3 pt-1 space-y-1 border-b border-slate-200/50 dark:border-[#1f2947]/50 pb-2 mt-1">
                           {currentData.adBreakdown.map((item, i) => (
                             <div key={i} className="flex justify-between text-[11px] text-slate-500">
                               <span>• {item.name}</span>
@@ -794,11 +797,11 @@ function DemoContent() {
                     {/* Franchise & POS Fees */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Franchise & POS Fees</span>
+                        <span className="text-slate-500 dark:text-slate-400">Franchise & POS Fees</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.franchiseFees)}</span>
                       </div>
                       {expandProfitSummary && (
-                        <div className="pl-3 pt-1 space-y-1 border-b border-[#1f2947]/50 pb-2 mt-1">
+                        <div className="pl-3 pt-1 space-y-1 border-b border-slate-200/50 dark:border-[#1f2947]/50 pb-2 mt-1">
                           {currentData.franchiseBreakdown.map((item, i) => (
                             <div key={i} className="flex justify-between text-[11px] text-slate-500">
                               <span>• {item.name}</span>
@@ -812,11 +815,11 @@ function DemoContent() {
                     {/* Marketing */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Marketing</span>
+                        <span className="text-slate-500 dark:text-slate-400">Marketing</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.marketing)}</span>
                       </div>
                       {expandProfitSummary && (
-                        <div className="pl-3 pt-1 space-y-1 border-b border-[#1f2947]/50 pb-2 mt-1">
+                        <div className="pl-3 pt-1 space-y-1 border-b border-slate-200/50 dark:border-[#1f2947]/50 pb-2 mt-1">
                           {currentData.marketingBreakdown.map((item, i) => (
                             <div key={i} className="flex justify-between text-[11px] text-slate-500">
                               <span>• {item.name}</span>
@@ -830,11 +833,11 @@ function DemoContent() {
                     {/* Other Expenses */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Other Expenses</span>
+                        <span className="text-slate-500 dark:text-slate-400">Other Expenses</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.others)}</span>
                       </div>
                       {expandProfitSummary && (
-                        <div className="pl-3 pt-1 space-y-1 border-b border-[#1f2947]/50 pb-2 mt-1">
+                        <div className="pl-3 pt-1 space-y-1 border-b border-slate-200/50 dark:border-[#1f2947]/50 pb-2 mt-1">
                           {currentData.otherExpensesBreakdown.map((item, i) => (
                             <div key={i} className="flex justify-between text-[11px] text-slate-500">
                               <span>• {item.name}</span>
@@ -848,11 +851,11 @@ function DemoContent() {
                     {/* Staff Wages */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Staff Wages</span>
+                        <span className="text-slate-500 dark:text-slate-400">Staff Wages</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.wages)}</span>
                       </div>
                       {expandProfitSummary && (
-                        <div className="pl-3 pt-1 space-y-1 border-b border-[#1f2947]/50 pb-2 mt-1">
+                        <div className="pl-3 pt-1 space-y-1 border-b border-slate-200/50 dark:border-[#1f2947]/50 pb-2 mt-1">
                           {currentData.wagesBreakdown.map((item, i) => (
                             <div key={i} className="flex justify-between text-[11px] text-slate-500">
                               <span>• {item.name}</span>
@@ -866,11 +869,11 @@ function DemoContent() {
                     {/* Supplier Purchases */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Supplier Purchases</span>
+                        <span className="text-slate-500 dark:text-slate-400">Supplier Purchases</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.supplierPurchases)}</span>
                       </div>
                       {expandProfitSummary && (
-                        <div className="pl-3 pt-1 space-y-1 border-b border-[#1f2947]/50 pb-2 mt-1">
+                        <div className="pl-3 pt-1 space-y-1 border-b border-slate-200/50 dark:border-[#1f2947]/50 pb-2 mt-1">
                           {currentData.suppliers.map((item, i) => (
                             <div key={i} className="flex justify-between text-[11px] text-slate-500">
                               <span>• {item.name}</span>
@@ -884,7 +887,7 @@ function DemoContent() {
                     {/* Utilities */}
                     <div>
                       <div className="flex justify-between items-center">
-                        <span className="text-slate-400">Utilities</span>
+                        <span className="text-slate-500 dark:text-slate-400">Utilities</span>
                         <span className="text-red-400 font-bold">-{gbp(currentData.utilities)}</span>
                       </div>
                       {expandProfitSummary && (
@@ -903,8 +906,8 @@ function DemoContent() {
 
                   {/* Net Profit Result */}
                   <div className="mt-6 pt-4 border-t border-emerald-500/20 flex justify-between items-center">
-                    <span className="text-emerald-500 font-black text-lg">= Net Profit</span>
-                    <span className="text-emerald-400 font-black text-xl">{gbp(currentData.netProfit)}</span>
+                    <span className="text-emerald-600 dark:text-emerald-500 font-black text-lg">= Net Profit</span>
+                    <span className="text-emerald-600 dark:text-emerald-400 font-black text-xl">{gbp(currentData.netProfit)}</span>
                   </div>
                 </div>
 
@@ -912,9 +915,9 @@ function DemoContent() {
                 <div className="lg:col-span-2 space-y-6">
 
                   {/* Platform Performance Table */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
-                    <h2 className="text-lg font-black text-white mb-5 flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-400 flex items-center justify-center border border-blue-500/20 text-sm">
+                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
+                    <h2 className="text-lg font-black text-slate-900 dark:text-white mb-5 flex items-center gap-2.5">
+                      <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-700 dark:text-blue-400 flex items-center justify-center border border-blue-500/20 text-sm">
                         📊
                       </span>
                       Platform Performance
@@ -922,27 +925,27 @@ function DemoContent() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-xs whitespace-nowrap">
                         <thead>
-                          <tr className="text-slate-400 border-b-2 border-[#1f2947]">
+                          <tr className="text-slate-500 dark:text-slate-400 border-b-2 border-slate-200 dark:border-[#1f2947]">
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px]">Platform</th>
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right">Orders</th>
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right">Sales</th>
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right">Deductions</th>
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right">Ded. %</th>
-                            <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right text-emerald-400">Net Received</th>
+                            <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right text-emerald-600 dark:text-emerald-400">Net Received</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-[#1f2947]">
                           {currentData.platforms.map((p, idx) => (
-                            <tr key={idx} className="hover:bg-white/5 transition-colors">
-                              <td className="py-3 font-bold text-white flex items-center gap-2">
+                            <tr key={idx} className="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                              <td className="py-3 font-bold text-slate-900 dark:text-white flex items-center gap-2">
                                 <span className={`w-2 h-2 rounded-full ${p.name.includes('Uber') ? 'bg-emerald-400' : p.name.includes('Just Eat') ? 'bg-orange-500' : p.name.includes('Deliveroo') ? 'bg-teal-400' : 'bg-blue-400'}`}></span>
                                 {p.name}
                               </td>
-                              <td className="py-3 text-slate-300 text-right">{p.orders.toLocaleString()}</td>
-                              <td className="py-3 text-blue-400 text-right font-semibold">{gbp(p.sales)}</td>
+                              <td className="py-3 text-slate-600 dark:text-slate-300 text-right">{p.orders.toLocaleString()}</td>
+                              <td className="py-3 text-blue-700 dark:text-blue-400 text-right font-semibold">{gbp(p.sales)}</td>
                               <td className="py-3 text-red-400 text-right font-medium">-{gbp(p.deductions)}</td>
                               <td className="py-3 text-amber-400 text-right font-medium">{p.dedPct}</td>
-                              <td className="py-3 text-emerald-400 text-right font-black">{gbp(p.net)}</td>
+                              <td className="py-3 text-emerald-600 dark:text-emerald-400 text-right font-black">{gbp(p.net)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -951,9 +954,9 @@ function DemoContent() {
                   </div>
 
                   {/* Supplier Purchases Table */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
-                    <h2 className="text-lg font-black text-white mb-5 flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-400 flex items-center justify-center border border-orange-500/20 text-sm">
+                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
+                    <h2 className="text-lg font-black text-slate-900 dark:text-white mb-5 flex items-center gap-2.5">
+                      <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-700 dark:text-orange-400 flex items-center justify-center border border-orange-500/20 text-sm">
                         🛒
                       </span>
                       Supplier Purchases
@@ -961,7 +964,7 @@ function DemoContent() {
                     <div className="overflow-x-auto">
                       <table className="w-full text-left text-xs whitespace-nowrap">
                         <thead>
-                          <tr className="text-slate-400 border-b-2 border-[#1f2947]">
+                          <tr className="text-slate-500 dark:text-slate-400 border-b-2 border-slate-200 dark:border-[#1f2947]">
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px]">Supplier</th>
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px]">Category</th>
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right">Total Amount</th>
@@ -969,10 +972,10 @@ function DemoContent() {
                         </thead>
                         <tbody className="divide-y divide-[#1f2947]">
                           {currentData.suppliers.map((s, idx) => (
-                            <tr key={idx} className="hover:bg-white/5 transition-colors">
-                              <td className="py-3 font-semibold text-white">{s.name}</td>
-                              <td className="py-3 text-slate-400">
-                                <span className="px-2 py-0.5 rounded-md bg-white/[0.04] border border-white/[0.08] text-[10px]">
+                            <tr key={idx} className="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                              <td className="py-3 font-semibold text-slate-900 dark:text-white">{s.name}</td>
+                              <td className="py-3 text-slate-500 dark:text-slate-400">
+                                <span className="px-2 py-0.5 rounded-md bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200/[0.08] dark:border-white/[0.08] text-[10px]">
                                   {s.category}
                                 </span>
                               </td>
@@ -985,15 +988,15 @@ function DemoContent() {
                   </div>
 
                   {/* ── SALES & EXPENSE DISTRIBUTION (FILLS EMPTY SPACE UNDER SUPPLIER PURCHASES) ── */}
-                  <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col gap-6">
+                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col gap-6">
                     
                     {/* Sales Distribution */}
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center text-sm font-bold text-white">
+                      <div className="flex justify-between items-center text-sm font-bold text-slate-900 dark:text-white">
                         <span className="flex items-center gap-2">
-                          <span className="text-rose-400">📈</span> Sales Distribution
+                          <span className="text-rose-700 dark:text-rose-400">📈</span> Sales Distribution
                         </span>
-                        <span className="text-blue-400 font-bold text-xs">{gbp(currentData.grossSales)}</span>
+                        <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">{gbp(currentData.grossSales)}</span>
                       </div>
 
                       <div className="space-y-2.5">
@@ -1003,10 +1006,10 @@ function DemoContent() {
                           return (
                             <div key={idx} className="space-y-1">
                               <div className="flex justify-between items-center text-xs">
-                                <span className="text-slate-300 font-medium">{p.name}</span>
-                                <span className="text-blue-400 font-bold text-xs">{gbp(p.sales)}</span>
+                                <span className="text-slate-600 dark:text-slate-300 font-medium">{p.name}</span>
+                                <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">{gbp(p.sales)}</span>
                               </div>
-                              <div className="w-full h-1.5 bg-[#0e121b] rounded-full overflow-hidden border border-[#1f2947]">
+                              <div className="w-full h-1.5 bg-slate-50 dark:bg-[#0e121b] rounded-full overflow-hidden border border-slate-200 dark:border-[#1f2947]">
                                 <div 
                                   style={{ width: `${pct}%` }} 
                                   className="h-full bg-gradient-to-r from-blue-600 to-blue-400 rounded-full"
@@ -1018,15 +1021,15 @@ function DemoContent() {
                       </div>
                     </div>
 
-                    <div className="border-t border-[#1f2947]"></div>
+                    <div className="border-t border-slate-200 dark:border-[#1f2947]"></div>
 
                     {/* Expense Distribution */}
                     <div className="space-y-3">
-                      <div className="flex justify-between items-center text-sm font-bold text-white">
+                      <div className="flex justify-between items-center text-sm font-bold text-slate-900 dark:text-white">
                         <span className="flex items-center gap-2">
                           <span className="text-amber-400">💸</span> Expense Distribution
                         </span>
-                        <span className="text-purple-400 font-bold text-xs">{gbp(currentData.totalExpenses)}</span>
+                        <span className="text-purple-600 dark:text-purple-400 font-bold text-xs">{gbp(currentData.totalExpenses)}</span>
                       </div>
 
                       <div className="space-y-2.5">
@@ -1042,12 +1045,12 @@ function DemoContent() {
                           return (
                             <div key={idx} className="space-y-1">
                               <div className="flex justify-between items-center text-xs">
-                                <span className="text-slate-300 font-medium">{exp.name}</span>
-                                <span className="text-slate-200 font-bold text-xs">
+                                <span className="text-slate-600 dark:text-slate-300 font-medium">{exp.name}</span>
+                                <span className="text-slate-700 dark:text-slate-200 font-bold text-xs">
                                   {pct}% <span className="text-slate-500 font-normal">({gbp(exp.amount)})</span>
                                 </span>
                               </div>
-                              <div className="w-full h-1.5 bg-[#0e121b] rounded-full overflow-hidden border border-[#1f2947]">
+                              <div className="w-full h-1.5 bg-slate-50 dark:bg-[#0e121b] rounded-full overflow-hidden border border-slate-200 dark:border-[#1f2947]">
                                 <div 
                                   style={{ width: `${widthPct}%` }} 
                                   className={`h-full ${exp.color} rounded-full`}
@@ -1072,22 +1075,22 @@ function DemoContent() {
           {/* ═══════════════════════════════════════════════════════════════════ */}
           {activeTab === 'weekly_comparison' && (
             <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between pb-2 border-b border-[#1f2947]">
-                <h2 className="text-2xl font-black text-white">Weekly Comparison</h2>
-                <span className="text-xs text-slate-400 font-mono">Weeks 33 - 38 Audited</span>
+              <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-[#1f2947]">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white">Weekly Comparison</h2>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">Weeks 33 - 38 Audited</span>
               </div>
 
               {/* Dual Bar Chart */}
-              <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-6 shadow-2xl">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl">
                 <div className="flex items-center justify-between mb-6">
-                  <div className="text-xs font-bold text-white uppercase tracking-wider">
+                  <div className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                     1. WEEKLY SALES & ORDERS
                   </div>
                   <div className="flex items-center gap-4 text-xs font-semibold">
-                    <span className="flex items-center gap-1.5 text-blue-400">
+                    <span className="flex items-center gap-1.5 text-blue-700 dark:text-blue-400">
                       <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Sales (£)
                     </span>
-                    <span className="flex items-center gap-1.5 text-orange-400">
+                    <span className="flex items-center gap-1.5 text-orange-700 dark:text-orange-400">
                       <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Orders
                     </span>
                   </div>
@@ -1105,7 +1108,7 @@ function DemoContent() {
                   {/* Horizontal Grid Lines */}
                   <div className="absolute inset-0 left-10 right-8 top-10 bottom-8 flex flex-col justify-between pointer-events-none">
                     {[1, 2, 3, 4].map((i) => (
-                      <div key={i} className="w-full border-t border-white/[0.03]"></div>
+                      <div key={i} className="w-full border-t border-slate-200/[0.03] dark:border-white/[0.03]"></div>
                     ))}
                   </div>
 
@@ -1118,7 +1121,7 @@ function DemoContent() {
                   </div>
 
                   {/* Bars Container */}
-                  <div className="flex-1 ml-10 mr-8 flex items-end justify-around h-full z-10 relative border-b border-[#1f2947]">
+                  <div className="flex-1 ml-10 mr-8 flex items-end justify-around h-full z-10 relative border-b border-slate-200 dark:border-[#1f2947]">
                     {[
                       { week: 'Wk 33', date: '10 Aug - 16 Aug', sales: 6200, orders: 280 },
                       { week: 'Wk 34', date: '17 Aug - 23 Aug', sales: 6850, orders: 310 },
@@ -1133,7 +1136,7 @@ function DemoContent() {
                         <div className="flex items-end justify-center gap-1.5 w-full h-full relative">
                           {/* Sales Bar */}
                           <div className="relative w-4 sm:w-8 flex flex-col items-center justify-end h-full">
-                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-blue-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
+                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-blue-700 dark:text-blue-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
                               {gbp(d.sales)}
                             </div>
                             <div 
@@ -1147,7 +1150,7 @@ function DemoContent() {
 
                           {/* Orders Bar */}
                           <div className="relative w-4 sm:w-8 flex flex-col items-center justify-end h-full">
-                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-orange-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
+                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-orange-700 dark:text-orange-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
                               {d.orders}
                             </div>
                             <div 
@@ -1162,7 +1165,7 @@ function DemoContent() {
 
                         {/* X-axis Labels */}
                         <div className="absolute -bottom-10 text-center w-full">
-                          <div className="text-[10px] sm:text-xs font-bold text-slate-300">{d.week}</div>
+                          <div className="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-slate-300">{d.week}</div>
                           <div className="text-[8px] sm:text-[9px] text-slate-500 hidden sm:block whitespace-nowrap">{d.date}</div>
                         </div>
 
@@ -1174,44 +1177,44 @@ function DemoContent() {
 
               {/* Donut Visuals */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-6 shadow-2xl">
-                  <h3 className="text-base font-bold text-white mb-4">Sales Mix</h3>
+                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4">Sales Mix</h3>
                   <div className="flex flex-col sm:flex-row items-center gap-6">
                     <div className="relative w-44 h-44 shrink-0 flex items-center justify-center">
-                      <div className="w-40 h-40 rounded-full border-[14px] border-[#1f2947] border-t-blue-500 border-r-emerald-500 border-b-orange-500 border-l-purple-500 animate-spin-slow"></div>
+                      <div className="w-40 h-40 rounded-full border-[14px] border-slate-200 dark:border-[#1f2947] border-t-blue-500 border-r-emerald-500 border-b-orange-500 border-l-purple-500 animate-spin-slow"></div>
                       <div className="absolute text-center">
-                        <div className="text-sm font-black text-white">{gbp(currentData.grossSales)}</div>
-                        <div className="text-[9px] text-slate-400 uppercase tracking-wider">TOTAL SALES</div>
+                        <div className="text-sm font-black text-slate-900 dark:text-white">{gbp(currentData.grossSales)}</div>
+                        <div className="text-[9px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">TOTAL SALES</div>
                       </div>
                     </div>
                     <div className="space-y-1.5 text-xs flex-1">
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Deliveroo</span><span className="font-bold text-white">17.4%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Just Eat</span><span className="font-bold text-white">13.1%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Uber Eats</span><span className="font-bold text-white">15.0%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Prime Pizza POS</span><span className="font-bold text-white">22.8%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Web & Mobile</span><span className="font-bold text-white">20.8%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Smash Burger POS</span><span className="font-bold text-white">10.9%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Deliveroo</span><span className="font-bold text-slate-900 dark:text-white">17.4%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Just Eat</span><span className="font-bold text-slate-900 dark:text-white">13.1%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Uber Eats</span><span className="font-bold text-slate-900 dark:text-white">15.0%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Prime Pizza POS</span><span className="font-bold text-slate-900 dark:text-white">22.8%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Web & Mobile</span><span className="font-bold text-slate-900 dark:text-white">20.8%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-yellow-500"></span> Smash Burger POS</span><span className="font-bold text-slate-900 dark:text-white">10.9%</span></div>
                     </div>
                   </div>
                 </div>
 
-                <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-6 shadow-2xl">
-                  <h3 className="text-base font-bold text-white mb-4">Expense Breakdown</h3>
+                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl">
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4">Expense Breakdown</h3>
                   <div className="flex flex-col sm:flex-row items-center gap-6">
                     <div className="relative w-44 h-44 shrink-0 flex items-center justify-center">
-                      <div className="w-40 h-40 rounded-full border-[14px] border-[#1f2947] border-t-pink-500 border-r-amber-500 border-b-indigo-500 border-l-sky-500 animate-spin-slow"></div>
+                      <div className="w-40 h-40 rounded-full border-[14px] border-slate-200 dark:border-[#1f2947] border-t-pink-500 border-r-amber-500 border-b-indigo-500 border-l-sky-500 animate-spin-slow"></div>
                       <div className="absolute text-center">
-                        <div className="text-sm font-black text-white">{gbp(currentData.totalExpenses)}</div>
-                        <div className="text-[9px] text-slate-400 uppercase tracking-wider">TOTAL EXPENSES</div>
+                        <div className="text-sm font-black text-slate-900 dark:text-white">{gbp(currentData.totalExpenses)}</div>
+                        <div className="text-[9px] text-slate-500 dark:text-slate-400 uppercase tracking-wider">TOTAL EXPENSES</div>
                       </div>
                     </div>
                     <div className="space-y-1.5 text-xs flex-1">
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Wages</span><span className="font-bold text-white">44.0%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Supplier Purchases</span><span className="font-bold text-white">37.6%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Franchise & POS</span><span className="font-bold text-white">7.5%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Utilities</span><span className="font-bold text-white">4.0%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Marketing</span><span className="font-bold text-white">2.6%</span></div>
-                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-slate-400"></span> Others</span><span className="font-bold text-white">4.3%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Wages</span><span className="font-bold text-slate-900 dark:text-white">44.0%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Supplier Purchases</span><span className="font-bold text-slate-900 dark:text-white">37.6%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Franchise & POS</span><span className="font-bold text-slate-900 dark:text-white">7.5%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Utilities</span><span className="font-bold text-slate-900 dark:text-white">4.0%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Marketing</span><span className="font-bold text-slate-900 dark:text-white">2.6%</span></div>
+                      <div className="flex items-center justify-between"><span className="flex items-center gap-2"><span className="w-2.5 h-2.5 rounded-full bg-slate-400"></span> Others</span><span className="font-bold text-slate-900 dark:text-white">4.3%</span></div>
                     </div>
                   </div>
                 </div>
@@ -1224,21 +1227,21 @@ function DemoContent() {
           {/* ═══════════════════════════════════════════════════════════════════ */}
           {activeTab === 'monthly_comparison' && (
             <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between pb-2 border-b border-[#1f2947]">
-                <h2 className="text-2xl font-black text-white">Monthly Comparison</h2>
-                <span className="text-xs text-slate-400 font-mono">Jun 2026 - Sept 2026</span>
+              <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-[#1f2947]">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white">Monthly Comparison</h2>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">Jun 2026 - Sept 2026</span>
               </div>
 
-              <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-6 shadow-2xl">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl">
                 <div className="flex items-center justify-between mb-6">
-                  <div className="text-xs font-bold text-white uppercase tracking-wider">
+                  <div className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                     1. MONTHLY SALES & ORDERS
                   </div>
                   <div className="flex items-center gap-4 text-xs font-semibold">
-                    <span className="flex items-center gap-1.5 text-blue-400">
+                    <span className="flex items-center gap-1.5 text-blue-700 dark:text-blue-400">
                       <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Sales (£)
                     </span>
-                    <span className="flex items-center gap-1.5 text-orange-400">
+                    <span className="flex items-center gap-1.5 text-orange-700 dark:text-orange-400">
                       <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Orders
                     </span>
                   </div>
@@ -1257,7 +1260,7 @@ function DemoContent() {
                   {/* Horizontal Grid Lines */}
                   <div className="absolute inset-0 left-10 right-10 top-10 bottom-8 flex flex-col justify-between pointer-events-none">
                     {[1, 2, 3, 4, 5].map((i) => (
-                      <div key={i} className="w-full border-t border-white/[0.03]"></div>
+                      <div key={i} className="w-full border-t border-slate-200/[0.03] dark:border-white/[0.03]"></div>
                     ))}
                   </div>
 
@@ -1271,7 +1274,7 @@ function DemoContent() {
                   </div>
 
                   {/* Bars Container */}
-                  <div className="flex-1 ml-10 mr-10 flex items-end justify-around h-full z-10 relative border-b border-[#1f2947]">
+                  <div className="flex-1 ml-10 mr-10 flex items-end justify-around h-full z-10 relative border-b border-slate-200 dark:border-[#1f2947]">
                     {[
                       { month: 'Jun 2026', sales: 34500, orders: 1540 },
                       { month: 'Jul 2026', sales: 38200, orders: 1720 },
@@ -1284,7 +1287,7 @@ function DemoContent() {
                         <div className="flex items-end justify-center gap-2.5 w-full h-full relative">
                           {/* Sales Bar */}
                           <div className="relative w-6 sm:w-12 flex flex-col items-center justify-end h-full">
-                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-blue-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
+                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-blue-700 dark:text-blue-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
                               {gbp(m.sales)}
                             </div>
                             <div 
@@ -1298,7 +1301,7 @@ function DemoContent() {
 
                           {/* Orders Bar */}
                           <div className="relative w-6 sm:w-12 flex flex-col items-center justify-end h-full">
-                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-orange-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
+                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-orange-700 dark:text-orange-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
                               {m.orders}
                             </div>
                             <div 
@@ -1313,7 +1316,7 @@ function DemoContent() {
 
                         {/* X-axis Labels */}
                         <div className="absolute -bottom-10 text-center w-full">
-                          <div className="text-[10px] sm:text-xs font-bold text-slate-300">{m.month}</div>
+                          <div className="text-[10px] sm:text-xs font-bold text-slate-600 dark:text-slate-300">{m.month}</div>
                         </div>
 
                       </div>
@@ -1329,16 +1332,16 @@ function DemoContent() {
           {/* ═══════════════════════════════════════════════════════════════════ */}
           {activeTab === 'current_offers' && (
             <div className="space-y-6 animate-in fade-in duration-200">
-              <div className="flex items-center justify-between pb-2 border-b border-[#1f2947]">
-                <h2 className="text-2xl font-black text-white">Marketing & Offers ROI</h2>
-                <span className="text-xs text-slate-400 font-mono">Simulated Campaign Performance</span>
+              <div className="flex items-center justify-between pb-2 border-b border-slate-200 dark:border-[#1f2947]">
+                <h2 className="text-2xl font-black text-slate-900 dark:text-white">Marketing & Offers ROI</h2>
+                <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">Simulated Campaign Performance</span>
               </div>
 
-              <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs whitespace-nowrap">
                     <thead>
-                      <tr className="text-slate-400 border-b-2 border-[#1f2947]">
+                      <tr className="text-slate-500 dark:text-slate-400 border-b-2 border-slate-200 dark:border-[#1f2947]">
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px]">Start Date</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px]">Platform & Promotion</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">Spend</th>
@@ -1346,25 +1349,25 @@ function DemoContent() {
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">Gross Sales</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">Deductions</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">Ded %</th>
-                        <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right text-emerald-400">Net Sales</th>
+                        <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right text-emerald-600 dark:text-emerald-400">Net Sales</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">ROI</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#1f2947]">
                       {DEMO_MARKETING_OFFERS.map((row, idx) => (
-                        <tr key={idx} className="hover:bg-white/5 transition-colors">
-                          <td className="py-3 text-slate-400 font-mono">{row.date}</td>
-                          <td className="py-3 font-semibold text-white">
+                        <tr key={idx} className="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+                          <td className="py-3 text-slate-500 dark:text-slate-400 font-mono">{row.date}</td>
+                          <td className="py-3 font-semibold text-slate-900 dark:text-white">
                             <div>{row.platform}</div>
-                            <div className="text-[10px] text-slate-400">{row.promo}</div>
+                            <div className="text-[10px] text-slate-500 dark:text-slate-400">{row.promo}</div>
                           </td>
-                          <td className="py-3 text-slate-400 text-right">{row.spend}</td>
-                          <td className="py-3 text-slate-300 text-right font-medium">{row.orders}</td>
-                          <td className="py-3 text-blue-400 text-right font-semibold">{gbp(row.gross)}</td>
+                          <td className="py-3 text-slate-500 dark:text-slate-400 text-right">{row.spend}</td>
+                          <td className="py-3 text-slate-600 dark:text-slate-300 text-right font-medium">{row.orders}</td>
+                          <td className="py-3 text-blue-700 dark:text-blue-400 text-right font-semibold">{gbp(row.gross)}</td>
                           <td className="py-3 text-red-400 text-right font-medium">-{gbp(row.ded)}</td>
                           <td className="py-3 text-amber-400 text-right font-medium">{row.dedPct}</td>
-                          <td className="py-3 text-emerald-400 text-right font-black">{gbp(row.net)}</td>
-                          <td className="py-3 text-emerald-400 text-right font-bold">{row.roi}</td>
+                          <td className="py-3 text-emerald-600 dark:text-emerald-400 text-right font-black">{gbp(row.net)}</td>
+                          <td className="py-3 text-emerald-600 dark:text-emerald-400 text-right font-bold">{row.roi}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1380,13 +1383,13 @@ function DemoContent() {
           {(activeTab === 'invoices_combined' || activeTab === 'invoices_platform' || activeTab === 'invoices_pos') && (
             <div className="space-y-6 animate-in fade-in duration-200">
               
-              <div className="text-center sm:text-left pb-2 border-b border-[#1f2947]">
-                <h2 className="text-2xl sm:text-3xl font-black text-white">
+              <div className="text-center sm:text-left pb-2 border-b border-slate-200 dark:border-[#1f2947]">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">
                   {activeTab === 'invoices_combined' && 'All Sales Invoices'}
                   {activeTab === 'invoices_platform' && 'Platform Invoices'}
                   {activeTab === 'invoices_pos' && 'Prime Pizza & Smash Burger POS Invoices'}
                 </h2>
-                <p className="text-xs sm:text-sm text-slate-400 mt-1">
+                <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mt-1">
                   {activeTab === 'invoices_combined' && 'Overview of all your POS and platform statements.'}
                   {activeTab === 'invoices_platform' && 'Manage your Uber Eats, Just Eat, and Deliveroo statements.'}
                   {activeTab === 'invoices_pos' && 'Manage invoices from your internal POS systems.'}
@@ -1394,46 +1397,46 @@ function DemoContent() {
               </div>
 
               {/* Sub-Filter Toolbar (Status, Time, Year, Month, Reset) */}
-              <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 shadow-xl">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 shadow-xl">
                 <div className="flex flex-wrap items-center gap-2">
-                  <div className="flex items-center gap-1 bg-[#0a0c14] border border-[#1f2947] p-1 rounded-xl">
+                  <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
                     <button
                       onClick={() => setStore('Combined')}
-                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${store === 'Combined' ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${store === 'Combined' ? 'bg-blue-600 text-slate-900 dark:text-white shadow' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                       Combined
                     </button>
                     <button
                       onClick={() => setStore('Prime Pizza')}
-                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${store === 'Prime Pizza' ? 'bg-orange-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${store === 'Prime Pizza' ? 'bg-orange-600 text-slate-900 dark:text-white shadow' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                       Prime Pizza
                     </button>
                     <button
                       onClick={() => setStore('Smash Burger')}
-                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${store === 'Smash Burger' ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${store === 'Smash Burger' ? 'bg-amber-600 text-slate-900 dark:text-white shadow' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
                     >
                       Smash Burger
                     </button>
                   </div>
 
-                  <select className="bg-[#0a0c14] border border-[#1f2947] text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
+                  <select className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
                     <option>All Statuses</option>
                     <option>Extracted</option>
                     <option>Pending</option>
                   </select>
 
-                  <select className="bg-[#0a0c14] border border-[#1f2947] text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
+                  <select className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
                     <option>All Time</option>
                     <option>This Month</option>
                   </select>
 
-                  <select className="bg-[#0a0c14] border border-[#1f2947] text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
+                  <select className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
                     <option>All Years</option>
                     <option>2026</option>
                   </select>
 
-                  <select className="bg-[#0a0c14] border border-[#1f2947] text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
+                  <select className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
                     <option>All Months</option>
                     <option>Sept 2026</option>
                   </select>
@@ -1441,7 +1444,7 @@ function DemoContent() {
 
                 <button 
                   onClick={() => { setStore('Combined'); triggerToast('Filters reset to default.'); }}
-                  className="text-slate-400 hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer"
+                  className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 cursor-pointer"
                 >
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                   Reset
@@ -1449,13 +1452,13 @@ function DemoContent() {
               </div>
 
               {/* Exact Invoices Table Matching User Screenshots 1, 2, 3 */}
-              <div className="bg-[#111520] border border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
+              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs whitespace-nowrap">
                     <thead>
-                      <tr className="text-slate-400 border-b-2 border-[#1f2947]">
+                      <tr className="text-slate-500 dark:text-slate-400 border-b-2 border-slate-200 dark:border-[#1f2947]">
                         <th className="pb-3.5 pr-3 text-center">
-                          <input type="checkbox" className="rounded bg-black border-slate-700 cursor-pointer" />
+                          <input type="checkbox" className="rounded bg-white dark:bg-black border-slate-700 cursor-pointer" />
                         </th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px]">DATE</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px]">WEEK</th>
@@ -1468,22 +1471,22 @@ function DemoContent() {
                     </thead>
                     <tbody className="divide-y divide-[#1f2947]">
                       {getFilteredInvoices().map((inv) => (
-                        <tr key={inv.id} className="hover:bg-white/5 transition-colors">
+                        <tr key={inv.id} className="hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
                           <td className="py-4 pr-3 text-center">
-                            <input type="checkbox" className="rounded bg-black border-slate-700 cursor-pointer" />
+                            <input type="checkbox" className="rounded bg-white dark:bg-black border-slate-700 cursor-pointer" />
                           </td>
-                          <td className="py-4 font-bold text-white font-mono">{inv.date}</td>
-                          <td className="py-4 text-slate-400">{inv.week}</td>
-                          <td className="py-4 text-slate-400">{inv.month}</td>
+                          <td className="py-4 font-bold text-slate-900 dark:text-white font-mono">{inv.date}</td>
+                          <td className="py-4 text-slate-500 dark:text-slate-400">{inv.week}</td>
+                          <td className="py-4 text-slate-500 dark:text-slate-400">{inv.month}</td>
                           <td className="py-4">
-                            <div className="font-semibold text-white">{inv.details}</div>
+                            <div className="font-semibold text-slate-900 dark:text-white">{inv.details}</div>
                             <div className="text-[10px] text-slate-500 font-mono flex items-center gap-1 mt-0.5">
                               <span>📎</span> {inv.fileTag}
                             </div>
                           </td>
-                          <td className="py-4 text-white text-right font-black">{gbp(inv.amount)}</td>
+                          <td className="py-4 text-slate-900 dark:text-white text-right font-black">{gbp(inv.amount)}</td>
                           <td className="py-4 text-center">
-                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-400">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-500 dark:text-emerald-400">
                               <span>Extracted</span>
                               <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 text-black flex items-center justify-center text-[9px] font-black">✓</span>
                             </span>
@@ -1491,7 +1494,7 @@ function DemoContent() {
                           <td className="py-4 text-right">
                             <button
                               onClick={() => setSelectedInvoice(inv)}
-                              className="text-xs font-bold text-blue-400 hover:text-blue-300 hover:underline cursor-pointer"
+                              className="text-xs font-bold text-blue-700 dark:text-blue-400 hover:text-blue-300 hover:underline cursor-pointer"
                             >
                               View File
                             </button>
@@ -1519,10 +1522,10 @@ function DemoContent() {
               ⚡
             </div>
             <div>
-              <div className="text-xs sm:text-sm font-bold text-white">
+              <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white">
                 Want this exact setup and weekly live reporting for your restaurant?
               </div>
-              <div className="text-[11px] text-slate-400">
+              <div className="text-[11px] text-slate-500 dark:text-slate-400">
                 1st Month complete setup is only £300 (Standard £500). Ongoing rolling management is £250/mo.
               </div>
             </div>
@@ -1537,7 +1540,7 @@ function DemoContent() {
             </button>
             <a
               href="/#contact"
-              className="px-4 py-2.5 rounded-xl font-bold text-xs text-slate-300 bg-white/[0.05] border border-white/10 hover:bg-white/[0.1] transition-all whitespace-nowrap cursor-pointer"
+              className="px-4 py-2.5 rounded-xl font-bold text-xs text-slate-600 dark:text-slate-300 bg-black/[0.05] dark:bg-white/[0.05] border border-slate-200/10 dark:border-white/10 hover:bg-black/[0.1] dark:hover:bg-white/[0.1] transition-all whitespace-nowrap cursor-pointer"
             >
               Book Walkthrough
             </a>
@@ -1547,33 +1550,33 @@ function DemoContent() {
 
       {/* ── INVOICE FILE MODAL INSPECTOR ────────────────────────────────────── */}
       {selectedInvoice && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-[#111520] border border-[#1f2947] rounded-3xl max-w-lg w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl max-w-lg w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
             <button 
               onClick={() => setSelectedInvoice(null)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white text-lg font-bold p-1 cursor-pointer"
+              className="absolute top-5 right-5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-lg font-bold p-1 cursor-pointer"
             >
               ✕
             </button>
             <div className="flex items-center gap-3 mb-4">
-              <span className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-400 border border-blue-500/30 flex items-center justify-center text-lg">
+              <span className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/30 flex items-center justify-center text-lg">
                 🧾
               </span>
               <div>
-                <h3 className="text-base font-black text-white">{selectedInvoice.details}</h3>
-                <p className="text-xs text-slate-400 font-mono">{selectedInvoice.fileTag} • {selectedInvoice.date}</p>
+                <h3 className="text-base font-black text-slate-900 dark:text-white">{selectedInvoice.details}</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400 font-mono">{selectedInvoice.fileTag} • {selectedInvoice.date}</p>
               </div>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-[#0a0c14] border border-[#1f2947] space-y-2 mb-4 text-xs">
-              <div className="flex justify-between text-slate-400"><span>Assigned Brand:</span> <span className="text-white font-semibold">{selectedInvoice.store}</span></div>
-              <div className="flex justify-between text-slate-400"><span>Billing Week:</span> <span className="text-white font-semibold">{selectedInvoice.week}</span></div>
-              <div className="flex justify-between text-slate-400"><span>AI Extraction Status:</span> <span className="text-emerald-400 font-bold">Verified 100% Extracted</span></div>
-              <div className="flex justify-between text-slate-400 pt-2 border-t border-white/10"><span>Reconciled Payout:</span> <span className="text-amber-400 font-black text-sm">{gbp(selectedInvoice.amount)}</span></div>
+            <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] space-y-2 mb-4 text-xs">
+              <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>Assigned Brand:</span> <span className="text-slate-900 dark:text-white font-semibold">{selectedInvoice.store}</span></div>
+              <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>Billing Week:</span> <span className="text-slate-900 dark:text-white font-semibold">{selectedInvoice.week}</span></div>
+              <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>AI Extraction Status:</span> <span className="text-emerald-600 dark:text-emerald-400 font-bold">Verified 100% Extracted</span></div>
+              <div className="flex justify-between text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-200/10 dark:border-white/10"><span>Reconciled Payout:</span> <span className="text-amber-400 font-black text-sm">{gbp(selectedInvoice.amount)}</span></div>
             </div>
 
-            <div className="space-y-1.5 text-xs text-slate-400 mb-6 bg-white/[0.02] p-3 rounded-xl border border-white/[0.05]">
-              <div className="font-bold text-slate-300 mb-1">OCR Verification Summary:</div>
+            <div className="space-y-1.5 text-xs text-slate-500 dark:text-slate-400 mb-6 bg-black/[0.02] dark:bg-white/[0.02] p-3 rounded-xl border border-slate-200/[0.05] dark:border-white/[0.05]">
+              <div className="font-bold text-slate-600 dark:text-slate-300 mb-1">OCR Verification Summary:</div>
               <div>• Gross sales matched with delivery platform portal payout.</div>
               <div>• Deductions itemized into commissions and marketing fees.</div>
               <div>• Ready for weekly executive P&L statement export.</div>
@@ -1582,13 +1585,13 @@ function DemoContent() {
             <div className="flex gap-2">
               <button 
                 onClick={() => { triggerToast('Sample invoice PDF file opened.'); setSelectedInvoice(null); }}
-                className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-white/5 border border-white/10 hover:bg-white/10 text-white transition cursor-pointer"
+                className="flex-1 py-2.5 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/5 border border-slate-200/10 dark:border-white/10 hover:bg-black/10 dark:hover:bg-white/10 text-slate-900 dark:text-white transition cursor-pointer"
               >
                 Download Statement
               </button>
               <button 
                 onClick={() => setSelectedInvoice(null)}
-                className="flex-1 py-2.5 rounded-xl text-xs font-black bg-blue-600 hover:bg-blue-500 text-white transition cursor-pointer"
+                className="flex-1 py-2.5 rounded-xl text-xs font-black bg-blue-600 hover:bg-blue-500 text-slate-900 dark:text-white transition cursor-pointer"
               >
                 Close
               </button>
@@ -1599,11 +1602,11 @@ function DemoContent() {
 
       {/* ── PURCHASE / WALKTHROUGH BOOKING MODAL ────────────────────────────── */}
       {showOrderModal && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-[#111520] border border-[#E5B869]/40 rounded-3xl max-w-md w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-white/85 dark:bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-100 dark:bg-[#111520] border border-[#E5B869]/40 rounded-3xl max-w-md w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
             <button 
               onClick={() => setShowOrderModal(false)}
-              className="absolute top-5 right-5 text-slate-400 hover:text-white text-lg font-bold p-1 cursor-pointer"
+              className="absolute top-5 right-5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-lg font-bold p-1 cursor-pointer"
             >
               ✕
             </button>
@@ -1612,26 +1615,26 @@ function DemoContent() {
               ⚡
             </div>
 
-            <h3 className="text-xl font-black text-white">Start With Phase 1 (£300)</h3>
-            <p className="text-xs text-slate-400 mt-1 mb-5">
+            <h3 className="text-xl font-black text-slate-900 dark:text-white">Start With Phase 1 (£300)</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 mb-5">
               Get your custom dashboard setup, delivery menus optimized, and first automated weekly P&L within 7 days.
             </p>
 
             <div className="space-y-3 mb-5">
               <div>
-                <label className="text-[11px] font-bold text-slate-300 block mb-1">Restaurant Name</label>
+                <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Restaurant Name</label>
                 <input 
                   type="text" 
                   placeholder="e.g. Royal Spice Grill London" 
-                  className="w-full bg-[#0a0c14] border border-[#1f2947] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#E5B869]"
+                  className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E5B869]"
                 />
               </div>
               <div>
-                <label className="text-[11px] font-bold text-slate-300 block mb-1">Your Name & Phone / WhatsApp</label>
+                <label className="text-[11px] font-bold text-slate-600 dark:text-slate-300 block mb-1">Your Name & Phone / WhatsApp</label>
                 <input 
                   type="text" 
                   placeholder="e.g. John Doe (+44 7123 456789)" 
-                  className="w-full bg-[#0a0c14] border border-[#1f2947] rounded-xl px-3.5 py-2.5 text-xs text-white focus:outline-none focus:border-[#E5B869]"
+                  className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E5B869]"
                 />
               </div>
             </div>
@@ -1649,7 +1652,7 @@ function DemoContent() {
               <Link
                 href="/#contact"
                 onClick={() => setShowOrderModal(false)}
-                className="w-full py-2.5 rounded-xl font-bold text-xs text-slate-300 bg-white/5 hover:bg-white/10 text-center transition"
+                className="w-full py-2.5 rounded-xl font-bold text-xs text-slate-600 dark:text-slate-300 bg-black/5 dark:bg-white/5 hover:bg-black/10 dark:hover:bg-white/10 text-center transition"
               >
                 Or Submit Contact Form
               </Link>
@@ -1660,7 +1663,7 @@ function DemoContent() {
 
       {/* ── TOAST MESSAGE ──────────────────────────────────────────────────── */}
       {toastMessage && (
-        <div className="fixed bottom-20 right-6 z-50 bg-[#111520] border border-[#E5B869]/50 text-white text-xs px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-3 duration-200">
+        <div className="fixed bottom-20 right-6 z-50 bg-slate-100 dark:bg-[#111520] border border-[#E5B869]/50 text-slate-900 dark:text-white text-xs px-4 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-bottom-3 duration-200">
           <span className="text-[#E5B869]">✔</span>
           <span>{toastMessage}</span>
         </div>
@@ -1669,3 +1672,7 @@ function DemoContent() {
     </div>
   )
 }
+
+
+
+

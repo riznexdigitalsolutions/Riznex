@@ -237,7 +237,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
       <div className="space-y-3">
         <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 flex flex-col items-center justify-center text-center">
           <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Wages Paid</div>
-          <div className="text-2xl font-black text-purple-600 dark:text-purple-400">{gbp(totalWages)}</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalWages)}</div>
         </div>
 
         {Object.keys(staffTotals).length > 0 && (
@@ -312,7 +312,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                       Herbies Pizza
                     </span>
                   </td>
-                  <td className="px-4 py-3 font-bold text-purple-600 dark:text-purple-400">
+                  <td className="px-4 py-3 font-bold text-slate-900 dark:text-white">
                     {gbp(w.amount)}
                   </td>
                   <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{w.weekEnd ? fmtDate(w.weekEnd) : '-'}</td>
@@ -321,7 +321,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                       <button onClick={() => {
                         setForm({ staffId: w.staffId, hours: '', amount: w.amount.toString(), weekEnd: w.weekEnd.split('T')[0], store: 'Herbies Pizza' })
                         setEditId(w.id); setShowForm(true)
-                      }} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                       <button onClick={() => handleDelete(w.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
                     </div>
                   </td>
@@ -345,7 +345,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                   <option value="" disabled>Select Staff</option>
                   {uniqueStaffList.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
-                {uniqueStaffList.length === 0 && <p className="text-xs text-orange-700 dark:text-orange-400 mt-1">No staff members found. Add staff first!</p>}
+                {uniqueStaffList.length === 0 && <p className="text-xs text-slate-900 dark:text-white mt-1">No staff members found. Add staff first!</p>}
               </div>
 
               {isHourly && (
@@ -409,7 +409,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                             step="0.01"
                             value={currentVal} 
                             onChange={e => setAutoFillOverrides(prev => ({ ...prev, [s.id]: parseFloat(e.target.value) || 0 }))}
-                            className="w-full bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] text-emerald-600 dark:text-emerald-400 font-bold rounded px-2 py-1 pl-5 text-right focus:outline-none focus:border-emerald-500" 
+                            className="w-full bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white font-bold rounded px-2 py-1 pl-5 text-right focus:outline-none focus:border-emerald-500" 
                           />
                         </div>
                       </div>
@@ -431,4 +431,8 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
     </div>
   )
 }
+
+
+
+
 

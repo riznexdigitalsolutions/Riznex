@@ -122,7 +122,7 @@ export function HungryBirdsExpensesDashboard() {
             <button onClick={() => setFilter(defaultDateFilter())} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs px-2 py-1 font-semibold transition">Reset</button>
             <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]" />
             <div data-html2canvas-ignore="true">
-              <button onClick={() => exportToPDF('expenses-export-area', 'Expenses Report')} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 text-xs px-2 py-1 font-semibold transition flex items-center gap-1">
+              <button onClick={() => exportToPDF('expenses-export-area', 'Expenses Report')} className="text-slate-900 dark:text-white hover:text-blue-300 text-xs px-2 py-1 font-semibold transition flex items-center gap-1">
                 <span>📄</span> Export PDF
               </button>
             </div>
@@ -151,7 +151,7 @@ export function HungryBirdsExpensesDashboard() {
                   <div className="w-10 h-10 bg-purple-500/10 rounded-xl flex items-center justify-center text-xl">👥</div>
                   <div>
                     <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Staff Wages</div>
-                    <div className="text-2xl font-black text-purple-600 dark:text-purple-400">{gbp(totals.wages)}</div>
+                    <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totals.wages)}</div>
                   </div>
                 </div>
               </div>
@@ -168,10 +168,10 @@ export function HungryBirdsExpensesDashboard() {
                   <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center text-xl">📦</div>
                   <div>
                     <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Supplier Purchases</div>
-                    <div className="text-2xl font-black text-orange-700 dark:text-orange-400">{gbp(totals.suppliers)}</div>
+                    <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totals.suppliers)}</div>
                   </div>
                 </div>
-                <button onClick={() => toggleCard('suppliers')} className="text-[11px] text-orange-700 dark:text-orange-400 hover:text-orange-300 font-bold transition">{expandedCards['suppliers'] ? 'Collapse ↑' : 'Expand ↓'}</button>
+                <button onClick={() => toggleCard('suppliers')} className="text-[11px] text-slate-900 dark:text-white hover:text-orange-300 font-bold transition">{expandedCards['suppliers'] ? 'Collapse ↑' : 'Expand ↓'}</button>
               </div>
               {supplierItems.length === 0
                 ? <p className="text-slate-600 text-xs italic">No supplier invoices for this period</p>
@@ -187,9 +187,9 @@ export function HungryBirdsExpensesDashboard() {
                       <div className="flex items-center gap-2">
                         <span className="w-1.5 h-1.5 rounded-full bg-orange-400 flex-shrink-0" />
                         <span className="text-sm text-slate-600 dark:text-slate-300 font-medium">{inv.name}</span>
-                        {inv.category && <span className="text-[10px] bg-orange-500/10 border border-orange-500/20 text-orange-700 dark:text-orange-400 px-1.5 py-0.5 rounded font-bold">{inv.category}</span>}
+                        {inv.category && <span className="text-[10px] bg-orange-500/10 border border-orange-500/20 text-slate-900 dark:text-white px-1.5 py-0.5 rounded font-bold">{inv.category}</span>}
                       </div>
-                      <span className="text-sm font-bold text-orange-700 dark:text-orange-400">{gbp(inv.displayAmount)}</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-white">{gbp(inv.displayAmount)}</span>
                     </li>
                   ))}
                 </ul>
@@ -204,10 +204,10 @@ export function HungryBirdsExpensesDashboard() {
                   <div className="w-10 h-10 bg-cyan-500/10 rounded-xl flex items-center justify-center text-xl">⚡</div>
                   <div>
                     <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Utilities</div>
-                    <div className="text-2xl font-black text-cyan-700 dark:text-cyan-400">{gbp(totals.utilities)}</div>
+                    <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totals.utilities)}</div>
                   </div>
                 </div>
-                <button onClick={() => toggleCard('utilities')} className="text-[11px] text-cyan-700 dark:text-cyan-400 hover:text-cyan-300 font-bold transition">{expandedCards['utilities'] ? 'Collapse ↑' : 'Expand ↓'}</button>
+                <button onClick={() => toggleCard('utilities')} className="text-[11px] text-slate-900 dark:text-white hover:text-cyan-300 font-bold transition">{expandedCards['utilities'] ? 'Collapse ↑' : 'Expand ↓'}</button>
               </div>
               {utilityItems.length === 0
                 ? <p className="text-slate-600 text-xs italic">No utility records for this period</p>
@@ -224,7 +224,7 @@ export function HungryBirdsExpensesDashboard() {
                         <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 flex-shrink-0" />
                         <span className="text-sm text-slate-600 dark:text-slate-300 font-medium capitalize">{e.name}</span>
                       </div>
-                      <span className="text-sm font-bold text-cyan-700 dark:text-cyan-400">{gbp(e.displayAmount)}</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-white">{gbp(e.displayAmount)}</span>
                     </li>
                   ))}
                 </ul>
@@ -239,10 +239,10 @@ export function HungryBirdsExpensesDashboard() {
                   <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-xl">💸</div>
                   <div>
                     <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">Other Expenses</div>
-                    <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{gbp(totals.other)}</div>
+                    <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totals.other)}</div>
                   </div>
                 </div>
-                <button onClick={() => toggleCard('other')} className="text-[11px] text-emerald-600 dark:text-emerald-400 hover:text-emerald-300 font-bold transition">{expandedCards['other'] ? 'Collapse ↑' : 'Expand ↓'}</button>
+                <button onClick={() => toggleCard('other')} className="text-[11px] text-slate-900 dark:text-white hover:text-emerald-300 font-bold transition">{expandedCards['other'] ? 'Collapse ↑' : 'Expand ↓'}</button>
               </div>
               {otherItems.length === 0
                 ? <p className="text-slate-600 text-xs italic">No other expenses for this period</p>
@@ -259,7 +259,7 @@ export function HungryBirdsExpensesDashboard() {
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 flex-shrink-0" />
                         <span className="text-sm text-slate-600 dark:text-slate-300 font-medium">{e.name}</span>
                       </div>
-                      <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">{gbp(e.displayAmount)}</span>
+                      <span className="text-sm font-bold text-slate-900 dark:text-white">{gbp(e.displayAmount)}</span>
                     </li>
                   ))}
                 </ul>
@@ -317,7 +317,7 @@ export function HungryBirdsExpensesDashboard() {
                 </ul>
               </div>
               <div>
-                <div className="font-bold text-emerald-600 dark:text-emerald-400 mb-2">💵 Walk-in Cash Sales (+£500.00)</div>
+                <div className="font-bold text-slate-900 dark:text-white mb-2">💵 Walk-in Cash Sales (+£500.00)</div>
                 <ul className="text-slate-500 list-disc ml-5 space-y-1">
                   <li>Fixed Weekly Cash Sales (+£500.00)</li>
                 </ul>
@@ -336,3 +336,7 @@ export function HungryBirdsExpensesDashboard() {
     </div>
   )
 }
+
+
+
+

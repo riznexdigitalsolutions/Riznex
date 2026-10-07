@@ -90,7 +90,7 @@ function MultiSelectPlatformFilter({
           <button
             type="button"
             onClick={() => { onChange([]); setIsOpen(false); }}
-            className="text-left text-xs text-blue-700 dark:text-blue-400 hover:text-blue-300 font-bold px-2 py-1.5 rounded hover:bg-[#161b2c] transition"
+            className="text-left text-xs text-slate-900 dark:text-white hover:text-blue-300 font-bold px-2 py-1.5 rounded hover:bg-[#161b2c] transition"
           >
             Clear All (All Platforms)
           </button>
@@ -106,7 +106,7 @@ function MultiSelectPlatformFilter({
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => handleToggle(opt.value)}
-                  className="rounded border-slate-200 dark:border-[#1f2947] bg-[#161b2c] text-blue-500 cursor-pointer"
+                  className="rounded border-slate-200 dark:border-[#1f2947] bg-[#161b2c] text-slate-900 dark:text-white cursor-pointer"
                 />
                 <span>{opt.label}</span>
               </label>
@@ -386,7 +386,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
             <div data-html2canvas-ignore="true">
               <button 
                 onClick={() => exportToPDF('sales-export-area', `Henley_Sales_${storeFilter || 'Combined'}_${filter.to || 'All_Time'}`)} 
-                className="bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                className="bg-blue-500/10 text-slate-900 dark:text-white hover:bg-blue-500/20 border border-blue-500/20 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
               >
                 <span>📄</span> Export PDF
               </button>
@@ -455,13 +455,13 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
                   <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{s.totalOrders}</td>
                   <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{gbp(s.grossSales)}</td>
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp(s.commission ?? 0)}</td>
-                  <td className="px-4 py-3 text-purple-600 dark:text-purple-400 font-semibold">{gbp((s.adSpends ?? 0) + (s.topRankFee ?? 0))}</td>
+                  <td className="px-4 py-3 text-slate-900 dark:text-white font-semibold">{gbp((s.adSpends ?? 0) + (s.topRankFee ?? 0))}</td>
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp((s.otherFees || 0) + (s.adminFee || 0) + (s.offersOnItems || 0) + (s.offerRedemptionFee || 0) - (s.refunds || 0))}</td>
                   <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{getRowCommPercent(s)}</td>
-                  <td className="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-bold">{gbp(s.netPaid)}</td>
+                  <td className="px-4 py-3 text-slate-900 dark:text-white font-bold">{gbp(s.netPaid)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(s)} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      <button onClick={() => openEdit(s)} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                       <button onClick={() => handleDelete(s.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
                     </div>
                   </td>
@@ -583,3 +583,7 @@ export function HenleySales({ is2025 }: { is2025?: boolean }) {
     </Suspense>
   )
 }
+
+
+
+

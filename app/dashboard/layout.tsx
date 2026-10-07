@@ -167,7 +167,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
                     onClick={() => setExpandedMenu(isExpanded ? null : item.label)}
                     className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border border-transparent ${
                       isActive
-                        ? 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border-blue-500/20'
+                        ? 'bg-blue-500/15 text-slate-900 dark:text-white border-blue-500/20'
                         : isExpanded
                         ? 'text-slate-900 dark:text-white bg-[#1c2238] border-slate-300 dark:border-[#2a3441]'
                         : 'text-slate-500 dark:text-slate-400 hover:bg-[#1c2238] hover:text-slate-900 dark:hover:text-white'
@@ -184,7 +184,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
                     href={item.href}
                     className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? 'bg-blue-500/15 text-blue-700 dark:text-blue-400 border border-blue-500/20'
+                        ? 'bg-blue-500/15 text-slate-900 dark:text-white border border-blue-500/20'
                         : 'text-slate-500 dark:text-slate-400 hover:bg-[#1c2238] hover:text-slate-900 dark:hover:text-white'
                     }`}
                     onClick={() => setSidebarOpen(false)}
@@ -221,7 +221,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
                               : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-[#1c2238]'
                           }`}
                         >
-                          <span className={`mr-2 mt-[1px] ${isActiveSub ? 'text-blue-700 dark:text-blue-400' : 'text-slate-600'}`}>•</span>
+                          <span className={`mr-2 mt-[1px] ${isActiveSub ? 'text-slate-900 dark:text-white' : 'text-slate-600'}`}>•</span>
                           <span>{sub.label}</span>
                         </Link>
                       )
@@ -285,3 +285,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
 }
 
 // Force recompile
+
+
+
+

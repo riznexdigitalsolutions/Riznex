@@ -94,7 +94,7 @@ export default function MultiPlatformFilter({
         <span className="text-sm opacity-80">📱</span>
         <span>{getTriggerLabel()}</span>
         {!isAllSelected && (
-          <span className="bg-blue-500/20 text-blue-700 dark:text-blue-400 border border-blue-500/30 text-[10px] font-black px-1.5 py-0.5 rounded-full">
+          <span className="bg-blue-500/20 text-slate-900 dark:text-white border border-blue-500/30 text-[10px] font-black px-1.5 py-0.5 rounded-full">
             {currentArray.length}
           </span>
         )}
@@ -110,7 +110,7 @@ export default function MultiPlatformFilter({
               <button
                 type="button"
                 onClick={() => onChange('')}
-                className="text-blue-700 dark:text-blue-400 hover:text-blue-300 font-bold lowercase text-[11px]"
+                className="text-slate-900 dark:text-white hover:text-blue-300 font-bold lowercase text-[11px]"
               >
                 reset
               </button>
@@ -122,14 +122,14 @@ export default function MultiPlatformFilter({
             <label
               onClick={handleToggleAll}
               className={`flex items-center gap-3 px-2.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-colors ${
-                isAllSelected ? 'bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/20' : 'text-slate-600 dark:text-slate-300 hover:bg-[#161b2c]'
+                isAllSelected ? 'bg-blue-500/10 text-slate-900 dark:text-white border border-blue-500/20' : 'text-slate-600 dark:text-slate-300 hover:bg-[#161b2c]'
               }`}
             >
               <input
                 type="checkbox"
                 checked={isAllSelected}
                 onChange={() => {}}
-                className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-200 dark:bg-[#1a2235] text-blue-500 focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-200 dark:bg-[#1a2235] text-slate-900 dark:text-white focus:ring-blue-500 cursor-pointer"
               />
               <span>All Platforms</span>
             </label>
@@ -153,7 +153,7 @@ export default function MultiPlatformFilter({
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => {}}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-200 dark:bg-[#1a2235] text-blue-500 focus:ring-blue-500 cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-200 dark:bg-[#1a2235] text-slate-900 dark:text-white focus:ring-blue-500 cursor-pointer"
                     />
                     <span className="flex items-center gap-2">
                       {opt.color && (
@@ -162,7 +162,7 @@ export default function MultiPlatformFilter({
                       {opt.label}
                     </span>
                   </div>
-                  {isChecked && <span className="text-blue-700 dark:text-blue-400 text-xs font-bold">✓</span>}
+                  {isChecked && <span className="text-slate-900 dark:text-white text-xs font-bold">✓</span>}
                 </label>
               )
             })}

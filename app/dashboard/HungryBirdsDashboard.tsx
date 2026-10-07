@@ -503,7 +503,7 @@ export function HungryBirdsDashboard() {
           <div className="print:hidden absolute top-0 right-0" data-html2canvas-ignore="true">
             <button
               onClick={() => exportToPDF('hungry-birds-export-area', getPdfFilename())}
-              className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 text-blue-700 dark:text-blue-400 hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer"
+              className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer"
             >
               <span>📄</span> Export PDF Report
             </button>
@@ -540,24 +540,24 @@ export function HungryBirdsDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Orders</div>
-          <div className="text-2xl font-black text-orange-700 dark:text-orange-400">{orders}</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{orders}</div>
         </div>
         <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Sales</div>
-          <div className="text-2xl font-black text-blue-700 dark:text-blue-400">{gbp(totalSales)}</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalSales)}</div>
         </div>
         <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Sales</div>
-          <div className="text-2xl font-black text-cyan-700 dark:text-cyan-400">{gbp(r?.sales?.totalNetPaid ?? 0)}</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(r?.sales?.totalNetPaid ?? 0)}</div>
         </div>
         <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Expenses</div>
-          <div className="text-2xl font-black text-purple-600 dark:text-purple-400">{gbp(totalExpenses + totalSuppliers)}</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalExpenses + totalSuppliers)}</div>
         </div>
 
-        <div className="bg-gradient-to-br from-emerald-500/20 to-emerald-900/40 border border-emerald-500/30 rounded-2xl p-5 shadow-sm dark:shadow-emerald-500/10 dark:shadow-xl">
-          <div className="text-[11px] font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-widest mb-1">Net Profit</div>
-          <div className={`text-3xl font-black ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-emerald-600 dark:text-emerald-400'}`}>{gbp(netProfit)}</div>
+        <div className="bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#E5B869]/30 rounded-2xl p-5 shadow-sm dark:shadow-[#E5B869]/5 dark:shadow-xl">
+          <div className="text-[11px] font-bold text-slate-500 dark:text-[#E5B869] uppercase tracking-widest mb-1">Net Profit</div>
+          <div className={`text-3xl font-black ${netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(netProfit)}</div>
         </div>
       </div>
 
@@ -573,11 +573,11 @@ export function HungryBirdsDashboard() {
         </div>
         <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Utilities</div>
-          <div className="text-base font-black text-cyan-700 dark:text-cyan-400">{gbp(utilities)}</div>
+          <div className="text-base font-black text-slate-900 dark:text-white">{gbp(utilities)}</div>
         </div>
         <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Wages</div>
-          <div className="text-base font-black text-pink-700 dark:text-pink-400">{gbp(staffWages)}</div>
+          <div className="text-base font-black text-slate-900 dark:text-white">{gbp(staffWages)}</div>
         </div>
         <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Supplier Purchases</div>
@@ -588,7 +588,7 @@ export function HungryBirdsDashboard() {
           <div className="text-base font-black text-indigo-400">{gbp(otherExpenses)}</div>
         </div>
         <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1 bg-purple-500/10 border-purple-500/20">
-          <div className="text-[10px] font-bold text-slate-500 dark:text-purple-400 uppercase tracking-widest">Total Expenses</div>
+          <div className="text-[10px] font-bold text-slate-500 dark:text-slate-900 dark:text-white uppercase tracking-widest">Total Expenses</div>
           <div className="text-base font-black text-purple-800 dark:text-purple-300">{gbp(totalExpenses + totalSuppliers)}</div>
         </div>
       </div>
@@ -601,7 +601,7 @@ export function HungryBirdsDashboard() {
           <div className="absolute -top-32 -left-32 w-80 h-80 bg-emerald-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20 shadow-inner text-lg">
+              <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-slate-200 dark:border-[#E5B869]/20 shadow-inner text-lg">
                 💰
               </span>
               Profit Summary
@@ -609,7 +609,7 @@ export function HungryBirdsDashboard() {
             
             <div className="mb-6 border-b border-slate-200 dark:border-[#1f2947] pb-4 flex justify-between items-end">
               <span className="text-slate-600 dark:text-slate-300 font-bold text-lg">Gross Sales</span>
-              <span className="text-blue-700 dark:text-blue-400 font-bold text-2xl">{gbp(totalSales)}</span>
+              <span className="text-slate-900 dark:text-white font-bold text-2xl">{gbp(totalSales)}</span>
             </div>
 
             <div className="text-xs font-semibold text-slate-500 uppercase tracking-widest mb-3">LESS:</div>
@@ -757,9 +757,9 @@ export function HungryBirdsDashboard() {
             </ul>
           </div>
 
-          <div className="mt-8 pt-6 border-t border-emerald-500/20 flex justify-between items-center">
-            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-xl tracking-tight">= Net Profit</span>
-            <span className="text-emerald-600 dark:text-emerald-400 font-bold text-2xl">{gbp(netProfit)}</span>
+          <div className="mt-8 pt-6 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
+            <span className="text-[#B8860B] dark:text-[#E5B869] font-bold text-xl tracking-tight">= Net Profit</span>
+            <span className="text-[#B8860B] dark:text-[#E5B869] font-bold text-2xl">{gbp(netProfit)}</span>
           </div>
         </div>
 
@@ -768,7 +768,7 @@ export function HungryBirdsDashboard() {
           <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
           <div>
             <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-8 flex items-center gap-3">
-              <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-700 dark:text-blue-400 flex items-center justify-center border border-blue-500/20 shadow-inner text-lg">
+              <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-blue-500/20 shadow-inner text-lg">
                 📊
               </span>
               Platform Performance
@@ -782,7 +782,7 @@ export function HungryBirdsDashboard() {
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right">Sales</th>
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right">Deductions</th>
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right">%</th>
-                    <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right text-emerald-600 dark:text-emerald-400">Net Received</th>
+                    <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right text-slate-900 dark:text-white">Net Received</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#1f2947]/50">
@@ -795,12 +795,12 @@ export function HungryBirdsDashboard() {
                       <tr key={i} className="hover:bg-black/5 dark:hover:bg-white/5 transition-colors group">
                         <td className="py-3.5 font-semibold text-slate-700 dark:text-slate-200 text-sm">{p.name}</td>
                         <td className="py-3.5 text-slate-600 dark:text-slate-300 text-right font-medium text-sm">{p.orders}</td>
-                        <td className="py-3.5 text-blue-700 dark:text-blue-400 text-right font-bold text-sm">{gbp(p.sales)}</td>
+                        <td className="py-3.5 text-slate-900 dark:text-white text-right font-bold text-sm">{gbp(p.sales)}</td>
                         <td className="py-3.5 text-red-400 text-right font-bold text-sm">{gbp(p.deductions)}</td>
                         <td className="py-3.5 text-slate-500 dark:text-slate-400 text-right font-medium text-xs">
                           {p.sales > 0 ? ((p.deductions / p.sales) * 100).toFixed(1) : '0.0'}%
                         </td>
-                        <td className="py-3.5 text-emerald-600 dark:text-emerald-400 text-right font-bold text-sm">{gbp(p.net)}</td>
+                        <td className="py-3.5 text-slate-900 dark:text-white text-right font-bold text-sm">{gbp(p.net)}</td>
                       </tr>
                     ))
                   )}
@@ -814,15 +814,15 @@ export function HungryBirdsDashboard() {
               {/* Sales Distribution */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-sm font-bold text-slate-900 dark:text-white">
-                  <span className="flex items-center gap-2"><span className="text-blue-700 dark:text-blue-400">📈</span> Sales Distribution</span>
-                  <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">{gbp(totalSales)}</span>
+                  <span className="flex items-center gap-2"><span className="text-slate-900 dark:text-white">📈</span> Sales Distribution</span>
+                  <span className="text-slate-900 dark:text-white font-bold text-xs">{gbp(totalSales)}</span>
                 </div>
                 <div className="space-y-1.5">
                   {platformData.map((p: any, idx: number) => (
                     <div key={idx} className="space-y-1">
                       <div className="flex justify-between items-center text-xs">
                         <span className="text-slate-600 dark:text-slate-300 font-medium">{p.name}</span>
-                        <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">{gbp(p.sales)}</span>
+                        <span className="text-slate-900 dark:text-white font-bold text-xs">{gbp(p.sales)}</span>
                       </div>
                       <div className="w-full h-1.5 bg-slate-50 dark:bg-[#0e121b] rounded-full overflow-hidden border border-slate-200 dark:border-[#1f2947]">
                         <div 
@@ -838,8 +838,8 @@ export function HungryBirdsDashboard() {
               {/* Expense Distribution */}
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-sm font-bold text-slate-900 dark:text-white">
-                  <span className="flex items-center gap-2"><span className="text-purple-600 dark:text-purple-400">💸</span> Expense Distribution</span>
-                  <span className="text-purple-600 dark:text-purple-400 font-bold text-xs">{gbp(combinedTotalCost)}</span>
+                  <span className="flex items-center gap-2"><span className="text-slate-900 dark:text-white">💸</span> Expense Distribution</span>
+                  <span className="text-slate-900 dark:text-white font-bold text-xs">{gbp(combinedTotalCost)}</span>
                 </div>
                 <div className="space-y-1.5">
                   {expenseDistributionList.map((item: any, idx: number) => {
@@ -878,7 +878,7 @@ export function HungryBirdsDashboard() {
               <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
-                    <span className="text-blue-700 dark:text-blue-400 mr-2">1.</span>WEEKLY SALES & ORDERS
+                    <span className="text-slate-900 dark:text-white mr-2">1.</span>WEEKLY SALES & ORDERS
                   </h2>
                   <div className="flex items-center gap-6 text-[13px] font-bold">
                     <div className="flex items-center gap-2">
@@ -961,7 +961,7 @@ export function HungryBirdsDashboard() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-slate-900 dark:text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customSalesPieTotal)}</span>
+                          <span className="text-[#a17a36] dark:text-[#E5B869] font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customSalesPieTotal)}</span>
                           <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase">Total Sales</span>
                         </div>
                       </div>
@@ -993,7 +993,7 @@ export function HungryBirdsDashboard() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                          <span className="text-slate-900 dark:text-white font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customExpensePieTotal)}</span>
+                          <span className="text-[#a17a36] dark:text-[#E5B869] font-black text-xl tracking-tighter truncate w-full text-center px-1">{gbp(customExpensePieTotal)}</span>
                           <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
@@ -1069,7 +1069,7 @@ export function HungryBirdsDashboard() {
               <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
-                    <span className="text-blue-700 dark:text-blue-400 mr-2">1.</span>MONTHLY SALES & ORDERS
+                    <span className="text-slate-900 dark:text-white mr-2">1.</span>MONTHLY SALES & ORDERS
                   </h2>
                   <div className="flex items-center gap-6 text-[13px] font-bold">
                     <div className="flex items-center gap-2">
@@ -1143,7 +1143,7 @@ export function HungryBirdsDashboard() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-2">
-                          <span className="text-slate-900 dark:text-white font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customSalesPieTotal)}</span>
+                          <span className="text-[#a17a36] dark:text-[#E5B869] font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customSalesPieTotal)}</span>
                           <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-1">Total Sales</span>
                         </div>
                       </div>
@@ -1175,7 +1175,7 @@ export function HungryBirdsDashboard() {
                           </PieChart>
                         </ResponsiveContainer>
                         <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none px-2">
-                          <span className="text-slate-900 dark:text-white font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customExpensePieTotal)}</span>
+                          <span className="text-[#a17a36] dark:text-[#E5B869] font-black text-xl tracking-tighter truncate w-full text-center">{gbp(customExpensePieTotal)}</span>
                           <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
@@ -1267,10 +1267,10 @@ export function HungryBirdsDashboard() {
                     <td className="py-4 text-red-400 text-right">{o.spend > 0 ? gbp(o.spend) : '-'}</td>
                     <td className="py-4 text-slate-900 dark:text-white text-right font-medium">{o.orders}</td>
                     <td className="py-4 text-slate-900 dark:text-white text-right font-medium">{o.grossSales > 0 ? gbp(o.grossSales) : '-'}</td>
-                    <td className="py-4 text-orange-700 dark:text-orange-400 text-right">{o.deductions > 0 ? gbp(o.deductions) : '-'}</td>
+                    <td className="py-4 text-slate-900 dark:text-white text-right">{o.deductions > 0 ? gbp(o.deductions) : '-'}</td>
                     <td className="py-4 text-slate-500 dark:text-slate-400 text-right">{o.grossSales > 0 ? `${o.deductionPercent}%` : '-'}</td>
-                    <td className="py-4 text-blue-700 dark:text-blue-400 text-right">{o.revenue > 0 ? gbp(o.revenue) : '-'}</td>
-                    <td className="py-4 text-emerald-600 dark:text-emerald-400 font-bold text-right">{o.ROI}</td>
+                    <td className="py-4 text-slate-900 dark:text-white text-right">{o.revenue > 0 ? gbp(o.revenue) : '-'}</td>
+                    <td className="py-4 text-slate-900 dark:text-white font-bold text-right">{o.ROI}</td>
                     {session?.user?.role === 'admin' && (
                       <td className="py-4 text-right">
                         {o.id !== 'none' && (
@@ -1289,7 +1289,7 @@ export function HungryBirdsDashboard() {
                                 });
                                 setShowOfferModal(true);
                               }
-                            }} className="text-slate-500 hover:text-blue-700 dark:text-blue-400 text-lg transition-colors" title="Edit Offer">
+                            }} className="text-slate-500 hover:text-slate-900 dark:text-white text-lg transition-colors" title="Edit Offer">
                               ✎
                             </button>
                             <button onClick={() => {
@@ -1388,6 +1388,10 @@ export function HungryBirdsDashboard() {
     </div>
   )
 }
+
+
+
+
 
 
 

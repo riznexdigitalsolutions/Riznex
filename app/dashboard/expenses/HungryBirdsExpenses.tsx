@@ -163,7 +163,7 @@ export function HungryBirdsExpenses() {
                       if (e.target.checked) setSelectedIds(new Set(filteredExpenses.map(x => x.id)))
                       else setSelectedIds(new Set())
                     }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 cursor-pointer"
+                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
                   />
                 </th>
                 {['Category', 'Subcategory', 'Amount', 'Period', 'Week', 'Month', 'Notes', 'Actions'].map(h => (
@@ -197,11 +197,11 @@ export function HungryBirdsExpenses() {
                         else next.add(e.id)
                         setSelectedIds(next)
                       }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
                     />
                   </td>
                   <td className="px-4 py-3">
-                    <span className="inline-block bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded-full text-[11px] font-bold">
+                    <span className="inline-block bg-purple-500/10 text-slate-900 dark:text-white border border-purple-500/20 px-2.5 py-1 rounded-full text-[11px] font-bold">
                       {expenseCategoryLabel(e.category)}
                     </span>
                   </td>
@@ -216,7 +216,7 @@ export function HungryBirdsExpenses() {
                       <button onClick={() => {
                         setForm({ category: e.category, subcategory: e.subcategory ?? '', amount: e.amount.toString(), period: e.period, date: e.date.split('T')[0], notes: e.notes ?? '' })
                         setEditId(e.id); setShowForm(true)
-                      }} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                       <button onClick={() => handleDelete(e.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
                     </div>
                   </td>
@@ -287,3 +287,7 @@ export function HungryBirdsExpenses() {
     </div>
   )
 }
+
+
+
+

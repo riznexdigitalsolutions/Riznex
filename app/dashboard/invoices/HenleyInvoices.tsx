@@ -400,7 +400,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                       if (e.target.checked) setSelectedIds(filteredInvoices.map((inv: any) => inv.id))
                       else setSelectedIds([])
                     }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
+                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
                   />
                 </th>
                 <th className="px-5 py-4 font-bold">Date</th>
@@ -458,7 +458,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                       onChange={() => {
                         setSelectedIds(prev => prev.includes(inv.id) ? prev.filter(id => id !== inv.id) : [...prev, inv.id])
                       }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
                     />
                   </td>
                   <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
@@ -471,7 +471,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         style={{ colorScheme: 'dark' }}
                       />
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-block" title="Click to edit date">
+                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit date">
                         {dateColStr}
                       </div>
                     )}
@@ -508,15 +508,15 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         />
                       </div>
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-block" title="Click to edit amount">
+                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit amount">
                         {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
                       </div>
                     )}
                   </td>
                   <td className="px-5 py-4">
-                    {inv.ocrStatus === 'done' ? <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-xs" title="Data extracted successfully">Extracted ✅</span> :
+                    {inv.ocrStatus === 'done' ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title="Data extracted successfully">Extracted ✅</span> :
                      (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing') ? <span className="text-amber-400 font-semibold text-xs" title="Processing with AI...">Processing ⏳</span> :
-                     (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-orange-700 dark:text-orange-400 font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
+                     (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
                      <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>}
                   </td>
                   <td className="px-5 py-4 text-right">
@@ -525,7 +525,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         <>
                           {isEditing ? (
                             <>
-                              <button onClick={handleSaveEdit} className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Save</button>
+                              <button onClick={handleSaveEdit} className="text-slate-900 dark:text-white hover:text-emerald-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Save</button>
                               <span className="text-slate-700">|</span>
                               <button onClick={() => setEditingId(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Cancel</button>
                             </>
@@ -541,7 +541,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         </>
                       )}
                       
-                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-700 dark:text-blue-400 hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
+                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
                         View File
                       </a>
                       
@@ -650,7 +650,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                   }}
                 >
                   {dragFileNames.length > 0 ? (
-                    <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                    <div className="text-sm font-bold text-slate-900 dark:text-white">
                       ✅ {dragFileNames.length} file(s) selected: {dragFileNames.slice(0, 2).join(', ')}{dragFileNames.length > 2 ? '...' : ''}
                     </div>
                   ) : (
@@ -677,7 +677,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
               <div>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={mergeFiles} onChange={e => setMergeFiles(e.target.checked)} className="rounded border-slate-200 dark:border-[#1f2947] bg-[#161b2c] text-blue-500 cursor-pointer" />
+                  <input type="checkbox" checked={mergeFiles} onChange={e => setMergeFiles(e.target.checked)} className="rounded border-slate-200 dark:border-[#1f2947] bg-[#161b2c] text-slate-900 dark:text-white cursor-pointer" />
                   <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Merge into single invoice (for multi-page docs)</span>
                 </label>
               </div>
@@ -703,6 +703,10 @@ export function HenleyInvoices({ is2025 = false }: { is2025?: boolean }) {
     </Suspense>
   )
 }
+
+
+
+
 
 
 

@@ -322,13 +322,13 @@ function SalesContent() {
                   <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{s.totalOrders}</td>
                   <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{gbp(s.grossSales)}</td>
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp(s.commission ?? 0)}</td>
-                  <td className="px-4 py-3 text-purple-600 dark:text-purple-400 font-semibold">{gbp((s.adSpends ?? 0) + (s.topRankFee ?? 0))}</td>
+                  <td className="px-4 py-3 text-slate-900 dark:text-white font-semibold">{gbp((s.adSpends ?? 0) + (s.topRankFee ?? 0))}</td>
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp((s.grossSales - s.netPaid) - (s.commission ?? 0) - ((s.adSpends ?? 0) + (s.topRankFee ?? 0)))}</td>
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-semibold">{getRowDeductionPercent(s)}</td>
-                  <td className="px-4 py-3 text-emerald-600 dark:text-emerald-400 font-bold">{gbp(s.netPaid)}</td>
+                  <td className="px-4 py-3 text-slate-900 dark:text-white font-bold">{gbp(s.netPaid)}</td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(s)} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      <button onClick={() => openEdit(s)} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                     </div>
                   </td>
                 </tr>
@@ -432,3 +432,7 @@ export function HungryBirdsSales() {
     </Suspense>
   )
 }
+
+
+
+

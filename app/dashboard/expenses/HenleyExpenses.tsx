@@ -353,7 +353,7 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
                     />
                   </td>
                   <td className="px-4 py-3">
-                    <span className="inline-block bg-purple-500/10 text-purple-600 dark:text-purple-400 border border-purple-500/20 px-2.5 py-1 rounded-full text-[11px] font-bold">
+                    <span className="inline-block bg-purple-500/10 text-slate-900 dark:text-white border border-purple-500/20 px-2.5 py-1 rounded-full text-[11px] font-bold">
                       {expenseCategoryLabel(e.category)}
                     </span>
                   </td>
@@ -368,7 +368,7 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
                       <button onClick={() => {
                         setForm({ category: e.category, subcategory: e.subcategory ?? '', amount: e.amount.toString(), period: e.period, date: e.date.split('T')[0], notes: e.notes ?? '' })
                         setEditId(e.id); setShowForm(true)
-                      }} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                       <button onClick={() => handleDelete(e.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
                     </div>
                   </td>
@@ -471,7 +471,7 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
                   {previewExpenses.map(p => (
                     <div key={p.id} className="flex justify-between items-center text-xs">
                       <span className="text-slate-600 dark:text-slate-300">⚡ {p.name}</span>
-                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">{gbp(p.amount)}</span>
+                      <span className="text-slate-900 dark:text-white font-bold">{gbp(p.amount)}</span>
                     </div>
                   ))}
                 </div>
@@ -492,4 +492,8 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
     </div>
   )
 }
+
+
+
+
 

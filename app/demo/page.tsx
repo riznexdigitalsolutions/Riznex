@@ -393,7 +393,7 @@ function DemoContent() {
 
             {/* 1. Overview Group */}
             <div className="space-y-1">
-              <div className="px-3 py-2 text-xs font-bold text-blue-700 dark:text-blue-400 flex items-center justify-between rounded-xl bg-blue-500/10 border border-blue-500/20">
+              <div className="px-3 py-2 text-xs font-bold text-slate-900 dark:text-white flex items-center justify-between rounded-xl bg-blue-500/10 border border-blue-500/20">
                 <span className="flex items-center gap-2">
                   <span>📊</span> Overview
                 </span>
@@ -490,7 +490,7 @@ function DemoContent() {
           {/* User Profile in Sidebar */}
           <div className="p-4 border-t border-slate-200 dark:border-[#1f2947] bg-white dark:bg-[#0d1019] space-y-3">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-purple-600/30 border border-purple-500/40 text-purple-600 dark:text-purple-300 font-black flex items-center justify-center text-sm">
+              <div className="w-9 h-9 rounded-xl bg-purple-600/30 border border-purple-500/40 text-slate-900 dark:text-white dark:text-purple-300 font-black flex items-center justify-center text-sm">
                 R
               </div>
               <div className="min-w-0 flex-1">
@@ -533,7 +533,7 @@ function DemoContent() {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
             <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
               <div className="flex items-center gap-2">
-                <div className="w-11 h-11 rounded-xl bg-orange-600/20 border border-orange-500/40 p-1 flex items-center justify-center text-lg font-black text-orange-700 dark:text-orange-400 shadow-md">
+                <div className="w-11 h-11 rounded-xl bg-orange-600/20 border border-orange-500/40 p-1 flex items-center justify-center text-lg font-black text-slate-900 dark:text-white shadow-md">
                   🍕
                 </div>
                 <div className="w-11 h-11 rounded-xl bg-amber-600/20 border border-amber-500/40 p-1 flex items-center justify-center text-lg font-black text-amber-400 shadow-md">
@@ -543,7 +543,7 @@ function DemoContent() {
               <div>
                 <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
                   The Royal Grill & Lounge
-                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30">
+                  <span className="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-500/10 text-slate-900 dark:text-white border border-emerald-500/30">
                     Live Demo Sync
                   </span>
                 </h1>
@@ -556,7 +556,7 @@ function DemoContent() {
             <div className="flex items-center gap-2.5">
               <button 
                 onClick={() => triggerToast('Generating sample PDF report for Royal Grill & Lounge...')}
-                className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2 text-blue-700 dark:text-blue-400 hover:text-blue-300 hover:bg-[#1a2235] text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer"
+                className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-[#1a2235] text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer"
               >
                 <span>📄</span> Export PDF Report
               </button>
@@ -656,23 +656,23 @@ function DemoContent() {
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
                 <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Orders</div>
-                  <div className="text-2xl sm:text-3xl font-black text-orange-700 dark:text-orange-400">{currentData.orders.toLocaleString()}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{currentData.orders.toLocaleString()}</div>
                 </div>
                 <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Sales</div>
-                  <div className="text-2xl sm:text-3xl font-black text-blue-700 dark:text-blue-400">{gbp(currentData.grossSales)}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{gbp(currentData.grossSales)}</div>
                 </div>
                 <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Sales</div>
-                  <div className="text-2xl sm:text-3xl font-black text-cyan-700 dark:text-cyan-400">{gbp(currentData.netSales)}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{gbp(currentData.netSales)}</div>
                 </div>
                 <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Expenses</div>
-                  <div className="text-2xl sm:text-3xl font-black text-purple-600 dark:text-purple-400">{gbp(currentData.totalExpenses)}</div>
+                  <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{gbp(currentData.totalExpenses)}</div>
                 </div>
-                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br from-white dark:from-emerald-500/20 to-slate-50 dark:to-emerald-900/40 border border-slate-200 dark:border-emerald-500/40 rounded-2xl p-4 sm:p-5 shadow-sm dark:shadow-emerald-500/10 dark:shadow-xl">
-                  <div className="text-[11px] font-bold text-slate-500 dark:text-emerald-400 uppercase tracking-widest mb-1">Net Profit</div>
-                  <div className="text-2xl sm:text-3xl font-black text-emerald-600 dark:text-emerald-400">{gbp(currentData.netProfit)}</div>
+                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#E5B869]/20 rounded-2xl p-4 sm:p-5 shadow-sm dark:shadow-[#E5B869]/5 dark:shadow-xl">
+                  <div className="text-[11px] font-bold text-slate-500 dark:text-[#E5B869] uppercase tracking-widest mb-1">Net Profit</div>
+                  <div className={`text-2xl sm:text-3xl font-black ${currentData.netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(currentData.netProfit)}</div>
                 </div>
               </div>
 
@@ -688,7 +688,7 @@ function DemoContent() {
                 </div>
                 <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Wages</div>
-                  <div className="text-sm sm:text-base font-black text-pink-700 dark:text-pink-400">{gbp(currentData.wages)}</div>
+                  <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white">{gbp(currentData.wages)}</div>
                 </div>
                 <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Supplier Purchases</div>
@@ -696,15 +696,15 @@ function DemoContent() {
                 </div>
                 <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Marketing</div>
-                  <div className="text-sm sm:text-base font-black text-pink-700 dark:text-pink-400">{gbp(currentData.marketing)}</div>
+                  <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white">{gbp(currentData.marketing)}</div>
                 </div>
                 <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Others</div>
                   <div className="text-sm sm:text-base font-black text-slate-500 dark:text-slate-400">{gbp(currentData.others)}</div>
                 </div>
-                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br from-white dark:from-purple-500/20 to-slate-50 dark:to-purple-900/30 border border-slate-200 dark:border-purple-500/40 rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-slate-500 dark:text-purple-400 uppercase tracking-wider truncate">Total Expenses</div>
-                  <div className="text-sm sm:text-base font-black text-purple-600 dark:text-purple-300">{gbp(currentData.totalExpenses)}</div>
+                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#E5B869]/10 rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
+                  <div className="text-[10px] font-bold text-slate-500 dark:text-slate-900 dark:text-white uppercase tracking-wider truncate">Total Expenses</div>
+                  <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white dark:text-purple-300">{gbp(currentData.totalExpenses)}</div>
                 </div>
               </div>
 
@@ -715,7 +715,7 @@ function DemoContent() {
                 <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col relative overflow-hidden">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-sm">
+                      <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-slate-200 dark:border-[#E5B869]/20 text-sm">
                         💰
                       </span>
                       <h2 className="text-lg font-black text-slate-900 dark:text-white">Profit Summary</h2>
@@ -731,7 +731,7 @@ function DemoContent() {
 
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-slate-600 dark:text-slate-300 font-bold text-base">Gross Sales</span>
-                    <span className="text-blue-700 dark:text-blue-400 font-black text-base">{gbp(currentData.grossSales)}</span>
+                    <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-base">{gbp(currentData.grossSales)}</span>
                   </div>
 
                   <div className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3 border-b border-slate-200 dark:border-[#1f2947] pb-1.5">
@@ -905,9 +905,9 @@ function DemoContent() {
                   </div>
 
                   {/* Net Profit Result */}
-                  <div className="mt-6 pt-4 border-t border-emerald-500/20 flex justify-between items-center">
-                    <span className="text-emerald-600 dark:text-emerald-500 font-black text-lg">= Net Profit</span>
-                    <span className="text-emerald-600 dark:text-emerald-400 font-black text-xl">{gbp(currentData.netProfit)}</span>
+                  <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
+                    <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-lg">= Net Profit</span>
+                    <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-xl">{gbp(currentData.netProfit)}</span>
                   </div>
                 </div>
 
@@ -917,7 +917,7 @@ function DemoContent() {
                   {/* Platform Performance Table */}
                   <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
                     <h2 className="text-lg font-black text-slate-900 dark:text-white mb-5 flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-blue-700 dark:text-blue-400 flex items-center justify-center border border-blue-500/20 text-sm">
+                      <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-blue-500/20 text-sm">
                         📊
                       </span>
                       Platform Performance
@@ -931,7 +931,7 @@ function DemoContent() {
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right">Sales</th>
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right">Deductions</th>
                             <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right">Ded. %</th>
-                            <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right text-emerald-600 dark:text-emerald-400">Net Received</th>
+                            <th className="pb-3 font-bold uppercase tracking-wider text-[11px] text-right text-slate-900 dark:text-white">Net Received</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-[#1f2947]">
@@ -942,10 +942,10 @@ function DemoContent() {
                                 {p.name}
                               </td>
                               <td className="py-3 text-slate-600 dark:text-slate-300 text-right">{p.orders.toLocaleString()}</td>
-                              <td className="py-3 text-blue-700 dark:text-blue-400 text-right font-semibold">{gbp(p.sales)}</td>
+                              <td className="py-3 text-slate-900 dark:text-white text-right font-semibold">{gbp(p.sales)}</td>
                               <td className="py-3 text-red-400 text-right font-medium">-{gbp(p.deductions)}</td>
                               <td className="py-3 text-amber-400 text-right font-medium">{p.dedPct}</td>
-                              <td className="py-3 text-emerald-600 dark:text-emerald-400 text-right font-black">{gbp(p.net)}</td>
+                              <td className="py-3 text-slate-900 dark:text-white text-right font-black">{gbp(p.net)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -956,7 +956,7 @@ function DemoContent() {
                   {/* Supplier Purchases Table */}
                   <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
                     <h2 className="text-lg font-black text-slate-900 dark:text-white mb-5 flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-orange-700 dark:text-orange-400 flex items-center justify-center border border-orange-500/20 text-sm">
+                      <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-orange-500/20 text-sm">
                         🛒
                       </span>
                       Supplier Purchases
@@ -994,9 +994,9 @@ function DemoContent() {
                     <div className="space-y-3">
                       <div className="flex justify-between items-center text-sm font-bold text-slate-900 dark:text-white">
                         <span className="flex items-center gap-2">
-                          <span className="text-rose-700 dark:text-rose-400">📈</span> Sales Distribution
+                          <span className="text-slate-900 dark:text-white">📈</span> Sales Distribution
                         </span>
-                        <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">{gbp(currentData.grossSales)}</span>
+                        <span className="text-slate-900 dark:text-white font-bold text-xs">{gbp(currentData.grossSales)}</span>
                       </div>
 
                       <div className="space-y-2.5">
@@ -1007,7 +1007,7 @@ function DemoContent() {
                             <div key={idx} className="space-y-1">
                               <div className="flex justify-between items-center text-xs">
                                 <span className="text-slate-600 dark:text-slate-300 font-medium">{p.name}</span>
-                                <span className="text-blue-700 dark:text-blue-400 font-bold text-xs">{gbp(p.sales)}</span>
+                                <span className="text-slate-900 dark:text-white font-bold text-xs">{gbp(p.sales)}</span>
                               </div>
                               <div className="w-full h-1.5 bg-slate-50 dark:bg-[#0e121b] rounded-full overflow-hidden border border-slate-200 dark:border-[#1f2947]">
                                 <div 
@@ -1029,7 +1029,7 @@ function DemoContent() {
                         <span className="flex items-center gap-2">
                           <span className="text-amber-400">💸</span> Expense Distribution
                         </span>
-                        <span className="text-purple-600 dark:text-purple-400 font-bold text-xs">{gbp(currentData.totalExpenses)}</span>
+                        <span className="text-slate-900 dark:text-white font-bold text-xs">{gbp(currentData.totalExpenses)}</span>
                       </div>
 
                       <div className="space-y-2.5">
@@ -1087,10 +1087,10 @@ function DemoContent() {
                     1. WEEKLY SALES & ORDERS
                   </div>
                   <div className="flex items-center gap-4 text-xs font-semibold">
-                    <span className="flex items-center gap-1.5 text-blue-700 dark:text-blue-400">
+                    <span className="flex items-center gap-1.5 text-slate-900 dark:text-white">
                       <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Sales (£)
                     </span>
-                    <span className="flex items-center gap-1.5 text-orange-700 dark:text-orange-400">
+                    <span className="flex items-center gap-1.5 text-slate-900 dark:text-white">
                       <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Orders
                     </span>
                   </div>
@@ -1136,7 +1136,7 @@ function DemoContent() {
                         <div className="flex items-end justify-center gap-1.5 w-full h-full relative">
                           {/* Sales Bar */}
                           <div className="relative w-4 sm:w-8 flex flex-col items-center justify-end h-full">
-                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-blue-700 dark:text-blue-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
+                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-slate-900 dark:text-white opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
                               {gbp(d.sales)}
                             </div>
                             <div 
@@ -1150,7 +1150,7 @@ function DemoContent() {
 
                           {/* Orders Bar */}
                           <div className="relative w-4 sm:w-8 flex flex-col items-center justify-end h-full">
-                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-orange-700 dark:text-orange-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
+                            <div className="absolute -top-6 text-[9px] sm:text-[10px] font-bold text-slate-900 dark:text-white opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
                               {d.orders}
                             </div>
                             <div 
@@ -1238,10 +1238,10 @@ function DemoContent() {
                     1. MONTHLY SALES & ORDERS
                   </div>
                   <div className="flex items-center gap-4 text-xs font-semibold">
-                    <span className="flex items-center gap-1.5 text-blue-700 dark:text-blue-400">
+                    <span className="flex items-center gap-1.5 text-slate-900 dark:text-white">
                       <span className="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Sales (£)
                     </span>
-                    <span className="flex items-center gap-1.5 text-orange-700 dark:text-orange-400">
+                    <span className="flex items-center gap-1.5 text-slate-900 dark:text-white">
                       <span className="w-2.5 h-2.5 rounded-full bg-orange-500"></span> Orders
                     </span>
                   </div>
@@ -1287,7 +1287,7 @@ function DemoContent() {
                         <div className="flex items-end justify-center gap-2.5 w-full h-full relative">
                           {/* Sales Bar */}
                           <div className="relative w-6 sm:w-12 flex flex-col items-center justify-end h-full">
-                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-blue-700 dark:text-blue-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
+                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-slate-900 dark:text-white opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700 whitespace-nowrap">
                               {gbp(m.sales)}
                             </div>
                             <div 
@@ -1301,7 +1301,7 @@ function DemoContent() {
 
                           {/* Orders Bar */}
                           <div className="relative w-6 sm:w-12 flex flex-col items-center justify-end h-full">
-                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-orange-700 dark:text-orange-400 opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
+                            <div className="absolute -top-6 text-[9px] sm:text-[11px] font-bold text-slate-900 dark:text-white opacity-0 group-hover:opacity-100 sm:opacity-100 transition-opacity duration-700">
                               {m.orders}
                             </div>
                             <div 
@@ -1349,7 +1349,7 @@ function DemoContent() {
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">Gross Sales</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">Deductions</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">Ded %</th>
-                        <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right text-emerald-600 dark:text-emerald-400">Net Sales</th>
+                        <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right text-slate-900 dark:text-white">Net Sales</th>
                         <th className="pb-3.5 font-bold uppercase tracking-wider text-[11px] text-right">ROI</th>
                       </tr>
                     </thead>
@@ -1363,11 +1363,11 @@ function DemoContent() {
                           </td>
                           <td className="py-3 text-slate-500 dark:text-slate-400 text-right">{row.spend}</td>
                           <td className="py-3 text-slate-600 dark:text-slate-300 text-right font-medium">{row.orders}</td>
-                          <td className="py-3 text-blue-700 dark:text-blue-400 text-right font-semibold">{gbp(row.gross)}</td>
+                          <td className="py-3 text-slate-900 dark:text-white text-right font-semibold">{gbp(row.gross)}</td>
                           <td className="py-3 text-red-400 text-right font-medium">-{gbp(row.ded)}</td>
                           <td className="py-3 text-amber-400 text-right font-medium">{row.dedPct}</td>
-                          <td className="py-3 text-emerald-600 dark:text-emerald-400 text-right font-black">{gbp(row.net)}</td>
-                          <td className="py-3 text-emerald-600 dark:text-emerald-400 text-right font-bold">{row.roi}</td>
+                          <td className="py-3 text-slate-900 dark:text-white text-right font-black">{gbp(row.net)}</td>
+                          <td className="py-3 text-slate-900 dark:text-white text-right font-bold">{row.roi}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -1486,7 +1486,7 @@ function DemoContent() {
                           </td>
                           <td className="py-4 text-slate-900 dark:text-white text-right font-black">{gbp(inv.amount)}</td>
                           <td className="py-4 text-center">
-                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-500 dark:text-emerald-400">
+                            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-slate-500 dark:text-slate-900 dark:text-white">
                               <span>Extracted</span>
                               <span className="w-3.5 h-3.5 rounded-full bg-emerald-500 text-black flex items-center justify-center text-[9px] font-black">✓</span>
                             </span>
@@ -1494,7 +1494,7 @@ function DemoContent() {
                           <td className="py-4 text-right">
                             <button
                               onClick={() => setSelectedInvoice(inv)}
-                              className="text-xs font-bold text-blue-700 dark:text-blue-400 hover:text-blue-300 hover:underline cursor-pointer"
+                              className="text-xs font-bold text-slate-900 dark:text-white hover:text-blue-300 hover:underline cursor-pointer"
                             >
                               View File
                             </button>
@@ -1559,7 +1559,7 @@ function DemoContent() {
               ✕
             </button>
             <div className="flex items-center gap-3 mb-4">
-              <span className="w-10 h-10 rounded-xl bg-blue-500/10 text-blue-700 dark:text-blue-400 border border-blue-500/30 flex items-center justify-center text-lg">
+              <span className="w-10 h-10 rounded-xl bg-blue-500/10 text-slate-900 dark:text-white border border-blue-500/30 flex items-center justify-center text-lg">
                 🧾
               </span>
               <div>
@@ -1571,7 +1571,7 @@ function DemoContent() {
             <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] space-y-2 mb-4 text-xs">
               <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>Assigned Brand:</span> <span className="text-slate-900 dark:text-white font-semibold">{selectedInvoice.store}</span></div>
               <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>Billing Week:</span> <span className="text-slate-900 dark:text-white font-semibold">{selectedInvoice.week}</span></div>
-              <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>AI Extraction Status:</span> <span className="text-emerald-600 dark:text-emerald-400 font-bold">Verified 100% Extracted</span></div>
+              <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>AI Extraction Status:</span> <span className="text-slate-900 dark:text-white font-bold">Verified 100% Extracted</span></div>
               <div className="flex justify-between text-slate-500 dark:text-slate-400 pt-2 border-t border-slate-200/10 dark:border-white/10"><span>Reconciled Payout:</span> <span className="text-amber-400 font-black text-sm">{gbp(selectedInvoice.amount)}</span></div>
             </div>
 
@@ -1672,6 +1672,8 @@ function DemoContent() {
     </div>
   )
 }
+
+
 
 
 

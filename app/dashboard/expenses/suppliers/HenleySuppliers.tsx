@@ -377,7 +377,7 @@ export function HenleySuppliers() {
                 <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center text-xl">📦</div>
                 <div>
                   <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Combined Spend</div>
-                  <div className="text-2xl font-black text-orange-700 dark:text-orange-400">{gbp(combinedSpend)}</div>
+                  <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(combinedSpend)}</div>
                 </div>
               </div>
               <div className="bg-slate-100 dark:bg-[#111520] border border-red-500/20 rounded-2xl p-4 flex items-center gap-4 flex-1 min-w-[160px]">
@@ -462,7 +462,7 @@ export function HenleySuppliers() {
                         const allIds = displayedInvoices.map((i: any) => i.id)
                         setSelectedIds(e.target.checked ? allIds : [])
                       }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 focus:ring-blue-500 cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 cursor-pointer"
                     />
                   </th>
                   <th className="px-5 py-4 font-bold">Date</th>
@@ -499,7 +499,7 @@ export function HenleySuppliers() {
                         onChange={() => {
                           setSelectedIds(prev => prev.includes(inv.id) ? prev.filter(id => id !== inv.id) : [...prev, inv.id])
                         }}
-                        className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 cursor-pointer"
+                        className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
                       />
                     </td>
                     <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
@@ -512,7 +512,7 @@ export function HenleySuppliers() {
                           style={{ colorScheme: 'dark' }}
                         />
                       ) : (
-                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-block">
+                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block">
                           {dateColStr}
                         </div>
                       )}
@@ -547,7 +547,7 @@ export function HenleySuppliers() {
                           />
                         </div>
                       ) : (
-                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-flex items-center gap-1.5">
+                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-flex items-center gap-1.5">
                           {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
                           {inv._isSplit && <span className="text-[9px] font-bold text-slate-500 bg-slate-500/10 border border-slate-500/20 px-1.5 py-0.5 rounded-full">A£ split</span>}
                           {inv._isSplit && <span className="text-[9px] font-bold text-slate-500 bg-slate-500/10 border border-slate-500/20 px-1.5 py-0.5 rounded-full">½ split</span>}
@@ -555,16 +555,16 @@ export function HenleySuppliers() {
                       )}
                     </td>
                     <td className="px-5 py-4">
-                      {inv.ocrStatus === 'done' ? <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-xs">Extracted ✅</span> :
+                      {inv.ocrStatus === 'done' ? <span className="text-slate-900 dark:text-white font-semibold text-xs">Extracted ✅</span> :
                        (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing') ? <span className="text-amber-400 font-semibold text-xs">Processing ⏳</span> :
-                       (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-orange-700 dark:text-orange-400 font-semibold text-xs">Duplicate ⚠️</span> :
+                       (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-slate-900 dark:text-white font-semibold text-xs">Duplicate ⚠️</span> :
                        <span className="text-red-400 font-semibold text-xs">Failed ❌</span>}
                     </td>
                     <td className="px-5 py-4 text-right">
                       <div className="flex items-center justify-end gap-2.5">
                         {isEditing ? (
                           <>
-                            <button onClick={handleSaveEdit} className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-300 font-semibold text-xs">Save</button>
+                            <button onClick={handleSaveEdit} className="text-slate-900 dark:text-white hover:text-emerald-300 font-semibold text-xs">Save</button>
                             <span className="text-slate-700">|</span>
                             <button onClick={() => setEditingId(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-semibold text-xs">Cancel</button>
                           </>
@@ -572,7 +572,7 @@ export function HenleySuppliers() {
                           <button onClick={() => handleEditClick(inv)} className="text-amber-400 hover:text-amber-300 font-semibold text-xs">Edit</button>
                         )}
                         <span className="text-slate-700">|</span>
-                        <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-700 dark:text-blue-400 hover:text-blue-300 font-semibold text-xs">View</a>
+                        <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 font-semibold text-xs">View</a>
                         <span className="text-slate-700">|</span>
                         <button onClick={async () => {
                           if (!confirm('Are you sure you want to completely delete this invoice? All associated financial data will be instantly removed from the dashboard and overview.')) return
@@ -702,7 +702,7 @@ export function HenleySuppliers() {
                     }}
                   >
                     {invFiles.length > 0 ? (
-                      <div className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                      <div className="text-sm font-bold text-slate-900 dark:text-white">
                         ✅ {invFiles.length} file(s) selected: {invFiles.map(f => f.name).slice(0, 2).join(', ')}{invFiles.length > 2 ? '...' : ''}
                       </div>
                     ) : (
@@ -752,8 +752,8 @@ export function HenleySuppliers() {
                 </div>
               </div>
               {ocrResult && (
-                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-sm">
-                  <div className="font-bold text-emerald-600 dark:text-emerald-400 mb-2">✅ OCR Extracted Data</div>
+                <div className="bg-emerald-500/10 border border-slate-200 dark:border-[#E5B869]/20 rounded-xl p-3 text-sm">
+                  <div className="font-bold text-slate-900 dark:text-white mb-2">✅ OCR Extracted Data</div>
                   {Object.entries(ocrResult).filter(([k]) => k !== 'rawText' && k !== 'items').map(([k, v]) => (
                     <div key={k} className="flex justify-between text-xs">
                       <span className="text-slate-500 dark:text-slate-400 capitalize">{k.replace(/([A-Z])/g, ' $1')}</span>
@@ -761,8 +761,8 @@ export function HenleySuppliers() {
                     </div>
                   ))}
                   {ocrResult.items && ocrResult.items.length > 0 && (
-                    <div className="mt-3 pt-3 border-t border-emerald-500/20">
-                      <div className="text-xs font-bold text-emerald-600 dark:text-emerald-400 mb-2">Line Items ({ocrResult.items.length})</div>
+                    <div className="mt-3 pt-3 border-t border-slate-200 dark:border-[#E5B869]/20">
+                      <div className="text-xs font-bold text-slate-900 dark:text-white mb-2">Line Items ({ocrResult.items.length})</div>
                       <div className="space-y-1">
                         {ocrResult.items.map((item: any, idx: number) => (
                           <div key={idx} className="flex justify-between text-[11px] bg-white/20 dark:bg-black/20 rounded px-2 py-1">
@@ -794,3 +794,7 @@ export function HenleySuppliers() {
     </div>
   )
 }
+
+
+
+

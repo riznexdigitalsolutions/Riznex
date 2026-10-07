@@ -151,7 +151,7 @@ export function HungryBirdsSuppliers() {
           <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center text-xl">📦</div>
           <div>
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Total Supplier Spend</div>
-            <div className="text-2xl font-black text-orange-700 dark:text-orange-400">{gbp(totalSpend)}</div>
+            <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalSpend)}</div>
           </div>
         </div>
       </div>
@@ -170,7 +170,7 @@ export function HungryBirdsSuppliers() {
                       if (e.target.checked) setSelectedIds(new Set(allInvoices.map(x => x.id)))
                       else setSelectedIds(new Set())
                     }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 cursor-pointer"
+                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
                   />
                 </th>
                 <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Supplier</th>
@@ -205,7 +205,7 @@ export function HungryBirdsSuppliers() {
                             else next.add(inv.id)
                             setSelectedIds(next)
                           }}
-                          className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 cursor-pointer"
+                          className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
                         />
                       </td>
                       <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{inv.supplier.name}</td>
@@ -216,12 +216,12 @@ export function HungryBirdsSuppliers() {
                         {inv.ocrStatus === "processing" || inv.ocrStatus === "pending" ? (
                           <span className="text-amber-400 font-bold flex items-center gap-1 text-xs">Processing ⏳</span>
                         ) : (
-                          <span className="text-emerald-600 dark:text-emerald-400 font-bold flex items-center gap-1 text-xs">Extracted ✅</span>
+                          <span className="text-slate-900 dark:text-white font-bold flex items-center gap-1 text-xs">Extracted ✅</span>
                         )}
                       </td>
                       <td className="px-4 py-3">
                         {inv.fileUrl ? (
-                          <a href={inv.fileUrl} target="_blank" rel="noopener noreferrer" className="text-blue-700 dark:text-blue-400 hover:text-blue-300 text-xs font-semibold">View File</a>
+                          <a href={inv.fileUrl} target="_blank" rel="noopener noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 text-xs font-semibold">View File</a>
                         ) : "-"}
                       </td>
                       <td className="px-4 py-3 flex gap-3">
@@ -311,7 +311,7 @@ export function HungryBirdsSuppliers() {
                 <div className="border-2 border-dashed border-slate-200 dark:border-[#1f2947] rounded-xl p-4 text-center cursor-pointer hover:border-blue-500 transition"
                   onClick={() => document.getElementById('inv-file-input')?.click()}>
                   {invFile ? (
-                    <div className="text-sm text-emerald-600 dark:text-emerald-400">✅ {invFile.name}</div>
+                    <div className="text-sm text-slate-900 dark:text-white">✅ {invFile.name}</div>
                   ) : (
                     <>
                       <div className="text-2xl mb-1">📎</div>
@@ -337,8 +337,8 @@ export function HungryBirdsSuppliers() {
                 </div>
               </div>
               {ocrResult && (
-                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-3 text-sm">
-                  <div className="font-bold text-emerald-600 dark:text-emerald-400 mb-2">✅ OCR Extracted Data</div>
+                <div className="bg-emerald-500/10 border border-slate-200 dark:border-[#E5B869]/20 rounded-xl p-3 text-sm">
+                  <div className="font-bold text-slate-900 dark:text-white mb-2">✅ OCR Extracted Data</div>
                   {Object.entries(ocrResult).filter(([k]) => k !== 'rawText').map(([k, v]) => (
                     <div key={k} className="flex justify-between text-xs">
                       <span className="text-slate-500 dark:text-slate-400 capitalize">{k.replace(/([A-Z])/g, ' $1')}</span>
@@ -360,3 +360,7 @@ export function HungryBirdsSuppliers() {
     </div>
   )
 }
+
+
+
+

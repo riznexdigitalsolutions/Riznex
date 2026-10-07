@@ -128,7 +128,7 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
       <div className="space-y-3">
         <div className="bg-purple-500/10 border border-purple-500/20 rounded-xl p-4 flex flex-col items-center justify-center text-center">
           <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1">Total Wages Paid</div>
-          <div className="text-2xl font-black text-purple-600 dark:text-purple-400">{gbp(totalWages)}</div>
+          <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalWages)}</div>
         </div>
       </div>
 
@@ -156,7 +156,7 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
                     <input type="checkbox" checked={selectedIds.has(w.id)} onChange={(e) => { const next = new Set(selectedIds); if (e.target.checked) next.add(w.id); else next.delete(w.id); setSelectedIds(next) }} className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer" />
                   </td>
                   <td className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">{w.staff?.name || 'Staff Member'}</td>
-                  <td className="px-4 py-3 font-bold text-purple-600 dark:text-purple-400">{gbp(w.amount)}</td>
+                  <td className="px-4 py-3 font-bold text-slate-900 dark:text-white">{gbp(w.amount)}</td>
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-medium">
                     {(() => {
                       if (!w.weekEnd) return '-';
@@ -169,7 +169,7 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
                   </td>
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-1">
-                      <button onClick={() => { setForm({ staffId: w.staffId, hours: '', amount: w.amount.toString(), weekEnd: w.weekEnd.split('T')[0], store: 'Hungry Birds' }); setEditId(w.id); setShowForm(true) }} className="text-blue-700 dark:text-blue-400 hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      <button onClick={() => { setForm({ staffId: w.staffId, hours: '', amount: w.amount.toString(), weekEnd: w.weekEnd.split('T')[0], store: 'Hungry Birds' }); setEditId(w.id); setShowForm(true) }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
                       <button onClick={() => handleDelete(w.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
                     </div>
                   </td>
@@ -191,7 +191,7 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
                   <option value="" disabled>Select Staff</option>
                   {uniqueStaffList.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
                 </select>
-                {uniqueStaffList.length === 0 && <p className="text-xs text-orange-700 dark:text-orange-400 mt-1">No staff members found in system. Please add them first.</p>}
+                {uniqueStaffList.length === 0 && <p className="text-xs text-slate-900 dark:text-white mt-1">No staff members found in system. Please add them first.</p>}
               </div>
 
               {isHourly && (
@@ -224,4 +224,8 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
     </div>
   )
 }
+
+
+
+
 

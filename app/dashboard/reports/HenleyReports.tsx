@@ -185,14 +185,14 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
 
             <button 
               onClick={exportPDF} 
-              className="bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+              className="bg-blue-500/10 text-slate-900 dark:text-white hover:bg-blue-500/20 border border-blue-500/20 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <span>📄</span> Export PDF
             </button>
 
             <button 
               onClick={exportExcel} 
-              className="bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/20 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+              className="bg-emerald-500/10 text-slate-900 dark:text-white hover:bg-emerald-500/20 border border-slate-200 dark:border-[#E5B869]/20 px-3.5 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <span>📊</span> Export Excel
             </button>
@@ -206,30 +206,30 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
             <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 relative overflow-hidden group">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Revenue</div>
-              <div className="text-2xl font-black text-blue-700 dark:text-blue-400">{gbp(grossSales)}</div>
+              <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(grossSales)}</div>
             </div>
             
             <div className={`bg-slate-100 dark:bg-[#111520] border rounded-2xl p-5 relative overflow-hidden group ${foodCostPct > 35 ? 'border-red-500/30' : 'border-slate-200 dark:border-[#1f2947]'}`}>
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Food Cost (COGS)</div>
-              <div className="text-2xl font-black text-orange-700 dark:text-orange-400">{foodCostPct.toFixed(1)}%</div>
+              <div className="text-2xl font-black text-slate-900 dark:text-white">{foodCostPct.toFixed(1)}%</div>
               <div className="text-xs text-slate-500 mt-1">{gbp(cogs)}</div>
             </div>
 
             <div className={`bg-slate-100 dark:bg-[#111520] border rounded-2xl p-5 relative overflow-hidden group ${laborCostPct > 35 ? 'border-red-500/30' : 'border-slate-200 dark:border-[#1f2947]'}`}>
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Labor Cost</div>
-              <div className="text-2xl font-black text-purple-600 dark:text-purple-400">{laborCostPct.toFixed(1)}%</div>
+              <div className="text-2xl font-black text-slate-900 dark:text-white">{laborCostPct.toFixed(1)}%</div>
               <div className="text-xs text-slate-500 mt-1">{gbp(wages)}</div>
             </div>
 
             <div className={`bg-slate-100 dark:bg-[#111520] border rounded-2xl p-5 relative overflow-hidden shadow-lg ${primeCostPct <= 60 ? 'border-emerald-500/30 bg-emerald-500/5' : 'border-red-500/30 bg-red-500/5'}`}>
-              <div className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${primeCostPct <= 60 ? 'text-emerald-600 dark:text-emerald-500' : 'text-red-500'}`}>Prime Cost %</div>
-              <div className={`text-2xl font-black ${primeCostPct <= 60 ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-400'}`}>{primeCostPct.toFixed(1)}%</div>
+              <div className={`text-[10px] font-bold uppercase tracking-widest mb-1 ${primeCostPct <= 60 ? 'text-slate-900 dark:text-white' : 'text-red-500'}`}>Prime Cost %</div>
+              <div className={`text-2xl font-black ${primeCostPct <= 60 ? 'text-slate-900 dark:text-white' : 'text-red-400'}`}>{primeCostPct.toFixed(1)}%</div>
               <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{gbp(primeCost)} <span className="opacity-70 ml-1">(Target: ~60%)</span></div>
             </div>
 
-            <div className="bg-gradient-to-br from-blue-500/10 to-emerald-500/10 border border-emerald-500/20 rounded-2xl p-5 relative overflow-hidden shadow-xl">
-              <div className="text-[10px] font-bold text-emerald-600 dark:text-emerald-500 uppercase tracking-widest mb-1">EBITDA Margin</div>
-              <div className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{ebitdaMargin.toFixed(1)}%</div>
+            <div className="bg-gradient-to-br from-blue-500/10 to-emerald-500/10 border border-slate-200 dark:border-[#E5B869]/20 rounded-2xl p-5 relative overflow-hidden shadow-xl">
+              <div className="text-[10px] font-bold text-slate-900 dark:text-white uppercase tracking-widest mb-1">EBITDA Margin</div>
+              <div className="text-2xl font-black text-slate-900 dark:text-white">{ebitdaMargin.toFixed(1)}%</div>
               <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{gbp(ebitda)} Net</div>
             </div>
           </div>
@@ -241,7 +241,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
             <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl flex flex-col relative overflow-hidden z-0">
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
               <h3 className="font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                <span className="w-6 h-6 rounded bg-blue-500/10 text-blue-700 dark:text-blue-400 flex items-center justify-center text-xs">📈</span>
+                <span className="w-6 h-6 rounded bg-blue-500/10 text-slate-900 dark:text-white flex items-center justify-center text-xs">📈</span>
                 Revenue vs Prime Cost Trend
               </h3>
               {weeklyTrendData.length === 0 ? (
@@ -265,7 +265,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
             <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl flex flex-col relative overflow-hidden z-0">
               <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 blur-[80px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
               <h3 className="font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2">
-                <span className="w-6 h-6 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center text-xs">📊</span>
+                <span className="w-6 h-6 rounded bg-purple-500/10 text-slate-900 dark:text-white flex items-center justify-center text-xs">📊</span>
                 Platform Margins
               </h3>
               {platData.length === 0 ? (
@@ -305,7 +305,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
                 {/* Could add walk-ins if we had it distinctly tracked, but we show Gross here */}
                 <div className="flex justify-between items-center text-slate-900 dark:text-white font-bold pl-4 pt-2">
                   <span>Total Gross Revenue</span>
-                  <span className="text-blue-700 dark:text-blue-400">{gbp(grossSales)}</span>
+                  <span className="text-slate-900 dark:text-white">{gbp(grossSales)}</span>
                 </div>
 
                 {/* COGS Group */}
@@ -316,7 +316,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
                 </div>
                 <div className="flex justify-between items-center text-slate-900 dark:text-white font-bold pl-4 pt-2">
                   <span>Gross Profit</span>
-                  <span className="text-emerald-600 dark:text-emerald-400">{gbp(grossProfit)} <span className="text-xs text-slate-500 font-normal ml-2">({grossProfitPct.toFixed(1)}%)</span></span>
+                  <span className="text-slate-900 dark:text-white">{gbp(grossProfit)} <span className="text-xs text-slate-500 font-normal ml-2">({grossProfitPct.toFixed(1)}%)</span></span>
                 </div>
 
                 {/* Labor Group */}
@@ -327,7 +327,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
                 </div>
                 <div className="flex justify-between items-center text-slate-900 dark:text-white font-bold pl-4 pt-2">
                   <span>Prime Cost (COGS + Labor)</span>
-                  <span className={primeCostPct <= 60 ? 'text-emerald-600 dark:text-emerald-400' : 'text-orange-700 dark:text-orange-400'}>{gbp(primeCost)} <span className="text-xs text-slate-500 font-normal ml-2">({primeCostPct.toFixed(1)}%)</span></span>
+                  <span className={primeCostPct <= 60 ? 'text-slate-900 dark:text-white' : 'text-slate-900 dark:text-white'}>{gbp(primeCost)} <span className="text-xs text-slate-500 font-normal ml-2">({primeCostPct.toFixed(1)}%)</span></span>
                 </div>
 
                 {/* Operating Expenses */}
@@ -360,9 +360,9 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
 
                 {/* Net Income */}
                 <div className="font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-xs border-b border-slate-200 dark:border-[#1f2947] pb-2 mb-3 mt-8">Bottom Line</div>
-                <div className="flex justify-between items-center text-slate-900 dark:text-white font-black text-xl pl-4 py-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20 px-4">
+                <div className="flex justify-between items-center text-[#a17a36] dark:text-[#E5B869] font-black text-xl pl-4 py-2 bg-emerald-500/10 rounded-xl border border-slate-200 dark:border-[#E5B869]/20 px-4">
                   <span>EBITDA / Net Profit</span>
-                  <span className="text-emerald-600 dark:text-emerald-400">{gbp(ebitda)} <span className="text-sm text-emerald-600 dark:text-emerald-500 font-bold ml-2">({ebitdaMargin.toFixed(1)}%)</span></span>
+                  <span className="text-slate-900 dark:text-white">{gbp(ebitda)} <span className="text-sm text-slate-900 dark:text-white font-bold ml-2">({ebitdaMargin.toFixed(1)}%)</span></span>
                 </div>
 
               </div>
@@ -374,3 +374,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
     </div>
   )
 }
+
+
+
+

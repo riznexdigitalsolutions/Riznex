@@ -257,7 +257,7 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
                       setFilter((f: any) => ({ ...f, weekRanges: undefined }))
                       setShowWeekDropdown(false)
                     }}
-                    className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#0a0c14] text-blue-500 focus:ring-blue-500/20 focus:ring-offset-0"
+                    className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#0a0c14] text-slate-900 dark:text-white focus:ring-blue-500/20 focus:ring-offset-0"
                   />
                   <span className="font-semibold">All Weeks</span>
                 </label>
@@ -291,7 +291,7 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
                             handleMultiWeekChange(next)
                           }
                         }}
-                        className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#0a0c14] text-blue-500 focus:ring-blue-500/20 focus:ring-offset-0"
+                        className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#0a0c14] text-slate-900 dark:text-white focus:ring-blue-500/20 focus:ring-offset-0"
                       />
                       {w.label}
                     </label>

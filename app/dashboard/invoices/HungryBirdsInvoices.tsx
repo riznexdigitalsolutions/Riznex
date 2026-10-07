@@ -314,9 +314,9 @@ function InvoicesContent() {
                 <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
                 <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
                 <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
-                <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-emerald-600 dark:text-emerald-400 font-bold">💵 Walk-in Cash</option>
-                <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-purple-600 dark:text-purple-400 font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-blue-700 dark:text-blue-400 font-bold">🖥️ POS Sales</option>
+                <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
+                <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
+                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🖥️ POS Sales</option>
               </select>
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
@@ -344,9 +344,9 @@ function InvoicesContent() {
                 className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
               >
                 <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All POS & Walk-in Sales</option>
-                <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-emerald-600 dark:text-emerald-400 font-bold">💵 Walk-in Cash</option>
-                <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-purple-600 dark:text-purple-400 font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-blue-700 dark:text-blue-400 font-bold">🖥️ POS Sales</option>
+                <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
+                <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
+                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🖥️ POS Sales</option>
               </select>
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
@@ -398,7 +398,7 @@ function InvoicesContent() {
                       if (e.target.checked) setSelectedIds(filteredInvoices.map((inv: any) => inv.id))
                       else setSelectedIds([])
                     }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
+                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
                   />
                 </th>
                 <th className="px-5 py-4 font-bold">Date</th>
@@ -442,7 +442,7 @@ function InvoicesContent() {
                       onChange={() => {
                         setSelectedIds(prev => prev.includes(inv.id) ? prev.filter(id => id !== inv.id) : [...prev, inv.id])
                       }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-blue-500 focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
                     />
                   </td>
                   <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
@@ -455,7 +455,7 @@ function InvoicesContent() {
                         style={{ colorScheme: 'dark' }}
                       />
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-block" title="Click to edit date">
+                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit date">
                         {dateColStr}
                       </div>
                     )}
@@ -492,15 +492,15 @@ function InvoicesContent() {
                         />
                       </div>
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-blue-700 dark:text-blue-400 inline-block" title="Click to edit amount">
+                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit amount">
                         {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
                       </div>
                     )}
                   </td>
                   <td className="px-5 py-4">
-                    {inv.ocrStatus === 'done' ? <span className="text-emerald-600 dark:text-emerald-400 font-semibold text-xs" title="Data extracted successfully">Extracted ✅</span> :
+                    {inv.ocrStatus === 'done' ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title="Data extracted successfully">Extracted ✅</span> :
                      (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing') ? <span className="text-amber-400 font-semibold text-xs" title="Processing with AI...">Processing ⏳</span> :
-                     (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-orange-700 dark:text-orange-400 font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
+                     (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
                      <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>}
                   </td>
                   <td className="px-5 py-4 text-right">
@@ -509,7 +509,7 @@ function InvoicesContent() {
                         <>
                           {isEditing ? (
                             <>
-                              <button onClick={handleSaveEdit} className="text-emerald-600 dark:text-emerald-400 hover:text-emerald-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Save</button>
+                              <button onClick={handleSaveEdit} className="text-slate-900 dark:text-white hover:text-emerald-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Save</button>
                               <span className="text-slate-700">|</span>
                               <button onClick={() => setEditingId(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-semibold text-xs transition bg-transparent border-0 cursor-pointer whitespace-nowrap">Cancel</button>
                             </>
@@ -525,7 +525,7 @@ function InvoicesContent() {
                         </>
                       )}
                       
-                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-700 dark:text-blue-400 hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
+                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
                         View File
                       </a>
                       
@@ -582,7 +582,7 @@ function InvoicesContent() {
 
               <div>
                 <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Upload File (PDF/Image)</label>
-                <input ref={fileInputRef} type="file" multiple accept=".pdf,image/*" required className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-500/20 file:text-blue-700 dark:text-blue-400 hover:file:bg-blue-500/30 transition cursor-pointer" />
+                <input ref={fileInputRef} type="file" multiple accept=".pdf,image/*" required className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-500/20 file:text-slate-900 dark:text-white hover:file:bg-blue-500/30 transition cursor-pointer" />
               </div>
 
               <div className="flex gap-3 mt-6 pt-2">
@@ -606,4 +606,8 @@ export function HungryBirdsInvoices() {
     </Suspense>
   )
 }
+
+
+
+
 

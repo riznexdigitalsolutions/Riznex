@@ -19,8 +19,8 @@ const GRAD: Record<string,string> = {
   emerald:'from-emerald-500 to-green-500',
 }
 const CLR: Record<string,string> = {
-  blue:'text-blue-700 dark:text-blue-400', purple:'text-purple-600 dark:text-purple-400', orange:'text-orange-700 dark:text-orange-400',
-  cyan:'text-cyan-700 dark:text-cyan-400', emerald:'text-emerald-600 dark:text-emerald-400',
+  blue:'text-slate-900 dark:text-white', purple:'text-slate-900 dark:text-white', orange:'text-slate-900 dark:text-white',
+  cyan:'text-slate-900 dark:text-white', emerald:'text-slate-900 dark:text-white',
 }
 const BORDER: Record<string,string> = {
   blue:'border-blue-500/30 bg-blue-500/5', purple:'border-purple-500/30 bg-purple-500/5',
@@ -226,7 +226,7 @@ export function HenleyExpensesDashboard() {
               </button>
               <button 
                 onClick={() => exportToPDF('expenses-export-area', `Henley_Expenses_${storeFilter || 'Combined'}_${filter.to || 'All_Time'}`)}
-                className="bg-blue-500/10 text-blue-700 dark:text-blue-400 hover:bg-blue-500/20 border border-blue-500/20 px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
+                className="bg-blue-500/10 text-slate-900 dark:text-white hover:bg-blue-500/20 border border-blue-500/20 px-4 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
               >
                 <span>📄</span> Export PDF
               </button>
@@ -246,23 +246,23 @@ export function HenleyExpensesDashboard() {
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
             <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Staff Wages</div>
-              <div className="text-lg font-black text-purple-600 dark:text-purple-400">{gbp(totals.wages)}</div>
+              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.wages)}</div>
             </div>
             <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Suppliers</div>
-              <div className="text-lg font-black text-orange-700 dark:text-orange-400">{gbp(totals.suppliers)}</div>
+              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.suppliers)}</div>
             </div>
             <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Utilities</div>
-              <div className="text-lg font-black text-cyan-700 dark:text-cyan-400">{gbp(totals.utilities)}</div>
+              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.utilities)}</div>
             </div>
             <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Marketing</div>
-              <div className="text-lg font-black text-pink-700 dark:text-pink-400">{gbp(totals.marketing)}</div>
+              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.marketing)}</div>
             </div>
             <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Other</div>
-              <div className="text-lg font-black text-emerald-600 dark:text-emerald-400">{gbp(totals.other)}</div>
+              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.other)}</div>
             </div>
             <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex flex-col justify-center relative overflow-hidden group">
               <div className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 opacity-50" />
@@ -291,11 +291,11 @@ export function HenleyExpensesDashboard() {
                   </thead>
                   <tbody>
                     {[
-                      ...wageItems.map(w => ({ id: w.id, date: w.weekEnd, type: 'Staff Wage', name: w.staff?.name || 'Staff', store: w.store, amount: w.amount, color: 'text-purple-600 dark:text-purple-400', bg: 'bg-purple-500/10 border-purple-500/20' })),
-                      ...supplierItems.map(s => ({ id: s.id, date: s.invoiceDate, type: 'Supplier', name: s.supplier?.name || 'Unknown', store: s.store || s.supplier?.franchise || 'Combined', amount: s.amount, color: 'text-orange-700 dark:text-orange-400', bg: 'bg-orange-500/10 border-orange-500/20' })),
-                      ...utilityItems.map(u => ({ id: u.id, date: u.date, type: 'Utility', name: u.subcategory || u.category, store: u.store, amount: u.displayAmount || u.amount, color: 'text-cyan-700 dark:text-cyan-400', bg: 'bg-cyan-500/10 border-cyan-500/20' })),
-                      ...marketingItems.map(m => ({ id: m.id, date: m.date, type: 'Marketing', name: m.subcategory || m.category, store: m.store, amount: m.displayAmount || m.amount, color: 'text-pink-700 dark:text-pink-400', bg: 'bg-pink-500/10 border-pink-500/20' })),
-                      ...otherItems.map(o => ({ id: o.id, date: o.date, type: 'Other', name: o.subcategory || o.notes || o.category, store: o.store, amount: o.displayAmount || o.amount, color: 'text-emerald-600 dark:text-emerald-400', bg: 'bg-emerald-500/10 border-emerald-500/20' }))
+                      ...wageItems.map(w => ({ id: w.id, date: w.weekEnd, type: 'Staff Wage', name: w.staff?.name || 'Staff', store: w.store, amount: w.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-purple-500/10 border-purple-500/20' })),
+                      ...supplierItems.map(s => ({ id: s.id, date: s.invoiceDate, type: 'Supplier', name: s.supplier?.name || 'Unknown', store: s.store || s.supplier?.franchise || 'Combined', amount: s.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-orange-500/10 border-orange-500/20' })),
+                      ...utilityItems.map(u => ({ id: u.id, date: u.date, type: 'Utility', name: u.subcategory || u.category, store: u.store, amount: u.displayAmount || u.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-cyan-500/10 border-cyan-500/20' })),
+                      ...marketingItems.map(m => ({ id: m.id, date: m.date, type: 'Marketing', name: m.subcategory || m.category, store: m.store, amount: m.displayAmount || m.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-pink-500/10 border-pink-500/20' })),
+                      ...otherItems.map(o => ({ id: o.id, date: o.date, type: 'Other', name: o.subcategory || o.notes || o.category, store: o.store, amount: o.displayAmount || o.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-emerald-500/10 border-slate-200 dark:border-[#E5B869]/20' }))
                     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((item, i) => (
                       <tr key={i} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors">
                         <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-medium">{item.date ? new Date(item.date).toLocaleDateString('en-GB') : '-'}</td>
@@ -347,8 +347,8 @@ export function HenleyExpensesDashboard() {
 
               <div>
                 <div className="flex justify-between items-center text-sm mb-1.5">
-                  <span className="text-orange-700 dark:text-orange-400 font-bold">Herbies Only Expenses</span>
-                  <span className="text-orange-700 dark:text-orange-400 font-bold">£340.00</span>
+                  <span className="text-slate-900 dark:text-white font-bold">Herbies Only Expenses</span>
+                  <span className="text-slate-900 dark:text-white font-bold">£340.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
                   <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Herbies Franchise Fee</span><span>£250.00</span></li>
@@ -385,7 +385,7 @@ export function HenleyExpensesDashboard() {
 
               <div className="pt-3 border-t border-slate-200 dark:border-[#1f2947] flex justify-between items-center sticky bottom-0 bg-[#161b2c] py-2">
                 <span className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase">Total Weekly Outgoing</span>
-                <span className="text-emerald-600 dark:text-emerald-400 font-black text-base">£2,340.00</span>
+                <span className="text-[#a17a36] dark:text-[#E5B869] font-black text-base">£2,340.00</span>
               </div>
             </div>
             
@@ -417,5 +417,9 @@ export function HenleyExpensesDashboard() {
     </div>
   )
 }
+
+
+
+
 
 

@@ -96,7 +96,7 @@ export default function SettingsPage() {
           className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-6 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 disabled:opacity-50 transition">
           {saving ? 'Saving…' : 'Save Changes'}
         </button>
-        {saved && <span className="text-emerald-600 dark:text-emerald-400 text-sm font-semibold">✅ Saved!</span>}
+        {saved && <span className="text-slate-900 dark:text-white text-sm font-semibold">✅ Saved!</span>}
       </div>
 
       <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-5">
@@ -110,3 +110,7 @@ export default function SettingsPage() {
     </div>
   )
 }
+
+
+
+

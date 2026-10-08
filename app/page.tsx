@@ -378,7 +378,7 @@ export default function LandingPage() {
 
             {/* Right Live Hub Visual (Completely Overflow Proof) */}
             <div className="lg:col-span-5 w-full min-w-0">
-              <div className="relative rounded-2xl bg-white/95 dark:bg-[#0D0F17]/95 border border-slate-200/[0.12] dark:border-white/[0.12] p-4 sm:p-6 backdrop-blur-xl shadow-2xl w-full overflow-hidden">
+              <div className="relative p-4 sm:p-6 w-full overflow-hidden rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none backdrop-blur-xl">
                 
                 {/* Header */}
                 <div className="flex justify-between items-center pb-3.5 mb-4 border-b border-slate-200/[0.08] dark:border-white/[0.08]">
@@ -496,7 +496,7 @@ export default function LandingPage() {
       {/* ── INTERACTIVE LIVE DEMO (COMPACT & CLEAR SHOWCASE) ── */}
       <section id="demo-showcase" className="py-8 sm:py-12 bg-gradient-to-r from-slate-50 dark:from-[#0A0C13] via-slate-100 dark:via-[#101422] to-slate-50 dark:to-[#0A0C13] border-t border-slate-200/[0.08] dark:border-white/[0.08]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-black/[0.03] dark:from-white/[0.03] via-[#E5B869]/[0.08] to-black/[0.03] dark:to-white/[0.03] border border-[#E5B869]/30 flex flex-col md:flex-row items-center justify-between gap-6 shadow-2xl">
+          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col md:flex-row items-center justify-between gap-6">
             
             {/* Left Content */}
             <div className="flex-1 text-center md:text-left">
@@ -571,7 +571,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full">
             
             {/* 1. Menu Management */}
-            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.MenuBook />
               </div>
@@ -582,7 +582,7 @@ export default function LandingPage() {
             </div>
 
             {/* 2. Social Media Management */}
-            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Share />
               </div>
@@ -593,7 +593,7 @@ export default function LandingPage() {
             </div>
 
             {/* 3. Business Profiles & Maps */}
-            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.MapPin />
               </div>
@@ -604,7 +604,7 @@ export default function LandingPage() {
             </div>
 
             {/* 4. Customer Support & Reviews */}
-            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Headset />
               </div>
@@ -615,7 +615,7 @@ export default function LandingPage() {
             </div>
 
             {/* 5. Business & Financial Reporting */}
-            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.ChartBar />
               </div>
@@ -626,7 +626,7 @@ export default function LandingPage() {
             </div>
 
             {/* 6. Growth & Order Surges */}
-            <div className="rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] hover:border-[#E5B869]/40 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Rocket />
               </div>
@@ -1085,7 +1085,7 @@ export default function LandingPage() {
             ].map((step, idx) => (
               <div 
                 key={idx} 
-                className="p-5 sm:p-6 rounded-2xl bg-black/[0.02] dark:bg-white/[0.02] border border-slate-200/[0.06] dark:border-white/[0.06] flex flex-col"
+                className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col"
               >
                 <div className="text-2xl sm:text-3xl font-black text-[#E5B869] mb-2.5 font-mono">{step.step}</div>
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mb-1.5">{step.title}</h3>

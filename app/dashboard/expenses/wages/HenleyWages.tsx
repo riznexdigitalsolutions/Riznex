@@ -177,7 +177,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
         <div className="flex justify-center items-center print:hidden">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
             <select
               value={staffFilter}
               onChange={e => setStaffFilter(e.target.value)}
@@ -247,7 +247,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
               .map(([staffId, amount]) => {
                 const staffName = staffList.find(s => s.id === staffId)?.name || 'Unknown Staff'
                 return (
-                  <div key={staffId} className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center">
+                  <div key={staffId} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center">
                     <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1 truncate" title={staffName}>{staffName}</div>
                     <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(amount)}</div>
                   </div>
@@ -257,7 +257,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
         )}
       </div>
 
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -335,7 +335,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
       {/* Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Wage Record</h2>
             <div className="space-y-4">
               <div>
@@ -384,7 +384,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
 
       {showAutoFill && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Auto-Fill Wages</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Select a date within the week (snaps automatically to Sunday week-ending).</p>
             <div className="mb-6">
@@ -409,7 +409,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                             step="0.01"
                             value={currentVal} 
                             onChange={e => setAutoFillOverrides(prev => ({ ...prev, [s.id]: parseFloat(e.target.value) || 0 }))}
-                            className="w-full bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white font-bold rounded px-2 py-1 pl-5 text-right focus:outline-none focus:border-emerald-500" 
+                            className="w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none text-slate-900 dark:text-white font-bold rounded px-2 py-1 pl-5 text-right focus:outline-none focus:border-emerald-500" 
                           />
                         </div>
                       </div>

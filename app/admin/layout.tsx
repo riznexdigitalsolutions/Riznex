@@ -15,8 +15,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const [open, setOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-[#0a0c14] flex">
-      <aside className={`fixed inset-y-0 left-0 z-50 w-60 bg-[#111520] border-r border-[#1f2947] flex flex-col transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
+    <div className="min-h-screen bg-transparent flex">
+      <aside className={`fixed inset-y-0 left-0 z-50 w-60 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
         <div className="flex items-center gap-3 px-5 py-6 border-b border-[#1f2947]">
           <img src="/riznex_logo.jpg" alt="Riznex Digital Solutions" className="w-12 h-12 rounded-xl object-contain bg-white flex-shrink-0 p-1" />
           <div>

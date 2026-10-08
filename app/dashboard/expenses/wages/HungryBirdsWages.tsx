@@ -116,7 +116,7 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
           </div>
         </div>
 
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-2.5 flex flex-col sm:flex-row items-center gap-4">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 flex flex-col sm:flex-row items-center gap-4">
           <div className="flex items-center gap-3 flex-1 w-full sm:w-auto overflow-x-auto px-2">
             <DateFilter filter={filter} setFilter={setFilter} />
             <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
@@ -132,7 +132,7 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
         </div>
       </div>
 
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -182,7 +182,7 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
 
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Wage Record</h2>
             <div className="space-y-4">
               <div>

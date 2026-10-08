@@ -81,7 +81,7 @@ const getNavItems = (clientName?: string | null, role?: string) => {
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-transparent" />}>
       <DashboardSidebar>{children}</DashboardSidebar>
     </Suspense>
   )
@@ -119,9 +119,9 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
   }, [pathname])
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14] flex">
+    <div className="min-h-screen bg-transparent flex">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-60 bg-slate-100 dark:bg-[#111520] border-r border-slate-200 dark:border-[#1f2947] flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 print:hidden`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-60 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 print:hidden`}>
         {/* Logo & Admin Back Button */}
         <div className="flex flex-col border-b border-slate-200 dark:border-[#1f2947]">
           <div className="flex items-center gap-3 px-5 py-6">

@@ -86,7 +86,7 @@ function MultiSelectPlatformFilter({
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-56 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
+        <div className="absolute left-0 mt-2 w-56 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
           <button
             type="button"
             onClick={() => { onChange([]); setIsOpen(false); }}
@@ -338,9 +338,9 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
         <div className="flex justify-center items-center print:hidden">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
             {!is2025 && (
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
                 <button
                   onClick={() => router.push(`/dashboard/sales?tab=${activeTab.startsWith('Monthly ') ? 'Monthly Combined' : 'Combined'}`)}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${(activeTab === 'Combined' || activeTab === 'Monthly Combined') ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
@@ -418,7 +418,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
           { label: filter.platform ? `${platformLabel(filter.platform)} Avg Ded %` : 'Avg Ded % (All)', value: getAvgCommPercent(), icon: '📊', color: '#a78bfa' },
           { label: 'Net Received', value: gbp(totals.net), icon: '✅', color: '#22d3a5' },
         ].map(c => (
-          <div key={c.label} className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4">
+          <div key={c.label} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4">
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">{c.label}</div>
             <div className="text-xl font-black text-slate-900 dark:text-white">{c.value}</div>
           </div>
@@ -428,7 +428,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
 
 
       {/* Table */}
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -475,7 +475,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
       {/* Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-lg shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-lg shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Sales Record</h2>
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-3">
@@ -578,7 +578,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
 
 export function HenleySales({ is2025 }: { is2025?: boolean }) {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-transparent" />}>
       <SalesContent is2025={is2025} />
     </Suspense>
   )

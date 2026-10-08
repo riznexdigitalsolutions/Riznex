@@ -116,7 +116,7 @@ export function HungryBirdsExpensesDashboard() {
           <button onClick={() => setShowAutoFill(true)} className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 transition print:hidden">
             ⚡ Auto-Fill Weekly Fixed Expenses
           </button>
-          <div className="flex items-center gap-3 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3 py-1.5 print:hidden">
+          <div className="flex items-center gap-3 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-3 py-1.5 print:hidden">
             <DateFilter filter={filter} setFilter={setFilter} />
             <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]" />
             <button onClick={() => setFilter(defaultDateFilter())} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs px-2 py-1 font-semibold transition">Reset</button>
@@ -145,7 +145,7 @@ export function HungryBirdsExpensesDashboard() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Staff Wages Card */}
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] hover:border-purple-500/30 rounded-2xl p-6 transition-all">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-purple-500/30 rounded-2xl p-6 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-purple-500/10 rounded-xl flex items-center justify-center text-xl">👥</div>
@@ -162,7 +162,7 @@ export function HungryBirdsExpensesDashboard() {
             </div>
 
             {/* Supplier Purchases Card */}
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] hover:border-orange-500/30 rounded-2xl p-6 transition-all">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-orange-500/30 rounded-2xl p-6 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-orange-500/10 rounded-xl flex items-center justify-center text-xl">📦</div>
@@ -198,7 +198,7 @@ export function HungryBirdsExpensesDashboard() {
             </div>
 
             {/* Utilities Card */}
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] hover:border-cyan-500/30 rounded-2xl p-6 transition-all">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-cyan-500/30 rounded-2xl p-6 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-cyan-500/10 rounded-xl flex items-center justify-center text-xl">⚡</div>
@@ -233,7 +233,7 @@ export function HungryBirdsExpensesDashboard() {
             </div>
 
             {/* Other Expenses Card */}
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] hover:border-emerald-500/30 rounded-2xl p-6 transition-all">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-emerald-500/30 rounded-2xl p-6 transition-all">
               <div className="flex items-center justify-between mb-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 bg-emerald-500/10 rounded-xl flex items-center justify-center text-xl">💸</div>
@@ -274,7 +274,7 @@ export function HungryBirdsExpensesDashboard() {
       {/* Auto-Fill Modal */}
       {showAutoFill && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Auto-Fill Fixed Expenses</h2>
             <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Select a date within the week you want to generate all fixed wages, supplier costs, rent, utilities, and marketing expenses for.</p>
             <div className="mb-4">

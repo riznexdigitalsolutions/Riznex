@@ -139,7 +139,7 @@ export function HungryBirdsSuppliers() {
       </div>
 
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 flex gap-3 flex-wrap items-center">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 flex gap-3 flex-wrap items-center">
           <DateFilter filter={filter} setFilter={setFilter} />
           <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
           <select value={supplierFilter} onChange={e => setSupplierFilter(e.target.value)} className="bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs rounded-lg px-2 py-1.5 outline-none">
@@ -157,7 +157,7 @@ export function HungryBirdsSuppliers() {
       </div>
 
       {/* TABLE VIEW */}
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden shadow-xl">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-xl">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -239,7 +239,7 @@ export function HungryBirdsSuppliers() {
       {/* Add Supplier Modal */}
       {showSupplierForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editSupplierId ? 'Edit Supplier' : 'Add New Supplier'}</h2>
             <div className="space-y-4">
               <div className="hidden">
@@ -292,7 +292,7 @@ export function HungryBirdsSuppliers() {
       {/* Add Invoice Modal */}
       {showInvoiceForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-1">Upload Invoice</h2>
             <p className="text-slate-500 text-sm mb-5">For: <span className="text-slate-900 dark:text-white font-semibold">{selectedSupplier?.name}</span></p>
             <div className="space-y-4">

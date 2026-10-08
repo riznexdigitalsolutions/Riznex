@@ -172,13 +172,7 @@ export default function LandingPage() {
   return (
     <div className="relative min-h-screen w-full max-w-full text-slate-800 dark:text-slate-100 font-sans selection:bg-[#E5B869] selection:text-black overflow-x-hidden antialiased z-0">
         
-        {/* THE GLOBAL LUXURY BACKGROUND */}
-        <div className="fixed inset-0 w-full h-full -z-20 pointer-events-none">
-          <div className="absolute inset-0 w-full h-full dark:opacity-0 opacity-100 transition-opacity duration-700 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/light_luxury_bg.jpg')" }}></div>
-          <div className="absolute inset-0 w-full h-full dark:opacity-100 opacity-0 transition-opacity duration-700 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/dark_luxury_bg.jpg')" }}></div>
-          {/* Subtle overlay to ensure text contrast */}
-          <div className="absolute inset-0 w-full h-full bg-white/50 dark:bg-[#07080B]/60 backdrop-blur-[1px]"></div>
-        </div>
+        
       
       {/* AMBIENT GLOW EFFECTS (STRICTLY CONTAINED) */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[350px] bg-gradient-to-b from-[#E5B869]/10 via-[#C89B3C]/5 to-transparent blur-[120px] pointer-events-none -z-10 overflow-hidden" />
@@ -1452,6 +1446,7 @@ export default function LandingPage() {
     </div>
   );
 }
+
 
 
 

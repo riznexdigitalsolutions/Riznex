@@ -175,9 +175,9 @@ export function HenleyExpensesDashboard() {
 
         {/* Middle Row: Centered Filter Toolbar */}
         <div className="flex justify-center items-center print:hidden">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
             {/* Store toggle */}
-            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+            <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
               <button 
                 onClick={() => setStoreFilter('')} 
                 className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
@@ -244,23 +244,23 @@ export function HenleyExpensesDashboard() {
 
           {/* ── Quick Stats Row ─────────────────────────────── */}
           <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Staff Wages</div>
               <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.wages)}</div>
             </div>
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Suppliers</div>
               <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.suppliers)}</div>
             </div>
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Utilities</div>
               <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.utilities)}</div>
             </div>
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Marketing</div>
               <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.marketing)}</div>
             </div>
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-center transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Other</div>
               <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.other)}</div>
             </div>
@@ -273,7 +273,7 @@ export function HenleyExpensesDashboard() {
           {storeFilter && <div className="mb-4 inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-1.5 rounded-full text-xs font-bold z-10">½ split applied for shared {storeFilter} expenses</div>}
 
           {activeTab === 'overview' && (
-            <div className="mt-8 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden shadow-2xl">
+            <div className="mt-8 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-2xl">
               <div className="px-6 py-4 border-b border-slate-200 dark:border-[#1f2947] bg-[#161b2c] flex items-center justify-between">
                 <h3 className="text-lg font-black text-slate-900 dark:text-white">Master Ledger: All Outgoing Cash</h3>
                 <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Single Sheet View</div>
@@ -326,7 +326,7 @@ export function HenleyExpensesDashboard() {
       {/* UNIFIED AUTO-FILL MODAL */}
       {showUnifiedAutoFill && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
             <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2 flex items-center gap-2">⚡ Auto-Add All Fixed Costs</h2>
             <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">Select the Week Ending date to instantly generate <b>all</b> auto-wages and auto-expenses in one click.</p>
             

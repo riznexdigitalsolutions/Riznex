@@ -38,9 +38,9 @@ export default function ClientLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center p-6 relative overflow-hidden pt-20">
+    <div className="min-h-screen bg-transparent flex flex-col items-center p-6 relative overflow-hidden pt-20">
       
-      <div className="w-full max-w-md relative z-10 flex flex-col">
+      <div className="w-full max-w-md relative z-10 flex flex-col p-8 rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none">
         
         <div className="flex flex-col items-center mb-10">
           <Link href="/" className="mb-4 hover:opacity-80 transition-opacity">

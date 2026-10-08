@@ -242,7 +242,7 @@ function SalesContent() {
       </div>
 
       {/* Filter Toolbar Row (Positioned Cleanly Under Top Header) */}
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3 py-2 flex flex-wrap items-center justify-between gap-3 shadow-md">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-3 py-2 flex flex-wrap items-center justify-between gap-3 shadow-md">
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={() => router.push('/dashboard/sales')}
@@ -285,7 +285,7 @@ function SalesContent() {
           { label: filter.platform ? `${platformLabel(filter.platform)} Avg Deduction %` : 'Avg Deduction % (All)', value: getAvgDeductionPercent(), icon: '📊', color: '#a78bfa' },
           { label: 'Net Received', value: gbp(totals.net), icon: '✅', color: '#22d3a5' },
         ].map(c => (
-          <div key={c.label} className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4">
+          <div key={c.label} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4">
             <div className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">{c.label}</div>
             <div className="text-xl font-black text-slate-900 dark:text-white">{c.value}</div>
           </div>
@@ -295,7 +295,7 @@ function SalesContent() {
 
 
       {/* Table */}
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -341,7 +341,7 @@ function SalesContent() {
       {/* Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-lg shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-lg shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Sales Record</h2>
             <div className="space-y-4">
               <div className="grid grid-cols-3 gap-3">
@@ -427,7 +427,7 @@ function SalesContent() {
 
 export function HungryBirdsSales() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-transparent" />}>
       <SalesContent />
     </Suspense>
   )

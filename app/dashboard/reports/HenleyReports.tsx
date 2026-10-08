@@ -151,8 +151,8 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
         <div className="flex justify-center items-center print:hidden">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
-            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+            <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
               <button 
                 onClick={() => setPeriod('weekly')} 
                 className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${period === 'weekly' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
@@ -204,7 +204,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
         <div ref={reportRef} className="space-y-6">
           {/* Advanced CFO KPIs */}
           <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 relative overflow-hidden group">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 relative overflow-hidden group">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Revenue</div>
               <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(grossSales)}</div>
             </div>
@@ -238,7 +238,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
             {/* Trend Chart */}
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl flex flex-col relative overflow-hidden z-0">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-6 shadow-2xl flex flex-col relative overflow-hidden z-0">
               <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/5 blur-[80px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
               <h3 className="font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                 <span className="w-6 h-6 rounded bg-blue-500/10 text-slate-900 dark:text-white flex items-center justify-center text-xs">📈</span>
@@ -262,7 +262,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
             </div>
 
             {/* Platform comparison */}
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl flex flex-col relative overflow-hidden z-0">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-6 shadow-2xl flex flex-col relative overflow-hidden z-0">
               <div className="absolute top-0 right-0 w-64 h-64 bg-purple-500/5 blur-[80px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
               <h3 className="font-black text-slate-900 dark:text-white mb-6 flex items-center gap-2">
                 <span className="w-6 h-6 rounded bg-purple-500/10 text-slate-900 dark:text-white flex items-center justify-center text-xs">📊</span>
@@ -288,7 +288,7 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
           </div>
 
           {/* CFO Detailed P&L Statement */}
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl overflow-hidden shadow-2xl mt-8">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl overflow-hidden shadow-2xl mt-8">
             <div className="px-6 py-5 border-b border-slate-200 dark:border-[#1f2947] bg-[#161b2c]/50">
               <h3 className="font-black text-slate-900 dark:text-white text-lg">Detailed Profit & Loss Statement</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Full financial breakdown for the selected period</p>

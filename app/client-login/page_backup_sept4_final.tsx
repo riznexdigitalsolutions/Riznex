@@ -38,7 +38,7 @@ export default function ClientLogin() {
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center p-6 relative overflow-hidden pt-20">
+    <div className="min-h-screen bg-transparent flex flex-col items-center p-6 relative overflow-hidden pt-20">
       
       <div className="w-full max-w-md relative z-10 flex flex-col">
         

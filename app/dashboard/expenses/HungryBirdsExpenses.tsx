@@ -97,7 +97,7 @@ export function HungryBirdsExpenses() {
           <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Track wages, utilities, fuel, rent and more</p>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
-          <div className="flex gap-1.5 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-1.5 shadow-sm">
+          <div className="flex gap-1.5 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-1.5 shadow-sm">
             <button onClick={() => setStoreFilter('')} className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>Overall</button>
           </div>
           {selectedIds.size > 0 && (
@@ -122,7 +122,7 @@ export function HungryBirdsExpenses() {
       {/* Category totals */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
         {Object.entries(catTotals).map(([cat, total]) => (
-          <div key={cat} className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-3">
+          <div key={cat} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3">
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">{expenseCategoryLabel(cat)}</div>
             <div className="text-lg font-black text-red-400">{gbp(total)}</div>
           </div>
@@ -134,7 +134,7 @@ export function HungryBirdsExpenses() {
       </div>
 
       {/* Filter */}
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 flex gap-3 flex-wrap items-center">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 flex gap-3 flex-wrap items-center">
         <select
           value={filter.category}
           onChange={e => setFilter(f => ({ ...f, category: e.target.value }))}
@@ -150,7 +150,7 @@ export function HungryBirdsExpenses() {
       </div>
 
       {/* Table */}
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
@@ -230,7 +230,7 @@ export function HungryBirdsExpenses() {
       {/* Modal */}
       {showForm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Expense</h2>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-3">

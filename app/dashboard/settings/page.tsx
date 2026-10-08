@@ -53,7 +53,7 @@ export default function SettingsPage() {
         <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage your business profile and commission rates</p>
       </div>
 
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 space-y-4">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 space-y-4">
         <h2 className="font-bold text-slate-900 dark:text-white text-base">Business Profile</h2>
         {[
           { label: 'Business Name', key: 'name', placeholder: 'Hungry Birds' },
@@ -69,7 +69,7 @@ export default function SettingsPage() {
         ))}
       </div>
 
-      <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 space-y-4">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 space-y-4">
         <h2 className="font-bold text-slate-900 dark:text-white text-base">Platform Commission Rates (%)</h2>
         <p className="text-xs text-slate-500">These are used to auto-calculate commissions when you enter gross sales.</p>
         <div className="grid grid-cols-3 gap-4">

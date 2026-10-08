@@ -1,4 +1,4 @@
-﻿'use client'
+'use client'
 import { useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
@@ -36,7 +36,7 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0a0c14] flex items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-transparent flex items-center justify-center p-4 relative overflow-hidden">
       {/* Background glow */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl" />
@@ -53,7 +53,7 @@ export default function LoginPage() {
         </a>
       </div>
 
-      <div className="w-full max-w-md relative">
+      <div className="w-full max-w-md relative p-8 rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none">
         {/* Logo */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
@@ -64,7 +64,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="bg-[#111520] border border-[#1f2947] rounded-2xl p-8 shadow-2xl">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-8 shadow-2xl">
           <h2 className="text-lg font-bold text-white mb-6">Sign in to your account</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -90,7 +90,7 @@ export default function LoginPage() {
                 onChange={e => setPassword(e.target.value)}
                 required
                 className="w-full bg-[#161b2c] border border-[#1f2947] text-white rounded-xl px-4 py-3 text-sm placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors"
-                placeholder="••••••••"
+                placeholder="��������"
               />
             </div>
 
@@ -112,7 +112,7 @@ export default function LoginPage() {
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/>
                   </svg>
-                  Signing in…
+                  Signing in�
                 </span>
               ) : 'Sign In'}
             </button>
@@ -120,7 +120,7 @@ export default function LoginPage() {
 
           <div className="mt-6 pt-5 border-t border-[#1f2947]">
             <p className="text-xs text-slate-500 text-center">
-              Powered by <span className="text-blue-400 font-semibold">Riznex</span> · Secure local authentication
+              Powered by <span className="text-blue-400 font-semibold">Riznex</span> � Secure local authentication
             </p>
           </div>
         </div>
@@ -130,3 +130,4 @@ export default function LoginPage() {
     </div>
   )
 }
+

@@ -528,7 +528,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   return (
     <div className="space-y-8 pb-10 print-bw-report">
       {/* --- VISUAL DASHBOARD --- */}
-      <div id="dashboard-export-area" className="bg-slate-50 dark:bg-[#0e121b] min-h-screen text-slate-700 dark:text-slate-200 p-4 lg:p-8 font-sans flex flex-col gap-8 pb-32">
+      <div id="dashboard-export-area" className="bg-transparent min-h-screen text-slate-700 dark:text-slate-200 p-4 lg:p-8 font-sans flex flex-col gap-8 pb-32">
         {/* Header & Filter Controls Section */}
         <div className="flex flex-col gap-6 relative z-10">
         
@@ -562,18 +562,18 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
           </div>
 
           <div className="print:hidden" data-html2canvas-ignore="true">
-            <button onClick={() => exportToPDF('dashboard-export-area', getExportFilename())} className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2.5 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
+            <button onClick={() => exportToPDF('dashboard-export-area', getExportFilename())} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-4 py-2.5 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
               <span>📄</span> Export PDF Report
             </button>
           </div>
         </div>
 
         {/* Tier 2: Unified Executive Filter Toolbar */}
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-between gap-4 print:hidden shadow-xl backdrop-blur-md">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-between gap-4 print:hidden shadow-xl backdrop-blur-md">
           {/* Left Side: Store Pills & Platform Filter */}
           <div className="flex flex-wrap items-center gap-3">
             {!is2025 && (
-              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
                 <button
                   onClick={() => setStore('')}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
@@ -627,19 +627,19 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
       <div className={activeTab === 'overview' ? 'flex flex-col gap-8' : 'hidden'}>
         {/* Primary KPIs - 5 cards */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Orders</div>
           <div className="text-2xl font-black text-slate-900 dark:text-white">{orders}</div>
         </div>
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Sales</div>
           <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalSales)}</div>
         </div>
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Sales</div>
           <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(r?.sales?.totalNetPaid ?? 0)}</div>
         </div>
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 shadow-lg">
           <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Expenses</div>
           <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalExpenses + totalSuppliers)}</div>
         </div>
@@ -685,7 +685,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Profit Summary Section */}
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-8 shadow-2xl lg:col-span-1 flex flex-col relative overflow-hidden z-0">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-8 shadow-2xl lg:col-span-1 flex flex-col relative overflow-hidden z-0">
           <div className="absolute -top-32 -left-32 w-64 h-64 bg-emerald-500/10 blur-[80px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
           <h2 className="text-xl font-black text-slate-900 dark:text-white mb-8 flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -965,7 +965,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
         <div className="lg:col-span-2 space-y-8 flex flex-col">
 
           {/* Platform Table */}
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col relative overflow-hidden z-0">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-8 shadow-2xl flex flex-col relative overflow-hidden z-0">
             <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
             <h2 className="text-xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
               <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-blue-500/20 shadow-inner">
@@ -1019,7 +1019,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             </div>
 
           {/* Supplier Purchases Table */}
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-8 shadow-2xl flex flex-col relative overflow-hidden z-0 mt-8">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-8 shadow-2xl flex flex-col relative overflow-hidden z-0 mt-8">
             <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-orange-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
             <h2 className="text-xl font-black text-slate-900 dark:text-white mb-8 flex items-center gap-3">
               <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-orange-500/20 shadow-inner">
@@ -1120,7 +1120,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-full mt-2">
 
               {/* Main Chart (Dark Theme) */}
-              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
                     <span className="text-slate-900 dark:text-white mr-2">1.</span>WEEKLY SALES & ORDERS
@@ -1193,7 +1193,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   {/* Top Row: 2 Pies */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
-                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
                     <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
                     <div className="flex w-full items-center">
                       <div className="w-[220px] h-[220px] relative">
@@ -1225,7 +1225,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   </div>
 
                   {/* Expense Breakdown */}
-                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
                     <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
                     <div className="flex w-full items-center">
                       <div className="w-[220px] h-[220px] relative">
@@ -1259,7 +1259,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   </div>
 
                   {/* Bottom Row: Supplier Purchases */}
-                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
                     <div className="flex justify-between items-center mb-6">
                       <h2 className="text-slate-900 dark:text-white font-bold text-lg">Supplier Purchases</h2>
                       <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Weeks</span>
@@ -1298,7 +1298,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
 
                           </div>
             ) : (
-              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
                 <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-3">No Data Available</h2>
                 <p className="text-slate-500 dark:text-slate-400 max-w-md">There are no sales records available for the selected period.</p>
               </div>
@@ -1311,7 +1311,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-full mt-2">
 
               {/* Main Chart (Dark Theme) */}
-              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
                     <span className="text-slate-900 dark:text-white mr-2">1.</span>MONTHLY SALES & ORDERS
@@ -1375,7 +1375,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 {/* Top Row: 2 Pies */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
-                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
                     <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
                     <div className="flex w-full items-center">
                       <div className="w-[220px] h-[220px] relative">
@@ -1407,7 +1407,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   </div>
 
                   {/* Expense Breakdown */}
-                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col items-center">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
                     <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
                     <div className="flex w-full items-center">
                       <div className="w-[220px] h-[220px] relative">
@@ -1440,7 +1440,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </div>
 
                 {/* Bottom Row: Supplier Purchases */}
-                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
                   <div className="flex justify-between items-center mb-6">
                     <h2 className="text-slate-900 dark:text-white font-bold text-lg">Supplier Purchases</h2>
                     <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Months</span>
@@ -1469,7 +1469,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
               </div>
             </div>
             ) : (
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-16 shadow-2xl flex flex-col items-center justify-center text-center mt-6 w-full">
               <h2 className="text-3xl font-black text-slate-900 dark:text-white mb-3">No Data Available</h2>
               <p className="text-slate-500 dark:text-slate-400 max-w-md">There are no sales records available for the selected period.</p>
             </div>
@@ -1477,7 +1477,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
           </div>
   {/* --- OFFERS TAB --- */}
         <div className={activeTab === 'offers' ? 'block' : 'hidden'}>
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-8 shadow-xl mt-2 w-full">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-8 shadow-xl mt-2 w-full">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-slate-900 dark:text-white">Marketing & Offers ROI</h2>
               {session?.user?.role === 'admin' && (
@@ -1559,13 +1559,13 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
         {/* --- ADD/EDIT OFFER MODAL --- */}
         {showOfferModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-sm px-4">
-            <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl w-full max-w-md p-6 shadow-2xl relative">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl w-full max-w-md p-6 shadow-2xl relative">
               <button onClick={() => { setShowOfferModal(false); setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Herbies Pizza', amount: '', startDate: '', type: 'weekly', notes: '' }); }} className="absolute top-4 right-4 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">✕</button>
               <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{editingOfferId ? 'Edit Marketing Offer' : 'Add Marketing Offer'}</h2>
               <div className="space-y-4">
                 <div>
                   <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Store / Franchise</label>
-                  <select value={offerForm.store} onChange={(e) => setOfferForm({...offerForm, store: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
+                  <select value={offerForm.store} onChange={(e) => setOfferForm({...offerForm, store: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
                     <option value="Combined">Combined (All Stores)</option>
                     <option value="Herbies Pizza">Herbies Pizza</option>
                     <option value="Tasty Bun">Tasty Bun</option>
@@ -1573,7 +1573,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Platform</label>
-                  <select value={offerForm.platform} onChange={(e) => setOfferForm({...offerForm, platform: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
+                  <select value={offerForm.platform} onChange={(e) => setOfferForm({...offerForm, platform: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
                     <option value="just_eat">Just Eat</option>
                     <option value="uber_eats">Uber Eats</option>
                     <option value="deliveroo">Deliveroo</option>
@@ -1583,16 +1583,16 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Offer Title (e.g. 30% off, BOGO)</label>
-                  <input type="text" value={offerForm.notes} onChange={(e) => setOfferForm({...offerForm, notes: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 30% off Burgers" />
+                  <input type="text" value={offerForm.notes} onChange={(e) => setOfferForm({...offerForm, notes: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 30% off Burgers" />
                 </div>
                 <div className="flex gap-4">
                   <div className="w-1/2">
                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Start Date</label>
-                    <input type="date" value={offerForm.startDate} onChange={(e) => setOfferForm({...offerForm, startDate: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500 [color-scheme:dark]" />
+                    <input type="date" value={offerForm.startDate} onChange={(e) => setOfferForm({...offerForm, startDate: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500 [color-scheme:dark]" />
                   </div>
                   <div className="w-1/2">
                     <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Duration</label>
-                    <select value={offerForm.type} onChange={(e) => setOfferForm({...offerForm, type: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
+                    <select value={offerForm.type} onChange={(e) => setOfferForm({...offerForm, type: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
                       <option value="weekly">Weekly</option>
                       <option value="monthly">Monthly</option>
                     </select>
@@ -1600,7 +1600,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Spend Amount (£) <span className="text-slate-500 font-normal">(Optional)</span></label>
-                  <input type="number" step="0.01" value={offerForm.amount} onChange={(e) => setOfferForm({...offerForm, amount: e.target.value})} className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 200" />
+                  <input type="number" step="0.01" value={offerForm.amount} onChange={(e) => setOfferForm({...offerForm, amount: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 200" />
                 </div>
                 <div className="pt-4">
                   <button onClick={() => {

@@ -301,7 +301,7 @@ function InvoicesContent() {
       </div>
 
       {/* Filter Toolbar & Upload Action Underneath */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-slate-100/50 dark:bg-[#111520]/50 border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 backdrop-blur-sm shadow-lg">
+      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 backdrop-blur-sm shadow-lg">
         <div className="flex gap-3 flex-wrap items-center w-full sm:w-auto">
           {activeTab === 'all' && (
             <>
@@ -380,13 +380,13 @@ function InvoicesContent() {
       </div>
 
       {filteredInvoices.length === 0 ? (
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-12 text-center">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-12 text-center">
           <div className="text-4xl mb-4">🧾</div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">No invoices found</h3>
           <p className="text-slate-500 text-sm">There are no invoices matching this category.</p>
         </div>
       ) : (
-        <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl overflow-hidden">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
           <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
             <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
               <tr>
@@ -552,7 +552,7 @@ function InvoicesContent() {
       {/* Upload Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-6 w-full max-w-md shadow-2xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">
               {type === 'pos' ? 'Upload POS / Bank Statement' : 'Upload Delivery Platform Invoice'}
             </h2>

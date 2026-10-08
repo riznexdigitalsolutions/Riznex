@@ -285,7 +285,7 @@ import { useSearchParams } from 'next/navigation'
 
 export default function AuthenticDemoPage() {
   return (
-    <React.Suspense fallback={<div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14]" />}>
+    <React.Suspense fallback={<div className="min-h-screen bg-transparent" />}>
       <DemoContent />
     </React.Suspense>
   )
@@ -337,7 +337,7 @@ function DemoContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-[#0a0c14] text-slate-700 dark:text-slate-200 flex flex-col font-sans selection:bg-[#E5B869] selection:text-black">
+    <div className="min-h-screen bg-transparent text-slate-700 dark:text-slate-200 flex flex-col font-sans selection:bg-[#E5B869] selection:text-black">
       
       {/* ── TOP DEMO CALLOUT BANNER ────────────────────────────────────────── */}
       <div className="sticky top-0 z-50 bg-gradient-to-r from-[#D9A336] via-[#F5CB6C] to-[#C89B3C] text-black px-3.5 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-xl">
@@ -370,7 +370,7 @@ function DemoContent() {
       <div className="flex flex-1 relative">
 
         {/* ── SIDEBAR NAVIGATION (Matching Authentic Client Layout) ──────────── */}
-        <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-slate-100 dark:bg-[#111520] border-r border-slate-200 dark:border-[#1f2947] flex flex-col transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0 pt-10' : '-translate-x-full'}`}>
+        <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0 pt-10' : '-translate-x-full'}`}>
           {/* Sidebar Header */}
           <div className="flex items-center gap-3 px-5 py-6 border-b border-slate-200 dark:border-[#1f2947]">
             <img 
@@ -519,7 +519,7 @@ function DemoContent() {
           <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-200/50 dark:border-[#1f2947]/50 lg:border-none">
             <button 
               onClick={() => setSidebarOpen(!sidebarOpen)}
-              className="lg:hidden p-2 rounded-xl bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white flex items-center gap-2 text-xs font-bold"
+              className="lg:hidden p-2 rounded-xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none text-slate-900 dark:text-white flex items-center gap-2 text-xs font-bold"
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
               <span>Menu</span>
@@ -556,7 +556,7 @@ function DemoContent() {
             <div className="flex items-center gap-2.5">
               <button 
                 onClick={() => triggerToast('Generating sample PDF report for Royal Grill & Lounge...')}
-                className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-[#1a2235] text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer"
+                className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-3.5 py-2 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-[#1a2235] text-xs font-bold transition flex items-center gap-2 shadow cursor-pointer"
               >
                 <span>📄</span> Export PDF Report
               </button>
@@ -570,10 +570,10 @@ function DemoContent() {
           </div>
 
           {/* Tier 2: Filter Toolbar (Store Pills, Platform Filter, Date Filter) */}
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 mb-6 shadow-xl">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 mb-6 shadow-xl">
             {/* Store Pills */}
             <div className="flex flex-wrap items-center gap-2.5">
-              <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+              <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
                 <button
                   onClick={() => setStore('Combined')}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
@@ -612,7 +612,7 @@ function DemoContent() {
               <select
                 value={selectedPlatform}
                 onChange={(e) => setSelectedPlatform(e.target.value)}
-                className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer focus:outline-none focus:border-blue-500"
+                className="bg-transparent border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer focus:outline-none focus:border-blue-500"
               >
                 <option value="All Platforms">All Platforms (Consolidated)</option>
                 <option value="Deliveroo">Deliveroo</option>
@@ -628,7 +628,7 @@ function DemoContent() {
               <select
                 value={selectedPeriod}
                 onChange={(e) => setSelectedPeriod(e.target.value)}
-                className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer focus:outline-none focus:border-blue-500"
+                className="bg-transparent border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer focus:outline-none focus:border-blue-500"
               >
                 <option value="All Time">All Time</option>
                 <option value="This Month">This Month (Oct 2026)</option>
@@ -654,19 +654,19 @@ function DemoContent() {
 
               {/* Primary 5 KPI Cards */}
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3.5">
-                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Orders</div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{currentData.orders.toLocaleString()}</div>
                 </div>
-                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Sales</div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{gbp(currentData.grossSales)}</div>
                 </div>
-                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Sales</div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{gbp(currentData.netSales)}</div>
                 </div>
-                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 sm:p-5 shadow-lg">
                   <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Expenses</div>
                   <div className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">{gbp(currentData.totalExpenses)}</div>
                 </div>
@@ -712,7 +712,7 @@ function DemoContent() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
                 {/* Left Column: Profit Summary Waterfall */}
-                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col relative overflow-hidden">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col relative overflow-hidden">
                   <div className="flex items-center justify-between mb-6">
                     <div className="flex items-center gap-2.5">
                       <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-slate-200 dark:border-[#E5B869]/20 text-sm">
@@ -915,7 +915,7 @@ function DemoContent() {
                 <div className="lg:col-span-2 space-y-6">
 
                   {/* Platform Performance Table */}
-                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
                     <h2 className="text-lg font-black text-slate-900 dark:text-white mb-5 flex items-center gap-2.5">
                       <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-blue-500/20 text-sm">
                         📊
@@ -954,7 +954,7 @@ function DemoContent() {
                   </div>
 
                   {/* Supplier Purchases Table */}
-                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
                     <h2 className="text-lg font-black text-slate-900 dark:text-white mb-5 flex items-center gap-2.5">
                       <span className="w-8 h-8 rounded-lg bg-orange-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-orange-500/20 text-sm">
                         🛒
@@ -988,7 +988,7 @@ function DemoContent() {
                   </div>
 
                   {/* ── SALES & EXPENSE DISTRIBUTION (FILLS EMPTY SPACE UNDER SUPPLIER PURCHASES) ── */}
-                  <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col gap-6">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-7 shadow-2xl flex flex-col gap-6">
                     
                     {/* Sales Distribution */}
                     <div className="space-y-3">
@@ -1081,7 +1081,7 @@ function DemoContent() {
               </div>
 
               {/* Dual Bar Chart */}
-              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-6 shadow-2xl">
                 <div className="flex items-center justify-between mb-6">
                   <div className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                     1. WEEKLY SALES & ORDERS
@@ -1177,7 +1177,7 @@ function DemoContent() {
 
               {/* Donut Visuals */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-6 shadow-2xl">
                   <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4">Sales Mix</h3>
                   <div className="flex flex-col sm:flex-row items-center gap-6">
                     <div className="relative w-44 h-44 shrink-0 flex items-center justify-center">
@@ -1198,7 +1198,7 @@ function DemoContent() {
                   </div>
                 </div>
 
-                <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-6 shadow-2xl">
                   <h3 className="text-base font-bold text-slate-900 dark:text-white mb-4">Expense Breakdown</h3>
                   <div className="flex flex-col sm:flex-row items-center gap-6">
                     <div className="relative w-44 h-44 shrink-0 flex items-center justify-center">
@@ -1232,7 +1232,7 @@ function DemoContent() {
                 <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">Jun 2026 - Sept 2026</span>
               </div>
 
-              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-6 shadow-2xl">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-6 shadow-2xl">
                 <div className="flex items-center justify-between mb-6">
                   <div className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                     1. MONTHLY SALES & ORDERS
@@ -1337,7 +1337,7 @@ function DemoContent() {
                 <span className="text-xs text-slate-500 dark:text-slate-400 font-mono">Simulated Campaign Performance</span>
               </div>
 
-              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs whitespace-nowrap">
                     <thead>
@@ -1397,9 +1397,9 @@ function DemoContent() {
               </div>
 
               {/* Sub-Filter Toolbar (Status, Time, Year, Month, Reset) */}
-              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 shadow-xl">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-between gap-3 shadow-xl">
                 <div className="flex flex-wrap items-center gap-2">
-                  <div className="flex items-center gap-1 bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+                  <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
                     <button
                       onClick={() => setStore('Combined')}
                       className={`px-3 py-1.5 text-xs font-bold rounded-lg transition cursor-pointer ${store === 'Combined' ? 'bg-blue-600 text-slate-900 dark:text-white shadow' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
@@ -1420,23 +1420,23 @@ function DemoContent() {
                     </button>
                   </div>
 
-                  <select className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
+                  <select className="bg-transparent border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
                     <option>All Statuses</option>
                     <option>Extracted</option>
                     <option>Pending</option>
                   </select>
 
-                  <select className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
+                  <select className="bg-transparent border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
                     <option>All Time</option>
                     <option>This Month</option>
                   </select>
 
-                  <select className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
+                  <select className="bg-transparent border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
                     <option>All Years</option>
                     <option>2026</option>
                   </select>
 
-                  <select className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
+                  <select className="bg-transparent border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs font-semibold px-3 py-1.5 rounded-xl cursor-pointer">
                     <option>All Months</option>
                     <option>Sept 2026</option>
                   </select>
@@ -1452,7 +1452,7 @@ function DemoContent() {
               </div>
 
               {/* Exact Invoices Table Matching User Screenshots 1, 2, 3 */}
-              <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
                 <div className="overflow-x-auto">
                   <table className="w-full text-left text-xs whitespace-nowrap">
                     <thead>
@@ -1551,7 +1551,7 @@ function DemoContent() {
       {/* ── INVOICE FILE MODAL INSPECTOR ────────────────────────────────────── */}
       {selectedInvoice && (
         <div className="fixed inset-0 z-50 bg-white/80 dark:bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-3xl max-w-lg w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl max-w-lg w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200">
             <button 
               onClick={() => setSelectedInvoice(null)}
               className="absolute top-5 right-5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-lg font-bold p-1 cursor-pointer"
@@ -1568,7 +1568,7 @@ function DemoContent() {
               </div>
             </div>
 
-            <div className="p-3.5 rounded-2xl bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] space-y-2 mb-4 text-xs">
+            <div className="p-3.5 rounded-2xl bg-transparent border border-slate-200 dark:border-[#1f2947] space-y-2 mb-4 text-xs">
               <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>Assigned Brand:</span> <span className="text-slate-900 dark:text-white font-semibold">{selectedInvoice.store}</span></div>
               <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>Billing Week:</span> <span className="text-slate-900 dark:text-white font-semibold">{selectedInvoice.week}</span></div>
               <div className="flex justify-between text-slate-500 dark:text-slate-400"><span>AI Extraction Status:</span> <span className="text-slate-900 dark:text-white font-bold">Verified 100% Extracted</span></div>
@@ -1626,7 +1626,7 @@ function DemoContent() {
                 <input 
                   type="text" 
                   placeholder="e.g. Royal Spice Grill London" 
-                  className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E5B869]"
+                  className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E5B869]"
                 />
               </div>
               <div>
@@ -1634,7 +1634,7 @@ function DemoContent() {
                 <input 
                   type="text" 
                   placeholder="e.g. John Doe (+44 7123 456789)" 
-                  className="w-full bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E5B869]"
+                  className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 text-xs text-slate-900 dark:text-white focus:outline-none focus:border-[#E5B869]"
                 />
               </div>
             </div>

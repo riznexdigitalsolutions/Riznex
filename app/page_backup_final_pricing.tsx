@@ -38,7 +38,7 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-black text-white font-sans selection:bg-[#C89B3C] selection:text-black overflow-x-hidden">
+    <div className="min-h-screen bg-transparent text-white font-sans selection:bg-[#C89B3C] selection:text-black overflow-x-hidden">
       
       {/* HEADER / NAVIGATION */}
       <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'bg-black/95 backdrop-blur-md py-4 shadow-[0_4px_30px_rgba(0,0,0,0.8)]' : 'bg-transparent py-6'}`}>

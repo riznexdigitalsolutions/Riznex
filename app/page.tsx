@@ -204,7 +204,7 @@ export default function LandingPage() {
           </Link>
 
           {/* Desktop Nav Items */}
-          <nav className="hidden lg:flex items-center gap-1 bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08] px-3 py-1.5 rounded-full backdrop-blur-md">
+          <nav className="hidden lg:flex items-center gap-1 px-3 py-1.5 rounded-full backdrop-blur-md bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-lg shadow-black/20 dark:shadow-none">
             {[
               { label: 'Services', href: '#services' },
               { label: 'Platforms', href: '#platforms' },
@@ -726,8 +726,8 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto w-full">
             
             {/* Plan 1: 1st Month Setup & Reporting */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-white/90 dark:bg-[#0D0F17]/90 border transition-all flex flex-col relative w-full ${
-              activePricingTab === 'month1' ? 'border-[#E5B869]/50 shadow-2xl shadow-[#E5B869]/10' : 'border-slate-200/10 dark:border-white/10'
+            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none transition-all flex flex-col relative w-full ${
+              activePricingTab === 'month1' ? 'shadow-[#E5B869]/20' : ''
             } ${activePricingTab !== 'month1' ? 'hidden sm:flex' : 'flex'}`}>
               
               <div className="flex justify-between items-start mb-6">
@@ -803,7 +803,7 @@ export default function LandingPage() {
             </div>
 
             {/* Plan 2: 2nd Month+ Monthly Growth Package */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-b from-slate-100 dark:from-[#131622] to-white dark:to-[#0A0C14] border border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/15 flex flex-col relative w-full ${
+            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col relative w-full ${
               activePricingTab !== 'growth' ? 'hidden sm:flex' : 'flex'
             }`}>
 
@@ -882,7 +882,7 @@ export default function LandingPage() {
             </div>
 
             {/* Plan 3: Social Media Growth Package */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-white/90 dark:bg-[#0D0F17]/90 border border-slate-200/10 dark:border-white/10 transition-all flex flex-col relative w-full ${
+            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none transition-all flex flex-col relative w-full ${
               activePricingTab !== 'social' ? 'hidden sm:flex' : 'flex'
             }`}>
 
@@ -958,7 +958,7 @@ export default function LandingPage() {
             </div>
 
             {/* Plan 4: Custom Business Solution */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-white/90 dark:bg-[#0D0F17]/90 border border-slate-200/10 dark:border-white/10 transition-all flex flex-col relative w-full ${
+            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none transition-all flex flex-col relative w-full ${
               activePricingTab !== 'custom' ? 'hidden sm:flex' : 'flex'
             }`}>
 
@@ -1107,7 +1107,7 @@ export default function LandingPage() {
             <p className="mt-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">Send us a quick message. Our team will review your menu and delivery platforms and get in touch within 24 hours.</p>
           </div>
 
-          <div className="p-5 sm:p-10 rounded-3xl bg-white/95 dark:bg-[#0D0F17]/95 border border-slate-200/10 dark:border-white/10 backdrop-blur-xl shadow-2xl w-full">
+          <div className="p-5 sm:p-10 rounded-3xl backdrop-blur-xl w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none">
             {formSent ? (
               <div className="py-10 text-center">
                 <div className="w-12 h-12 rounded-full bg-[#E5B869]/20 text-[#E5B869] mx-auto flex items-center justify-center mb-3">

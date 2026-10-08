@@ -386,7 +386,7 @@ export default function LandingPage() {
 
             {/* Right Live Hub Visual (Completely Overflow Proof) */}
             <div className="lg:col-span-5 w-full min-w-0">
-              <div className="relative p-4 sm:p-6 w-full overflow-hidden rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none backdrop-blur-xl">
+              <div className="relative p-4 sm:p-6 w-full overflow-hidden rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none backdrop-blur-xl">
                 
                 {/* Header */}
                 <div className="flex justify-between items-center pb-3.5 mb-4 border-b border-slate-200/[0.08] dark:border-white/[0.08]">
@@ -502,9 +502,9 @@ export default function LandingPage() {
       </section>
 
       {/* ── INTERACTIVE LIVE DEMO (COMPACT & CLEAR SHOWCASE) ── */}
-      <section id="demo-showcase" className="py-8 sm:py-12 bg-gradient-to-r from-slate-50/80 dark:from-[#0A0C13]/80 via-slate-100/80 dark:via-[#101422]/80 to-slate-50/80 dark:to-[#0A0C13]/80 backdrop-blur-md border-t border-slate-200/[0.08] dark:border-white/[0.08]">
+      <section id="demo-showcase" className="py-8 sm:py-12 bg-transparent border-t border-slate-200/[0.08] dark:border-white/[0.08]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="p-6 sm:p-8 rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none flex flex-col md:flex-row items-center justify-between gap-6">
             
             {/* Left Content */}
             <div className="flex-1 text-center md:text-left">
@@ -540,7 +540,7 @@ export default function LandingPage() {
       </section>
 
       {/* PLATFORMS BANNER */}
-      <section id="platforms" className="py-8 sm:py-12 border-y border-slate-200/[0.08] dark:border-white/[0.08] bg-slate-50/80 dark:bg-[#0A0C13]/80 backdrop-blur-md w-full overflow-hidden">
+      <section id="platforms" className="py-8 sm:py-12 border-y border-slate-200/[0.08] dark:border-white/[0.08] bg-transparent w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center">
           <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 mb-6">
             Seamlessly Integrated With Top UK Delivery Platforms & Social Channels
@@ -579,7 +579,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 w-full">
             
             {/* 1. Menu Management */}
-            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.MenuBook />
               </div>
@@ -590,7 +590,7 @@ export default function LandingPage() {
             </div>
 
             {/* 2. Social Media Management */}
-            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Share />
               </div>
@@ -601,7 +601,7 @@ export default function LandingPage() {
             </div>
 
             {/* 3. Business Profiles & Maps */}
-            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.MapPin />
               </div>
@@ -612,7 +612,7 @@ export default function LandingPage() {
             </div>
 
             {/* 4. Customer Support & Reviews */}
-            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Headset />
               </div>
@@ -623,7 +623,7 @@ export default function LandingPage() {
             </div>
 
             {/* 5. Business & Financial Reporting */}
-            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.ChartBar />
               </div>
@@ -634,7 +634,7 @@ export default function LandingPage() {
             </div>
 
             {/* 6. Growth & Order Surges */}
-            <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
+            <div className="rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none hover:border-[#E5B869]/60 p-5 sm:p-7 transition-all flex flex-col">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-[#E5B869]/10 border border-[#E5B869]/20 flex items-center justify-center mb-4">
                 <Icons.Rocket />
               </div>
@@ -650,13 +650,13 @@ export default function LandingPage() {
       </section>
 
       {/* CLIENT TESTIMONIAL LOGOS */}
-      <section className="py-10 sm:py-14 bg-white/80 dark:bg-[#050608]/80 backdrop-blur-md border-y border-slate-200/[0.06] dark:border-white/[0.06] w-full overflow-hidden">
+      <section className="py-10 sm:py-14 bg-transparent border-y border-slate-200/[0.06] dark:border-white/[0.06] w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center mb-6">
           <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869]">
             Trusted By Established UK Restaurants
           </p>
         </div>
-        <div className="relative flex overflow-hidden max-w-5xl mx-auto py-2 group">
+        <div className="relative flex overflow-hidden w-full py-2 group">
             {/* The wrapper must be w-max so it takes the full width of both logo sets, and -50% shifts it exactly one set */}
             <div className="flex animate-[marquee_25s_linear_infinite] group-hover:[animation-play-state:paused] w-max">
               {[...Array(2)].map((_, groupIndex) => (
@@ -669,7 +669,7 @@ export default function LandingPage() {
                   ].map((client, i) => (
                     <div 
                       key={i} 
-                      className="flex items-center justify-center p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-[#0D0F17]/80 border border-slate-200/50 dark:border-white/10 shadow-sm backdrop-blur-xl w-[150px] h-[80px] sm:w-[220px] sm:h-[110px] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-[#E5B869]/50"
+                      className="flex items-center justify-center p-4 sm:p-5 rounded-2xl bg-transparent border border-transparent w-[150px] h-[80px] sm:w-[220px] sm:h-[110px] transition-all duration-300 hover:-translate-y-1 hover:scale-105"
                     >
                       <img 
                         src={client.src} 
@@ -682,9 +682,7 @@ export default function LandingPage() {
               ))}
             </div>
             
-            {/* Smooth gradient fade out on edges */}
-            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-slate-50 dark:from-[#07080B] to-transparent"></div>
-            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-slate-50 dark:from-[#07080B] to-transparent"></div>
+            
           </div>
       </section>
 
@@ -1070,7 +1068,7 @@ export default function LandingPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-slate-200/[0.08] dark:border-white/[0.08] bg-slate-50/80 dark:bg-[#0A0C13]/80 backdrop-blur-md w-full overflow-hidden">
+      <section id="how-it-works" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-slate-200/[0.08] dark:border-white/[0.08] bg-transparent w-full overflow-hidden">
         <div className="max-w-7xl mx-auto w-full">
           
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -1104,7 +1102,7 @@ export default function LandingPage() {
             ].map((step, idx) => (
               <div 
                 key={idx} 
-                className="p-5 sm:p-6 rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col"
+                className="p-5 sm:p-6 rounded-3xl bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none flex flex-col"
               >
                 <div className="text-2xl sm:text-3xl font-black text-[#E5B869] mb-2.5 font-mono">{step.step}</div>
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mb-1.5">{step.title}</h3>
@@ -1126,7 +1124,7 @@ export default function LandingPage() {
             <p className="mt-2 text-slate-500 dark:text-slate-400 text-xs sm:text-sm">Send us a quick message. Our team will review your menu and delivery platforms and get in touch within 24 hours.</p>
           </div>
 
-          <div className="p-5 sm:p-10 rounded-3xl backdrop-blur-xl w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none">
+          <div className="p-5 sm:p-10 rounded-3xl backdrop-blur-xl w-full bg-white/40 dark:bg-black/40 backdrop-blur-xl border border-white/50 dark:border-white/10 shadow-2xl shadow-black/5 dark:shadow-none">
             {formSent ? (
               <div className="py-10 text-center">
                 <div className="w-12 h-12 rounded-full bg-[#E5B869]/20 text-[#E5B869] mx-auto flex items-center justify-center mb-3">
@@ -1211,7 +1209,7 @@ export default function LandingPage() {
       </section>
 
       {/* FOOTER (PROMINENT, 100% VISIBLE & RESPONSIVE) */}
-      <footer className="py-12 sm:py-16 border-t border-slate-200/[0.08] dark:border-white/[0.08] bg-white dark:bg-[#050609] text-xs text-slate-500 dark:text-slate-400 w-full overflow-hidden">
+      <footer className="py-12 sm:py-16 border-t border-slate-200/[0.08] dark:border-white/[0.08] bg-transparent text-xs text-slate-500 dark:text-slate-400 w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 w-full">
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-10 w-full">
@@ -1454,6 +1452,8 @@ export default function LandingPage() {
     </div>
   );
 }
+
+
 
 
 

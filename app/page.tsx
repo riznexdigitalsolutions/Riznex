@@ -170,7 +170,15 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="min-h-screen w-full max-w-full bg-slate-50 dark:bg-[#07080B] text-slate-800 dark:text-slate-100 font-sans selection:bg-[#E5B869] selection:text-black overflow-x-hidden antialiased">
+    <div className="relative min-h-screen w-full max-w-full text-slate-800 dark:text-slate-100 font-sans selection:bg-[#E5B869] selection:text-black overflow-x-hidden antialiased z-0">
+        
+        {/* THE GLOBAL LUXURY BACKGROUND */}
+        <div className="fixed inset-0 w-full h-full -z-20 pointer-events-none">
+          <div className="absolute inset-0 w-full h-full dark:opacity-0 opacity-100 transition-opacity duration-700 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/light_luxury_bg.jpg')" }}></div>
+          <div className="absolute inset-0 w-full h-full dark:opacity-100 opacity-0 transition-opacity duration-700 bg-cover bg-center bg-no-repeat" style={{ backgroundImage: "url('/images/dark_luxury_bg.jpg')" }}></div>
+          {/* Subtle overlay to ensure text contrast */}
+          <div className="absolute inset-0 w-full h-full bg-white/50 dark:bg-[#07080B]/60 backdrop-blur-[1px]"></div>
+        </div>
       
       {/* AMBIENT GLOW EFFECTS (STRICTLY CONTAINED) */}
       <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-[800px] h-[350px] bg-gradient-to-b from-[#E5B869]/10 via-[#C89B3C]/5 to-transparent blur-[120px] pointer-events-none -z-10 overflow-hidden" />
@@ -494,7 +502,7 @@ export default function LandingPage() {
       </section>
 
       {/* ── INTERACTIVE LIVE DEMO (COMPACT & CLEAR SHOWCASE) ── */}
-      <section id="demo-showcase" className="py-8 sm:py-12 bg-gradient-to-r from-slate-50 dark:from-[#0A0C13] via-slate-100 dark:via-[#101422] to-slate-50 dark:to-[#0A0C13] border-t border-slate-200/[0.08] dark:border-white/[0.08]">
+      <section id="demo-showcase" className="py-8 sm:py-12 bg-gradient-to-r from-slate-50/80 dark:from-[#0A0C13]/80 via-slate-100/80 dark:via-[#101422]/80 to-slate-50/80 dark:to-[#0A0C13]/80 backdrop-blur-md border-t border-slate-200/[0.08] dark:border-white/[0.08]">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="p-6 sm:p-8 rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col md:flex-row items-center justify-between gap-6">
             
@@ -532,7 +540,7 @@ export default function LandingPage() {
       </section>
 
       {/* PLATFORMS BANNER */}
-      <section id="platforms" className="py-8 sm:py-12 border-y border-slate-200/[0.08] dark:border-white/[0.08] bg-slate-50 dark:bg-[#0A0C13] w-full overflow-hidden">
+      <section id="platforms" className="py-8 sm:py-12 border-y border-slate-200/[0.08] dark:border-white/[0.08] bg-slate-50/80 dark:bg-[#0A0C13]/80 backdrop-blur-md w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center">
           <p className="text-[10px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400 mb-6">
             Seamlessly Integrated With Top UK Delivery Platforms & Social Channels
@@ -642,7 +650,7 @@ export default function LandingPage() {
       </section>
 
       {/* CLIENT TESTIMONIAL LOGOS */}
-      <section className="py-10 sm:py-14 bg-white dark:bg-[#050608] border-y border-slate-200/[0.06] dark:border-white/[0.06] w-full overflow-hidden">
+      <section className="py-10 sm:py-14 bg-white/80 dark:bg-[#050608]/80 backdrop-blur-md border-y border-slate-200/[0.06] dark:border-white/[0.06] w-full overflow-hidden">
         <div className="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 text-center mb-6">
           <p className="text-[10px] sm:text-xs font-bold uppercase tracking-[0.25em] text-[#E5B869]">
             Trusted By Established UK Restaurants
@@ -1062,7 +1070,7 @@ export default function LandingPage() {
       </section>
 
       {/* HOW IT WORKS */}
-      <section id="how-it-works" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-slate-200/[0.08] dark:border-white/[0.08] bg-slate-50 dark:bg-[#0A0C13] w-full overflow-hidden">
+      <section id="how-it-works" className="py-16 sm:py-24 px-3.5 sm:px-6 lg:px-8 border-t border-slate-200/[0.08] dark:border-white/[0.08] bg-slate-50/80 dark:bg-[#0A0C13]/80 backdrop-blur-md w-full overflow-hidden">
         <div className="max-w-7xl mx-auto w-full">
           
           <div className="text-center max-w-2xl mx-auto mb-12">

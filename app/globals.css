@@ -147,3 +147,9 @@ body {
   color: var(--text-main) !important;
 }
 @custom-variant dark (&:where(.dark, .dark *));
+
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+

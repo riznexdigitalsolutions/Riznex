@@ -648,25 +648,36 @@ export default function LandingPage() {
             Trusted By Established UK Restaurants
           </p>
         </div>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6 max-w-4xl mx-auto px-3.5">
-          {[
-            { name: 'Hungry Birds', src: '/images/clients/hungry-birds.jpg' },
-            { name: 'Taste of Tandoori', src: '/images/clients/taste-of-tandoori.png' },
-            { name: 'Tasty Bun', src: '/images/clients/tasty-bun.jpg' },
-            { name: 'The Best Fry', src: '/images/clients/the-best-fry.png' },
-          ].map((client, i) => (
-            <div 
-              key={i} 
-              className="flex items-center justify-center p-3 rounded-2xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.08] dark:border-white/[0.08]"
-            >
-              <img 
-                src={client.src} 
-                alt={client.name} 
-                className="h-10 sm:h-14 w-auto object-contain max-w-[120px] rounded-lg" 
-              />
+        <div className="relative flex overflow-hidden max-w-5xl mx-auto py-2 group">
+            {/* The wrapper must be w-max so it takes the full width of both logo sets, and -50% shifts it exactly one set */}
+            <div className="flex animate-[marquee_25s_linear_infinite] group-hover:[animation-play-state:paused] w-max">
+              {[...Array(2)].map((_, groupIndex) => (
+                <div key={groupIndex} className="flex space-x-6 sm:space-x-10 px-3 sm:px-5">
+                  {[
+                    { name: 'Hungry Birds', src: '/images/clients/hungry-birds-new.png' },
+                    { name: 'Taste of Tandoori', src: '/images/clients/taste-of-tandoori-new.png' },
+                    { name: 'Tasty Bun', src: '/images/clients/tasty-bun-new.png' },
+                    { name: 'The Best Fry', src: '/images/clients/the-best-fry-new.png' },
+                  ].map((client, i) => (
+                    <div 
+                      key={i} 
+                      className="flex items-center justify-center p-4 sm:p-5 rounded-2xl bg-white/70 dark:bg-[#0D0F17]/80 border border-slate-200/50 dark:border-white/10 shadow-sm backdrop-blur-xl w-[150px] h-[80px] sm:w-[220px] sm:h-[110px] transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-[#E5B869]/50"
+                    >
+                      <img 
+                        src={client.src} 
+                        alt={client.name} 
+                        className="w-full h-full object-contain filter grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-500" 
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
+            
+            {/* Smooth gradient fade out on edges */}
+            <div className="pointer-events-none absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-slate-50 dark:from-[#07080B] to-transparent"></div>
+            <div className="pointer-events-none absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-slate-50 dark:from-[#07080B] to-transparent"></div>
+          </div>
       </section>
 
       {/* PACKAGES & PRICING */}

@@ -726,7 +726,7 @@ export default function LandingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 items-stretch max-w-5xl mx-auto w-full">
             
             {/* Plan 1: 1st Month Setup & Reporting */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none transition-all flex flex-col relative w-full ${
+              <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-br from-[#E5B869]/20 via-transparent to-[#E5B869]/10 border-2 border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/25 transition-all flex flex-col relative w-full ${
               activePricingTab === 'month1' ? 'shadow-[#E5B869]/20' : ''
             } ${activePricingTab !== 'month1' ? 'hidden sm:flex' : 'flex'}`}>
               
@@ -803,7 +803,7 @@ export default function LandingPage() {
             </div>
 
             {/* Plan 2: 2nd Month+ Monthly Growth Package */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col relative w-full ${
+              <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-br from-[#E5B869]/20 via-transparent to-[#E5B869]/10 border-2 border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/25 flex flex-col relative w-full ${
               activePricingTab !== 'growth' ? 'hidden sm:flex' : 'flex'
             }`}>
 
@@ -882,7 +882,7 @@ export default function LandingPage() {
             </div>
 
             {/* Plan 3: Social Media Growth Package */}
-            <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none transition-all flex flex-col relative w-full ${
+              <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-br from-[#E5B869]/20 via-transparent to-[#E5B869]/10 border-2 border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/25 transition-all flex flex-col relative w-full ${
               activePricingTab !== 'social' ? 'hidden sm:flex' : 'flex'
             }`}>
 
@@ -958,7 +958,7 @@ export default function LandingPage() {
             </div>
 
             {/* Plan 4: Custom Business Solution */}
-              <div className={`rounded-3xl p-5 sm:p-7 bg-gradient-to-br from-[#E5B869]/20 via-transparent to-[#E5B869]/10 border-2 border-[#E5B869]/60 shadow-2xl shadow-[#E5B869]/25 transition-all flex flex-col relative w-full ${
+                <div className={`rounded-3xl p-5 sm:p-7 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-white/10 shadow-lg transition-all flex flex-col relative w-full ${
               activePricingTab !== 'custom' ? 'hidden sm:flex' : 'flex'
             }`}>
 
@@ -966,7 +966,7 @@ export default function LandingPage() {
                 <span className="inline-block px-2.5 py-0.5 rounded-full text-[9px] sm:text-[10px] font-bold uppercase tracking-wider bg-black/[0.06] dark:bg-white/[0.06] text-slate-600 dark:text-slate-300 border border-slate-200/10 dark:border-white/10 mb-2">
                   CUSTOM BUSINESS SOLUTION
                 </span>
-                <h3 className="text-lg sm:text-xl font-black text-[#B8860B] dark:text-[#E5B869] leading-tight">Build Your Own Package</h3>
+                <h3 className="text-lg sm:text-xl font-black text-slate-900 dark:text-white leading-tight">Build Your Own Package</h3>
                 <p className="text-[10px] sm:text-[11px] text-slate-500 dark:text-slate-400 mt-2 leading-relaxed">
                   Pricing depends on the services, workload and support required. Tell us what you need &mdash; we will create the right package for your business.
                 </p>
@@ -1435,6 +1435,7 @@ export default function LandingPage() {
     </div>
   );
 }
+
 
 
 

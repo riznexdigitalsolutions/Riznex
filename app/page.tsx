@@ -329,8 +329,8 @@ export default function LandingPage() {
 
               {/* Headline */}
               <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.12] mb-5 break-words w-full">
-                We Manage Your Entire Digital Operation. <br />
-                So You Can Focus on <span className="text-[#E5B869]">the Food.</span>
+                You run the restaurant. <br />
+                We manage the growth <span className="text-[#E5B869]">behind the scenes.</span>
               </h1>
 
               {/* Subtitle */}
@@ -1435,6 +1435,7 @@ export default function LandingPage() {
     </div>
   );
 }
+
 
 
 

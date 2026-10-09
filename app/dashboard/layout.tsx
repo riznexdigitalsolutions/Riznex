@@ -182,10 +182,10 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
                 ) : (
                   <Link
                     href={item.href}
-                    className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 ${
+                    className={`flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 border border-transparent ${
                       isActive
-                        ? 'bg-blue-500/15 text-slate-900 dark:text-white border border-blue-500/20'
-                        : 'text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-200 dark:bg-[#1c2238] hover:text-slate-900 dark:hover:text-white'
+                        ? 'bg-[#D1A041] text-black border border-[#b58832] shadow-md font-bold'
+                          : 'text-slate-500 dark:text-slate-400 hover:bg-[#D1A041]/10 hover:text-[#D1A041]'
                     }`}
                     onClick={() => setSidebarOpen(false)}
                   >

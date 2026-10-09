@@ -89,9 +89,12 @@ export default function ClientLogin() {
           </button>
         </form>
         
-        <div className="mt-10 flex justify-center border-t border-white/5 pt-8">
-          <a href="#" className="text-[0.65rem] text-gray-600 font-bold uppercase tracking-widest hover:text-[#D1A041] transition-colors">Forgot Password?</a>
-        </div>
+        <div className="mt-10 flex flex-col items-center gap-4 border-t border-white/5 pt-8">
+            <a href="/" className="text-[0.65rem] text-gray-500 font-bold uppercase tracking-widest hover:text-[#D1A041] transition-colors flex items-center gap-2">
+              <span className="text-[10px]">◀</span> Back to Website
+            </a>
+            <a href="#" className="text-[0.65rem] text-gray-600 font-bold uppercase tracking-widest hover:text-[#D1A041] transition-colors">Forgot Password?</a>
+          </div>
 
       </div>
     </div>

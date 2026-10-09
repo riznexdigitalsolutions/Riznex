@@ -144,7 +144,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
           </div>
           {session?.user?.role === 'admin' && (
             <div className="px-5 pb-5 pt-1">
-              <Link href="/admin" className="flex items-center justify-center gap-2 w-full text-center text-xs font-bold text-slate-600 dark:text-slate-300 bg-[#161b2c] hover:bg-[#1e2538] hover:text-slate-900 dark:hover:text-white border border-[#2d3b5e] py-2 rounded-lg transition-all shadow-sm">
+              <Link href="/admin" className="flex items-center justify-center gap-2 w-full text-center text-xs font-bold text-[#D1A041] bg-[#D1A041]/10 hover:bg-[#D1A041] hover:text-black border border-[#D1A041]/30 hover:border-[#D1A041] py-2 rounded-lg transition-all shadow-sm">
                 <span>&larr;</span> Back to Databases
               </Link>
             </div>

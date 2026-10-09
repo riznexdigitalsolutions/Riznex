@@ -219,9 +219,9 @@ export default function LandingPage() {
                 key={item.label} 
                 href={item.href}
                 className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${
-                  item.href === '/demo'
-                    ? 'text-[#E5B869] font-bold bg-[#E5B869]/10 border border-[#E5B869]/40 hover:bg-[#E5B869]/20 animate-pulse drop-shadow-[0_0_8px_rgba(229,184,105,0.6)]'
-                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/[0.06] dark:hover:bg-white/[0.06]'
+                  item.href === '/demo' 
+                      ? 'text-black font-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] border border-[#b58832] shadow-md'
+                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 font-semibold'
                 }`}
               >
                 {item.label}
@@ -342,12 +342,7 @@ export default function LandingPage() {
 
               {/* CTA Action Buttons */}
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full sm:w-auto mb-8">
-                <Link 
-                  href="/demo" 
-                  className="px-6 py-3.5 rounded-xl font-bold text-xs sm:text-sm text-black bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] shadow-xl shadow-[#E5B869]/25 hover:scale-[1.02] active:scale-[0.98] transition-all text-center flex items-center justify-center gap-2 group"
-                >
-                  <Icons.Sparkles /> <span>Explore Live Demo</span> <Icons.ArrowRight />
-                </Link>
+                
                 <a 
                   href="#services" 
                   className="px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-slate-700 dark:text-slate-200 bg-black/[0.05] dark:bg-white/[0.05] border border-slate-200/10 dark:border-white/10 hover:bg-black/[0.1] dark:hover:bg-white/[0.1] hover:border-slate-200/20 dark:hover:border-white/20 transition-all text-center flex items-center justify-center gap-2"

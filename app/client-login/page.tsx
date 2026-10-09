@@ -46,13 +46,13 @@ export default function ClientLogin() {
           <Link href="/" className="mb-4 hover:opacity-80 transition-opacity">
             <img src="/images/new-logo.jpg" alt="Riznex Logo" className="h-16 w-auto mix-blend-screen" />
           </Link>
-          <h1 className="text-[1.35rem] font-black text-white uppercase tracking-wider mb-2">Welcome Back</h1>
-          <h2 className="text-gray-400 text-[0.6rem] font-bold uppercase tracking-widest text-center">Access your Riznex Client Dashboard</h2>
+          <h1 className="text-[1.35rem] font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2">Welcome Back</h1>
+          <h2 className="text-slate-500 dark:text-gray-400 text-[0.6rem] font-bold uppercase tracking-widest text-center">Access your Riznex Client Dashboard</h2>
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-[0.65rem] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Email</label>
+            <label className="block text-[0.65rem] font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400 mb-1.5">Email</label>
             <input 
               type="text" 
               value={email}
@@ -63,7 +63,7 @@ export default function ClientLogin() {
             />
           </div>
           <div>
-            <label className="block text-[0.65rem] font-bold uppercase tracking-wider text-gray-400 mb-1.5">Password</label>
+            <label className="block text-[0.65rem] font-bold uppercase tracking-wider text-slate-500 dark:text-gray-400 mb-1.5">Password</label>
             <input 
               type="password" 
               value={password}

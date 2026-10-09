@@ -158,10 +158,11 @@ export function HungryBirdsDashboard() {
     if (s.invoiceDate) d = new Date(s.invoiceDate);
     if (isNaN(d.getTime())) d = new Date();
     
-    // Align to Monday
-    const day = d.getDay(), diff = d.getDate() - day + (day == 0 ? -6:1);
-    const mon = new Date(d.setDate(diff));
-    const dateStr = mon.toISOString().split('T')[0];
+    // Align to Monday using UTC to avoid timezone shifts
+      const day = d.getUTCDay();
+      const diff = d.getUTCDate() - day + (day === 0 ? -6 : 1);
+      const mon = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), diff));
+      const dateStr = mon.toISOString().split('T')[0];
     if (!weeklyMap[dateStr]) weeklyMap[dateStr] = { name: dateStr, sales: 0, orders: 0, suppliers: 0, date: mon };
     weeklyMap[dateStr].suppliers += (Number(s.amount) || 0);
   });

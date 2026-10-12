@@ -99,12 +99,22 @@ bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-bl
 - Sub-routes: `/sales`, `/expenses`, `/expenses/suppliers`, `/expenses/wages`, `/expenses/marketing`, `/expenses/utilities`, `/invoices`, `/reports`, `/settings`, `/2025/...`.
 
 ### 3. Authentication & Admin:
-- **Client Login:** `app/client-login/page.tsx` (Wrapped in the gold glassmorphism card, authenticates restaurant clients).
-- **Admin Login:** `app/login/page.tsx` (Admin credentials login).
-- **Admin Dashboard:** `app/admin/page.tsx` & `app/admin/layout.tsx` (Client onboarding, credential distribution, administrative tools).
-- **Live Demo Page:** `app/demo/page.tsx` (Public walkthrough with realistic UK restaurant delivery metrics).
+- **Client Login:** `app/client-login/page.tsx` (Authenticates restaurant clients with full light/dark mode support).
+- **Admin Login:** `app/login/page.tsx` & `app/admin/AdminClientPage.tsx` (Reverted back to clean original layout in commit `8ff2a34` with comprehensive light & dark mode support and readable high-contrast text).
+- **Admin Dashboard:** `app/admin/page.tsx` & `app/admin/layout.tsx` (Client onboarding, database navigation with golden brand theme applied to 'Back to Databases' button and standalone main menus).
+- **Live Demo Page:** `app/demo/page.tsx` (Public walkthrough with realistic UK restaurant delivery metrics; linked as bold CTA in the top navbar per commit `078da6a`).
 
 ---
+
+## 🕒 4.1 LATEST COMMITS SUMMARY (REFERENCE)
+- `8ff2a34`: Revert login and admin client pages back to original style with comprehensive light/dark mode contrast fixes.
+- `078da6a`: Remove 'Explore Live Demo' button from hero copy to streamline header; highlight as bold in top navbar.
+- `62a3c97`: Fix unreadable white text on login page in light mode.
+- `737c830`: Apply golden brand theme (`#E5B869`) to 'Back to Databases' admin button.
+- `524e096`: Apply golden brand theme to all standalone main menus and eliminate layout shift.
+- `ef52677`: Injected global luxury dynamic background in `layout.tsx` and applied gold glassmorphism across all core cards.
+- `266a223`: Replaced client logos with 4 high-res logos in continuous infinite marquee animation.
+
 
 ## 🛠️ 5. GIT & DEPLOYMENT WORKFLOW
 

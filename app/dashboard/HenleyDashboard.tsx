@@ -529,12 +529,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   return (
     <div className="space-y-8 pb-10 print-bw-report">
       {/* --- VISUAL DASHBOARD --- */}
-      <div id="dashboard-export-area" className="bg-transparent min-h-screen text-slate-700 dark:text-slate-200 p-4 lg:p-8 font-sans flex flex-col gap-8 pb-32">
+      <div id="dashboard-export-area" className="bg-transparent min-h-screen text-slate-700 dark:text-slate-200 p-1 sm:p-2 lg:p-4 font-sans flex flex-col gap-6 sm:gap-8 pb-32">
         {/* Header & Filter Controls Section */}
         <div className="flex flex-col gap-6 relative z-10">
         
         {/* Tier 1: Dynamic Title with Brand Logos on Left & Export Button */}
-        <div className="flex justify-between items-center mb-2 relative flex-wrap gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 relative gap-4">
           <div className={`flex items-center flex-wrap ${activeTab === 'weekly' ? 'justify-center w-full' : 'gap-4'}`}>
             {/* Dynamic Logos on Left Side */}
             <div className={`flex items-center gap-2 ${activeTab === 'weekly' ? 'hidden' : ''}`}>
@@ -562,7 +562,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             </div>
           </div>
 
-          <div className="print:hidden" data-html2canvas-ignore="true">
+          <div className="print:hidden self-start sm:self-auto" data-html2canvas-ignore="true">
             <button onClick={() => exportToPDF('dashboard-export-area', getExportFilename())} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-4 py-2.5 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
               <span>📄</span> Export PDF Report
             </button>
@@ -627,31 +627,31 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
 
       <div className={activeTab === 'overview' ? 'flex flex-col gap-8' : 'hidden'}>
         {/* Primary KPIs - 5 cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 shadow-lg">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Orders</div>
-          <div className="text-2xl font-black text-slate-900 dark:text-white">{orders}</div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3.5 sm:p-4 lg:p-3.5 xl:p-5 shadow-lg min-w-0 overflow-hidden flex flex-col justify-between">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 truncate">Total Orders</div>
+          <div className="text-base sm:text-lg md:text-xl lg:text-[1.15rem] xl:text-2xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{orders}</div>
         </div>
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 shadow-lg">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Gross Sales</div>
-          <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalSales)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3.5 sm:p-4 lg:p-3.5 xl:p-5 shadow-lg min-w-0 overflow-hidden flex flex-col justify-between">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 truncate">Gross Sales</div>
+          <div className="text-base sm:text-lg md:text-xl lg:text-[1.15rem] xl:text-2xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totalSales)}</div>
         </div>
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 shadow-lg">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Net Sales</div>
-          <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(r?.sales?.totalNetPaid ?? 0)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3.5 sm:p-4 lg:p-3.5 xl:p-5 shadow-lg min-w-0 overflow-hidden flex flex-col justify-between">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 truncate">Net Sales</div>
+          <div className="text-base sm:text-lg md:text-xl lg:text-[1.15rem] xl:text-2xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(r?.sales?.totalNetPaid ?? 0)}</div>
         </div>
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-5 shadow-lg">
-          <div className="text-[11px] font-bold text-slate-500 uppercase tracking-widest mb-1">Total Expenses</div>
-          <div className="text-2xl font-black text-slate-900 dark:text-white">{gbp(totalExpenses + totalSuppliers)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3.5 sm:p-4 lg:p-3.5 xl:p-5 shadow-lg min-w-0 overflow-hidden flex flex-col justify-between">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 uppercase tracking-wider mb-1 truncate">Total Expenses</div>
+          <div className="text-base sm:text-lg md:text-xl lg:text-[1.15rem] xl:text-2xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totalExpenses + totalSuppliers)}</div>
         </div>
-        <div className="bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#E5B869]/30 rounded-2xl p-5 shadow-sm dark:shadow-[#E5B869]/5 dark:shadow-xl">
-          <div className="text-[11px] font-bold text-slate-500 dark:text-[#E5B869] uppercase tracking-widest mb-1">Net Profit</div>
-          <div className="text-3xl font-black text-slate-900 dark:text-white">{gbp(netProfit)}</div>
+        <div className="col-span-2 sm:col-span-2 md:col-span-1 lg:col-span-1 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3.5 sm:p-4 lg:p-3.5 xl:p-5 shadow-lg min-w-0 overflow-hidden flex flex-col justify-between">
+          <div className="text-[10px] sm:text-[11px] font-bold text-[#B8860B] dark:text-[#E5B869] uppercase tracking-wider mb-1 truncate">Net Profit</div>
+          <div className={`text-lg sm:text-xl md:text-2xl lg:text-xl xl:text-3xl font-black ${netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'} tracking-tight tabular-nums truncate`}>{gbp(netProfit)}</div>
         </div>
       </div>
 
       {/* Expense Breakdown Strip — 7 tiles */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-2 sm:gap-3">
         <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
           <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Franchise & POS Fees</div>
           <div className="text-base font-black text-indigo-400">{gbp(franchiseFees)}</div>

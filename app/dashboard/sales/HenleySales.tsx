@@ -410,17 +410,17 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
         {[
           { label: 'Total Orders', value: totals.orders.toString(), icon: '🛒', color: '#fbbf24' },
           { label: 'Gross Sales', value: gbp(totals.gross), icon: '💷', color: '#4f8ef7' },
           { label: 'Total Deductions', value: gbp(totals.gross - totals.net), icon: '📉', color: '#f04060' },
           { label: filter.platform ? `${platformLabel(filter.platform)} Avg Ded %` : 'Avg Ded % (All)', value: getAvgCommPercent(), icon: '📊', color: '#a78bfa' },
           { label: 'Net Received', value: gbp(totals.net), icon: '✅', color: '#22d3a5' },
-        ].map(c => (
-          <div key={c.label} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4">
-            <div className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">{c.label}</div>
-            <div className="text-xl font-black text-slate-900 dark:text-white">{c.value}</div>
+        ].map((c, i) => (
+          <div key={c.label} className={`bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 sm:p-4 min-w-0 overflow-hidden flex flex-col justify-between ${i === 4 ? 'col-span-2 sm:col-span-2 md:col-span-1 lg:col-span-1' : ''}`}>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1 truncate">{c.label}</div>
+            <div className="text-base sm:text-lg md:text-xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{c.value}</div>
           </div>
         ))}
       </div>

@@ -243,31 +243,31 @@ export function HenleyExpensesDashboard() {
         <div className="space-y-5">
 
           {/* ── Quick Stats Row ─────────────────────────────── */}
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3 mb-6">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Staff Wages</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.wages)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.wages)}</div>
             </div>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Suppliers</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.suppliers)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.suppliers)}</div>
             </div>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Utilities</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.utilities)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.utilities)}</div>
             </div>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Marketing</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.marketing)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.marketing)}</div>
             </div>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Other</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.other)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.other)}</div>
             </div>
             <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex flex-col justify-center relative overflow-hidden group">
               <div className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 opacity-50" />
               <div className="text-[10px] font-bold text-red-400/80 uppercase tracking-widest mb-1">Total Outgoing</div>
-              <div className="text-xl font-black text-slate-900 dark:text-white">{gbp(totals.grandTotal)}</div>
+              <div className="text-base sm:text-lg md:text-xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.grandTotal)}</div>
             </div>
           </div>
           {storeFilter && <div className="mb-4 inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-1.5 rounded-full text-xs font-bold z-10">½ split applied for shared {storeFilter} expenses</div>}
@@ -275,7 +275,7 @@ export function HenleyExpensesDashboard() {
           {activeTab === 'overview' && (
             <div className="mt-8 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-2xl">
               <div className="px-6 py-4 border-b border-slate-200 dark:border-[#1f2947] bg-[#161b2c] flex items-center justify-between">
-                <h3 className="text-lg font-black text-slate-900 dark:text-white">Master Ledger: All Outgoing Cash</h3>
+                <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">Master Ledger: All Outgoing Cash</h3>
                 <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Single Sheet View</div>
               </div>
               <div className="overflow-x-auto max-h-[600px]">

@@ -261,7 +261,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
       {/* Main */}
       <div className="flex-1 lg:ml-60 print:ml-0 flex flex-col min-h-screen print:bg-black dark:print:bg-white print:text-black">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-slate-100/80 dark:bg-[#0a0c14]/80 backdrop-blur border-b border-slate-200 dark:border-[#1f2947] px-6 py-3 flex items-center gap-4 print:hidden">
+        <header className="sticky top-0 z-30 bg-slate-100/80 dark:bg-[#0a0c14]/80 backdrop-blur border-b border-slate-200 dark:border-[#1f2947] px-4 sm:px-6 py-3 flex items-center gap-4 print:hidden">
           <button
             className="lg:hidden text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1"
             onClick={() => setSidebarOpen(true)}
@@ -276,7 +276,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-3 sm:p-5 lg:p-6 min-w-0 overflow-x-hidden">
           {children}
         </main>
       </div>

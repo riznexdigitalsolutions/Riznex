@@ -276,6 +276,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
 
   
   const totalSales = r?.sales?.totalGrossSales ?? 0
+  const costRatio = (val: number) => totalSales > 0 ? ((val / totalSales) * 100).toFixed(1) + '% of sales' : '0.0% of sales'
   const orders = r?.sales?.totalOrders ?? 0
   const adSpends = r?.sales?.totalAdSpends ?? 0
   const totalCommission = r?.sales?.totalCommission ?? 0
@@ -658,6 +659,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <span className="truncate">Franchise & Fees</span>
           </div>
           <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(franchiseFees)}</div>
+          <div className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{costRatio(franchiseFees)}</div>
         </div>
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
           <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
@@ -665,6 +667,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <span className="truncate">Utilities</span>
           </div>
           <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(utilities)}</div>
+          <div className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{costRatio(utilities)}</div>
         </div>
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
           <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
@@ -672,6 +675,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <span className="truncate">Wages</span>
           </div>
           <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(staffWages)}</div>
+          <div className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{costRatio(staffWages)}</div>
         </div>
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
           <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
@@ -679,6 +683,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <span className="truncate">Suppliers</span>
           </div>
           <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totalSuppliers)}</div>
+          <div className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{costRatio(totalSuppliers)}</div>
         </div>
         {!is2025 && (
           <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
@@ -687,6 +692,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
               <span className="truncate">Marketing</span>
             </div>
             <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(marketing)}</div>
+            <div className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{costRatio(marketing)}</div>
           </div>
         )}
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
@@ -695,6 +701,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <span className="truncate">Others</span>
           </div>
           <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(otherExpenses)}</div>
+          <div className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 mt-0.5">{costRatio(otherExpenses)}</div>
         </div>
         <div className="bg-purple-500/10 border border-purple-500/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
           <div className="text-[10px] sm:text-[11px] font-bold text-purple-700 dark:text-purple-300 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
@@ -702,6 +709,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <span className="truncate">Total Expenses</span>
           </div>
           <div className="text-sm sm:text-base md:text-lg font-black text-purple-800 dark:text-purple-200 tracking-tight tabular-nums truncate">{gbp(totalExpenses + totalSuppliers)}</div>
+          <div className="text-[10px] font-semibold text-purple-600/80 dark:text-purple-300/80 mt-0.5">{costRatio(totalExpenses + totalSuppliers)}</div>
         </div>
       </div>
 

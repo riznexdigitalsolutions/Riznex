@@ -564,33 +564,54 @@ export function HungryBirdsDashboard() {
 
       {/* Expense Breakdown Strip — 7 tiles */}
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-7 gap-2 sm:gap-3">
-        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Commissions</div>
-          <div className="text-base font-black text-red-400">{gbp(totalCommission)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 shrink-0"></span>
+            <span className="truncate">Commissions</span>
+          </div>
+          <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totalCommission)}</div>
         </div>
-        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Ad Spend</div>
-          <div className="text-base font-black text-yellow-400">{gbp(adSpends)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-pink-500 shrink-0"></span>
+            <span className="truncate">Ad Spend</span>
+          </div>
+          <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(adSpends)}</div>
         </div>
-        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Utilities</div>
-          <div className="text-base font-black text-slate-900 dark:text-white">{gbp(utilities)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0"></span>
+            <span className="truncate">Utilities</span>
+          </div>
+          <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(utilities)}</div>
         </div>
-        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Wages</div>
-          <div className="text-base font-black text-slate-900 dark:text-white">{gbp(staffWages)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-500 shrink-0"></span>
+            <span className="truncate">Wages</span>
+          </div>
+          <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(staffWages)}</div>
         </div>
-        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Supplier Purchases</div>
-          <div className="text-base font-black text-amber-400">{gbp(totalSuppliers)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
+            <span className="truncate">Suppliers</span>
+          </div>
+          <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totalSuppliers)}</div>
         </div>
-        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1">
-          <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Others</div>
-          <div className="text-base font-black text-indigo-400">{gbp(otherExpenses)}</div>
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
+          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></span>
+            <span className="truncate">Others</span>
+          </div>
+          <div className="text-sm sm:text-base md:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(otherExpenses)}</div>
         </div>
-        <div className="bg-white dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-3 flex flex-col gap-1 bg-purple-500/10 border-purple-500/20">
-          <div className="text-[10px] font-bold text-slate-500 dark:text-slate-900 dark:text-white uppercase tracking-widest">Total Expenses</div>
-          <div className="text-base font-black text-purple-800 dark:text-purple-300">{gbp(totalExpenses + totalSuppliers)}</div>
+        <div className="bg-purple-500/10 border border-purple-500/30 shadow-sm rounded-2xl p-3 sm:p-3.5 flex flex-col justify-between min-w-0 overflow-hidden">
+          <div className="text-[10px] sm:text-[11px] font-bold text-purple-700 dark:text-purple-300 uppercase tracking-wider mb-1 truncate flex items-center gap-1.5">
+            <span className="w-1.5 h-1.5 rounded-full bg-purple-600 shrink-0"></span>
+            <span className="truncate">Total Expenses</span>
+          </div>
+          <div className="text-sm sm:text-base md:text-lg font-black text-purple-800 dark:text-purple-200 tracking-tight tabular-nums truncate">{gbp(totalExpenses + totalSuppliers)}</div>
         </div>
       </div>
 

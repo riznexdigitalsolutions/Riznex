@@ -8,3 +8,9 @@
 4. **NO UNAPPROVED MUTATIONS:** Do not touch locked system files even if you think there is an inconsistency or bug in them, unless the user explicitly orders a fix for that specific system.
 
 IF YOU VIOLATE THESE RULES, YOU WILL BREAK A PRODUCTION-READY SYSTEM.
+
+---
+
+### 📖 PROJECT ARCHITECTURE & HANDOVER REFERENCE
+For complete details on current architecture, color codes, glassmorphism standards, recent changes, and Git workflow, refer to [HANDOVER.md](file:///c:/My%20workings/Riznex/restaurant-dashboard/HANDOVER.md).
+

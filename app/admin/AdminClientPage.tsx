@@ -134,7 +134,7 @@ export default function AdminClientsPage() {
             <button onClick={async () => {
               await fetch('/api/admin/set-client', { method: 'POST', body: JSON.stringify({ clientName: c.name }) });
               window.location.href = '/dashboard';
-            }} className="w-full bg-slate-100 dark:bg-[#1c2238] hover:bg-blue-600 text-white py-3 rounded-xl text-sm font-bold border border-slate-300 dark:border-[#2a3441] hover:border-blue-500 transition-all duration-300">
+            }} className="w-full bg-gradient-to-r from-[#E5B869] via-[#F3C663] to-[#C89B3C] hover:opacity-95 active:scale-[0.99] text-black py-3 rounded-xl text-sm font-black shadow-md shadow-[#E5B869]/25 hover:shadow-lg hover:shadow-[#E5B869]/35 transition-all duration-200 cursor-pointer">
               Access Database
             </button>
           </div>

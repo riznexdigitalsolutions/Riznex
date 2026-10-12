@@ -5,6 +5,11 @@ import { useTheme } from 'next-themes';
 import Link from 'next/link'
 
 // Formatting helper
+const pctOfSales = (val: number, grossSales: number) => {
+  if (!grossSales || grossSales <= 0) return '0.0%'
+  return ((val / grossSales) * 100).toFixed(1) + '%'
+}
+
 const gbp = (val: number) => {
   return '£' + Number(val || 0).toLocaleString('en-GB', {
     minimumFractionDigits: 2,
@@ -672,39 +677,94 @@ function DemoContent() {
                 </div>
                 <div className="col-span-2 sm:col-span-1 bg-gradient-to-br bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#E5B869]/20 rounded-2xl p-4 sm:p-5 shadow-sm dark:shadow-[#E5B869]/5 dark:shadow-xl">
                   <div className="text-[11px] font-bold text-slate-500 dark:text-[#E5B869] uppercase tracking-widest mb-1">Net Profit</div>
-                  <div className={`text-2xl sm:text-3xl font-black ${currentData.netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(currentData.netProfit)}</div>
+                  <div className={`text-2xl sm:text-3xl font-black ${currentData.netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(currentData.netProfit)}</div>
                 </div>
               </div>
 
               {/* Expense Breakdown Strip — 7 Tiles */}
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-7 gap-2.5">
-                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Franchise & POS</div>
-                  <div className="text-sm sm:text-base font-black text-indigo-400">{gbp(currentData.franchiseFees)}</div>
+                {/* 1. Franchise & POS */}
+                <div className="bg-slate-50 dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Franchise & POS</div>
+                    <div className="text-sm sm:text-base font-black text-indigo-600 dark:text-indigo-400 mt-0.5">{gbp(currentData.franchiseFees)}</div>
+                  </div>
+                  <div className="mt-1.5 pt-1.5 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-[10px]">
+                    <span className="font-semibold text-slate-500 dark:text-slate-400">{pctOfSales(currentData.franchiseFees, currentData.grossSales)}</span>
+                    <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">of sales</span>
+                  </div>
                 </div>
-                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Utilities</div>
-                  <div className="text-sm sm:text-base font-black text-sky-400">{gbp(currentData.utilities)}</div>
+
+                {/* 2. Utilities */}
+                <div className="bg-slate-50 dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Utilities</div>
+                    <div className="text-sm sm:text-base font-black text-sky-600 dark:text-sky-400 mt-0.5">{gbp(currentData.utilities)}</div>
+                  </div>
+                  <div className="mt-1.5 pt-1.5 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-[10px]">
+                    <span className="font-semibold text-slate-500 dark:text-slate-400">{pctOfSales(currentData.utilities, currentData.grossSales)}</span>
+                    <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-sky-500/10 text-sky-600 dark:text-sky-400">of sales</span>
+                  </div>
                 </div>
-                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Wages</div>
-                  <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white">{gbp(currentData.wages)}</div>
+
+                {/* 3. Wages */}
+                <div className="bg-slate-50 dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Wages</div>
+                    <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white mt-0.5">{gbp(currentData.wages)}</div>
+                  </div>
+                  <div className="mt-1.5 pt-1.5 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-[10px]">
+                    <span className="font-semibold text-slate-500 dark:text-slate-400">{pctOfSales(currentData.wages, currentData.grossSales)}</span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">Target &lt;30%</span>
+                  </div>
                 </div>
-                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Supplier Purchases</div>
-                  <div className="text-sm sm:text-base font-black text-amber-400">{gbp(currentData.supplierPurchases)}</div>
+
+                {/* 4. Supplier Purchases */}
+                <div className="bg-slate-50 dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Supplier Purchases</div>
+                    <div className="text-sm sm:text-base font-black text-amber-600 dark:text-amber-400 mt-0.5">{gbp(currentData.supplierPurchases)}</div>
+                  </div>
+                  <div className="mt-1.5 pt-1.5 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-[10px]">
+                    <span className="font-semibold text-slate-500 dark:text-slate-400">{pctOfSales(currentData.supplierPurchases, currentData.grossSales)}</span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-600 dark:text-amber-400">Target &lt;32%</span>
+                  </div>
                 </div>
-                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Marketing</div>
-                  <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white">{gbp(currentData.marketing)}</div>
+
+                {/* 5. Marketing */}
+                <div className="bg-slate-50 dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Marketing</div>
+                    <div className="text-sm sm:text-base font-black text-purple-600 dark:text-purple-400 mt-0.5">{gbp(currentData.marketing)}</div>
+                  </div>
+                  <div className="mt-1.5 pt-1.5 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-[10px]">
+                    <span className="font-semibold text-slate-500 dark:text-slate-400">{pctOfSales(currentData.marketing, currentData.grossSales)}</span>
+                    <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-600 dark:text-purple-400">of sales</span>
+                  </div>
                 </div>
-                <div className="bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-slate-500 uppercase tracking-wider truncate">Others</div>
-                  <div className="text-sm sm:text-base font-black text-slate-500 dark:text-slate-400">{gbp(currentData.others)}</div>
+
+                {/* 6. Others */}
+                <div className="bg-slate-50 dark:bg-[#0e1420] border border-slate-200 dark:border-[#1f2947] rounded-xl px-3.5 py-2.5 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <div className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider truncate">Others</div>
+                    <div className="text-sm sm:text-base font-black text-slate-700 dark:text-slate-300 mt-0.5">{gbp(currentData.others)}</div>
+                  </div>
+                  <div className="mt-1.5 pt-1.5 border-t border-slate-200/60 dark:border-slate-800/60 flex items-center justify-between text-[10px]">
+                    <span className="font-semibold text-slate-500 dark:text-slate-400">{pctOfSales(currentData.others, currentData.grossSales)}</span>
+                    <span className="text-[9px] font-medium px-1.5 py-0.5 rounded bg-slate-500/10 text-slate-500 dark:text-slate-400">misc</span>
+                  </div>
                 </div>
-                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#E5B869]/10 rounded-xl px-3.5 py-2.5 flex flex-col gap-1">
-                  <div className="text-[10px] font-bold text-slate-500 dark:text-slate-900 dark:text-white uppercase tracking-wider truncate">Total Expenses</div>
-                  <div className="text-sm sm:text-base font-black text-slate-900 dark:text-white dark:text-purple-300">{gbp(currentData.totalExpenses)}</div>
+
+                {/* 7. Total Expenses */}
+                <div className="col-span-2 sm:col-span-1 bg-gradient-to-br from-amber-500/5 via-slate-50 to-slate-100 dark:from-amber-500/10 dark:via-[#111520] dark:to-[#0e1420] border border-amber-500/30 dark:border-[#E5B869]/20 rounded-xl px-3.5 py-2.5 flex flex-col justify-between shadow-sm">
+                  <div>
+                    <div className="text-[10px] font-bold text-amber-700 dark:text-[#E5B869] uppercase tracking-wider truncate">Total Expenses</div>
+                    <div className="text-sm sm:text-base font-black text-slate-900 dark:text-amber-300 mt-0.5">{gbp(currentData.totalExpenses)}</div>
+                  </div>
+                  <div className="mt-1.5 pt-1.5 border-t border-amber-500/20 dark:border-[#E5B869]/20 flex items-center justify-between text-[10px]">
+                    <span className="font-bold text-amber-700 dark:text-[#E5B869]">{pctOfSales(currentData.totalExpenses, currentData.grossSales)}</span>
+                    <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-800 dark:text-amber-200">total ratio</span>
+                  </div>
                 </div>
               </div>
 
@@ -907,7 +967,7 @@ function DemoContent() {
                   {/* Net Profit Result */}
                   <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
                     <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-lg">= Net Profit</span>
-                    <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-xl">{gbp(currentData.netProfit)}</span>
+                    <span className={`font-black text-xl ${currentData.netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(currentData.netProfit)}</span>
                   </div>
                 </div>
 

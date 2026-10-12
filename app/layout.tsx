@@ -19,6 +19,20 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="scroll-smooth overflow-x-hidden" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              try {
+                if (!sessionStorage.getItem('riznex_session_active')) {
+                  localStorage.setItem('theme', 'light');
+                  sessionStorage.setItem('riznex_session_active', 'true');
+                }
+              } catch (e) {}
+            `,
+          }}
+        />
+      </head>
       <body className={`${inter.className} overflow-x-hidden w-full max-w-full bg-transparent text-slate-800 dark:text-slate-100`}>
         
         {/* GLOBAL LUXURY BACKGROUND INJECTED VIA LAYOUT */}

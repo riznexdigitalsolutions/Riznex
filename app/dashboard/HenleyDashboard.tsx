@@ -645,8 +645,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
           <div className="text-base sm:text-lg md:text-xl lg:text-[1.15rem] xl:text-2xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totalExpenses + totalSuppliers)}</div>
         </div>
         <div className="col-span-2 sm:col-span-2 md:col-span-1 lg:col-span-1 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3.5 sm:p-4 lg:p-3.5 xl:p-5 shadow-lg min-w-0 overflow-hidden flex flex-col justify-between">
-          <div className="text-[10px] sm:text-[11px] font-bold text-[#B8860B] dark:text-[#E5B869] uppercase tracking-wider mb-1 truncate">Net Profit</div>
-          <div className={`text-lg sm:text-xl md:text-2xl lg:text-xl xl:text-3xl font-black ${netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'} tracking-tight tabular-nums truncate`}>{gbp(netProfit)}</div>
+          <div className={`text-[10px] sm:text-[11px] font-bold ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'} uppercase tracking-wider mb-1 truncate`}>Net Profit</div>
+          <div className={`text-lg sm:text-xl md:text-2xl lg:text-xl xl:text-3xl font-black ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'} tracking-tight tabular-nums truncate`}>{gbp(netProfit)}</div>
         </div>
       </div>
 
@@ -958,8 +958,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
           </div>
 
           <div className="mt-8 pt-6 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
-            <span className="text-[#a17a36] dark:text-[#E5B869] font-black text-xl">= Net Profit</span>
-            <span className="text-[#a17a36] dark:text-[#E5B869] font-black text-2xl">{gbp(netProfit)}</span>
+            <span className={`font-black text-xl ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>= Net Profit</span>
+            <span className={`font-black text-2xl ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(netProfit)}</span>
           </div>
         </div>
 

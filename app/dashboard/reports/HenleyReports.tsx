@@ -360,9 +360,9 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
 
                 {/* Net Income */}
                 <div className="font-bold text-slate-600 dark:text-slate-300 uppercase tracking-wider text-xs border-b border-slate-200 dark:border-[#1f2947] pb-2 mb-3 mt-8">Bottom Line</div>
-                <div className="flex justify-between items-center text-[#a17a36] dark:text-[#E5B869] font-black text-xl pl-4 py-2 bg-emerald-500/10 rounded-xl border border-slate-200 dark:border-[#E5B869]/20 px-4">
+                <div className={`flex justify-between items-center font-black text-xl pl-4 py-2 ${ebitda >= 0 ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-600 dark:text-emerald-400' : 'bg-rose-500/10 border-rose-500/30 text-rose-600 dark:text-rose-400'} rounded-xl border px-4`}>
                   <span>EBITDA / Net Profit</span>
-                  <span className="text-slate-900 dark:text-white">{gbp(ebitda)} <span className="text-sm text-slate-900 dark:text-white font-bold ml-2">({ebitdaMargin.toFixed(1)}%)</span></span>
+                  <span className={`${ebitda >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(ebitda)} <span className="text-sm font-bold ml-2">({ebitdaMargin.toFixed(1)}%)</span></span>
                 </div>
 
               </div>

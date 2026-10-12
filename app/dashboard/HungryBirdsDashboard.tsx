@@ -557,8 +557,8 @@ export function HungryBirdsDashboard() {
         </div>
 
         <div className="col-span-2 sm:col-span-2 md:col-span-1 lg:col-span-1 bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#E5B869]/30 rounded-2xl p-3.5 sm:p-4 lg:p-3.5 xl:p-5 shadow-sm dark:shadow-[#E5B869]/5 dark:shadow-xl min-w-0 overflow-hidden flex flex-col justify-between">
-          <div className="text-[10px] sm:text-[11px] font-bold text-slate-500 dark:text-[#E5B869] uppercase tracking-wider mb-1 truncate">Net Profit</div>
-          <div className={`text-lg sm:text-xl md:text-2xl lg:text-xl xl:text-3xl font-black ${netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'} tracking-tight tabular-nums truncate`}>{gbp(netProfit)}</div>
+          <div className={`text-[10px] sm:text-[11px] font-bold ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'} uppercase tracking-wider mb-1 truncate`}>Net Profit</div>
+          <div className={`text-lg sm:text-xl md:text-2xl lg:text-xl xl:text-3xl font-black ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'} tracking-tight tabular-nums truncate`}>{gbp(netProfit)}</div>
         </div>
       </div>
 
@@ -759,8 +759,8 @@ export function HungryBirdsDashboard() {
           </div>
 
           <div className="mt-8 pt-6 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
-            <span className="text-[#B8860B] dark:text-[#E5B869] font-bold text-xl tracking-tight">= Net Profit</span>
-            <span className="text-[#B8860B] dark:text-[#E5B869] font-bold text-2xl">{gbp(netProfit)}</span>
+            <span className={`font-bold text-xl tracking-tight ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>= Net Profit</span>
+            <span className={`font-bold text-2xl ${netProfit >= 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(netProfit)}</span>
           </div>
         </div>
 

@@ -304,11 +304,8 @@ IMPORTANT:
           const errorText = await geminiRes.text();
           console.error("Gemini API Error:", geminiRes.status, errorText);
           if (geminiRes.status === 401 || geminiRes.status === 403) {
-            await prisma.invoice.update({
-               where: { id },
-               data: { ocrStatus: 'error', notes: 'CRASHED: Your Gemini API Key is invalid, expired, or has no quota. Please check the GOOGLE_AI_API_KEY in your Hostinger environment variables.' }
-            });
-            return NextResponse.json({ error: 'Invalid API Key' }, { status: 500 });
+            console.warn(`Gemini returned ${geminiRes.status}, falling back to local OCR parsing.`);
+            geminiData = null;
           }
         } else {
           console.error("Gemini API Error: No response received");
@@ -824,7 +821,7 @@ IMPORTANT:
       if (invoice.type === "supplier") {
         ocrData = parseSupplierInvoice(extractedText, invoice.fileName);
       } else if (invoice.platform?.includes("Uber Eats")) {
-        ocrData = parseUberEatsInvoice(extractedText);
+        ocrData = parseUberEatsInvoice(extractedText, invoice.fileName);
       } else if (invoice.platform?.includes("Just Eat")) {
         ocrData = parseJustEatInvoice(extractedText);
       } else if (invoice.platform?.includes("Deliveroo")) {
@@ -835,13 +832,18 @@ IMPORTANT:
       }
     }
 
+    const isValidDate = (d: any): d is Date => d instanceof Date && !isNaN(d.getTime());
+
     const finalAmount =
       ocrData.grossSales || ocrData.totalAmount || ocrData.receipts?.webCard || ocrData.receipts?.pdq || invoice.amount;
-    const extractedDate = ocrData.invoiceDate
+    const rawExtractedDate = ocrData.invoiceDate
       ? new Date(ocrData.invoiceDate)
-      : invoice.invoiceDate
-        ? new Date(invoice.invoiceDate)
-        : null;
+      : ocrData.weekEnd
+        ? new Date(ocrData.weekEnd)
+        : invoice.invoiceDate
+          ? new Date(invoice.invoiceDate)
+          : null;
+    const extractedDate = isValidDate(rawExtractedDate) ? rawExtractedDate : null;
 
     if (invoice.type === "supplier") {
       if (!finalAmount || !extractedDate) {
@@ -850,53 +852,57 @@ IMPORTANT:
     }
 
     // 2. Smart AI Data Detection (Cross-referencing)
-    if (finalAmount && extractedDate) {
+    if (finalAmount && extractedDate && isValidDate(extractedDate)) {
       const startOfDay = new Date(extractedDate);
       startOfDay.setHours(0, 0, 0, 0);
       const endOfDay = new Date(extractedDate);
       endOfDay.setHours(23, 59, 59, 999);
 
-      const duplicate = await prisma.invoice.findFirst({
-        where: {
-          id: { not: id },
-          clientId: invoice.clientId,
-          type: invoice.type,
-          platform: invoice.platform,
-          supplierId: invoice.supplierId,
-          amount: finalAmount,
-          invoiceDate: {
-            gte: startOfDay,
-            lte: endOfDay,
-          },
-        },
-      });
-
-      if (duplicate) {
-        await prisma.invoice.update({
-          where: { id },
-          data: {
-            ocrStatus: "error",
-            notes:
-              "Duplicate detected by AI: Another invoice with the exact same Date, Supplier, and Amount already exists.",
+      if (isValidDate(startOfDay) && isValidDate(endOfDay)) {
+        const duplicate = await prisma.invoice.findFirst({
+          where: {
+            id: { not: id },
+            clientId: invoice.clientId,
+            type: invoice.type,
+            platform: invoice.platform,
+            supplierId: invoice.supplierId,
+            amount: finalAmount,
+            invoiceDate: {
+              gte: startOfDay,
+              lte: endOfDay,
+            },
           },
         });
-        return NextResponse.json(
-          { error: "Duplicate invoice detected by AI" },
-          { status: 409 },
-        );
+
+        if (duplicate) {
+          await prisma.invoice.update({
+            where: { id },
+            data: {
+              ocrStatus: "error",
+              notes:
+                "Duplicate detected by AI: Another invoice with the exact same Date, Supplier, and Amount already exists.",
+            },
+          });
+          return NextResponse.json(
+            { error: "Duplicate invoice detected by AI" },
+            { status: 409 },
+          );
+        }
       }
     }
 
-    const parsedInvoiceDate = ocrData.invoiceDate
+    const rawParsedDate = ocrData.invoiceDate
       ? new Date(ocrData.invoiceDate)
-      : ocrData.weekStart
-        ? new Date(ocrData.weekStart)
-        : undefined;
+      : ocrData.weekEnd
+        ? new Date(ocrData.weekEnd)
+        : ocrData.weekStart
+          ? new Date(ocrData.weekStart)
+          : undefined;
 
-    let finalInvoiceDate = parsedInvoiceDate;
+    let finalInvoiceDate = isValidDate(rawParsedDate) ? rawParsedDate : undefined;
 
     // Failsafe: Try to extract date from the filename if AI failed
-    if (!finalInvoiceDate && invoice.fileName) {
+    if (!isValidDate(finalInvoiceDate) && invoice.fileName) {
       const shortMonths = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
       const match = invoice.fileName.match(/(?:(\d{1,2})[_\s]+)?(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*(?:[_\s]+(\d{1,2}))?/i);
       if (match) {
@@ -977,11 +983,23 @@ IMPORTANT:
 
     // Auto-create Sale or Expense linked records
     if (invoice.type === "platform" && invoice.platform) {
-      const invoiceDate = ocrData.invoiceDate
-        ? new Date(ocrData.invoiceDate)
-        : new Date(invoice.invoiceDate || invoice.createdAt);
-      const weekStart = ocrData.weekStart || getWeekStart(invoiceDate);
-      const weekEnd = ocrData.weekEnd || getWeekEnd(weekStart);
+      let weekStart = isValidDate(ocrData.weekStart) ? ocrData.weekStart : null;
+      let weekEnd = isValidDate(ocrData.weekEnd) ? ocrData.weekEnd : null;
+      let invDate = isValidDate(finalInvoiceDate) ? finalInvoiceDate : null;
+
+      if (!weekStart && invDate) {
+        weekStart = getWeekStart(invDate);
+      }
+      if (!weekEnd && weekStart) {
+        weekEnd = getWeekEnd(weekStart);
+      }
+      if (!weekStart) {
+        weekStart = getWeekStart(new Date());
+        weekEnd = getWeekEnd(weekStart);
+      }
+      if (!weekEnd) {
+        weekEnd = getWeekEnd(weekStart);
+      }
 
       let storeName = "Combined";
       if (invoice.platform?.includes("Herbies")) storeName = "Herbies Pizza";
@@ -1624,33 +1642,30 @@ function parseJustEatInvoice(text: string) {
   return result;
 }
 
-function parseUberEatsInvoice(text: string) {
+function parseUberEatsInvoice(text: string, fileName: string = '') {
   const result: any = {};
 
   // Normalize: replace en-dash (–), em-dash (—), and similar unicode dashes with a regular hyphen
   const t = text.replace(/[–—‒―]/g, "-");
 
   // --- STORE DETECTION ---
-  if (/TASTY\s*BUN/i.test(t)) result.store = "Tasty Bun";
-  else if (/HERBIES/i.test(t)) result.store = "Herbies Pizza";
-  else if (/HUNGRY\s*BIRDS/i.test(t)) result.store = "Hungry Birds";
+  if (/TASTY\s*BUN/i.test(t) || /TASTY\s*BUN/i.test(fileName)) result.store = "Tasty Bun";
+  else if (/HERBIES/i.test(t) || /HERBIES/i.test(fileName)) result.store = "Herbies Pizza";
+  else if (/HUNGRY\s*BIRDS/i.test(t) || /HUNGRY\s*BIRDS/i.test(fileName)) result.store = "Hungry Birds";
 
   // --- DATE PARSING ---
-  // Format: Sep 28 - Oct 4, 2026 (Uber Eats Manager standard)
-  const shortDateMatch = t.match(
-    /([A-Za-z]{3,9})\s+(\d{1,2})\s*-\s*([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})/i,
-  );
-  const shortDateMatch2 = t.match(
-    /(\d{1,2})\s+([A-Za-z]{3,9})\s*-\s*(\d{1,2})\s+([A-Za-z]{3,9}),?\s+(\d{4})/i,
-  );
-  // Format: MM/DD/YYYY - MM/DD/YYYY
-  const slashDateMatch = t.match(
-    /(\d{1,2}\/\d{1,2}\/\d{4})\s*-\s*(\d{1,2}\/\d{1,2}\/\d{4})/,
-  );
-  // Format: 30 Mar 2026 - 05 Apr 2026
-  const wordDateMatch = t.match(
-    /(\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4})\s*-\s*(\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4})/i,
-  );
+  // Format 1: Cross-month "Sep 28 - Oct 4, 2026"
+  const crossMonthMatch = t.match(/([A-Za-z]{3,9})\s+(\d{1,2})\s*-\s*([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})/i);
+  // Format 2: Same-month "Oct 5 - 11, 2026" or "October 5 - 11, 2026"
+  const sameMonthMatch = t.match(/([A-Za-z]{3,9})\s+(\d{1,2})\s*-\s*(\d{1,2}),?\s+(\d{4})/i);
+  // Format 3: UK style cross-month "28 Sep - 4 Oct, 2026"
+  const ukCrossMonthMatch = t.match(/(\d{1,2})\s+([A-Za-z]{3,9})\s*-\s*(\d{1,2})\s+([A-Za-z]{3,9}),?\s+(\d{4})/i);
+  // Format 4: UK style same-month "5 - 11 Oct, 2026"
+  const ukSameMonthMatch = t.match(/(\d{1,2})\s*-\s*(\d{1,2})\s+([A-Za-z]{3,9}),?\s+(\d{4})/i);
+  // Format 5: Slash dates "MM/DD/YYYY - MM/DD/YYYY"
+  const slashDateMatch = t.match(/(\d{1,2}\/\d{1,2}\/\d{4})\s*-\s*(\d{1,2}\/\d{1,2}\/\d{4})/);
+  // Format 6: Full dates with year on both "Oct 5, 2026 - Oct 11, 2026"
+  const wordDateMatch = t.match(/(\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4})\s*-\s*(\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4})/i);
 
   const parseMDY = (dateStr: string) => {
     const parts = dateStr.split("/");
@@ -1658,8 +1673,6 @@ function parseUberEatsInvoice(text: string) {
     const p0 = parseInt(parts[0], 10);
     const p1 = parseInt(parts[1], 10);
     const y = parts[2];
-    
-    // Default to DD/MM/YYYY for UK. Only use MM/DD/YYYY if middle part is > 12.
     if (p1 > 12) {
       return new Date(`${y}-${parts[0].padStart(2, "0")}-${parts[1].padStart(2, "0")}T00:00:00Z`);
     } else {
@@ -1667,14 +1680,24 @@ function parseUberEatsInvoice(text: string) {
     }
   };
 
-  if (shortDateMatch) {
-    const m1 = shortDateMatch[1], d1 = shortDateMatch[2], m2 = shortDateMatch[3], d2 = shortDateMatch[4], y = shortDateMatch[5];
+  const isValidDate = (d: any): d is Date => d instanceof Date && !isNaN(d.getTime());
+
+  if (crossMonthMatch && isNaN(Number(crossMonthMatch[3]))) {
+    const [_, m1, d1, m2, d2, y] = crossMonthMatch;
     result.weekStart = new Date(`${m1} ${d1}, ${y} 00:00:00 UTC`);
-    result.weekEnd = new Date(`${m2} ${d2}, ${y} 23:59:59 UTC`);
-  } else if (shortDateMatch2) {
-    const d1 = shortDateMatch2[1], m1 = shortDateMatch2[2], d2 = shortDateMatch2[3], m2 = shortDateMatch2[4], y = shortDateMatch2[5];
+    result.weekEnd = new Date(`${m2} ${d2}, ${y} 23:59:59.999 UTC`);
+  } else if (sameMonthMatch) {
+    const [_, m, d1, d2, y] = sameMonthMatch;
+    result.weekStart = new Date(`${m} ${d1}, ${y} 00:00:00 UTC`);
+    result.weekEnd = new Date(`${m} ${d2}, ${y} 23:59:59.999 UTC`);
+  } else if (ukCrossMonthMatch) {
+    const [_, d1, m1, d2, m2, y] = ukCrossMonthMatch;
     result.weekStart = new Date(`${d1} ${m1} ${y} 00:00:00 UTC`);
-    result.weekEnd = new Date(`${d2} ${m2} ${y} 23:59:59 UTC`);
+    result.weekEnd = new Date(`${d2} ${m2} ${y} 23:59:59.999 UTC`);
+  } else if (ukSameMonthMatch) {
+    const [_, d1, d2, m, y] = ukSameMonthMatch;
+    result.weekStart = new Date(`${d1} ${m} ${y} 00:00:00 UTC`);
+    result.weekEnd = new Date(`${d2} ${m} ${y} 23:59:59.999 UTC`);
   } else if (slashDateMatch) {
     const ws = parseMDY(slashDateMatch[1]);
     const we = parseMDY(slashDateMatch[2]);
@@ -1684,32 +1707,104 @@ function parseUberEatsInvoice(text: string) {
       result.weekEnd = we;
     }
   } else if (wordDateMatch) {
-    result.weekStart = new Date(wordDateMatch[1].replace(/,/g, "") + " UTC");
-    result.weekEnd = new Date(wordDateMatch[2].replace(/,/g, "") + " 23:59:59 UTC");
-  } else {
-    const singleDate = t.match(
-      /(\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4}|\d{4}-\d{2}-\d{2})/,
-    );
-    if (singleDate) result.invoiceDate = singleDate[1].replace(/,/g, "");
+    result.weekStart = new Date(wordDateMatch[1].replace(/,/g, "") + " 00:00:00 UTC");
+    result.weekEnd = new Date(wordDateMatch[2].replace(/,/g, "") + " 23:59:59.999 UTC");
+  }
+
+  // URL query parameter fallback (start=2026-10-05&end=2026-10-11)
+  if (!isValidDate(result.weekStart) || !isValidDate(result.weekEnd)) {
+    const urlMatch = t.match(/start=(\d{4}-\d{2}-\d{2})&end=(\d{4}-\d{2}-\d{2})/i);
+    if (urlMatch) {
+      result.weekStart = new Date(`${urlMatch[1]}T00:00:00Z`);
+      result.weekEnd = new Date(`${urlMatch[2]}T23:59:59.999Z`);
+    }
+  }
+
+  // Filename fallback if text date range was not found
+  if ((!isValidDate(result.weekStart) || !isValidDate(result.weekEnd)) && fileName) {
+    const shortMonths = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+    const fnMatch = fileName.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*[_\s]+(\d{1,2})/i);
+    if (fnMatch) {
+      const monthIdx = shortMonths.indexOf(fnMatch[1].toLowerCase());
+      const day = parseInt(fnMatch[2], 10);
+      if (monthIdx !== -1 && day >= 1 && day <= 31) {
+        const we = new Date(Date.UTC(2026, monthIdx, day, 23, 59, 59, 999));
+        const ws = new Date(we);
+        ws.setUTCDate(ws.getUTCDate() - 6);
+        ws.setUTCHours(0, 0, 0, 0);
+        result.weekStart = ws;
+        result.weekEnd = we;
+      }
+    }
+  }
+
+  if (isValidDate(result.weekEnd)) {
+    result.invoiceDate = result.weekEnd;
   }
 
   // --- FINANCIALS ---
-  // Gross Sales / Earnings
-  const earningsMatch = t.match(/(?:Gross\s*Sales|Earnings|Total\s*Sales)[\s\S]{0,60}?[£$]\s*([\d,]+\.\d{2})/i);
-  if (earningsMatch)
-    result.grossSales = parseFloat(earningsMatch[1].replace(/,/g, ""));
+  // Gross Sales / Earnings: Prioritize "Gross Sales" explicitly over "Earnings" to prevent matching "Net sales"
+  const grossSalesMatch = t.match(/Gross\s*Sales[\s\S]{0,150}?[£$]\s*([\d,]+\.\d{2})/i);
+  if (grossSalesMatch) {
+    result.grossSales = parseFloat(grossSalesMatch[1].replace(/,/g, ""));
+  } else {
+    const salesTaxMatch = t.match(/Sales\s*\(incl\.\s*tax\)[\s\S]{0,100}?[£$]\s*([\d,]+\.\d{2})/i);
+    if (salesTaxMatch) {
+      result.grossSales = parseFloat(salesTaxMatch[1].replace(/,/g, ""));
+    } else {
+      const totalSalesMatch = t.match(/Total\s*Sales[\s\S]{0,100}?[£$]\s*([\d,]+\.\d{2})/i);
+      if (totalSalesMatch) {
+        result.grossSales = parseFloat(totalSalesMatch[1].replace(/,/g, ""));
+      } else {
+        const earningsMatch = t.match(/Earnings[\s\S]{0,60}?[£$]\s*([\d,]+\.\d{2})/i);
+        if (earningsMatch) result.grossSales = parseFloat(earningsMatch[1].replace(/,/g, ""));
+      }
+    }
+  }
+
+  // Line-by-line fallback for gross sales
+  if (!result.grossSales) {
+    const lines = t.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      if (/Gross\s*Sales|Total\s*Sales/i.test(lines[i])) {
+        for (let j = i; j <= Math.min(lines.length - 1, i + 4); j++) {
+          const m = lines[j].match(/[£$]\s*([\d,]+\.\d{2})/);
+          if (m && parseFloat(m[1].replace(/,/g, "")) > 0) {
+            result.grossSales = parseFloat(m[1].replace(/,/g, ""));
+            break;
+          }
+        }
+        if (result.grossSales) break;
+      }
+    }
+  }
 
   // Uber Fees / Marketplace Fee → commission (prefer Net Marketplace Fee / Uber Fees)
   const uberFeesMatch = t.match(
-    /(?:Uber\s*Fees|Marketplace\s*Fee|Net\s*Marketplace\s*Fee)[\s\S]{0,60}?-?[£$]\s*([\d,]+\.\d{2})/i,
+    /(?:Uber\s*Fees|Marketplace\s*Fee|Net\s*Marketplace\s*Fee)[\s\S]{0,250}?-?[£$]\s*([\d,]+\.\d{2})/i,
   );
-  if (uberFeesMatch)
+  if (uberFeesMatch) {
     result.commission = Math.abs(parseFloat(uberFeesMatch[1].replace(/,/g, "")));
+  } else {
+    const lines = t.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      if (/Uber\s*Fees|Marketplace\s*Fee/i.test(lines[i])) {
+        for (let j = i; j <= Math.min(lines.length - 1, i + 4); j++) {
+          const m = lines[j].match(/-?[£$]\s*([\d,]+\.\d{2})/);
+          if (m && parseFloat(m[1].replace(/,/g, "")) > 0) {
+            result.commission = Math.abs(parseFloat(m[1].replace(/,/g, "")));
+            break;
+          }
+        }
+        if (result.commission) break;
+      }
+    }
+  }
 
   // Service fees fallback
   if (!result.commission) {
     const serviceMatch = t.match(
-      /Service\s*fees?[^\n£$]{0,10}-?[£$]\s*([\d,]+\.\d{2})/i,
+      /Service\s*fees?[^\n£$]{0,20}-?[£$]\s*([\d,]+\.\d{2})/i,
     );
     if (serviceMatch)
       result.commission = Math.abs(parseFloat(serviceMatch[1].replace(/,/g, "")));
@@ -1717,17 +1812,32 @@ function parseUberEatsInvoice(text: string) {
 
   // Net Order Error Adjustments → refunds
   const refundMatch = t.match(
-    /(?:Net\s*?order\s*error\s*adjustments|Refunds)[^\n£$]{0,30}-?[£$]\s*([\d,]+\.\d{2})/i,
+    /(?:Net\s*?order\s*error\s*adjustments|Refunds|Adjustments)[^\n£$]{0,40}-?[£$]\s*([\d,]+\.\d{2})/i,
   );
   if (refundMatch)
     result.refunds = Math.abs(parseFloat(refundMatch[1].replace(/,/g, "")));
 
   // Total payout / Net sales → netPaid
   const payoutMatch = t.match(
-    /(?:Total\s*payout|Net\s*sales)[^\n£$]{0,15}[£$]\s*([\d,]+\.\d{2})/i,
+    /(?:Total\s*payout|Net\s*sales|Net\s*payout)[^\n£$]{0,25}[£$]\s*([\d,]+\.\d{2})/i,
   );
-  if (payoutMatch)
+  if (payoutMatch) {
     result.netPaid = parseFloat(payoutMatch[1].replace(/,/g, ""));
+  } else {
+    const lines = t.split("\n");
+    for (let i = 0; i < lines.length; i++) {
+      if (/Total\s*payout|Net\s*sales/i.test(lines[i])) {
+        for (let j = i; j <= Math.min(lines.length - 1, i + 3); j++) {
+          const m = lines[j].match(/[£$]\s*([\d,]+\.\d{2})/);
+          if (m && parseFloat(m[1].replace(/,/g, "")) > 0) {
+            result.netPaid = parseFloat(m[1].replace(/,/g, ""));
+            break;
+          }
+        }
+        if (result.netPaid) break;
+      }
+    }
+  }
 
   // Orders: sum across delivery breakdown or take settled orders
   let totalOrderCount = 0;
@@ -1736,11 +1846,13 @@ function parseUberEatsInvoice(text: string) {
     for (const m of orderMatches) totalOrderCount += parseInt(m[1], 10);
     if (totalOrderCount > 0) result.totalOrders = totalOrderCount;
   }
-  const settledMatch = t.match(/Settled\s*orders[\s\S]{0,5}?(\d+)/i);
-  if (settledMatch) result.totalOrders = parseInt(settledMatch[1], 10);
+  const settledMatch = t.match(/Settled\s*orders[\s\S]{0,10}?(\d+)/i);
+  if (settledMatch && (!result.totalOrders || result.totalOrders < parseInt(settledMatch[1], 10))) {
+    result.totalOrders = parseInt(settledMatch[1], 10);
+  }
 
   // Customers
-  const customersMatch = t.match(/Customers[\s\S]{0,5}?(\d+)/i);
+  const customersMatch = t.match(/Customers[\s\S]{0,10}?(\d+)/i);
   if (customersMatch) result.customers = parseInt(customersMatch[1], 10);
 
   // Offers on items (incl. tax / VAT)
@@ -1766,7 +1878,7 @@ function parseUberEatsInvoice(text: string) {
 
   // Total Marketing (fallback or sum)
   const marketingTotalMatch = t.match(
-    /^Marketing[\s\S]{0,8}?-?[£$]\s*([\d,]+\.\d{2})/im,
+    /^Marketing[\s\S]{0,15}?-?[£$]\s*([\d,]+\.\d{2})/im,
   );
   if (marketingTotalMatch) {
     result.marketing = Math.abs(parseFloat(marketingTotalMatch[1].replace(/,/g, "")));
@@ -1776,7 +1888,7 @@ function parseUberEatsInvoice(text: string) {
 
   // Amendments / Other payments
   const amendMatch = t.match(
-    /(?:Amendments|Other\s*payments)[\s\S]{0,30}?[£$]\s*([\d,]+\.\d{2})/i,
+    /(?:Amendments|Other\s*payments)[\s\S]{0,40}?[£$]\s*([\d,]+\.\d{2})/i,
   );
   if (amendMatch)
     result.otherPayments = parseFloat(amendMatch[1].replace(/,/g, ""));

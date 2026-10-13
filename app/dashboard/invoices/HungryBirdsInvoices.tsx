@@ -49,6 +49,23 @@ function InvoicesContent() {
   const [platformFilter, setPlatformFilter] = useState('')
   const [posFilter, setPosFilter] = useState('')
   const [storeFilter, setStoreFilter] = useState('')
+  const [retryingId, setRetryingId] = useState<string | null>(null)
+
+  const handleRetryOcr = async (id: string) => {
+    setRetryingId(id)
+    try {
+      const res = await fetch(`/api/invoices/${id}/ocr`, { method: 'POST' })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        alert('OCR Retry: ' + (err.error || 'Failed to process'))
+      }
+      await fetchData()
+    } catch (e: any) {
+      alert('OCR error: ' + e.message)
+    } finally {
+      setRetryingId(null)
+    }
+  }
 
   useEffect(() => {
     setActiveTab(searchParams.get('tab') || 'all')
@@ -499,9 +516,12 @@ function InvoicesContent() {
                   </td>
                   <td className="px-5 py-4">
                     {inv.ocrStatus === 'done' ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title="Data extracted successfully">Extracted ✅</span> :
-                     (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing') ? <span className="text-amber-400 font-semibold text-xs" title="Processing with AI...">Processing ⏳</span> :
+                     (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing' || retryingId === inv.id) ? <span className="text-amber-400 font-semibold text-xs" title="Processing with AI...">Processing ⏳</span> :
                      (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
-                     <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>}
+                     <div className="flex items-center gap-2">
+                       <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>
+                       <button onClick={() => handleRetryOcr(inv.id)} className="text-blue-500 hover:text-blue-400 font-bold text-[11px] underline cursor-pointer bg-transparent border-0 p-0" title="Retry AI extraction">Retry 🔄</button>
+                     </div>}
                   </td>
                   <td className="px-5 py-4 text-right">
                     <div className="flex items-center justify-end gap-2.5">

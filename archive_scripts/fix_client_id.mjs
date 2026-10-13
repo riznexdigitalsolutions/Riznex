@@ -1,1 +1,0 @@
-import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); async function main() { await prisma.expense.updateMany({ where: { category: 'herbies_head_office' }, data: { clientId: 'cmpv4dvik0000vdj089wl6zmf' } }); console.log('Fixed clientId'); } main().catch(console.error).finally(() => prisma.$disconnect());

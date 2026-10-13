@@ -111,9 +111,9 @@ export default function AdminClientsPage() {
                   <span className="text-amber-600 dark:text-amber-400 font-bold">Latest Records</span>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2.5">
-                  <div className="bg-slate-50/90 dark:bg-[#121727]/90 border border-slate-200/80 dark:border-[#1d263d] rounded-xl p-3 flex flex-col justify-between hover:border-amber-500/30 transition-all">
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                <div className="rounded-xl border border-slate-200/80 dark:border-[#1f2947] overflow-hidden divide-y divide-slate-200/80 dark:divide-[#1f2947] bg-slate-50/50 dark:bg-[#121727]/50">
+                  <div className="p-2.5 px-3 flex items-center justify-between hover:bg-slate-100/50 dark:hover:bg-[#161d31] transition-colors">
+                    <div className="text-[11px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-wider flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#00CCBC] flex-shrink-0"></span> Deliveroo
                     </div>
                     <div className="text-xs font-mono font-bold text-slate-900 dark:text-slate-100 tabular-nums">
@@ -121,8 +121,8 @@ export default function AdminClientsPage() {
                     </div>
                   </div>
 
-                  <div className="bg-slate-50/90 dark:bg-[#121727]/90 border border-slate-200/80 dark:border-[#1d263d] rounded-xl p-3 flex flex-col justify-between hover:border-amber-500/30 transition-all">
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                  <div className="p-2.5 px-3 flex items-center justify-between hover:bg-slate-100/50 dark:hover:bg-[#161d31] transition-colors">
+                    <div className="text-[11px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-wider flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#FF8000] flex-shrink-0"></span> Just Eat
                     </div>
                     <div className="text-xs font-mono font-bold text-slate-900 dark:text-slate-100 tabular-nums">
@@ -130,8 +130,8 @@ export default function AdminClientsPage() {
                     </div>
                   </div>
 
-                  <div className="bg-slate-50/90 dark:bg-[#121727]/90 border border-slate-200/80 dark:border-[#1d263d] rounded-xl p-3 flex flex-col justify-between hover:border-amber-500/30 transition-all">
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                  <div className="p-2.5 px-3 flex items-center justify-between hover:bg-slate-100/50 dark:hover:bg-[#161d31] transition-colors">
+                    <div className="text-[11px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-wider flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-[#06C167] flex-shrink-0"></span> Uber Eats
                     </div>
                     <div className="text-xs font-mono font-bold text-slate-900 dark:text-slate-100 tabular-nums">
@@ -139,8 +139,8 @@ export default function AdminClientsPage() {
                     </div>
                   </div>
 
-                  <div className="bg-slate-50/90 dark:bg-[#121727]/90 border border-slate-200/80 dark:border-[#1d263d] rounded-xl p-3 flex flex-col justify-between hover:border-amber-500/30 transition-all">
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5 mb-1.5">
+                  <div className="p-2.5 px-3 flex items-center justify-between hover:bg-slate-100/50 dark:hover:bg-[#161d31] transition-colors">
+                    <div className="text-[11px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-wider flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-purple-500 flex-shrink-0"></span> POS System
                     </div>
                     <div className="text-xs font-mono font-bold text-slate-900 dark:text-slate-100 tabular-nums">
@@ -148,8 +148,8 @@ export default function AdminClientsPage() {
                     </div>
                   </div>
 
-                  <div className="col-span-2 bg-slate-50/90 dark:bg-[#121727]/90 border border-slate-200/80 dark:border-[#1d263d] rounded-xl p-3 flex items-center justify-between hover:border-amber-500/30 transition-all">
-                    <div className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider flex items-center gap-1.5">
+                  <div className="p-2.5 px-3 flex items-center justify-between hover:bg-slate-100/50 dark:hover:bg-[#161d31] transition-colors">
+                    <div className="text-[11px] text-slate-600 dark:text-slate-300 font-bold uppercase tracking-wider flex items-center gap-2">
                       <span className="w-2 h-2 rounded-full bg-cyan-400 flex-shrink-0"></span> Auto Expenses
                     </div>
                     <div className="text-xs font-mono font-bold text-slate-900 dark:text-slate-100 tabular-nums">

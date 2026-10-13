@@ -182,7 +182,7 @@ export function HungryBirdsSuppliers() {
                 <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
                 <tr><td colSpan={8} className="text-center py-12 text-slate-500">Loading...</td></tr>
               ) : allInvoices.length === 0 ? (
@@ -194,7 +194,7 @@ export function HungryBirdsSuppliers() {
                   const dateStr = targetDate ? fmtDate(targetDate) : <span className="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">MISSING</span>
                   
                   return (
-                    <tr key={inv.id} className={isSelected ? "border-b border-slate-200 dark:border-[#1f2947] transition-colors bg-blue-500/5" : "border-b border-slate-200 dark:border-[#1f2947] transition-colors hover:bg-amber-500/10 dark:hover:bg-[#161b2c]"}>
+                    <tr key={inv.id} className={isSelected ? "transition-colors bg-blue-500/5" : "transition-colors hover:bg-amber-500/10 dark:hover:bg-[#161b2c]"}>
                       <td className="px-4 py-3 w-12 text-center">
                         <input 
                           type="checkbox"

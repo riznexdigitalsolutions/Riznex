@@ -28,15 +28,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           {navItems.map(item => {
             const active = pathname === item.href
             return (
-              <Link key={item.href} href={item.href}
-                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold transition-all ${
-                  active 
-                    ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 shadow-sm' 
-                    : 'text-slate-600 dark:text-slate-400 hover:bg-amber-500/10 hover:text-slate-900 dark:hover:text-white'
-                }`}
-                onClick={() => setOpen(false)}>
-                <span className="text-sm w-5 text-center">{item.icon}</span>{item.label}
-              </Link>
+              <div key={item.href} className="border-b border-slate-200/80 dark:border-[#1f2947] pb-1.5 mb-1.5 last:border-b-0 last:pb-0 last:mb-0">
+                <Link href={item.href}
+                  className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs uppercase tracking-wider font-bold transition-all ${
+                    active 
+                      ? 'bg-amber-500/15 text-amber-700 dark:text-amber-400 border border-amber-500/30 shadow-sm' 
+                      : 'text-slate-600 dark:text-slate-400 hover:bg-amber-500/10 hover:text-slate-900 dark:hover:text-white'
+                  }`}
+                  onClick={() => setOpen(false)}>
+                  <span className="text-sm w-5 text-center">{item.icon}</span>{item.label}
+                </Link>
+              </div>
             )
           })}
         </nav>

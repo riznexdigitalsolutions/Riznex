@@ -289,7 +289,7 @@ export function HenleyExpensesDashboard() {
                       <th className="px-4 py-3 text-right text-[11px] font-bold text-slate-300 uppercase tracking-wider">Amount</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-[#1f2947]">
                     {[
                       ...wageItems.map(w => ({ id: w.id, date: w.weekEnd, type: 'Staff Wage', name: w.staff?.name || 'Staff', store: w.store, amount: w.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-purple-500/10 border-purple-500/20' })),
                       ...supplierItems.map(s => ({ id: s.id, date: s.invoiceDate, type: 'Supplier', name: s.supplier?.name || 'Unknown', store: s.store || s.supplier?.franchise || 'Combined', amount: s.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-orange-500/10 border-orange-500/20' })),
@@ -297,7 +297,7 @@ export function HenleyExpensesDashboard() {
                       ...marketingItems.map(m => ({ id: m.id, date: m.date, type: 'Marketing', name: m.subcategory || m.category, store: m.store, amount: m.displayAmount || m.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-pink-500/10 border-pink-500/20' })),
                       ...otherItems.map(o => ({ id: o.id, date: o.date, type: 'Other', name: o.subcategory || o.notes || o.category, store: o.store, amount: o.displayAmount || o.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-emerald-500/10 border-slate-200 dark:border-[#E5B869]/20' }))
                     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((item, i) => (
-                      <tr key={i} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
+                      <tr key={i} className="hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
                         <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-medium">{item.date ? new Date(item.date).toLocaleDateString('en-GB') : '-'}</td>
                         <td className="px-4 py-3">
                           <span className={`text-[10px] px-2 py-0.5 rounded border font-bold ${item.bg} ${item.color}`}>

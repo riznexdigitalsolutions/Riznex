@@ -438,13 +438,13 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
                 <tr><td colSpan={10} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : sales.length === 0 ? (
                 <tr><td colSpan={10} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
               ) : sales.map(s => (
-                <tr key={s.id} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
+                <tr key={s.id} className="hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
                   <td className="px-4 py-3">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold"
                       style={{ background: `${platformColor(s.platform)}1a`, color: platformColor(s.platform), border: `1px solid ${platformColor(s.platform)}33` }}>

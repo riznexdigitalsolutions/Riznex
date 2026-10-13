@@ -815,7 +815,7 @@ export function HungryBirdsDashboard() {
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs text-right text-slate-900 dark:text-white">Net Received</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-[#1f2947]/50">
+                <tbody className="divide-y divide-[#1f2947]">
                   {platformData.length === 0 ? (
                     <tr>
                       <td colSpan={6} className="py-8 text-center text-slate-500 font-medium">No platform data available</td>

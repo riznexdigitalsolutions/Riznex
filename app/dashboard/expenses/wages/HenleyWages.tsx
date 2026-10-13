@@ -277,10 +277,10 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#1f2947]">
               {loading && wages.length === 0 ? (
                 [...Array(5)].map((_, i) => (
-                  <tr key={i} className="border-b border-slate-200 dark:border-[#1f2947] animate-pulse">
+                  <tr key={i} className="animate-pulse">
                     <td className="px-4 py-4 text-center"><div className="w-4 h-4 bg-slate-300 dark:bg-[#1f2947] rounded mx-auto"></div></td>
                     <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-32"></div></td>
                     <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-20"></div></td>
@@ -293,7 +293,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                 <tr><td colSpan={6} className="text-center py-12 text-slate-500 font-medium">No wages recorded yet.</td></tr>
               ) : filteredWages.map(w => {
                 return (
-                <tr key={w.id} className={`border-b border-slate-200 dark:border-[#1f2947] hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
+                <tr key={w.id} className={`hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
                   <td className="px-4 py-3 text-center">
                     <input type="checkbox"
                       checked={selectedIds.has(w.id)}

@@ -171,7 +171,7 @@ export function HungryBirdsExpenses() {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
                 <tr><td colSpan={9} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : filteredExpenses.length === 0 ? (
@@ -186,7 +186,7 @@ export function HungryBirdsExpenses() {
 
                 const isSelected = selectedIds.has(e.id);
                 return (
-                <tr key={e.id} className={`border-b border-slate-200 dark:border-[#1f2947] transition-colors ${isSelected ? 'bg-blue-500/5' : 'hover:bg-amber-500/10 dark:hover:bg-[#161b2c]'}`}>
+                <tr key={e.id} className={`transition-colors ${isSelected ? 'bg-blue-500/5' : 'hover:bg-amber-500/10 dark:hover:bg-[#161b2c]'}`}>
                   <td className="px-4 py-3 w-12 text-center">
                     <input 
                       type="checkbox"

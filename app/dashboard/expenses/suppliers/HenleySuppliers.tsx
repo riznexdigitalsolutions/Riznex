@@ -30,6 +30,32 @@ export function HenleySuppliers() {
   const [manualEntry, setManualEntry] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
   const [sortBy, setSortBy] = useState<string>('invoiceDate')
+  const [uploadingInvoiceId, setUploadingInvoiceId] = useState<string | null>(null)
+
+  const handleFileUploadForInvoice = async (invoiceId: string, e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setUploadingInvoiceId(invoiceId)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+      const res = await fetch(`/api/invoices/${invoiceId}/upload`, {
+        method: 'POST',
+        body: formData,
+      })
+      if (!res.ok) {
+        const err = await res.json()
+        alert('Upload failed: ' + (err.error || 'Server error'))
+      } else {
+        await fetchSuppliers()
+      }
+    } catch (err: any) {
+      alert('Error uploading file: ' + err.message)
+    } finally {
+      setUploadingInvoiceId(null)
+      e.target.value = ''
+    }
+  }
 
   const handleEditClick = (inv: any) => {
     setEditingId(inv.id)
@@ -569,7 +595,24 @@ export function HenleySuppliers() {
                             <button onClick={() => setEditingId(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-semibold text-xs">Cancel</button>
                           </>
                         ) : (
-                          <button onClick={() => handleEditClick(inv)} className="text-amber-400 hover:text-amber-300 font-semibold text-xs">Edit</button>
+                          <>
+                            <label className="text-indigo-400 hover:text-indigo-300 font-semibold text-xs cursor-pointer inline-flex items-center gap-1">
+                              {uploadingInvoiceId === inv.id ? (
+                                <span className="animate-pulse text-amber-400">Uploading...</span>
+                              ) : (
+                                <span>Upload</span>
+                              )}
+                              <input 
+                                type="file" 
+                                accept="image/*,application/pdf" 
+                                className="hidden" 
+                                disabled={uploadingInvoiceId === inv.id}
+                                onChange={(e) => handleFileUploadForInvoice(inv.id, e)} 
+                              />
+                            </label>
+                            <span className="text-slate-700">|</span>
+                            <button onClick={() => handleEditClick(inv)} className="text-amber-400 hover:text-amber-300 font-semibold text-xs">Edit</button>
+                          </>
                         )}
                         <span className="text-slate-700">|</span>
                         <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 font-semibold text-xs">View</a>

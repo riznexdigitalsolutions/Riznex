@@ -567,23 +567,23 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
       {/* Upload Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-md shadow-2xl">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">Upload Invoice</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-3xl p-6 sm:p-7 w-full max-w-md shadow-2xl">
+            <h2 className="text-xl font-black text-slate-900 dark:text-white mb-5 tracking-tight">Upload Invoice</h2>
             <form onSubmit={handleUpload} className="space-y-4">
               {['supplier', 'stock'].includes(type) && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Invoice Type</label>
-                  <select value={type} onChange={e => setType(e.target.value)} className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm">
-                    <option value="supplier">Supplier Invoice (Food, Drink, Misc)</option>
-                    <option value="stock">Stock Count / Inventory</option>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Invoice Type</label>
+                  <select value={type} onChange={e => setType(e.target.value)} className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
+                    <option value="supplier" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Supplier Invoice (Food, Drink, Misc)</option>
+                    <option value="stock" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Stock Count / Inventory</option>
                   </select>
                 </div>
               )}
               {(type === 'platform' || type === 'pos') && (
                 <div className="flex gap-4">
                   <div className="flex-1">
-                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Store</label>
+                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Store</label>
                     <select 
                       value={type === 'pos' ? posName.replace(' POS', '') : platformName.replace(' Deliveroo', '').replace(' Just Eat', '').replace(' Uber Eats', '')} 
                       onChange={e => {
@@ -595,14 +595,14 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                           setPlatformName(`${store} ${currentPlat}`);
                         }
                       }} 
-                      className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm"
+                      className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50"
                     >
-                      <option value="Herbies Pizza">Herbies Pizza</option>
-                      {!is2025 && <option value="Tasty Bun">Tasty Bun</option>}
+                      <option value="Herbies Pizza" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Herbies Pizza</option>
+                      {!is2025 && <option value="Tasty Bun" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Tasty Bun</option>}
                     </select>
                   </div>
                   <div className="flex-1">
-                    <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Platform</label>
+                    <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Platform</label>
                     <select 
                       value={type === 'pos' ? 'POS' : platformName.replace('Herbies Pizza ', '').replace('Tasty Bun ', '')} 
                       onChange={e => {
@@ -617,21 +617,21 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                           setPlatformName(`${currentStore} ${plat}`);
                         }
                       }} 
-                      className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm"
+                      className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50"
                     >
-                      <option value="Deliveroo">Deliveroo</option>
-                      <option value="Just Eat">Just Eat</option>
-                      <option value="Uber Eats">Uber Eats</option>
-                      <option value="POS">In-Store POS</option>
+                      <option value="Deliveroo" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Deliveroo</option>
+                      <option value="Just Eat" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Just Eat</option>
+                      <option value="Uber Eats" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Uber Eats</option>
+                      <option value="POS" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">In-Store POS</option>
                     </select>
                   </div>
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Upload File (PDF/Image)</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Upload File (PDF/Image)</label>
                 <div 
-                  className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition ${isDragging ? 'border-blue-400 bg-blue-500/10' : 'border-slate-200 dark:border-[#1f2947] hover:border-blue-500 bg-[#161b2c]/50'}`}
+                  className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition ${isDragging ? 'border-amber-500 bg-amber-500/10' : 'border-slate-300 dark:border-[#1f2947] hover:border-amber-500 bg-slate-50 dark:bg-[#161b2c]/60'}`}
                   onClick={() => fileInputRef.current?.click()}
                   onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); }}
                   onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); }}
@@ -657,7 +657,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                     <>
                       <div className="text-3xl mb-1">📎</div>
                       <div className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">Drag & drop your files here</div>
-                      <div className="text-xs text-slate-500 dark:text-slate-400">or click to browse PDF or image files</div>
+                      <div className="text-xs text-slate-600 dark:text-slate-400">or click to browse PDF or image files</div>
                     </>
                   )}
                 </div>
@@ -677,14 +677,14 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
               <div>
                 <label className="flex items-center gap-2 cursor-pointer">
-                  <input type="checkbox" checked={mergeFiles} onChange={e => setMergeFiles(e.target.checked)} className="rounded border-slate-200 dark:border-[#1f2947] bg-[#161b2c] text-slate-900 dark:text-white cursor-pointer" />
-                  <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Merge into single invoice (for multi-page docs)</span>
+                  <input type="checkbox" checked={mergeFiles} onChange={e => setMergeFiles(e.target.checked)} className="rounded border-slate-300 dark:border-[#1f2947] bg-white dark:bg-[#161b2c] text-amber-500 cursor-pointer" />
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Merge into single invoice (for multi-page docs)</span>
                 </label>
               </div>
 
               <div className="flex gap-3 mt-6 pt-2">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
-                <button type="submit" disabled={uploading} className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition flex items-center justify-center gap-2">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-300 dark:border-[#1f2947] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1f2947] rounded-xl py-2.5 text-sm font-bold transition">Cancel</button>
+                <button type="submit" disabled={uploading} className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-95 disabled:opacity-50 transition flex items-center justify-center gap-2">
                   {uploading ? 'Uploading...' : 'Upload & Process'}
                 </button>
               </div>

@@ -453,24 +453,24 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
 
       {/* Auto-Fill Modal */}
       {showAutoFill && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-3xl p-6 sm:p-7 w-full max-w-sm shadow-2xl">
             <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2 flex items-center gap-2">⚡ Auto-Fill Fixed Costs</h2>
-            <p className="text-slate-500 dark:text-slate-400 text-sm mb-6">Select the Week Ending date (snaps automatically to Sunday week-ending).</p>
+            <p className="text-slate-600 dark:text-slate-400 text-xs mb-6">Select the Week Ending date (snaps automatically to Sunday week-ending).</p>
             
             <div className="mb-6">
-              <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Sales Week Ending Date (Sunday)</label>
+              <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">Sales Week Ending Date (Sunday)</label>
               <input type="date" value={autoFillDate} onChange={e => setAutoFillDate(snapToSunday(e.target.value))}
-                className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500" />
+                className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-semibold rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
             </div>
 
             {previewExpenses.length > 0 && (
-              <div className="mb-6 bg-[#161b2c] rounded-xl p-3 max-h-40 overflow-y-auto border border-slate-200 dark:border-[#1f2947]">
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Expenses to generate ({previewExpenses.length})</div>
+              <div className="mb-6 bg-slate-50 dark:bg-[#161b2c] rounded-xl p-3 max-h-40 overflow-y-auto border border-slate-200 dark:border-[#1f2947]">
+                <div className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest mb-2">Expenses to generate ({previewExpenses.length})</div>
                 <div className="space-y-1.5">
                   {previewExpenses.map(p => (
                     <div key={p.id} className="flex justify-between items-center text-xs">
-                      <span className="text-slate-600 dark:text-slate-300">⚡ {p.name}</span>
+                      <span className="text-slate-700 dark:text-slate-300">⚡ {p.name}</span>
                       <span className="text-slate-900 dark:text-white font-bold">{gbp(p.amount)}</span>
                     </div>
                   ))}
@@ -480,9 +480,9 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
 
             <div className="flex gap-3">
               <button onClick={() => setShowAutoFill(false)}
-                className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+                className="flex-1 border border-slate-300 dark:border-[#1f2947] hover:bg-slate-100 dark:hover:bg-[#1f2947] text-slate-700 dark:text-slate-300 rounded-xl py-2.5 text-sm font-bold transition">Cancel</button>
               <button onClick={handleAutoFill} disabled={autoFilling}
-                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-emerald-500/20 hover:opacity-95 disabled:opacity-50 transition">
                 {autoFilling ? 'Filling...' : 'Confirm'}
               </button>
             </div>

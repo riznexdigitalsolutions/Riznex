@@ -169,10 +169,11 @@ IMPORTANT:
   - Return ONLY the JSON, no markdown, no explanation.`;
   }
 } else {
-  prompt = `You are an invoice data extractor. Analyse this Uber Eats / food delivery platform invoice screenshot and extract ALL financial data. 
+  prompt = `You are an invoice data extractor. Analyse this Uber Eats / food delivery platform invoice screenshot or PDF statement and extract ALL financial data. 
 
 Return ONLY a valid JSON object with these fields (use null if not found):
 {
+  "store": string or null,
   "weekStart": "YYYY-MM-DD",
   "weekEnd": "YYYY-MM-DD",
   "totalOrders": number,
@@ -186,11 +187,21 @@ Return ONLY a valid JSON object with these fields (use null if not found):
   "offersOnItems": number,
   "offerRedemptionFee": number,
   "refunds": number,
+  "otherPayments": number,
   "netPaid": number
 }
 
 IMPORTANT:
-- IF IT IS AN UBER EATS INVOICE: Use "Sales" or "Earnings" as grossSales. Use "Marketplace fee" or "Uber Fees" as commission. "VAT on marketplace fee" = vat. MUST extract "Offers on items" (or Promotions) and "Offer redemption fee". Extract "Adjustments", "Refunds", or "Net Chargeback Amount" (as positive absolute value) into refunds. Extract "Miscellaneous payments/deductions" into otherFees. "Total payout" = netPaid. Extract "Other payments" into otherPayments. Extract "Ad Spends" into adSpends.
+- IF IT IS AN UBER EATS INVOICE:
+  * Store: Extract the store/brand name shown at the top (e.g. if you see "TASTY BUN", set "store": "Tasty Bun"; if "HERBIES", set "store": "Herbies Pizza").
+  * grossSales: Extract "Gross Sales" or "Earnings" or "Sales (incl. tax)".
+  * commission: Extract "Uber Fees", "Net Marketplace Fee", or "Marketplace fee".
+  * netPaid: Extract "Net sales" or "Total payout".
+  * totalOrders: Sum all completed orders. If listed by delivery type (e.g. "Delivery using your Staff: 26 orders", "Pick up: 1 orders", "Delivery, powered by Uber: 0 orders"), sum them together (e.g. 26 + 1 = 27). If "Settled orders" is present, use that.
+  * Marketing deductions: Extract "Offers on items (incl. tax)" into offersOnItems, "Offer redemption fee (incl. tax)" into offerRedemptionFee, and "Ad spend (incl. tax)" into adSpends.
+  * Other payments: Extract "Amendments" or "Other payments" into otherPayments.
+  * Refunds: Extract "Adjustments", "Refunds", or "Net order error adjustments" (as positive absolute value) into refunds.
+  * VAT / Rounding: Extract "VAT on marketplace fee" or "Net taxes" into vat, and "VAT rounding adjustment" into vatRoundingAdj.
 - IF IT IS A JUST EAT INVOICE: Must extract "totalOrders". grossSales = "Total sales" value (usually found lower down), netPaid = "You will receive from Just Eat" value. DO NOT mix these up. You MUST ONLY extract 3 deductions: "commission", "adSpends" (Top Rank / Promoted placement / Sponsored / Ads), and "otherFees". If you see an "Admin Fee", "Delivery fee", or ANY other random deduction, you MUST bundle it into "otherFees". If there is a "Rebate" or credit, you must SUBTRACT it from "otherFees" (so otherFees = total random deductions - rebates). Top Rank and Promoted fees strictly go into "adSpends".
 - IF IT IS A DELIVEROO INVOICE: Set the JSON key "totalOrders" to the number of orders. Set "grossSales" to "Total Order Value". Set "netPaid" to "Total payable". For "commission", extract the TOTAL Deliveroo Commission (Net + VAT). Put any Marketer/Ads/Promoted fees into "adSpends". Put Top Rank fees into "topRankFee". Put all other deductions into "otherFees", and any additional payments into "otherPayments".
 - CRITICAL MATH RULE: For Just Eat, the system requires that (grossSales - commission - adSpends - vat - cashOrders - otherFees) EXACTLY equals netPaid. You MUST bundle Admin Fee and all other unlisted deductions into "otherFees", and net them against any Rebates (e.g. 50 deduction - 10 rebate = 40 otherFees) to make this equation balance perfectly. For Uber Eats, use the full equation: (grossSales - commission + vatRoundingAdj - adSpends - topRankFee - adminFee - otherFees - offersOnItems - offerRedemptionFee + refunds) = netPaid. For Deliveroo: (grossSales - commission - adSpends - topRankFee - otherFees + otherPayments) EXACTLY equals netPaid. You MUST put the exact remainder of "Additional Fees" into "otherFees" to make this equation perfectly balance.
@@ -775,6 +786,7 @@ IMPORTANT:
           ? new Date(geminiData.weekEnd + "T23:59:59Z")
           : null;
         ocrData = {
+          store: geminiData.store || null,
           weekStart: ws,
           weekEnd: we,
           invoiceDate: geminiData.invoiceDate || geminiData.weekEnd || null,
@@ -789,7 +801,7 @@ IMPORTANT:
             geminiData.commission ??
             geminiData.marketplaceFee ??
             0,
-          marketing: geminiData.marketing ?? 0,
+          marketing: geminiData.marketing ?? ((geminiData.offersOnItems ?? 0) + (geminiData.offerRedemptionFee ?? 0) + (geminiData.adSpends ?? 0)),
           offersOnItems: geminiData.offersOnItems ?? 0,
           offerRedemptionFee: geminiData.offerRedemptionFee ?? 0,
           adSpends: geminiData.adSpends ?? 0,
@@ -798,8 +810,8 @@ IMPORTANT:
           refunds: Math.abs(
             geminiData.netOrderErrorAdjustments ?? geminiData.refunds ?? 0,
           ),
-          otherPayments: geminiData.otherPayments ?? 0,
-          netPaid: geminiData.netPaid ?? 0,
+          otherPayments: geminiData.otherPayments ?? geminiData.amendments ?? 0,
+          netPaid: geminiData.netPaid ?? geminiData.netSales ?? 0,
           topRankFee: 0,
           cashOrders: 0,
           otherFees: 0,
@@ -974,6 +986,8 @@ IMPORTANT:
       let storeName = "Combined";
       if (invoice.platform?.includes("Herbies")) storeName = "Herbies Pizza";
       if (invoice.platform?.includes("Tasty Bun")) storeName = "Tasty Bun";
+      if (ocrData.store && (ocrData.store.toLowerCase().includes("tasty") || ocrData.store === "Tasty Bun")) storeName = "Tasty Bun";
+      if (ocrData.store && (ocrData.store.toLowerCase().includes("herbie") || ocrData.store === "Herbies Pizza")) storeName = "Herbies Pizza";
       if (invoice.clientId === "client-1") storeName = "Hungry Birds";
 
       let parsedGross = ocrData.grossSales ?? ocrData.totalAmount ?? finalAmount ?? 0;
@@ -1614,10 +1628,22 @@ function parseUberEatsInvoice(text: string) {
   const result: any = {};
 
   // Normalize: replace en-dash (–), em-dash (—), and similar unicode dashes with a regular hyphen
-  const t = text.replace(/[\u2013\u2014\u2012\u2015]/g, "-");
+  const t = text.replace(/[–—‒―]/g, "-");
+
+  // --- STORE DETECTION ---
+  if (/TASTY\s*BUN/i.test(t)) result.store = "Tasty Bun";
+  else if (/HERBIES/i.test(t)) result.store = "Herbies Pizza";
+  else if (/HUNGRY\s*BIRDS/i.test(t)) result.store = "Hungry Birds";
 
   // --- DATE PARSING ---
-  // Format: MM/DD/YYYY - MM/DD/YYYY (Uber Eats standard)
+  // Format: Sep 28 - Oct 4, 2026 (Uber Eats Manager standard)
+  const shortDateMatch = t.match(
+    /([A-Za-z]{3,9})\s+(\d{1,2})\s*-\s*([A-Za-z]{3,9})\s+(\d{1,2}),?\s+(\d{4})/i,
+  );
+  const shortDateMatch2 = t.match(
+    /(\d{1,2})\s+([A-Za-z]{3,9})\s*-\s*(\d{1,2})\s+([A-Za-z]{3,9}),?\s+(\d{4})/i,
+  );
+  // Format: MM/DD/YYYY - MM/DD/YYYY
   const slashDateMatch = t.match(
     /(\d{1,2}\/\d{1,2}\/\d{4})\s*-\s*(\d{1,2}\/\d{1,2}\/\d{4})/,
   );
@@ -1635,19 +1661,21 @@ function parseUberEatsInvoice(text: string) {
     
     // Default to DD/MM/YYYY for UK. Only use MM/DD/YYYY if middle part is > 12.
     if (p1 > 12) {
-      // MM/DD/YYYY
-      return new Date(
-        `${y}-${parts[0].padStart(2, "0")}-${parts[1].padStart(2, "0")}T00:00:00Z`,
-      );
+      return new Date(`${y}-${parts[0].padStart(2, "0")}-${parts[1].padStart(2, "0")}T00:00:00Z`);
     } else {
-      // DD/MM/YYYY
-      return new Date(
-        `${y}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}T00:00:00Z`,
-      );
+      return new Date(`${y}-${parts[1].padStart(2, "0")}-${parts[0].padStart(2, "0")}T00:00:00Z`);
     }
   };
 
-  if (slashDateMatch) {
+  if (shortDateMatch) {
+    const m1 = shortDateMatch[1], d1 = shortDateMatch[2], m2 = shortDateMatch[3], d2 = shortDateMatch[4], y = shortDateMatch[5];
+    result.weekStart = new Date(`${m1} ${d1}, ${y} 00:00:00 UTC`);
+    result.weekEnd = new Date(`${m2} ${d2}, ${y} 23:59:59 UTC`);
+  } else if (shortDateMatch2) {
+    const d1 = shortDateMatch2[1], m1 = shortDateMatch2[2], d2 = shortDateMatch2[3], m2 = shortDateMatch2[4], y = shortDateMatch2[5];
+    result.weekStart = new Date(`${d1} ${m1} ${y} 00:00:00 UTC`);
+    result.weekEnd = new Date(`${d2} ${m2} ${y} 23:59:59 UTC`);
+  } else if (slashDateMatch) {
     const ws = parseMDY(slashDateMatch[1]);
     const we = parseMDY(slashDateMatch[2]);
     if (ws) result.weekStart = ws;
@@ -1657,9 +1685,7 @@ function parseUberEatsInvoice(text: string) {
     }
   } else if (wordDateMatch) {
     result.weekStart = new Date(wordDateMatch[1].replace(/,/g, "") + " UTC");
-    result.weekEnd = new Date(
-      wordDateMatch[2].replace(/,/g, "") + " 23:59:59 UTC",
-    );
+    result.weekEnd = new Date(wordDateMatch[2].replace(/,/g, "") + " 23:59:59 UTC");
   } else {
     const singleDate = t.match(
       /(\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4}|\d{4}-\d{2}-\d{2})/,
@@ -1668,26 +1694,17 @@ function parseUberEatsInvoice(text: string) {
   }
 
   // --- FINANCIALS ---
-  // Earnings (gross sales)
-  const earningsMatch = t.match(/Earnings[\s\S]{0,10}?[£$]\s*([\d,]+\.\d{2})/i);
+  // Gross Sales / Earnings
+  const earningsMatch = t.match(/(?:Gross\s*Sales|Earnings|Total\s*Sales)[\s\S]{0,60}?[£$]\s*([\d,]+\.\d{2})/i);
   if (earningsMatch)
     result.grossSales = parseFloat(earningsMatch[1].replace(/,/g, ""));
 
-  // Uber Fees / Marketplace Fee → commission (prefer Marketplace Fee)
+  // Uber Fees / Marketplace Fee → commission (prefer Net Marketplace Fee / Uber Fees)
   const uberFeesMatch = t.match(
-    /Uber\s*Fees[\s\S]{0,5}?-?[£$]\s*([\d,]+\.\d{2})/i,
+    /(?:Uber\s*Fees|Marketplace\s*Fee|Net\s*Marketplace\s*Fee)[\s\S]{0,60}?-?[£$]\s*([\d,]+\.\d{2})/i,
   );
-  const marketplaceFeeMatch = t.match(
-    /Marketplace\s*Fee[\s\S]{0,5}?-?[£$]\s*([\d,]+\.\d{2})/i,
-  );
-  if (marketplaceFeeMatch)
-    result.commission = Math.abs(
-      parseFloat(marketplaceFeeMatch[1].replace(/,/g, "")),
-    );
-  else if (uberFeesMatch)
-    result.commission = Math.abs(
-      parseFloat(uberFeesMatch[1].replace(/,/g, "")),
-    );
+  if (uberFeesMatch)
+    result.commission = Math.abs(parseFloat(uberFeesMatch[1].replace(/,/g, "")));
 
   // Service fees fallback
   if (!result.commission) {
@@ -1695,110 +1712,97 @@ function parseUberEatsInvoice(text: string) {
       /Service\s*fees?[^\n£$]{0,10}-?[£$]\s*([\d,]+\.\d{2})/i,
     );
     if (serviceMatch)
-      result.commission = Math.abs(
-        parseFloat(serviceMatch[1].replace(/,/g, "")),
-      );
+      result.commission = Math.abs(parseFloat(serviceMatch[1].replace(/,/g, "")));
   }
 
   // Net Order Error Adjustments → refunds
   const refundMatch = t.match(
-    /Net\s*?order\s*error\s*adjustments[^\n£$]{0,30}-?[£$]\s*([\d,]+\.\d{2})/i,
+    /(?:Net\s*?order\s*error\s*adjustments|Refunds)[^\n£$]{0,30}-?[£$]\s*([\d,]+\.\d{2})/i,
   );
   if (refundMatch)
     result.refunds = Math.abs(parseFloat(refundMatch[1].replace(/,/g, "")));
 
-  // Total payout → netPaid
+  // Total payout / Net sales → netPaid
   const payoutMatch = t.match(
-    /Total\s*payout[^\n£$]{0,10}[£$]\s*([\d,]+\.\d{2})/i,
+    /(?:Total\s*payout|Net\s*sales)[^\n£$]{0,15}[£$]\s*([\d,]+\.\d{2})/i,
   );
   if (payoutMatch)
     result.netPaid = parseFloat(payoutMatch[1].replace(/,/g, ""));
 
-  // Settled orders → totalOrders
+  // Orders: sum across delivery breakdown or take settled orders
+  let totalOrderCount = 0;
+  const orderMatches = [...t.matchAll(/(\d+)\s*orders\b/gi)];
+  if (orderMatches.length > 0) {
+    for (const m of orderMatches) totalOrderCount += parseInt(m[1], 10);
+    if (totalOrderCount > 0) result.totalOrders = totalOrderCount;
+  }
   const settledMatch = t.match(/Settled\s*orders[\s\S]{0,5}?(\d+)/i);
   if (settledMatch) result.totalOrders = parseInt(settledMatch[1], 10);
-  else {
-    const lines = t.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-      if (
-        lines[i].toLowerCase().includes("settled orders") &&
-        i + 1 < lines.length
-      ) {
-        const nums = lines[i + 1].replace(/[£$][\d,.]+/g, "").match(/\b\d+\b/g);
-        if (nums) result.totalOrders = parseInt(nums[nums.length - 1], 10);
-        break;
-      }
-    }
-  }
 
   // Customers
   const customersMatch = t.match(/Customers[\s\S]{0,5}?(\d+)/i);
   if (customersMatch) result.customers = parseInt(customersMatch[1], 10);
 
-  // Marketing total
-  const marketingTotalMatch = t.match(
-    /^Marketing[\s\S]{0,8}?-?[£$]\s*([\d,]+\.\d{2})/im,
-  );
-  if (marketingTotalMatch)
-    result.marketing = Math.abs(
-      parseFloat(marketingTotalMatch[1].replace(/,/g, "")),
-    );
-
-  // Offers on items (incl. VAT)
+  // Offers on items (incl. tax / VAT)
   const offersMatch = t.match(
-    /Offers\s*on\s*items[^£$\n]*[£$]\s*-?([\d,]+\.\d{2})/i,
+    /Offers\s*on\s*items(?:[^\n£$]*)\s*-?[£$]\s*([\d,]+\.\d{2})/i,
   );
   if (offersMatch)
-    result.offersOnItems = Math.abs(
-      parseFloat(offersMatch[1].replace(/,/g, "")),
-    );
+    result.offersOnItems = Math.abs(parseFloat(offersMatch[1].replace(/,/g, "")));
 
-  // Offer Redemption Fee (incl. VAT)
+  // Offer Redemption Fee (incl. tax / VAT)
   const offerRedemptionMatch = t.match(
-    /Offer\s*Redemption\s*Fee[^£$\n]*[£$]\s*-?([\d,]+\.\d{2})/i,
+    /Offer\s*Redemption\s*Fee(?:[^\n£$]*)\s*-?[£$]\s*([\d,]+\.\d{2})/i,
   );
   if (offerRedemptionMatch)
-    result.offerRedemptionFee = Math.abs(
-      parseFloat(offerRedemptionMatch[1].replace(/,/g, "")),
-    );
+    result.offerRedemptionFee = Math.abs(parseFloat(offerRedemptionMatch[1].replace(/,/g, "")));
 
-  // Ad Spends
+  // Ad Spends (incl. tax / VAT)
   const adSpendsMatch = t.match(
-    /Ad\s*Spends?[^£$\n]*[£$]\s*-?([\d,]+\.\d{2})/i,
+    /Ad\s*Spend(?:s)?(?:[^\n£$]*)\s*-?[£$]\s*([\d,]+\.\d{2})/i,
   );
   if (adSpendsMatch)
     result.adSpends = Math.abs(parseFloat(adSpendsMatch[1].replace(/,/g, "")));
 
+  // Total Marketing (fallback or sum)
+  const marketingTotalMatch = t.match(
+    /^Marketing[\s\S]{0,8}?-?[£$]\s*([\d,]+\.\d{2})/im,
+  );
+  if (marketingTotalMatch) {
+    result.marketing = Math.abs(parseFloat(marketingTotalMatch[1].replace(/,/g, "")));
+  } else if (result.offersOnItems || result.offerRedemptionFee || result.adSpends) {
+    result.marketing = (result.offersOnItems || 0) + (result.offerRedemptionFee || 0) + (result.adSpends || 0);
+  }
+
+  // Amendments / Other payments
+  const amendMatch = t.match(
+    /(?:Amendments|Other\s*payments)[\s\S]{0,30}?[£$]\s*([\d,]+\.\d{2})/i,
+  );
+  if (amendMatch)
+    result.otherPayments = parseFloat(amendMatch[1].replace(/,/g, ""));
+
   // Ad Credits
   const adCreditsMatch = t.match(
-    /Ad\s*Credits?[^£$\n]*[£$]\s*([\d,]+\.\d{2})/i,
+    /Ad\s*Credits?[^\n£$]*[£$]\s*([\d,]+\.\d{2})/i,
   );
   if (adCreditsMatch)
     result.adCredits = parseFloat(adCreditsMatch[1].replace(/,/g, ""));
 
   // VAT rounding adjustment
   const vatRoundingMatch = t.match(
-    /VAT\s*rounding\s*adjustment[^£$\n]*[£$]\s*-?([\d,]+\.\d{2})/i,
+    /VAT\s*rounding\s*adjustment[^\n£$]*[£$]\s*-?([\d,]+\.\d{2})/i,
   );
   if (vatRoundingMatch)
-    result.vatRoundingAdj = Math.abs(
-      parseFloat(vatRoundingMatch[1].replace(/,/g, "")),
-    );
+    result.vatRoundingAdj = Math.abs(parseFloat(vatRoundingMatch[1].replace(/,/g, "")));
 
-  // Other payments
-  const otherPaymentsMatch = t.match(
-    /Other\s*payments?[^£$\n]*[£$]\s*([\d,]+\.\d{2})/i,
-  );
-  if (otherPaymentsMatch)
-    result.otherPayments = parseFloat(otherPaymentsMatch[1].replace(/,/g, ""));
-
-  // VAT rounding / other adjustments → otherFees
-  const adjustMatch = t.match(/adjustment[^£$\n]*[£$]\s*([\d,]+\.\d{2})/i);
-  if (adjustMatch)
+  // Other adjustments → otherFees
+  const adjustMatch = t.match(/adjustment[^\n£$]*[£$]\s*([\d,]+\.\d{2})/i);
+  if (adjustMatch && !result.vatRoundingAdj)
     result.otherFees = Math.abs(parseFloat(adjustMatch[1].replace(/,/g, "")));
 
   return result;
 }
+
 
 function parseDeliverooInvoice(text: string) {
   const result: any = {};

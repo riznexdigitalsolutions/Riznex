@@ -273,20 +273,20 @@ export function HungryBirdsExpensesDashboard() {
 
       {/* Auto-Fill Modal */}
       {showAutoFill && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Auto-Fill Fixed Expenses</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Select a date within the week you want to generate all fixed wages, supplier costs, rent, utilities, and marketing expenses for.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-3xl p-6 sm:p-7 w-full max-w-md shadow-2xl">
+            <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">Auto-Fill Fixed Expenses</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mb-6">Select a date within the week you want to generate all fixed wages, supplier costs, rent, utilities, and marketing expenses for.</p>
             <div className="mb-4">
-              <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Target Date (Will snap to Week Ending Sunday)</label>
+              <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">Target Date (Will snap to Week Ending Sunday)</label>
               <input type="date" value={autoFillDate} onChange={e => setAutoFillDate(e.target.value)}
-                className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500" />
+                className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-semibold rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
             </div>
 
-            <div className="mb-6 bg-[#161b2c] rounded-xl p-4 max-h-48 overflow-y-auto border border-slate-200 dark:border-[#1f2947] text-xs space-y-4">
+            <div className="mb-6 bg-slate-50 dark:bg-[#161b2c] rounded-2xl p-4 max-h-48 overflow-y-auto border border-slate-200 dark:border-[#1f2947] text-xs space-y-4">
               <div>
-                <div className="font-bold text-slate-600 dark:text-slate-300 mb-2">👥 Wages (£1,300.00)</div>
-                <ul className="text-slate-500 list-disc ml-5 space-y-1">
+                <div className="font-bold text-slate-900 dark:text-white mb-2">👥 Wages (£1,300.00)</div>
+                <ul className="text-slate-700 dark:text-slate-300 list-disc ml-5 space-y-1 font-medium">
                   <li>Staff 1 (£200)</li>
                   <li>Staff 2 (£200)</li>
                   <li>Chef (£400)</li>
@@ -294,8 +294,8 @@ export function HungryBirdsExpensesDashboard() {
                 </ul>
               </div>
               <div>
-                <div className="font-bold text-slate-600 dark:text-slate-300 mb-2">📦 Suppliers (£1,475.00)</div>
-                <ul className="text-slate-500 list-disc ml-5 space-y-1">
+                <div className="font-bold text-slate-900 dark:text-white mb-2">📦 Suppliers (£1,475.00)</div>
+                <ul className="text-slate-700 dark:text-slate-300 list-disc ml-5 space-y-1 font-medium">
                   <li>Express Foods (£450)</li>
                   <li>Wington (£325)</li>
                   <li>Elc (£200)</li>
@@ -305,8 +305,8 @@ export function HungryBirdsExpensesDashboard() {
                 </ul>
               </div>
               <div>
-                <div className="font-bold text-slate-600 dark:text-slate-300 mb-2">⚡ Utilities & Other (£858.98)</div>
-                <ul className="text-slate-500 list-disc ml-5 space-y-1">
+                <div className="font-bold text-slate-900 dark:text-white mb-2">⚡ Utilities & Other (£858.98)</div>
+                <ul className="text-slate-700 dark:text-slate-300 list-disc ml-5 space-y-1 font-medium">
                   <li>Rent (£325.00)</li>
                   <li>Fuel (£150.00)</li>
                   <li>Elec/Gas/Water (£150.00)</li>
@@ -318,15 +318,15 @@ export function HungryBirdsExpensesDashboard() {
               </div>
               <div>
                 <div className="font-bold text-slate-900 dark:text-white mb-2">💵 Walk-in Cash Sales (+£500.00)</div>
-                <ul className="text-slate-500 list-disc ml-5 space-y-1">
+                <ul className="text-slate-700 dark:text-slate-300 list-disc ml-5 space-y-1 font-medium">
                   <li>Fixed Weekly Cash Sales (+£500.00)</li>
                 </ul>
               </div>
             </div>
             
             <div className="flex gap-3">
-              <button onClick={() => setShowAutoFill(false)} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
-              <button onClick={handleAutoFill} disabled={autoFilling} className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition">
+              <button onClick={() => setShowAutoFill(false)} className="flex-1 border border-slate-300 dark:border-[#1f2947] hover:bg-slate-100 dark:hover:bg-[#1f2947] text-slate-700 dark:text-slate-300 rounded-xl py-2.5 text-sm font-bold transition">Cancel</button>
+              <button onClick={handleAutoFill} disabled={autoFilling} className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-emerald-500/20 hover:opacity-95 disabled:opacity-50 transition">
                 {autoFilling ? 'Generating…' : 'Generate All'}
               </button>
             </div>

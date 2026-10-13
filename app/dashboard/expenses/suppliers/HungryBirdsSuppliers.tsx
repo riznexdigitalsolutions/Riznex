@@ -142,9 +142,9 @@ export function HungryBirdsSuppliers() {
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 flex gap-3 flex-wrap items-center">
           <DateFilter filter={filter} setFilter={setFilter} />
           <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
-          <select value={supplierFilter} onChange={e => setSupplierFilter(e.target.value)} className="bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 text-xs rounded-lg px-2 py-1.5 outline-none">
-            <option value="">All Suppliers</option>
-            {Array.from(new Set(suppliers.map(s => s.name))).map((n: any) => <option key={n} value={n}>{n}</option>)}
+          <select value={supplierFilter} onChange={e => setSupplierFilter(e.target.value)} className="bg-white dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium text-xs rounded-lg px-2.5 py-1.5 outline-none focus:ring-2 focus:ring-amber-500/50">
+            <option value="" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">All Suppliers</option>
+            {Array.from(new Set(suppliers.map(s => s.name))).map((n: any) => <option key={n} value={n} className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">{n}</option>)}
           </select>
         </div>
         <div className="bg-slate-100 dark:bg-[#111520] border border-orange-500/20 rounded-2xl p-4 flex items-center gap-4">
@@ -194,7 +194,7 @@ export function HungryBirdsSuppliers() {
                   const dateStr = targetDate ? fmtDate(targetDate) : <span className="bg-red-500/20 text-red-400 px-2 py-0.5 rounded text-[10px] font-bold">MISSING</span>
                   
                   return (
-                    <tr key={inv.id} className={isSelected ? "border-b border-slate-200 dark:border-[#1f2947] transition-colors bg-blue-500/5" : "border-b border-slate-200 dark:border-[#1f2947] transition-colors hover:bg-[#161b2c]"}>
+                    <tr key={inv.id} className={isSelected ? "border-b border-slate-200 dark:border-[#1f2947] transition-colors bg-blue-500/5" : "border-b border-slate-200 dark:border-[#1f2947] transition-colors hover:bg-amber-500/10 dark:hover:bg-[#161b2c]"}>
                       <td className="px-4 py-3 w-12 text-center">
                         <input 
                           type="checkbox"

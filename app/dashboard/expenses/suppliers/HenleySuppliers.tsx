@@ -517,7 +517,7 @@ export function HenleySuppliers() {
                   const supplier = filteredSuppliers.find(s => s.id === inv.supplierId)
                   
                   return (
-                  <tr key={inv.id} className={`hover:bg-[#161b2c]/50 transition ${isSelected ? 'bg-blue-500/5' : ''}`}>
+                  <tr key={inv.id} className={`hover:bg-amber-500/10 dark:hover:bg-[#161b2c]/50 transition ${isSelected ? 'bg-blue-500/5' : ''}`}>
                     <td className="px-5 py-4 w-12 text-center">
                       <input 
                         type="checkbox"

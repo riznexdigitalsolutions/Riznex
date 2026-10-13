@@ -293,7 +293,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                 <tr><td colSpan={6} className="text-center py-12 text-slate-500 font-medium">No wages recorded yet.</td></tr>
               ) : filteredWages.map(w => {
                 return (
-                <tr key={w.id} className={`border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
+                <tr key={w.id} className={`border-b border-slate-200 dark:border-[#1f2947] hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
                   <td className="px-4 py-3 text-center">
                     <input type="checkbox"
                       checked={selectedIds.has(w.id)}

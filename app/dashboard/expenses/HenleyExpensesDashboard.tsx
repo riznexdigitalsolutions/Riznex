@@ -275,18 +275,18 @@ export function HenleyExpensesDashboard() {
           {activeTab === 'overview' && (
             <div className="mt-8 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-2xl">
               <div className="px-6 py-4 border-b border-slate-200 dark:border-[#1f2947] bg-[#161b2c] flex items-center justify-between">
-                <h3 className="text-base sm:text-lg font-black text-slate-900 dark:text-white">Master Ledger: All Outgoing Cash</h3>
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Single Sheet View</div>
+                <h3 className="text-base sm:text-lg font-black text-white tracking-wide">Master Ledger: All Outgoing Cash</h3>
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Single Sheet View</div>
               </div>
               <div className="overflow-x-auto max-h-[600px]">
                 <table className="w-full text-sm">
                   <thead className="sticky top-0 bg-[#161b2c] shadow-md z-10">
                     <tr className="border-b border-slate-200 dark:border-[#1f2947]">
-                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Date</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Type</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Store</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Name / Category</th>
-                      <th className="px-4 py-3 text-right text-[11px] font-bold text-slate-500 uppercase tracking-wider">Amount</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Date</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Type</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Store</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Name / Category</th>
+                      <th className="px-4 py-3 text-right text-[11px] font-bold text-slate-300 uppercase tracking-wider">Amount</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -297,7 +297,7 @@ export function HenleyExpensesDashboard() {
                       ...marketingItems.map(m => ({ id: m.id, date: m.date, type: 'Marketing', name: m.subcategory || m.category, store: m.store, amount: m.displayAmount || m.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-pink-500/10 border-pink-500/20' })),
                       ...otherItems.map(o => ({ id: o.id, date: o.date, type: 'Other', name: o.subcategory || o.notes || o.category, store: o.store, amount: o.displayAmount || o.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-emerald-500/10 border-slate-200 dark:border-[#E5B869]/20' }))
                     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((item, i) => (
-                      <tr key={i} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors">
+                      <tr key={i} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
                         <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-medium">{item.date ? new Date(item.date).toLocaleDateString('en-GB') : '-'}</td>
                         <td className="px-4 py-3">
                           <span className={`text-[10px] px-2 py-0.5 rounded border font-bold ${item.bg} ${item.color}`}>

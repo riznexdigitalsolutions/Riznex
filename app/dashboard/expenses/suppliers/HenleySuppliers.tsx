@@ -634,79 +634,79 @@ export function HenleySuppliers() {
 
       {/* Add Supplier Modal */}
       {showSupplierForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-md shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editSupplierId ? 'Edit Supplier' : 'Add New Supplier'}</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Franchise</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Franchise</label>
                 <select value={supForm.franchise} onChange={e => setSupForm({ ...supForm, franchise: e.target.value })}
-                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
-                  <option value="Combined">Both / Combined</option>
-                  <option value="Herbies Pizza">Herbies Pizza</option>
-                  <option value="Tasty Bun">Tasty Bun</option>
+                  className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition">
+                  <option value="Combined" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Both / Combined</option>
+                  <option value="Herbies Pizza" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Herbies Pizza</option>
+                  <option value="Tasty Bun" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Tasty Bun</option>
                 </select>
               </div>
               
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Supplier Name</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Supplier Name</label>
                 {editSupplierId ? (
                   <input value={supForm.name} onChange={e => setSupForm({ ...supForm, name: e.target.value })}
-                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500 transition" />
+                    className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition" />
                 ) : (
                   <>
                     <select value={supForm.name} onChange={e => setSupForm(f => ({ ...f, name: e.target.value }))}
-                      className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 mb-2">
-                      <option value="" disabled>Select a supplier...</option>
+                      className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 mb-2 transition">
+                      <option value="" disabled className="bg-white dark:bg-[#161b2c] text-slate-500">Select a supplier...</option>
                       {Array.from(new Set(suppliers.map(s => s.name))).map(name => (
-                        <option key={name} value={name}>{name}</option>
+                        <option key={name} value={name} className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">{name}</option>
                       ))}
-                      <option value="Custom">Custom / Add New...</option>
+                      <option value="Custom" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Custom / Add New...</option>
                     </select>
                     {supForm.name === 'Custom' && (
                       <input value={supForm.customName} onChange={e => setSupForm({ ...supForm, customName: e.target.value })}
                         placeholder="Type new supplier name..."
-                        className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-blue-500 transition mt-2" />
+                        className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition mt-2" />
                     )}
                   </>
                 )}
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Category</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Category</label>
                 <select value={supForm.category} onChange={e => setSupForm(f => ({ ...f, category: e.target.value }))}
-                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
-                  {['food','packaging','cleaning','equipment','other'].map(c => <option key={c} value={c} className="capitalize">{c.charAt(0).toUpperCase()+c.slice(1)}</option>)}
+                  className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition">
+                  {['food','packaging','cleaning','equipment','other'].map(c => <option key={c} value={c} className="capitalize bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">{c.charAt(0).toUpperCase()+c.slice(1)}</option>)}
                 </select>
               </div>
             </div>
-              <div className="flex gap-3 mt-6 pt-2">
-                <button onClick={() => { setShowSupplierForm(false); setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }) }} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
-                <button onClick={saveSupplier} disabled={saving || (!supForm.name || (supForm.name === 'Custom' && !supForm.customName))}
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition">
-                  {saving ? 'Saving...' : 'Save Supplier'}
-                </button>
-              </div>
+            <div className="flex gap-3 mt-6 pt-2">
+              <button onClick={() => { setShowSupplierForm(false); setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }) }} className="flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-200 font-semibold rounded-xl py-2.5 text-sm transition">Cancel</button>
+              <button onClick={saveSupplier} disabled={saving || (!supForm.name || (supForm.name === 'Custom' && !supForm.customName))}
+                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-xl py-2.5 text-sm shadow-md transition disabled:opacity-50">
+                {saving ? 'Saving...' : 'Save Supplier'}
+              </button>
+            </div>
           </div>
         </div>
       )}
 
       {/* Add Invoice Modal */}
       {showInvoiceForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-md shadow-2xl">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-2xl p-6 w-full max-w-md shadow-2xl">
             <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-4">Add Invoice</h2>
 
             {/* Toggle Tabs */}
-            <div className="flex bg-[#161b2c] rounded-xl p-1 mb-5 gap-1">
+            <div className="flex bg-slate-100 dark:bg-[#161b2c] border border-slate-200 dark:border-transparent rounded-xl p-1 mb-5 gap-1">
               <button
                 onClick={() => setManualEntry(false)}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${!manualEntry ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white shadow' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${!manualEntry ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
               >
                 📎 Upload File
               </button>
               <button
                 onClick={() => setManualEntry(true)}
-                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${manualEntry ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
+                className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all ${manualEntry ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow' : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'}`}
               >
                 ✏️ Manual Entry
               </button>
@@ -714,12 +714,12 @@ export function HenleySuppliers() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Select Supplier</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Select Supplier</label>
                 <select value={selectedSupplier?.id || ''} onChange={e => setSelectedSupplier(suppliers.find(s => s.id === e.target.value) || null)}
-                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
-                  <option value="" disabled>Select a supplier...</option>
+                  className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition">
+                  <option value="" disabled className="bg-white dark:bg-[#161b2c] text-slate-500">Select a supplier...</option>
                   {suppliers.map(s => (
-                    <option key={s.id} value={s.id}>{s.name} {s.franchise && s.franchise !== 'Combined' ? `(${s.franchise})` : ''}</option>
+                    <option key={s.id} value={s.id} className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">{s.name} {s.franchise && s.franchise !== 'Combined' ? `(${s.franchise})` : ''}</option>
                   ))}
                 </select>
               </div>
@@ -729,9 +729,13 @@ export function HenleySuppliers() {
               {/* File Upload - only shown in Upload mode */}
               {!manualEntry && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Invoice File(s) (PDF or Image)</label>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Invoice File(s) (PDF or Image)</label>
                   <div 
-                    className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition ${isDragging ? 'border-emerald-400 bg-emerald-500/10' : 'border-slate-200 dark:border-[#1f2947] hover:border-blue-500 bg-[#161b2c]/50'}`}
+                    className={`border-2 border-dashed rounded-xl p-5 text-center cursor-pointer transition-all ${
+                      isDragging 
+                        ? 'border-emerald-500 bg-emerald-500/10' 
+                        : 'border-slate-300 dark:border-[#2d3b5e] hover:border-blue-500 bg-slate-50/80 dark:bg-[#161b2c]/50 hover:bg-slate-100/80 dark:hover:bg-[#161b2c]/80'
+                    }`}
                     onClick={() => document.getElementById('inv-file-input')?.click()}
                     onDragOver={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(true); }}
                     onDragLeave={(e) => { e.preventDefault(); e.stopPropagation(); setIsDragging(false); }}
@@ -750,9 +754,9 @@ export function HenleySuppliers() {
                       </div>
                     ) : (
                       <>
-                        <div className="text-3xl mb-1">📎</div>
-                        <div className="text-sm font-bold text-slate-900 dark:text-white mb-0.5">Drag & drop your files here</div>
-                        <div className="text-xs text-slate-500 dark:text-slate-400">or click to browse PDF or image files</div>
+                        <div className="text-3xl mb-1.5">📎</div>
+                        <div className="text-sm font-bold text-slate-800 dark:text-slate-100 mb-0.5">Drag & drop your files here</div>
+                        <div className="text-xs text-slate-500 dark:text-slate-400 font-medium">or click to browse PDF or image files</div>
                       </>
                     )}
                   </div>
@@ -767,31 +771,31 @@ export function HenleySuppliers() {
 
               {/* Manual Entry notice */}
               {manualEntry && (
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3 text-xs text-blue-300">
+                <div className="bg-blue-500/10 border border-blue-500/20 rounded-xl px-4 py-3 text-xs text-blue-700 dark:text-blue-300 font-medium">
                   ✏️ Enter the invoice details manually. Date and amount are required.
                 </div>
               )}
               
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Franchise / Store</label>
+                <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Franchise / Store</label>
                 <select value={invForm.store} onChange={e => setInvForm({ ...invForm, store: e.target.value })}
-                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500 transition">
-                  <option value="Combined">Combined</option>
-                  <option value="Herbies Pizza">Herbies Pizza</option>
-                  <option value="Tasty Bun">Tasty Bun</option>
+                  className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition">
+                  <option value="Combined" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Combined</option>
+                  <option value="Herbies Pizza" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Herbies Pizza</option>
+                  <option value="Tasty Bun" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Tasty Bun</option>
                 </select>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Amount (£) — optional</label>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Amount (£) — optional</label>
                   <input type="number" step="0.01" value={invForm.amount} onChange={e => setInvForm(f => ({ ...f, amount: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="Auto from OCR" />
+                    className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 transition" placeholder="Auto from OCR" />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Invoice Date</label>
+                  <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">Invoice Date</label>
                   <input type="date" value={invForm.invoiceDate} onChange={e => setInvForm(f => ({ ...f, invoiceDate: e.target.value }))}
-                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                    className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50 [color-scheme:light] dark:[color-scheme:dark] transition" />
                 </div>
               </div>
               {ocrResult && (
@@ -820,11 +824,11 @@ export function HenleySuppliers() {
               )}
             </div>
             <div className="flex gap-3 mt-6">
-              <button onClick={() => { setShowInvoiceForm(false); setOcrResult(null); setManualEntry(false) }} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+              <button onClick={() => { setShowInvoiceForm(false); setOcrResult(null); setManualEntry(false) }} className="flex-1 bg-slate-100 hover:bg-slate-200 dark:bg-white/5 dark:hover:bg-white/10 border border-slate-300 dark:border-white/10 text-slate-700 dark:text-slate-200 font-semibold rounded-xl py-2.5 text-sm transition">Cancel</button>
               <button 
                 onClick={saveInvoice} 
                 disabled={saving || (!manualEntry && invFiles.length === 0)} 
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition"
+                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white rounded-xl py-2.5 text-sm font-bold shadow-md hover:shadow-lg disabled:opacity-50 transition"
               >
                 {saving 
                   ? (manualEntry ? 'Saving…' : 'Uploading & Scanning…') 

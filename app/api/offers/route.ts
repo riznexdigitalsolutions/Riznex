@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Client ID required' }, { status: 400 })
   }
 
-  const { platform, store, type, startDate, amount, notes, is2025 } = body
+  const { platform, store, type, startDate, endDate, status, amount, topRank, discountPercent, offerItems, notes, is2025 } = body
 
   if (!platform || !startDate) {
     console.log('400: Missing required fields', { platform, startDate, body })
@@ -53,7 +53,12 @@ export async function POST(req: NextRequest) {
         store: store || 'Combined',
         type: type || 'weekly',
         startDate: new Date(startDate),
+        endDate: endDate ? new Date(endDate) : null,
+        status: status || 'current',
         amount: parseFloat(amount || '0'),
+        topRank: topRank || null,
+        discountPercent: discountPercent || null,
+        offerItems: offerItems || null,
         notes: notes || null,
         is2025: is2025 === true,
       },
@@ -71,7 +76,7 @@ export async function PUT(req: NextRequest) {
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await req.json().catch(() => ({}))
-  const { id, platform, store, type, startDate, amount, notes } = body
+  const { id, platform, store, type, startDate, endDate, status, amount, topRank, discountPercent, offerItems, notes } = body
 
   if (!id || !platform || !startDate) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -85,7 +90,12 @@ export async function PUT(req: NextRequest) {
         store: store || 'Combined',
         type: type || 'weekly',
         startDate: new Date(startDate),
+        endDate: endDate ? new Date(endDate) : null,
+        status: status || 'current',
         amount: parseFloat(amount || '0'),
+        topRank: topRank || null,
+        discountPercent: discountPercent || null,
+        offerItems: offerItems || null,
         notes: notes || null,
       },
     })

@@ -9,6 +9,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
 import MultiPlatformFilter from '@/components/MultiPlatformFilter'
 import ActiveFilters from '@/components/ActiveFilters'
+import OffersCampaignView from '@/components/OffersCampaignView'
 
 
 const HB_PLATFORMS = [
@@ -1302,158 +1303,18 @@ export function HungryBirdsDashboard() {
 
       {/* --- OFFERS TAB --- */}
       <div className={activeTab === 'offers' ? 'block' : 'hidden'}>
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-8 shadow-xl mt-6 w-full">
-          <div className="flex justify-between items-center mb-6">
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white">Marketing & Offers ROI</h2>
-            {session?.user?.role === 'admin' && (
-              <button onClick={() => { setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Combined', amount: '', startDate: '', type: 'weekly', notes: '' }); setShowOfferModal(true); }} className="bg-blue-600 hover:bg-blue-500 text-slate-900 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">+ Add Offer</button>
-            )}
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-sm">
-              <thead>
-                <tr className="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-[#1f2947]">
-                  <th className="pb-4">Start Date</th>
-                  <th className="pb-4">Platform</th>
-                  <th className="pb-4 text-right">Spend</th>
-                  <th className="pb-4 text-right">Orders</th>
-                  <th className="pb-4 text-right">Gross Sales</th>
-                  <th className="pb-4 text-right">Deductions</th>
-                  <th className="pb-4 text-right">Ded %</th>
-                  <th className="pb-4 text-right">Net Sales</th>
-                  <th className="pb-4 text-right">ROI</th>
-                  {session?.user?.role === 'admin' && <th className="pb-4"></th>}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#1f2947]">
-                {realOffersData.map((o, i) => (
-                  <tr key={i} className="group">
-                    <td className="py-4 text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap">{o.startDate}</td>
-                    <td className="py-4 text-slate-900 dark:text-white font-medium">
-                      {o.platform}
-                      {o.notes && <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{o.notes}</div>}
-                    </td>
-                    <td className="py-4 text-red-400 text-right">{o.spend > 0 ? gbp(o.spend) : '-'}</td>
-                    <td className="py-4 text-slate-900 dark:text-white text-right font-medium">{o.orders}</td>
-                    <td className="py-4 text-slate-900 dark:text-white text-right font-medium">{o.grossSales > 0 ? gbp(o.grossSales) : '-'}</td>
-                    <td className="py-4 text-slate-900 dark:text-white text-right">{o.deductions > 0 ? gbp(o.deductions) : '-'}</td>
-                    <td className="py-4 text-slate-500 dark:text-slate-400 text-right">{o.grossSales > 0 ? `${o.deductionPercent}%` : '-'}</td>
-                    <td className="py-4 text-slate-900 dark:text-white text-right">{o.revenue > 0 ? gbp(o.revenue) : '-'}</td>
-                    <td className="py-4 text-slate-900 dark:text-white font-bold text-right">{o.ROI}</td>
-                    {session?.user?.role === 'admin' && (
-                      <td className="py-4 text-right">
-                        {o.id !== 'none' && (
-                          <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all">
-                            <button onClick={() => {
-                              const originalOffer = offers.find(of => of.id === o.id);
-                              if(originalOffer) {
-                                setEditingOfferId(originalOffer.id);
-                                setOfferForm({
-                                  platform: originalOffer.platform,
-                                  store: originalOffer.store || 'Combined',
-                                  amount: originalOffer.amount ? originalOffer.amount.toString() : '',
-                                  startDate: new Date(originalOffer.startDate).toISOString().split('T')[0],
-                                  type: originalOffer.type || 'weekly',
-                                  notes: originalOffer.notes || ''
-                                });
-                                setShowOfferModal(true);
-                              }
-                            }} className="text-slate-500 hover:text-slate-900 dark:text-white text-lg transition-colors" title="Edit Offer">
-                              ✎
-                            </button>
-                            <button onClick={() => {
-                              if(confirm('Delete this offer?')) {
-                                fetch('/api/offers', { method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ id: o.id }) })
-                                setOffers(offers.filter((of: any) => of.id !== o.id))
-                              }
-                            }} className="text-slate-500 hover:text-red-400 text-lg transition-colors" title="Delete Offer">
-                              ✕
-                            </button>
-                          </div>
-                        )}
-                      </td>
-                    )}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* --- ADD/EDIT OFFER MODAL --- */}
-        {showOfferModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-sm px-4">
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl w-full max-w-md p-6 shadow-2xl relative">
-              <button onClick={() => { setShowOfferModal(false); setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Combined', amount: '', startDate: '', type: 'weekly', notes: '' }); }} className="absolute top-4 right-4 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">✕</button>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{editingOfferId ? 'Edit Marketing Offer' : 'Add Marketing Offer'}</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Platform</label>
-                  <select value={offerForm.platform} onChange={(e) => setOfferForm({...offerForm, platform: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
-                    <option value="just_eat">Just Eat</option>
-                    <option value="uber_eats">Uber Eats</option>
-                    <option value="deliveroo">Deliveroo</option>
-                    <option value="facebook">Facebook Marketing</option>
-                    <option value="google">Google Ads</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Offer Title (e.g. 30% off, BOGO)</label>
-                  <input type="text" value={offerForm.notes} onChange={(e) => setOfferForm({...offerForm, notes: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 30% off Burgers" />
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-1/2">
-                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Start Date</label>
-                    <input type="date" value={offerForm.startDate} onChange={(e) => setOfferForm({...offerForm, startDate: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500 [color-scheme:dark]" />
-                  </div>
-                  <div className="w-1/2">
-                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Duration</label>
-                    <select value={offerForm.type} onChange={(e) => setOfferForm({...offerForm, type: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Spend Amount (£) <span className="text-slate-500 font-normal">(Optional)</span></label>
-                  <input type="number" step="0.01" value={offerForm.amount} onChange={(e) => setOfferForm({...offerForm, amount: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 200" />
-                </div>
-                <div className="pt-4">
-                  <button onClick={() => {
-                    const activeClientId = session?.user?.role === 'admin' ? 'client-1' : session?.user?.clientId;
-                    setSavingOffer(true)
-                    const method = editingOfferId ? 'PUT' : 'POST'
-                    const bodyObj = editingOfferId 
-                      ? { id: editingOfferId, ...offerForm, store: 'Combined', is2025: false }
-                      : { ...offerForm, store: 'Combined', clientId: activeClientId, is2025: false }
-                    
-                    fetch('/api/offers', {
-                      method,
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify(bodyObj)
-                    }).then(res => res.json()).then(savedOffer => {
-                      if (!savedOffer.error) {
-                        if (editingOfferId) {
-                          setOffers(offers.map(o => o.id === savedOffer.id ? savedOffer : o))
-                        } else {
-                          setOffers([savedOffer, ...offers])
-                        }
-                      }
-                      setShowOfferModal(false)
-                      setSavingOffer(false)
-                      setEditingOfferId(null)
-                      setOfferForm({ platform: 'just_eat', store: 'Combined', amount: '', startDate: '', type: 'weekly', notes: '' })
-                    })
-                  }} disabled={savingOffer || !offerForm.startDate || (!offerForm.amount && !offerForm.notes)} className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-slate-900 dark:text-white font-bold py-3 rounded-lg transition-colors">
-                    {savingOffer ? 'Saving...' : (editingOfferId ? 'Update Offer' : 'Save Offer')}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
+        <OffersCampaignView
+          offers={offers}
+          currWeeklyData={curr6Stats.weeklyData}
+          prevWeeklyData={prev6Stats.weeklyData}
+          isAdmin={session?.user?.role === 'admin'}
+          clientId={session?.user?.role === 'admin' ? 'client-1' : (session?.user?.clientId || undefined)}
+          currentStore="Combined"
+          availableStores={['Combined']}
+          is2025={false}
+          onOffersChange={(updated) => setOffers(updated)}
+        />
       </div>
-
     </div>
   )
 }

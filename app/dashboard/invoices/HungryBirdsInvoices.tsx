@@ -82,7 +82,7 @@ function InvoicesContent() {
 
   const tabs = [
     { id: 'all', label: 'Combined Sales Invoices Data' },
-    { id: 'pos', label: 'Hungry Birds POS (Walk-in Card, Cash & POS)' },
+    { id: 'pos', label: 'Hungry Birds Direct (Card, Cash & Online Web)' },
     { id: 'platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' }
   ]
 
@@ -301,7 +301,7 @@ function InvoicesContent() {
       case 'platform':
         return { title: 'Delivery Platforms (Uber Eats, Just Eat, Deliveroo)', desc: 'Manage your delivery app weekly sales invoices.', buttonText: '+ Upload Delivery Invoice' }
       case 'pos':
-        return { title: 'POS & Walk-in Sales (Card, Cash & POS)', desc: 'Manage walk-in card machine invoices, walk-in cash sales, and in-store POS sales.', buttonText: '+ Upload Card/POS Invoice' }
+        return { title: 'Direct & Walk-in Sales (Card, Cash & Online Web)', desc: 'Manage walk-in card machine invoices, walk-in cash sales, and online web orders.', buttonText: '+ Upload Card/Web Invoice' }
       case 'all':
       default:
         return { title: 'Combined Sales Invoices Data', desc: 'Master view combining all POS and delivery platform sales invoices.', buttonText: '+ Upload Sales Invoice' }
@@ -333,7 +333,7 @@ function InvoicesContent() {
                 <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
                 <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
                 <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🖥️ POS Sales</option>
+                <option value="Online Web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🌐 Online Web</option>
               </select>
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
@@ -363,7 +363,7 @@ function InvoicesContent() {
                 <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All POS & Walk-in Sales</option>
                 <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
                 <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🖥️ POS Sales</option>
+                <option value="Online Web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🌐 Online Web</option>
               </select>
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
@@ -594,7 +594,6 @@ function InvoicesContent() {
                   <select value={posName} onChange={e => setPosName(e.target.value)} className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
                     <option value="Walk-in Card" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Walk-in Card</option>
                     <option value="Walk-in Cash" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Walk-in Cash</option>
-                    <option value="POS Sales" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">POS Sales</option>
                     <option value="Online Web" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Online Web</option>
                   </select>
                 </div>

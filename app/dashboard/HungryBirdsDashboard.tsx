@@ -16,7 +16,6 @@ const HB_PLATFORMS = [
   { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
   { value: 'Walk In Cash', label: 'Walk-in Cash', color: '#10b981' },
   { value: 'Walk In Card', label: 'Walk-in Card', color: '#3b82f6' },
-  { value: 'POS Sales', label: 'POS Sales', color: '#ef4444' },
   { value: 'Online Web', label: 'Online Web', color: '#a855f7' },
 ];
 

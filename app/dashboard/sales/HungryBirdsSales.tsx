@@ -262,7 +262,6 @@ function SalesContent() {
             <option value="deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
             <option value="walk_in_cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Walk-in Cash</option>
             <option value="walk_in_card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Walk-in Card</option>
-            <option value="pos_sales" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS Sales</option>
             <option value="online_web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Online Web</option>
           </select>
           <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>

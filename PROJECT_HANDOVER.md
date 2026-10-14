@@ -67,13 +67,32 @@
   - Responsive inputs and dropdowns: `bg-slate-50 dark:bg-[#161b2c] border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white`.
   - Dropzone: `bg-slate-50/80 dark:bg-[#161b2c]/50 border-slate-300 dark:border-[#2d3b5e]` with high-contrast text.
   - High-contrast buttons and date input `[color-scheme:light] dark:[color-scheme:dark]`.
+### C. Hungry Birds POS Sales -> Online Web Migration & Walk-in Card Full Reconciliation (October 2026)
+- **POS Sales to Online Web:**
+  - Migrated 11 historical records (27 Apr – 12 Jul) totaling £1,016.33 (32 orders) from `POS Sales` to `Online Web`.
+  - Merged 4 September POS records (16 orders) into their matching `Online Web` records and removed empty POS entries.
+  - POS Sales records in DB: **0**.
+  - Updated UI filters in `HungryBirdsDashboard.tsx`, `HungryBirdsSales.tsx`, and `HungryBirdsInvoices.tsx` to replace `POS Sales` with `Online Web`.
+- **Order History Web Reconciliation:**
+  - Reconciled all online web orders against customer PayPal order history statements.
+  - Reconciled week 21 Sep – 27 Sep to 6 valid orders (£161.88), properly excluding 2 cancelled orders.
+  - Added new week ending 11 Oct 2026 (£59.41, 2 orders: #37690, #37779).
+- **Walk-in Card Reconciliation (May to September):**
+  - Verified 149 daily transactions from US Bank Europe DAC payouts statement.
+  - Reconciled week 27 Jul – 02 Aug to include missing Sunday 02 Aug payout (£538.94), totaling £1,383.60 (69 orders).
+  - Added 4 missing September Walk-in Card sales records linked to US Bank payout invoices:
+    - 31 Aug – 06 Sep: £1,268.02 (63 orders)
+    - 07 Sep – 13 Sep: £1,351.51 (68 orders)
+    - 14 Sep – 20 Sep: £1,465.95 (73 orders)
+    - 21 Sep – 27 Sep: £1,437.30 (72 orders)
+  - All 22 consecutive weeks of Walk-in Card are now a 100% exact penny match.
+
 ---
 
 ## 5. Current Task & Next Steps
 
-- **Ready State:** The user is ready to upload the **last 2 weeks of invoice data** (Uber Eats, Just Eat, Deliveroo, Supplier invoices).
-- **Workflow:**
-  1. Upload invoices via the dashboard (`/dashboard/invoices` or `/dashboard/expenses/suppliers`).
-  2. Invoices will automatically run through the enhanced OCR pipeline.
-  3. If any invoice previously failed or shows an error, click the **`Retry 🔄`** button.
-  4. Ensure all changes to code are synced between `C:\Users\syedq\Documents\GitHub\Riznex` and `E:\Sales Software\restaurant-dashboard`, verified with `npm run build`, and pushed to GitHub `origin main`.
+- **Hungry Birds:** All 22 weeks (27 Apr – 27 Sep) + 11 Oct weekend web orders are fully verified, reconciled, and live in the database.
+- **Workflow for Updates:**
+  1. Ensure changes are tested with `npm run build`.
+  2. Sync between `C:\Users\syedq\Documents\GitHub\Riznex` and `E:\Sales Software\restaurant-dashboard`.
+  3. Commit and push to GitHub `origin main`. Hostinger deploys directly from `main`.

@@ -121,26 +121,37 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-transparent flex">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-60 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 print:hidden`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-72 lg:w-60 bg-white dark:bg-[#0c101d] border-r border-slate-200 dark:border-[#E5B869]/30 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 print:hidden`}>
         {/* Logo & Admin Back Button */}
         <div className="flex flex-col border-b border-slate-200 dark:border-[#1f2947]">
-          <div className="flex items-center gap-3 px-5 py-6">
-            {activeClient === 'Hungry Birds' ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img src="/hungry-birds-logo.jpg" alt="Hungry Birds Logo" className="w-10 h-10 rounded-xl object-cover shadow-lg border border-slate-200 dark:border-[#1f2947] flex-shrink-0" />
-            ) : (
-              <img src="/riznex_logo.jpg" alt="Riznex Digital Solutions" className="w-12 h-12 rounded-xl object-contain bg-black dark:bg-white flex-shrink-0 p-1" />
-            )}
-            <div>
+          <div className="flex items-center justify-between px-5 py-6">
+            <div className="flex items-center gap-3">
               {activeClient === 'Hungry Birds' ? (
-                <div className="font-bold text-slate-900 dark:text-white text-sm leading-tight">Hungry Birds</div>
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src="/hungry-birds-logo.jpg" alt="Hungry Birds Logo" className="w-10 h-10 rounded-xl object-cover shadow-lg border border-slate-200 dark:border-[#1f2947] flex-shrink-0" />
               ) : (
-                <div className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wide">RIZNEX</div>
+                <img src="/riznex_logo.jpg" alt="Riznex Digital Solutions" className="w-12 h-12 rounded-xl object-contain bg-black dark:bg-white flex-shrink-0 p-1" />
               )}
-              <div className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight truncate max-w-[120px]">
-                {activeClient ?? 'Dashboard'}
+              <div>
+                {activeClient === 'Hungry Birds' ? (
+                  <div className="font-bold text-slate-900 dark:text-white text-sm leading-tight">Hungry Birds</div>
+                ) : (
+                  <div className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wide">RIZNEX</div>
+                )}
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight truncate max-w-[120px]">
+                  {activeClient ?? 'Dashboard'}
+                </div>
               </div>
             </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-1.5 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1f2947] transition"
+              aria-label="Close sidebar"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
           {session?.user?.role === 'admin' && (
             <div className="px-5 pb-5 pt-1">
@@ -256,7 +267,10 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
 
       {/* Overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-white/50 dark:bg-black/50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden transition-all duration-300" 
+          onClick={() => setSidebarOpen(false)} 
+        />
       )}
 
       {/* Main */}

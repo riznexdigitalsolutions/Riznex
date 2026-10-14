@@ -34,6 +34,15 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   const searchParams = useSearchParams()
   const activeTab = searchParams?.get('tab') || 'overview'
 
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
+
   useEffect(() => {
     const loadReport = () => {
       const clientId = session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId
@@ -1163,12 +1172,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-full mt-2">
 
               {/* Main Chart (Dark Theme) */}
-              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl h-[450px] sm:h-[500px] flex flex-col w-full mb-8">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-xs sm:text-sm">
                     <span className="text-slate-900 dark:text-white mr-2">1.</span>WEEKLY SALES & ORDERS
                   </h2>
-                  <div className="flex items-center gap-6 text-[13px] font-bold">
+                  <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-[13px] font-bold">
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span> 
                       <span className="text-slate-600 dark:text-slate-300">Sales (£)</span>
@@ -1179,9 +1188,9 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 min-h-0 w-full">
+                <div className="flex-1 min-h-0 w-full overflow-x-auto">
                   <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: 0, left: 0, bottom: 40 }}>
+                    <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: isMobile ? -10 : 0, left: isMobile ? -20 : 0, bottom: 40 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
                       <XAxis 
                         dataKey="name" 
@@ -1191,8 +1200,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           const data = curr6Stats.weeklyData.find((d: any) => d.name === payload.value);
                           return (
                             <g transform={`translate(${x},${y})`}>
-                              <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={12} fontWeight="bold">{payload.value}</text>
-                              {data?.dateRange && <text x={0} y={0} dy={32} textAnchor="middle" fill="#64748b" fontSize={11}>{data.dateRange}</text>}
+                              <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={isMobile ? 10 : 12} fontWeight="bold">{payload.value}</text>
+                              {data?.dateRange && (
+                                <text x={0} y={0} dy={30} textAnchor="middle" fill="#64748b" fontSize={isMobile ? 9 : 11}>
+                                  {isMobile ? data.dateRange.replace(/ Sept/g, ' Sep').replace(/ Oct/g, ' Oct').replace(/ Aug/g, ' Aug').replace(/ July/g, ' Jul') : data.dateRange}
+                                </text>
+                              )}
                             </g>
                           );
                         }}
@@ -1203,28 +1216,32 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       <YAxis 
                         yAxisId="left" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} 
                         axisLine={false} 
                         tickLine={false} 
                         tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} 
-                        dx={-10}
+                        dx={-5}
                       />
                       <YAxis 
                         yAxisId="right" 
                         orientation="right" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} 
                         axisLine={false} 
                         tickLine={false} 
-                        dx={10}
+                        dx={5}
                       />
                       <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any, name: string) => name === 'sales' ? gbp(v as number) : v} />
                       
                       <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                        <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                        {!isMobile && (
+                          <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                        )}
                       </Bar>
                       <Bar yAxisId="right" dataKey="orders" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                        <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                        {!isMobile && (
+                          <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                        )}
                       </Bar>
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -1236,10 +1253,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   {/* Top Row: 2 Pies */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
-                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
-                    <div className="flex w-full items-center">
-                      <div className="w-[220px] h-[220px] relative">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-4 sm:mb-6 self-start text-base sm:text-lg">Sales Mix</h2>
+                    <div className="flex flex-col sm:flex-row w-full items-center gap-6">
+                      <div className="w-[220px] h-[220px] relative shrink-0">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie data={customSalesPieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
@@ -1253,14 +1270,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase">Total Sales</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                      <div className="w-full sm:flex-1 sm:pl-6 flex flex-col gap-2.5">
                         {customSalesPieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-[13px]">
-                            <div className="flex items-center gap-2">
-                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-600 dark:text-slate-300 font-medium">{d.name}</span>
+                          <div key={i} className="flex justify-between items-center text-xs sm:text-[13px]">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate">{d.name}</span>
                             </div>
-                            <span className="text-slate-500 dark:text-slate-400">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0 ml-2">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1268,10 +1285,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   </div>
 
                   {/* Expense Breakdown */}
-                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
-                    <div className="flex w-full items-center">
-                      <div className="w-[220px] h-[220px] relative">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-4 sm:mb-6 self-start text-base sm:text-lg">Expense Breakdown</h2>
+                    <div className="flex flex-col sm:flex-row w-full items-center gap-6">
+                      <div className="w-[220px] h-[220px] relative shrink-0">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie data={customExpensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
@@ -1285,14 +1302,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                      <div className="w-full sm:flex-1 sm:pl-6 flex flex-col gap-2.5">
                         {customExpensePieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-[13px]">
-                            <div className="flex items-center gap-2">
-                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate max-w-[90px]" title={d.name}>{d.name}</span>
+                          <div key={i} className="flex justify-between items-center text-xs sm:text-[13px]">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate" title={d.name}>{d.name}</span>
                             </div>
-                            <span className="text-slate-500 dark:text-slate-400 shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0 ml-2">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1319,8 +1336,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                               const data = curr6Stats.weeklyData.find((d: any) => d.name === payload.value);
                               return (
                                 <g transform={`translate(${x},${y})`}>
-                                  <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={12} fontWeight="bold">{payload.value}</text>
-                                  {data?.dateRange && <text x={0} y={0} dy={32} textAnchor="middle" fill="#64748b" fontSize={11}>{data.dateRange}</text>}
+                                  <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={isMobile ? 10 : 12} fontWeight="bold">{payload.value}</text>
+                                  {data?.dateRange && (
+                                    <text x={0} y={0} dy={30} textAnchor="middle" fill="#64748b" fontSize={isMobile ? 9 : 11}>
+                                      {isMobile ? data.dateRange.replace(/ Sept/g, ' Sep').replace(/ Oct/g, ' Oct').replace(/ Aug/g, ' Aug').replace(/ July/g, ' Jul') : data.dateRange}
+                                    </text>
+                                  )}
                                 </g>
                               );
                             }}
@@ -1328,10 +1349,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                             axisLine={false} 
                             tickLine={false} 
                           />
-                          <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
+                          <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
                           <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
                           <Bar dataKey="suppliers" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                            <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                            {!isMobile && (
+                              <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                            )}
                           </Bar>
                         </BarChart>
                       </ResponsiveContainer>
@@ -1354,12 +1377,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-full mt-2">
 
               {/* Main Chart (Dark Theme) */}
-              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl h-[450px] sm:h-[500px] flex flex-col w-full mb-8">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-xs sm:text-sm">
                     <span className="text-slate-900 dark:text-white mr-2">1.</span>MONTHLY SALES & ORDERS
                   </h2>
-                  <div className="flex items-center gap-6 text-[13px] font-bold">
+                  <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-[13px] font-bold">
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span> 
                       <span className="text-slate-600 dark:text-slate-300">Sales (£)</span>
@@ -1370,14 +1393,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 min-h-0 w-full">
+                <div className="flex-1 min-h-0 w-full overflow-x-auto">
                   <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={displayMonthlyData} margin={{ top: 20, right: 0, left: 0, bottom: 20 }}>
+                    <ComposedChart data={displayMonthlyData} margin={{ top: 20, right: isMobile ? -10 : 0, left: isMobile ? -20 : 0, bottom: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
                       <XAxis 
                         dataKey="name" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 'bold' }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12, fontWeight: 'bold' }} 
                         tickMargin={12} 
                         axisLine={false} 
                         tickLine={false} 
@@ -1385,28 +1408,32 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       <YAxis 
                         yAxisId="left" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} 
                         axisLine={false} 
                         tickLine={false} 
                         tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} 
-                        dx={-10}
+                        dx={-5}
                       />
                       <YAxis 
                         yAxisId="right" 
                         orientation="right" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} 
                         axisLine={false} 
                         tickLine={false} 
-                        dx={10}
+                        dx={5}
                       />
                       <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any, name: string) => name === 'sales' ? gbp(v as number) : v} />
                       
                       <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                        <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                        {!isMobile && (
+                          <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                        )}
                       </Bar>
                       <Bar yAxisId="right" dataKey="orders" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                        <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                        {!isMobile && (
+                          <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                        )}
                       </Bar>
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -1418,10 +1445,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 {/* Top Row: 2 Pies */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
-                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
-                    <div className="flex w-full items-center">
-                      <div className="w-[220px] h-[220px] relative">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-4 sm:mb-6 self-start text-base sm:text-lg">Sales Mix</h2>
+                    <div className="flex flex-col sm:flex-row w-full items-center gap-6">
+                      <div className="w-[220px] h-[220px] relative shrink-0">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie data={customSalesPieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
@@ -1435,14 +1462,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-1">Total Sales</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                      <div className="w-full sm:flex-1 sm:pl-6 flex flex-col gap-2.5">
                         {customSalesPieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-[13px]">
-                            <div className="flex items-center gap-3">
-                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-600 dark:text-slate-300 font-medium">{d.name}</span>
+                          <div key={i} className="flex justify-between items-center text-xs sm:text-[13px]">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate">{d.name}</span>
                             </div>
-                            <span className="text-slate-500 dark:text-slate-400 font-semibold">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0 ml-2">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1450,10 +1477,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   </div>
 
                   {/* Expense Breakdown */}
-                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
-                    <div className="flex w-full items-center">
-                      <div className="w-[220px] h-[220px] relative">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-4 sm:mb-6 self-start text-base sm:text-lg">Expense Breakdown</h2>
+                    <div className="flex flex-col sm:flex-row w-full items-center gap-6">
+                      <div className="w-[220px] h-[220px] relative shrink-0">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie data={customExpensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
@@ -1467,14 +1494,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                      <div className="w-full sm:flex-1 sm:pl-6 flex flex-col gap-2.5">
                         {customExpensePieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-[13px]">
-                            <div className="flex items-center gap-3">
-                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap" title={d.name}>{d.name}</span>
+                          <div key={i} className="flex justify-between items-center text-xs sm:text-[13px]">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate" title={d.name}>{d.name}</span>
                             </div>
-                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0 ml-2">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1483,27 +1510,29 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </div>
 
                 {/* Bottom Row: Supplier Purchases */}
-                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col w-full h-[350px]">
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-slate-900 dark:text-white font-bold text-lg">Supplier Purchases</h2>
-                    <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Months</span>
+                    <h2 className="text-slate-900 dark:text-white font-bold text-base sm:text-lg">Supplier Purchases</h2>
+                    <span className="text-[10px] sm:text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Months</span>
                   </div>
-                  <div className="flex-1 min-h-0 w-full mt-2">
+                  <div className="flex-1 min-h-0 w-full mt-2 overflow-x-auto">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={displayMonthlyData} margin={{ top: 15, right: 0, left: -25, bottom: 20 }}>
+                      <BarChart data={displayMonthlyData} margin={{ top: 15, right: isMobile ? -10 : 0, left: isMobile ? -25 : -25, bottom: 20 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
                         <XAxis 
                           dataKey="name" 
                           stroke="#64748b" 
-                          tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 'bold' }}
+                          tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12, fontWeight: 'bold' }}
                           tickMargin={12} 
                           axisLine={false} 
                           tickLine={false} 
                         />
-                        <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
+                        <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
                         <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
                         <Bar dataKey="suppliers" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                          <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                          {!isMobile && (
+                            <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                          )}
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>

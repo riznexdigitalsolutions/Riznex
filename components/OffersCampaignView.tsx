@@ -41,10 +41,19 @@ export interface WeeklyStatItem {
   suppliers?: number
 }
 
+export interface PlatformStatItem {
+  name: string
+  sales: number
+  orders: number
+  deductions: number
+  net: number
+}
+
 interface OffersCampaignViewProps {
   offers: OfferRecord[]
   currWeeklyData: WeeklyStatItem[]
   prevWeeklyData: WeeklyStatItem[]
+  platformData?: PlatformStatItem[]
   isAdmin: boolean
   clientId?: string | null
   currentStore?: string // e.g. 'Combined', 'Herbies Pizza', 'Tasty Bun'
@@ -96,6 +105,7 @@ export default function OffersCampaignView({
   offers,
   currWeeklyData = [],
   prevWeeklyData = [],
+  platformData = [],
   isAdmin,
   clientId,
   currentStore = 'Combined',
@@ -175,6 +185,43 @@ export default function OffersCampaignView({
     const endStr = endDates.length > 0 ? formatDate(new Date(Math.max(...endDates))) : 'Previous'
     return startStr ? `${startStr} — ${endStr}` : 'Previous Campaign Period'
   }, [previousOffersList])
+
+  // Helper to extract platform sales, orders, deductions & net bank payout
+  const getPlatformStats = (platformConfig: typeof PLATFORMS_CONFIG[0]) => {
+    if (!platformData || platformData.length === 0) return null
+    const matched = platformData.filter(p => {
+      const pName = (p.name || '').toLowerCase()
+      if (currentStore && currentStore !== 'Combined') {
+        const storeLower = currentStore.toLowerCase()
+        if (pName.includes('herbies') && !storeLower.includes('herbies')) return false
+        if (pName.includes('tasty') && !storeLower.includes('tasty')) return false
+      }
+      return platformConfig.aliases.some(a => pName.includes(a))
+    })
+
+    if (matched.length === 0) return null
+    const sales = matched.reduce((sum, m) => sum + (m.sales || 0), 0)
+    const orders = matched.reduce((sum, m) => sum + (m.orders || 0), 0)
+    const deductions = matched.reduce((sum, m) => sum + (m.deductions || 0), 0)
+    const net = matched.reduce((sum, m) => sum + (m.net || 0), 0)
+    const aov = orders > 0 ? sales / orders : 0
+    const takeHomePct = sales > 0 ? Math.round((net / sales) * 100) : 0
+
+    return { sales, orders, deductions, net, aov, takeHomePct }
+  }
+
+  // Calculate overall take-home for Current Offers header
+  const currentTotalTakeHome = useMemo(() => {
+    if (!platformData || platformData.length === 0) return null
+    const statsList = PLATFORMS_CONFIG.map(p => getPlatformStats(p)).filter(Boolean) as NonNullable<ReturnType<typeof getPlatformStats>>[]
+    if (statsList.length === 0) return null
+    const totalSales = statsList.reduce((s, r) => s + r.sales, 0)
+    const totalNet = statsList.reduce((s, r) => s + r.net, 0)
+    const totalDeductions = statsList.reduce((s, r) => s + r.deductions, 0)
+    const totalOrders = statsList.reduce((s, r) => s + r.orders, 0)
+    const pct = totalSales > 0 ? Math.round((totalNet / totalSales) * 100) : 0
+    return { totalSales, totalNet, totalDeductions, totalOrders, pct }
+  }, [platformData, currentStore])
 
   // Parse structured card details for each platform
   const getPlatformDetails = (platformConfig: typeof PLATFORMS_CONFIG[0], offersGroup: OfferRecord[]) => {
@@ -327,6 +374,7 @@ export default function OffersCampaignView({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {PLATFORMS_CONFIG.map(p => {
           const details = getPlatformDetails(p, offersGroup)
+          const stats = getPlatformStats(p)
           return (
             <div
               key={p.id}
@@ -353,7 +401,7 @@ export default function OffersCampaignView({
               </div>
 
               {/* Card Body - 3 Core Fields matching Excel */}
-              <div className="space-y-3.5 flex-1">
+              <div className="space-y-3 flex-1">
                 {/* 1. All offers under */}
                 <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3">
                   <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
@@ -389,6 +437,62 @@ export default function OffersCampaignView({
                     {details.discount}
                   </div>
                 </div>
+
+                {/* 4. Live Platform Earnings / Net Cash in Bank */}
+                {isCurrent && (
+                  <div className="bg-gradient-to-br from-emerald-500/[0.08] via-slate-50 to-slate-100 dark:from-emerald-500/[0.12] dark:via-[#13192b] dark:to-[#0f1422] border border-emerald-500/30 rounded-xl p-3 shadow-sm">
+                    <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-emerald-500/20">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                        <span>💰</span> Live Net in Bank
+                      </span>
+                      {stats && stats.sales > 0 ? (
+                        <span className="bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-md font-black text-[10px] tracking-tight">
+                          {stats.takeHomePct}% Take-Home
+                        </span>
+                      ) : (
+                        <span className="text-[9px] text-slate-400 font-semibold">Active Period</span>
+                      )}
+                    </div>
+
+                    {stats && (stats.sales > 0 || stats.orders > 0) ? (
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                          <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Gross Sales</div>
+                          <div className="text-sm font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                            {gbp(stats.sales)}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Orders</div>
+                          <div className="text-sm font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                            {stats.orders.toLocaleString()}
+                            {stats.aov > 0 && (
+                              <span className="text-[10px] font-medium text-slate-400 block font-normal">
+                                Avg {gbp(stats.aov)}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Deductions</div>
+                          <div className="text-xs font-bold text-rose-500 tabular-nums">
+                            -{gbp(stats.deductions)}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Net in Bank</div>
+                          <div className="text-sm font-black text-emerald-600 dark:text-emerald-400 tabular-nums tracking-tight">
+                            {gbp(stats.net)}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-2 text-[11px] text-slate-400 font-medium">
+                        Upload weekly sales to view net in bank & deductions
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
               {/* Card Footer / Edit Actions for Admin */}
@@ -553,9 +657,20 @@ export default function OffersCampaignView({
               Current Offers
             </h3>
           </div>
-          <div className="flex items-center gap-2 text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-3 py-1 rounded-xl w-fit">
-            <span>📅 Set on Date:</span>
-            <span className="font-black text-slate-900 dark:text-white">{currentSetOnDate}</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-3 py-1 rounded-xl w-fit">
+              <span>📅 Set on Date:</span>
+              <span className="font-black text-slate-900 dark:text-white">{currentSetOnDate}</span>
+            </div>
+            {currentTotalTakeHome && currentTotalTakeHome.totalSales > 0 && (
+              <div className="flex items-center gap-2 text-xs font-bold bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-xl w-fit">
+                <span>💰 Total Bank Deposit:</span>
+                <span className="font-black text-slate-900 dark:text-white">{gbp(currentTotalTakeHome.totalNet)}</span>
+                <span className="bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 px-1.5 py-0.5 rounded font-black text-[10px]">
+                  {currentTotalTakeHome.pct}% in Bank
+                </span>
+              </div>
+            )}
           </div>
         </div>
 

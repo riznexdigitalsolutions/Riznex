@@ -1554,6 +1554,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             offers={offers}
             currWeeklyData={curr6Stats.weeklyData}
             prevWeeklyData={prev6Stats.weeklyData}
+            platformData={platformData}
             isAdmin={session?.user?.role === 'admin'}
             clientId={session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : (session?.user?.clientId || undefined)}
             currentStore={store || 'Combined'}

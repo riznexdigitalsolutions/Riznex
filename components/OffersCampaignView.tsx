@@ -58,6 +58,7 @@ interface OffersCampaignViewProps {
   isAdmin: boolean
   clientId?: string | null
   currentStore?: string // e.g. 'Combined', 'Herbies Pizza', 'Tasty Bun'
+  onStoreChange?: (store: string) => void
   availableStores?: string[] // e.g. ['Combined', 'Herbies Pizza', 'Tasty Bun']
   is2025?: boolean
   onOffersChange?: (updatedOffers: OfferRecord[]) => void
@@ -111,6 +112,7 @@ export default function OffersCampaignView({
   isAdmin,
   clientId,
   currentStore = 'Combined',
+  onStoreChange,
   availableStores = ['Combined'],
   is2025 = false,
   onOffersChange
@@ -460,136 +462,259 @@ export default function OffersCampaignView({
 
     const isSingle = platformsToRender.length === 1
 
+    if (isSingle) {
+      const p = platformsToRender[0]
+      const details = getPlatformDetails(p, offersGroup)
+      const stats = getPlatformStats(p)
+
+      return (
+        <div className="w-full">
+          <div className={`bg-white dark:bg-[#0c101d] border ${p.borderClass} rounded-2xl p-5 sm:p-6 shadow-xl relative overflow-hidden`}>
+            {/* Ambient Glow */}
+            <div 
+              className="absolute top-0 right-0 w-48 h-48 opacity-15 rounded-full blur-3xl pointer-events-none"
+              style={{ backgroundColor: p.color }}
+            />
+
+            {/* Header: Platform title & Active Deals count */}
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-slate-100 dark:border-[#1f2947] mb-5">
+              <div className="flex items-center gap-3">
+                <span className="text-3xl">{p.icon}</span>
+                <div>
+                  <h3 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-wider">{p.name}</h3>
+                  <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">
+                    {isCurrent ? 'Current Active Offer' : 'Historical Campaign'}
+                  </span>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider ${p.badgeClass}`}>
+                  {details.matching.length > 0 ? `${details.matching.length} Active Deals` : 'Standard Visibility'}
+                </span>
+                {isAdmin && details.matching.length > 0 && (
+                  <button
+                    onClick={() => handleOpenEdit(details.matching[0])}
+                    className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline px-2.5 py-1 rounded-lg transition bg-blue-500/10 cursor-pointer"
+                  >
+                    ✎ Edit Offer
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* 4 Columns Grid matching Excel: % Off | Others | Top Rank | Live Payout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              {/* 1. % Off */}
+              <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-between">
+                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <span>🔥</span> % Off Offer
+                </div>
+                <div className="text-sm font-black text-rose-600 dark:text-rose-400 tracking-tight my-auto">
+                  {details.discount}
+                </div>
+                <div className="text-[10px] text-slate-400 font-semibold mt-2">Active discount rate</div>
+              </div>
+
+              {/* 2. Others (All Offers Under) */}
+              <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-between">
+                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <span>🏷️</span> Others (All Offers Under)
+                </div>
+                <div className="space-y-1 my-auto">
+                  {details.allOffers.map((item, idx) => (
+                    <div key={idx} className="flex items-start gap-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                      <span className="text-[#E5B869] text-xs leading-none">•</span>
+                      <span className="leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
+                <div className="text-[10px] text-slate-400 font-semibold mt-2">Bundle & order incentives</div>
+              </div>
+
+              {/* 3. Top Rank */}
+              <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-between">
+                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <span>⭐</span> Top Rank
+                </div>
+                <div className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2 my-auto">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0" />
+                  <span>{details.topRank}</span>
+                </div>
+                <div className="text-[10px] text-slate-400 font-semibold mt-2">Promoted positioning</div>
+              </div>
+
+              {/* 4. Live Bank Payout */}
+              {isCurrent ? (
+                <div className="bg-gradient-to-br from-emerald-500/[0.08] via-slate-50 to-slate-100 dark:from-emerald-500/[0.12] dark:via-[#13192b] dark:to-[#0f1422] border border-emerald-500/30 rounded-xl p-4 flex flex-col justify-between shadow-sm">
+                  <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-emerald-500/20">
+                    <span className="text-[11px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                      <span>💰</span> Live Net Take-Home
+                    </span>
+                    {stats && stats.sales > 0 && (
+                      <span className="bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-black text-[10px] tracking-tight">
+                        {stats.takeHomePct}% in Bank
+                      </span>
+                    )}
+                  </div>
+
+                  {stats && (stats.sales > 0 || stats.orders > 0) ? (
+                    <div className="grid grid-cols-2 gap-2 text-xs my-auto">
+                      <div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">Gross</div>
+                        <div className="text-xs font-black text-slate-900 dark:text-white tabular-nums">{gbp(stats.sales)}</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">Orders</div>
+                        <div className="text-xs font-black text-slate-900 dark:text-white tabular-nums">{stats.orders}</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold">Deductions</div>
+                        <div className="text-xs font-bold text-rose-500 tabular-nums">-{gbp(stats.deductions)}</div>
+                      </div>
+                      <div>
+                        <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-bold">Net Bank</div>
+                        <div className="text-xs font-black text-emerald-600 dark:text-emerald-400 tabular-nums">{gbp(stats.net)}</div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-3 text-[11px] text-slate-400 font-medium">
+                      Upload weekly sales to view net in bank
+                    </div>
+                  )}
+                  <div className="text-[10px] text-slate-400 font-semibold mt-2">Cash deposited to bank</div>
+                </div>
+              ) : (
+                <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-4 flex flex-col justify-between">
+                  <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2">
+                    📅 Campaign Period
+                  </div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white my-auto">
+                    {previousDateRange}
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-semibold mt-2">Historical reference</div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )
+    }
+
     return (
-      <div className={isSingle ? 'w-full max-w-4xl mx-auto' : 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6'}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
         {platformsToRender.map(p => {
           const details = getPlatformDetails(p, offersGroup)
           const stats = getPlatformStats(p)
           return (
             <div
               key={p.id}
-              className={`bg-white dark:bg-[#0c101d] border ${p.borderClass} rounded-2xl p-5 sm:p-6 shadow-lg flex flex-col justify-between transition-all duration-200 hover:shadow-xl relative overflow-hidden`}
+              className={`bg-white dark:bg-[#0c101d] border ${p.borderClass} rounded-2xl p-5 shadow-lg flex flex-col justify-between transition-all duration-200 hover:shadow-xl relative overflow-hidden`}
             >
               {/* Top ambient glow */}
               <div 
-                className="absolute top-0 right-0 w-36 h-36 opacity-15 rounded-full blur-3xl pointer-events-none"
+                className="absolute top-0 right-0 w-28 h-28 opacity-10 rounded-full blur-2xl pointer-events-none"
                 style={{ backgroundColor: p.color }}
               />
 
               {/* Card Header */}
               <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-[#1f2947] mb-4">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{p.icon}</span>
+                <div className="flex items-center gap-2.5">
+                  <span className="text-xl">{p.icon}</span>
                   <div>
-                    <h3 className="text-base font-black text-slate-900 dark:text-white uppercase tracking-wider">{p.name}</h3>
-                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">
-                      {isCurrent ? 'Current Active Offer' : 'Historical Campaign'}
-                    </span>
+                    <h3 className="text-sm font-black text-slate-900 dark:text-white uppercase tracking-wider">{p.name}</h3>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase">{isCurrent ? 'Current Live' : 'Previous'}</span>
                   </div>
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider ${p.badgeClass}`}>
-                    {details.matching.length > 0 ? `${details.matching.length} Active` : 'Standard'}
-                  </span>
-                </div>
+                <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold ${p.badgeClass}`}>
+                  {details.matching.length > 0 ? `${details.matching.length} Active` : 'Standard'}
+                </span>
               </div>
 
-              {/* Card Body: Side-by-side on desktop if single, or stacked */}
-              <div className={isSingle ? 'grid grid-cols-1 md:grid-cols-2 gap-4' : 'space-y-3 flex-1'}>
-                {/* Left Side: 3 Core Offer Fields */}
-                <div className="space-y-3">
-                  {/* 1. All offers under */}
-                  <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3">
-                    <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
-                      <span>🏷️</span> All Offers Under
-                    </div>
-                    <div className="space-y-1">
-                      {details.allOffers.map((item, idx) => (
-                        <div key={idx} className="flex items-start gap-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
-                          <span className="text-[#E5B869] text-xs leading-none">•</span>
-                          <span className="leading-snug">{item}</span>
-                        </div>
-                      ))}
-                    </div>
+              {/* Card Body */}
+              <div className="space-y-3 flex-1">
+                {/* 1. All offers under */}
+                <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3">
+                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                    <span>🏷️</span> All Offers Under
                   </div>
-
-                  {/* 2. Top rank */}
-                  <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3">
-                    <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                      <span>⭐</span> Top Rank
-                    </div>
-                    <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                      <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
-                      <span>{details.topRank}</span>
-                    </div>
-                  </div>
-
-                  {/* 3. % off */}
-                  <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3">
-                    <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
-                      <span>🔥</span> % Off
-                    </div>
-                    <div className="text-xs font-black text-rose-600 dark:text-rose-400 tracking-tight">
-                      {details.discount}
-                    </div>
+                  <div className="space-y-1">
+                    {details.allOffers.map((item, idx) => (
+                      <div key={idx} className="flex items-start gap-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        <span className="text-[#E5B869] text-xs leading-none">•</span>
+                        <span className="leading-snug">{item}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
-                {/* Right Side: Live Platform Earnings / Net Cash in Bank */}
-                {isCurrent && (
-                  <div className="bg-gradient-to-br from-emerald-500/[0.08] via-slate-50 to-slate-100 dark:from-emerald-500/[0.12] dark:via-[#13192b] dark:to-[#0f1422] border border-emerald-500/30 rounded-xl p-3.5 flex flex-col justify-between shadow-sm">
-                    <div>
-                      <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-emerald-500/20">
-                        <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
-                          <span>💰</span> Live Net Take-Home
-                        </span>
-                        {stats && stats.sales > 0 ? (
-                          <span className="bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 px-2 py-0.5 rounded-full font-black text-[10px] tracking-tight">
-                            {stats.takeHomePct}% in Bank
-                          </span>
-                        ) : (
-                          <span className="text-[9px] text-slate-400 font-semibold">Active Period</span>
-                        )}
-                      </div>
+                {/* 2. Top rank */}
+                <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3">
+                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <span>⭐</span> Top Rank
+                  </div>
+                  <div className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
+                    <span>{details.topRank}</span>
+                  </div>
+                </div>
 
-                      {stats && (stats.sales > 0 || stats.orders > 0) ? (
-                        <div className="grid grid-cols-2 gap-2 text-xs">
-                          <div className="bg-white/60 dark:bg-black/20 p-2 rounded-lg border border-slate-200/50 dark:border-white/5">
-                            <div className="text-[9px] font-semibold text-slate-500 dark:text-slate-400 uppercase">Gross Sales</div>
-                            <div className="text-sm font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-0.5">
-                              {gbp(stats.sales)}
-                            </div>
-                          </div>
-                          <div className="bg-white/60 dark:bg-black/20 p-2 rounded-lg border border-slate-200/50 dark:border-white/5">
-                            <div className="text-[9px] font-semibold text-slate-500 dark:text-slate-400 uppercase">Orders</div>
-                            <div className="text-sm font-black text-slate-900 dark:text-white tabular-nums tracking-tight mt-0.5">
-                              {stats.orders.toLocaleString()}
-                            </div>
-                            {stats.aov > 0 && (
-                              <span className="text-[9px] font-medium text-slate-400 block font-normal">
-                                Avg {gbp(stats.aov)}
-                              </span>
-                            )}
-                          </div>
-                          <div className="bg-white/60 dark:bg-black/20 p-2 rounded-lg border border-slate-200/50 dark:border-white/5">
-                            <div className="text-[9px] font-semibold text-slate-500 dark:text-slate-400 uppercase">Deductions</div>
-                            <div className="text-xs font-bold text-rose-500 tabular-nums mt-0.5">
-                              -{gbp(stats.deductions)}
-                            </div>
-                          </div>
-                          <div className="bg-emerald-500/10 p-2 rounded-lg border border-emerald-500/30">
-                            <div className="text-[9px] font-bold text-emerald-600 dark:text-emerald-400 uppercase">Net in Bank</div>
-                            <div className="text-sm font-black text-emerald-600 dark:text-emerald-400 tabular-nums tracking-tight mt-0.5">
-                              {gbp(stats.net)}
-                            </div>
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="text-center py-4 text-[11px] text-slate-400 font-medium">
-                          No sales recorded for this platform in current period.
-                        </div>
+                {/* 3. % off */}
+                <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3">
+                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                    <span>🔥</span> % Off
+                  </div>
+                  <div className="text-xs font-black text-rose-600 dark:text-rose-400 tracking-tight">
+                    {details.discount}
+                  </div>
+                </div>
+
+                {/* 4. Live Platform Earnings */}
+                {isCurrent && (
+                  <div className="bg-gradient-to-br from-emerald-500/[0.08] via-slate-50 to-slate-100 dark:from-emerald-500/[0.12] dark:via-[#13192b] dark:to-[#0f1422] border border-emerald-500/30 rounded-xl p-3 shadow-sm">
+                    <div className="flex items-center justify-between mb-2 pb-1.5 border-b border-emerald-500/20">
+                      <span className="text-[10px] font-black uppercase tracking-wider text-emerald-700 dark:text-emerald-400 flex items-center gap-1.5">
+                        <span>💰</span> Live Net in Bank
+                      </span>
+                      {stats && stats.sales > 0 && (
+                        <span className="bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-500/30 px-1.5 py-0.5 rounded-md font-black text-[10px] tracking-tight">
+                          {stats.takeHomePct}% Take-Home
+                        </span>
                       )}
                     </div>
+
+                    {stats && (stats.sales > 0 || stats.orders > 0) ? (
+                      <div className="grid grid-cols-2 gap-2 text-xs">
+                        <div>
+                          <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Gross Sales</div>
+                          <div className="text-sm font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                            {gbp(stats.sales)}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Orders</div>
+                          <div className="text-sm font-black text-slate-900 dark:text-white tabular-nums tracking-tight">
+                            {stats.orders.toLocaleString()}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-semibold text-slate-500 dark:text-slate-400">Deductions</div>
+                          <div className="text-xs font-bold text-rose-500 tabular-nums">
+                            -{gbp(stats.deductions)}
+                          </div>
+                        </div>
+                        <div>
+                          <div className="text-[10px] font-bold text-emerald-600 dark:text-emerald-400">Net in Bank</div>
+                          <div className="text-sm font-black text-emerald-600 dark:text-emerald-400 tabular-nums tracking-tight">
+                            {gbp(stats.net)}
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center py-2 text-[11px] text-slate-400 font-medium">
+                        Upload weekly sales to view net in bank & deductions
+                      </div>
+                    )}
                   </div>
                 )}
               </div>
@@ -617,7 +742,11 @@ export default function OffersCampaignView({
   }
 
   // Render Week-Wise Performance Chart
+  // Render Week-Wise Performance Chart (Last 4 Weeks like Weekly Comparison)
   const renderWeeklyChart = (data: WeeklyStatItem[], title: string, subtitle: string) => {
+    // Show only the last 4 weeks as requested by user ("same like weekly comparison")
+    const chartData = data.slice(-4)
+
     return (
       <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 sm:p-6 flex flex-col w-full">
         {/* Chart Header */}
@@ -642,16 +771,16 @@ export default function OffersCampaignView({
 
         {/* Recharts ComposedChart */}
         <div className="h-[340px] sm:h-[380px] w-full">
-          {data.length > 0 ? (
+          {chartData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
-              <ComposedChart data={data} margin={{ top: 20, right: 10, left: -10, bottom: 35 }}>
+              <ComposedChart data={chartData} margin={{ top: 25, right: 10, left: -10, bottom: 35 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} opacity={0.5} />
                 <XAxis
                   dataKey="name"
                   stroke="#64748b"
                   tick={(props: any) => {
                     const { x, y, payload } = props
-                    const item = data.find((d: any) => d.name === payload.value)
+                    const item = chartData.find((d: any) => d.name === payload.value)
                     return (
                       <g transform={`translate(${x},${y})`}>
                         <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={11} fontWeight="bold">
@@ -699,8 +828,12 @@ export default function OffersCampaignView({
                   }}
                   formatter={(v: any, name: string) => (name === 'sales' ? gbp(v as number) : v)}
                 />
-                <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={55} />
-                <Bar yAxisId="right" dataKey="orders" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={55} />
+                <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60}>
+                  <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={11} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                </Bar>
+                <Bar yAxisId="right" dataKey="orders" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
+                  <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={11} fontWeight="bold" offset={8} />
+                </Bar>
               </ComposedChart>
             </ResponsiveContainer>
           ) : (
@@ -714,82 +847,94 @@ export default function OffersCampaignView({
   }
 
   return (
-    <div className="space-y-10 w-full mt-2">
-      {/* Top Controls / Action Bar */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 rounded-2xl p-4 sm:p-5 shadow-lg">
-        <div>
-          <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
-            <span>🎯</span> Marketing & Promotional Offers
-          </h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">
-            Live and historical promotional campaigns across Deliveroo, Uber Eats, Just Eat, and Direct Web.
-          </p>
-        </div>
-
-        {isAdmin && (
-          <div className="flex items-center gap-2.5">
-            <button
-              onClick={() => handleOpenAdd('current')}
-              className="bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:opacity-95 text-slate-950 font-black text-xs uppercase tracking-wider px-4 py-2.5 rounded-xl transition shadow-md flex items-center gap-1.5 cursor-pointer"
-            >
-              <span>+</span> Add Current Offer
-            </button>
-            <button
-              onClick={() => handleOpenAdd('previous')}
-              className="bg-slate-200 dark:bg-[#1a2235] hover:bg-slate-300 dark:hover:bg-[#25324d] text-slate-900 dark:text-white font-bold text-xs uppercase tracking-wider px-3.5 py-2.5 rounded-xl transition border border-slate-300 dark:border-[#2a3454] cursor-pointer"
-            >
-              + Add Previous Offer
-            </button>
-          </div>
-        )}
-      </div>
-
+    <div className="space-y-8 w-full mt-2">
       {/* ========================================================================= */}
-      {/* PLATFORM SELECTOR FILTER TOOLBAR */}
+      {/* TIER 2: OFFERS EXECUTIVE TOOLBAR (STORES + PLATFORMS - NO DATE FILTERS) */}
       {/* ========================================================================= */}
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 rounded-2xl p-3 shadow-md">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
-              <span>🎯</span> Select Platform View:
-            </span>
-            <span className="text-[11px] text-slate-400 font-medium hidden md:inline">
-              (Filter active offers & weekly sales specifically for this channel)
-            </span>
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 rounded-2xl p-3 shadow-xl backdrop-blur-md">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {/* Left: Store Pills (if multi-store) & Direct Platform Tabs */}
+          <div className="flex flex-wrap items-center gap-3">
+            {availableStores.length > 1 && (
+              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+                {availableStores.map(s => {
+                  const isSelected = (currentStore === s) || (!currentStore && s === 'Combined')
+                  const isHerbies = s.includes('Herbies')
+                  const isTasty = s.includes('Tasty')
+                  let activeColor = 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white shadow-md font-black'
+                  if (isHerbies) activeColor = 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-md font-black'
+                  if (isTasty) activeColor = 'bg-gradient-to-r from-yellow-400 to-orange-400 text-white shadow-md font-black'
+
+                  return (
+                    <button
+                      key={s}
+                      onClick={() => onStoreChange && onStoreChange(s)}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                        isSelected
+                          ? activeColor
+                          : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      {s}
+                    </button>
+                  )
+                })}
+              </div>
+            )}
+
+            {availableStores.length > 1 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
+
+            {/* Platform Direct Tabs: all | delvireo | u | just eat | web */}
+            <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+              <button
+                onClick={() => setSelectedPlatform('all')}
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                  selectedPlatform === 'all'
+                    ? 'bg-gradient-to-r from-[#E5B869] to-[#C89B3C] text-slate-950 shadow-md font-black'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
+                }`}
+              >
+                All
+              </button>
+
+              {PLATFORMS_CONFIG.map(p => {
+                const isSelected = selectedPlatform === p.id
+                return (
+                  <button
+                    key={p.id}
+                    onClick={() => setSelectedPlatform(p.id)}
+                    style={isSelected ? { backgroundColor: p.color, color: p.id === 'deliveroo' || p.id === 'uber_eats' ? '#020617' : '#ffffff' } : {}}
+                    className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
+                      isSelected
+                        ? 'shadow-md font-black scale-105 ring-2 ring-white/20'
+                        : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                    }`}
+                  >
+                    <span>{p.icon}</span>
+                    <span>{p.name}</span>
+                  </button>
+                )
+              })}
+            </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-            {PLATFORMS_CONFIG.map(p => {
-              const isSelected = selectedPlatform === p.id
-              return (
-                <button
-                  key={p.id}
-                  onClick={() => setSelectedPlatform(p.id)}
-                  style={isSelected ? { backgroundColor: p.color, color: p.id === 'deliveroo' || p.id === 'uber_eats' ? '#020617' : '#ffffff' } : {}}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-sm ${
-                    isSelected
-                      ? 'shadow-md scale-105 ring-2 ring-white/20'
-                      : 'bg-white dark:bg-[#13192b] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1a2235] border border-slate-200 dark:border-[#1f2947]'
-                  }`}
-                >
-                  <span className="text-sm">{p.icon}</span>
-                  <span>{p.name}</span>
-                </button>
-              )
-            })}
-
-            <button
-              onClick={() => setSelectedPlatform('all')}
-              className={`px-3.5 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 cursor-pointer shadow-sm ${
-                selectedPlatform === 'all'
-                  ? 'bg-gradient-to-r from-[#E5B869] to-[#C89B3C] text-slate-950 shadow-md scale-105 ring-2 ring-white/20'
-                  : 'bg-white dark:bg-[#13192b] text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#1a2235] border border-slate-200 dark:border-[#1f2947]'
-              }`}
-            >
-              <span>📊</span>
-              <span>All Platforms</span>
-            </button>
-          </div>
+          {/* Right: Admin Actions */}
+          {isAdmin && (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleOpenAdd('current')}
+                className="bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:opacity-95 text-slate-950 font-black text-xs uppercase tracking-wider px-3.5 py-1.5 rounded-xl transition shadow-md flex items-center gap-1 cursor-pointer"
+              >
+                <span>+</span> Add Current Offer
+              </button>
+              <button
+                onClick={() => handleOpenAdd('previous')}
+                className="bg-slate-200 dark:bg-[#1a2235] hover:bg-slate-300 dark:hover:bg-[#25324d] text-slate-900 dark:text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-xl transition border border-slate-300 dark:border-[#2a3454] cursor-pointer"
+              >
+                + Add Previous Offer
+              </button>
+            </div>
+          )}
         </div>
       </div>
 

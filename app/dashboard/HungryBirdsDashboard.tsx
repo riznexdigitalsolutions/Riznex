@@ -523,38 +523,41 @@ export function HungryBirdsDashboard() {
         </div>
 
         {/* Tier 2: Filter Toolbar (Single Brand - No Store Tabs) */}
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 print:hidden shadow-lg backdrop-blur-sm">
-          {/* Left Side: Platform toggle tabs & selector */}
-          <div className="flex flex-wrap items-center gap-3">
-            
-            <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} options={HB_PLATFORMS} />
+        {activeTab !== 'offers' && (
+          <>
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 print:hidden shadow-lg backdrop-blur-sm">
+              {/* Left Side: Platform toggle tabs & selector */}
+              <div className="flex flex-wrap items-center gap-3">
+                <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} options={HB_PLATFORMS} />
+              </div>
+
+              {/* Right Side: DateFilter & Reset */}
+              <div className="flex flex-wrap items-center gap-3">
+                <div className="bg-slate-50 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 flex gap-2 items-center">
+                  <div className="text-slate-500 dark:text-slate-400 opacity-70 mr-1 text-sm">📅</div>
+                  <DateFilter filter={filter} setFilter={setFilter} />
+                </div>
+                
+                <button
+                  onClick={() => { setFilter(defaultDateFilter()); setPlatform(''); }}
+                  className="bg-slate-50 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs font-bold transition cursor-pointer"
+                >
+                  Reset
+                </button>
+              </div>
             </div>
 
-            {/* Right Side: DateFilter & Reset */}
-          <div className="flex flex-wrap items-center gap-3">
-            <div className="bg-slate-50 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 flex gap-2 items-center">
-              <div className="text-slate-500 dark:text-slate-400 opacity-70 mr-1 text-sm">📅</div>
-              <DateFilter filter={filter} setFilter={setFilter} />
-            </div>
-            
-            <button
-              onClick={() => { setFilter(defaultDateFilter()); setPlatform(''); }}
-              className="bg-slate-50 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] rounded-xl px-4 py-2 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs font-bold transition cursor-pointer"
-            >
-              Reset
-            </button>
-          </div>
-        </div>
-
-        {/* Active Filters Bar */}
-        <ActiveFilters
-          platform={platform}
-          onClearPlatform={() => setPlatform('')}
-          filter={filter}
-          onClearFilter={() => setFilter(defaultDateFilter())}
-          onClearAll={() => { setFilter(defaultDateFilter()); setPlatform(''); }}
-          className="px-1"
-        />
+            {/* Active Filters Bar */}
+            <ActiveFilters
+              platform={platform}
+              onClearPlatform={() => setPlatform('')}
+              filter={filter}
+              onClearFilter={() => setFilter(defaultDateFilter())}
+              onClearAll={() => { setFilter(defaultDateFilter()); setPlatform(''); }}
+              className="px-1"
+            />
+          </>
+        )}
       </div>
 
       <div className={activeTab === 'overview' ? 'flex flex-col gap-8' : 'hidden'}>

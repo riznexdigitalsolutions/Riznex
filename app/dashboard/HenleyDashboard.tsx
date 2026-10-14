@@ -582,71 +582,75 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
         </div>
 
         {/* Tier 2: Unified Executive Filter Toolbar */}
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-between gap-4 print:hidden shadow-xl backdrop-blur-md">
-          {/* Left Side: Store Pills & Platform Filter */}
-          <div className="flex flex-wrap items-center gap-3">
-            {!is2025 && (
-              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
-                <button
-                  onClick={() => setStore('')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    store === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
+        {activeTab !== 'offers' && (
+          <>
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-between gap-4 print:hidden shadow-xl backdrop-blur-md">
+              {/* Left Side: Store Pills & Platform Filter */}
+              <div className="flex flex-wrap items-center gap-3">
+                {!is2025 && (
+                  <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+                    <button
+                      onClick={() => setStore('')}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                        store === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      Combined
+                    </button>
+                    <button
+                      onClick={() => setStore('Herbies Pizza')}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                        store === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      Herbies Pizza
+                    </button>
+                    <button
+                      onClick={() => setStore('Tasty Bun')}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                        store === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      Tasty Bun
+                    </button>
+                  </div>
+                )}
+
+                {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
+
+                {/* Multi-Select Platform Checkboxes */}
+                <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} />
+              </div>
+
+              {/* Right Side: Date Filter & Reset */}
+              <div className="flex flex-wrap items-center gap-3">
+                <DateFilter filter={filter} setFilter={setFilter} />
+
+                <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
+
+                <button 
+                  onClick={() => { setFilter(defaultDateFilter()); if(!is2025) setStore(''); setPlatform(''); }} 
+                  className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
                 >
-                  Combined
-                </button>
-                <button
-                  onClick={() => setStore('Herbies Pizza')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    store === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  Herbies Pizza
-                </button>
-                <button
-                  onClick={() => setStore('Tasty Bun')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    store === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  Tasty Bun
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  Reset
                 </button>
               </div>
-            )}
+            </div>
 
-            {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
-
-            {/* Multi-Select Platform Checkboxes */}
-            <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} />
-          </div>
-
-          {/* Right Side: Date Filter & Reset */}
-          <div className="flex flex-wrap items-center gap-3">
-            <DateFilter filter={filter} setFilter={setFilter} />
-
-            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
-
-            <button 
-              onClick={() => { setFilter(defaultDateFilter()); if(!is2025) setStore(''); setPlatform(''); }} 
-              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-              Reset
-            </button>
-          </div>
-        </div>
-
-        {/* Active Filters Bar */}
-        <ActiveFilters
-          store={is2025 ? (store === 'Herbies Pizza' ? '' : store) : store}
-          onClearStore={() => setStore('')}
-          platform={platform}
-          onClearPlatform={() => setPlatform('')}
-          filter={filter}
-          onClearFilter={() => setFilter(defaultDateFilter())}
-          onClearAll={() => { setFilter(defaultDateFilter()); if (!is2025) setStore(''); setPlatform(''); }}
-          className="px-1"
-        />
+            {/* Active Filters Bar */}
+            <ActiveFilters
+              store={is2025 ? (store === 'Herbies Pizza' ? '' : store) : store}
+              onClearStore={() => setStore('')}
+              platform={platform}
+              onClearPlatform={() => setPlatform('')}
+              filter={filter}
+              onClearFilter={() => setFilter(defaultDateFilter())}
+              onClearAll={() => { setFilter(defaultDateFilter()); if (!is2025) setStore(''); setPlatform(''); }}
+              className="px-1"
+            />
+          </>
+        )}
       </div>
 
       <div className={activeTab === 'overview' ? 'flex flex-col gap-8' : 'hidden'}>
@@ -1559,6 +1563,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             isAdmin={session?.user?.role === 'admin'}
             clientId={session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : (session?.user?.clientId || undefined)}
             currentStore={store || 'Combined'}
+            onStoreChange={(s) => setStore(s === 'Combined' ? '' : s)}
             availableStores={is2025 ? ['Tasty Bun'] : ['Combined', 'Herbies Pizza', 'Tasty Bun']}
             is2025={is2025}
             onOffersChange={(updated) => setOffers(updated)}

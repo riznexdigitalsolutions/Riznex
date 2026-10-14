@@ -1,1 +1,0 @@
-import { PrismaClient } from '@prisma/client'; const prisma = new PrismaClient(); async function main() { await prisma.expense.updateMany({ where: { category: 'herbies_head_office' }, data: { subcategory: 'Herbies Pizza Head Office Marketing' } }); console.log('Fixed subcategory'); } main().catch(console.error).finally(() => prisma.$disconnect());

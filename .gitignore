@@ -39,3 +39,27 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# archives & backups
+*.zip
+*.tar.gz
+*.rar
+/archive_scripts/
+/backups/
+
+# database & dumps
+*.db
+*.sqlite
+*.sql
+db-export.json
+output.json
+report.json
+sales.json
+
+# temporary scripts & patches
+patch_*.js
+test_*.js
+temp_*
+all_lines.txt
+deliveroo_test_output.txt
+

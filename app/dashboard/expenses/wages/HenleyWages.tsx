@@ -277,10 +277,10 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#1f2947]">
               {loading && wages.length === 0 ? (
                 [...Array(5)].map((_, i) => (
-                  <tr key={i} className="border-b border-slate-200 dark:border-[#1f2947] animate-pulse">
+                  <tr key={i} className="animate-pulse">
                     <td className="px-4 py-4 text-center"><div className="w-4 h-4 bg-slate-300 dark:bg-[#1f2947] rounded mx-auto"></div></td>
                     <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-32"></div></td>
                     <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-20"></div></td>
@@ -293,7 +293,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                 <tr><td colSpan={6} className="text-center py-12 text-slate-500 font-medium">No wages recorded yet.</td></tr>
               ) : filteredWages.map(w => {
                 return (
-                <tr key={w.id} className={`border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
+                <tr key={w.id} className={`hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
                   <td className="px-4 py-3 text-center">
                     <input type="checkbox"
                       checked={selectedIds.has(w.id)}
@@ -334,47 +334,47 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
 
       {/* Modal */}
       {showForm && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">{editId ? 'Edit' : 'Add'} Wage Record</h2>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-3xl p-6 sm:p-7 w-full max-w-sm shadow-2xl">
+            <h2 className="text-xl font-black text-slate-900 dark:text-white mb-5 tracking-tight">{editId ? 'Edit' : 'Add'} Wage Record</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Staff Member</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Staff Member</label>
                 <select value={form.staffId} onChange={e => setForm(f => ({ ...f, staffId: e.target.value, hours: '', amount: '' }))}
-                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500">
-                  <option value="" disabled>Select Staff</option>
-                  {uniqueStaffList.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+                  className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
+                  <option value="" disabled className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Select Staff</option>
+                  {uniqueStaffList.map(s => <option key={s.id} value={s.id} className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">{s.name}</option>)}
                 </select>
-                {uniqueStaffList.length === 0 && <p className="text-xs text-slate-900 dark:text-white mt-1">No staff members found. Add staff first!</p>}
+                {uniqueStaffList.length === 0 && <p className="text-xs text-amber-600 dark:text-amber-400 mt-1">No staff members found. Add staff first!</p>}
               </div>
 
               {isHourly && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Hours Worked (at {gbp(selectedStaff.hourlyRate)}/hr)</label>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Hours Worked (at {gbp(selectedStaff.hourlyRate)}/hr)</label>
                   <input type="number" step="0.5" value={form.hours} onChange={e => {
                     const hrs = parseFloat(e.target.value) || 0
                     setForm(f => ({ ...f, hours: e.target.value, amount: (hrs * selectedStaff.hourlyRate).toFixed(2) }))
                   }}
-                    className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" placeholder="0.0" />
+                    className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50" placeholder="0.0" />
                 </div>
               )}
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">{isHourly ? 'Calculated Total Amount (£)' : 'Amount (£)'}</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">{isHourly ? 'Calculated Total Amount (£)' : 'Amount (£)'}</label>
                 <input type="number" step="0.01" value={form.amount} onChange={e => setForm(f => ({ ...f, amount: e.target.value }))}
                   readOnly={isHourly}
-                  className={`w-full text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none border ${isHourly ? 'bg-slate-100 dark:bg-[#111520] border-slate-200 dark:border-[#1f2947] opacity-50 cursor-not-allowed' : 'bg-[#161b2c] border-slate-200 dark:border-[#1f2947] focus:border-blue-500'}`} placeholder="0.00" />
+                  className={`w-full text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none border font-semibold ${isHourly ? 'bg-slate-100 dark:bg-[#111520] border-slate-200 dark:border-[#1f2947] opacity-60 cursor-not-allowed' : 'bg-slate-50 dark:bg-[#161b2c] border-slate-300 dark:border-[#1f2947] focus:ring-2 focus:ring-amber-500/50'}`} placeholder="0.00" />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Week Ending Date (Sunday)</label>
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Week Ending Date (Sunday)</label>
                 <input type="date" value={form.weekEnd} onChange={e => setForm(f => ({ ...f, weekEnd: snapToSunday(e.target.value) }))}
-                  className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:border-blue-500" />
+                  className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50" />
               </div>
             </div>
             <div className="flex gap-3 mt-6">
               <button onClick={() => { setShowForm(false); setEditId(null) }}
-                className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
+                className="flex-1 border border-slate-300 dark:border-[#1f2947] hover:bg-slate-100 dark:hover:bg-[#1f2947] text-slate-700 dark:text-slate-300 rounded-xl py-2.5 text-sm font-bold transition">Cancel</button>
               <button onClick={handleSave} disabled={saving || !form.staffId}
-                className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
+                className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-95 disabled:opacity-50 transition">
                 {saving ? 'Saving…' : 'Save'}
               </button>
             </div>
@@ -383,33 +383,33 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
       )}
 
       {showAutoFill && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Auto-Fill Wages</h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mb-6">Select a date within the week (snaps automatically to Sunday week-ending).</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-3xl p-6 sm:p-7 w-full max-w-sm shadow-2xl">
+            <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">Auto-Fill Wages</h2>
+            <p className="text-xs text-slate-600 dark:text-slate-400 mb-6">Select a date within the week (snaps automatically to Sunday week-ending).</p>
             <div className="mb-6">
-              <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Week Ending Date (Sunday)</label>
+              <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">Week Ending Date (Sunday)</label>
               <input type="date" value={autoFillDate} onChange={e => setAutoFillDate(snapToSunday(e.target.value))}
-                className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500" />
+                className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-semibold rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
             </div>
             
             {staffList.filter(s => s.active && s.weeklyWage).length > 0 && (
-              <div className="mb-6 bg-[#161b2c] rounded-xl p-3 max-h-40 overflow-y-auto border border-slate-200 dark:border-[#1f2947]">
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Wages to generate ({staffList.filter(s => s.active && s.weeklyWage).length})</div>
+              <div className="mb-6 bg-slate-50 dark:bg-[#161b2c] rounded-xl p-3 max-h-40 overflow-y-auto border border-slate-200 dark:border-[#1f2947]">
+                <div className="text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-widest mb-2">Wages to generate ({staffList.filter(s => s.active && s.weeklyWage).length})</div>
                 <div className="space-y-2">
                   {staffList.filter(s => s.active && s.weeklyWage).map(s => {
                     const currentVal = autoFillOverrides[s.id] !== undefined ? autoFillOverrides[s.id] : s.weeklyWage;
                     return (
                       <div key={s.id} className="flex justify-between items-center text-xs gap-2">
-                        <span className="text-slate-600 dark:text-slate-300 whitespace-nowrap">• {s.name}</span>
+                        <span className="text-slate-700 dark:text-slate-300 whitespace-nowrap font-medium">• {s.name}</span>
                         <div className="relative w-24">
-                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-500">£</span>
+                          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-slate-500 font-bold">£</span>
                           <input 
                             type="number" 
                             step="0.01"
                             value={currentVal} 
                             onChange={e => setAutoFillOverrides(prev => ({ ...prev, [s.id]: parseFloat(e.target.value) || 0 }))}
-                            className="w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none text-slate-900 dark:text-white font-bold rounded px-2 py-1 pl-5 text-right focus:outline-none focus:border-emerald-500" 
+                            className="w-full bg-white dark:bg-[#111520] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-bold rounded px-2 py-1 pl-5 text-right focus:outline-none focus:border-emerald-500" 
                           />
                         </div>
                       </div>
@@ -420,8 +420,8 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
             )}
 
             <div className="flex gap-3">
-              <button onClick={() => setShowAutoFill(false)} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
-              <button onClick={handleAutoFill} disabled={autoFilling} className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition">
+              <button onClick={() => setShowAutoFill(false)} className="flex-1 border border-slate-300 dark:border-[#1f2947] hover:bg-slate-100 dark:hover:bg-[#1f2947] text-slate-700 dark:text-slate-300 rounded-xl py-2.5 text-sm font-bold transition">Cancel</button>
+              <button onClick={handleAutoFill} disabled={autoFilling} className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-emerald-500/20 hover:opacity-95 disabled:opacity-50 transition">
                 {autoFilling ? 'Generating…' : 'Generate Wages'}
               </button>
             </div>

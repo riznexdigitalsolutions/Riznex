@@ -161,7 +161,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
             const isExpanded = expandedMenu === item.label
             
             return (
-              <div key={item.label}>
+              <div key={item.label} className="border-b border-slate-200/80 dark:border-[#1f2947] pb-1.5 mb-1.5 last:border-b-0 last:pb-0 last:mb-0">
                 {item.subItems ? (
                   <button
                     onClick={() => setExpandedMenu(isExpanded ? null : item.label)}
@@ -197,7 +197,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
                 )}
                 
                 {item.subItems && isExpanded && (
-                  <div className="ml-9 mt-1 space-y-1">
+                  <div className="ml-5 mt-1.5 pl-3 border-l-2 border-slate-200/80 dark:border-[#1f2947] space-y-1 divide-y divide-slate-200/60 dark:divide-[#1f2947]/60">
                     {item.subItems.map(sub => {
                       const subUrl = new URL(sub.href, 'http://localhost')
                       const subPath = subUrl.pathname
@@ -211,19 +211,20 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
                       }
                       
                       return (
-                        <Link
-                          key={sub.label}
-                          href={sub.href}
-                          onClick={() => setSidebarOpen(false)}
-                          className={`flex items-start px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                            isActiveSub 
-                              ? 'bg-[#D1A041] text-black border border-[#b58832] shadow-md font-bold'
-                                : 'text-slate-500 dark:text-slate-400 hover:text-[#D1A041] hover:bg-[#D1A041]/10 dark:hover:bg-[#D1A041]/10'
-                          }`}
-                        >
-                          <span className={`mr-2 mt-[1px] ${isActiveSub ? 'text-black' : 'text-slate-500 group-hover:text-[#D1A041]'}`}>•</span>
-                          <span>{sub.label}</span>
-                        </Link>
+                        <div key={sub.label} className="pt-1 first:pt-0">
+                          <Link
+                            href={sub.href}
+                            onClick={() => setSidebarOpen(false)}
+                            className={`flex items-start px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                              isActiveSub 
+                                ? 'bg-[#D1A041] text-black border border-[#b58832] shadow-md font-bold'
+                                  : 'text-slate-500 dark:text-slate-400 hover:text-[#D1A041] hover:bg-[#D1A041]/10 dark:hover:bg-[#D1A041]/10'
+                            }`}
+                          >
+                            <span className={`mr-2 mt-[1px] ${isActiveSub ? 'text-black' : 'text-slate-500 group-hover:text-[#D1A041]'}`}>•</span>
+                            <span>{sub.label}</span>
+                          </Link>
+                        </div>
                       )
                     })}
                   </div>
@@ -261,7 +262,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
       {/* Main */}
       <div className="flex-1 lg:ml-60 print:ml-0 flex flex-col min-h-screen print:bg-black dark:print:bg-white print:text-black">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-slate-100/80 dark:bg-[#0a0c14]/80 backdrop-blur border-b border-slate-200 dark:border-[#1f2947] px-6 py-3 flex items-center gap-4 print:hidden">
+        <header className="sticky top-0 z-30 bg-slate-100/80 dark:bg-[#0a0c14]/80 backdrop-blur border-b border-slate-200 dark:border-[#1f2947] px-4 sm:px-6 py-3 flex items-center gap-4 print:hidden">
           <button
             className="lg:hidden text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1"
             onClick={() => setSidebarOpen(true)}
@@ -276,7 +277,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-3 sm:p-5 lg:p-6 min-w-0 overflow-x-hidden">
           {children}
         </main>
       </div>

@@ -220,8 +220,8 @@ export default function LandingPage() {
                 href={item.href}
                 className={`px-4 py-1.5 text-xs font-medium rounded-full transition-all ${
                   item.href === '/demo' 
-                      ? 'text-black font-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] border border-[#b58832] shadow-md'
-                      : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 font-semibold'
+                      ? 'text-black font-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] border border-[#b58832] shadow-lg animate-pulse shadow-[0_0_20px_rgba(229,184,105,0.75)] ring-2 ring-[#E5B869]/60'
+                      : 'text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5 font-bold'
                 }`}
               >
                 {item.label}
@@ -336,7 +336,7 @@ export default function LandingPage() {
               </h1>
 
               {/* Subtitle */}
-              <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed mb-7 max-w-2xl font-normal">
+              <p className="text-slate-800 dark:text-slate-200 text-sm sm:text-base lg:text-lg leading-relaxed mb-7 max-w-2xl font-medium">
                 Riznex delivers end-to-end digital operations for ambitious UK restaurants. We unify your delivery platforms, streamline menus, manage customer reputation, and automate weekly profit reporting.
               </p>
 
@@ -345,13 +345,13 @@ export default function LandingPage() {
                 
                 <a 
                   href="#services" 
-                  className="px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-slate-700 dark:text-slate-200 bg-black/[0.05] dark:bg-white/[0.05] border border-slate-200/10 dark:border-white/10 hover:bg-black/[0.1] dark:hover:bg-white/[0.1] hover:border-slate-200/20 dark:hover:border-white/20 transition-all text-center flex items-center justify-center gap-2"
+                  className="px-5 py-3.5 rounded-xl font-semibold text-xs sm:text-sm text-slate-900 dark:text-white font-bold bg-black/[0.06] dark:bg-white/[0.06] border border-slate-300 dark:border-white/15 hover:bg-black/[0.1] dark:hover:bg-white/[0.1] hover:border-slate-400 dark:hover:border-white/25 transition-all text-center flex items-center justify-center gap-2 shadow-sm"
                 >
                   View Services
                 </a>
                 <Link 
                   href="/client-login" 
-                  className="px-4 py-3.5 rounded-xl font-medium text-xs sm:text-sm text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition-all text-center flex items-center justify-center gap-1.5"
+                  className="px-4 py-3.5 rounded-xl font-medium text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-bold hover:text-slate-900 dark:hover:text-white transition-all text-center flex items-center justify-center gap-1.5"
                 >
                   <Icons.Lock /> Client Portal
                 </Link>
@@ -365,7 +365,7 @@ export default function LandingPage() {
                   'Weekly P&L Reports',
                   'Dedicated Manager'
                 ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-slate-600 dark:text-slate-300 min-w-0">
+                  <div key={idx} className="flex items-center gap-1.5 text-[11px] sm:text-xs font-bold text-slate-800 dark:text-slate-200 min-w-0">
                     <Icons.CheckBadge />
                     <span className="truncate">{item}</span>
                   </div>
@@ -383,12 +383,12 @@ export default function LandingPage() {
                     <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-md shadow-emerald-500/50 shrink-0" />
                     <div className="min-w-0">
                       <h2 className="text-[11px] sm:text-xs font-bold text-slate-900 dark:text-white tracking-wide uppercase truncate">Live Performance Hub</h2>
-                      <p className="text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 truncate">Consolidated Weekly Metrics</p>
+                      <p className="text-[9px] sm:text-[10px] text-slate-700 dark:text-slate-300 font-semibold truncate">Consolidated Weekly Metrics</p>
                     </div>
                   </div>
                   <Link 
                     href="/demo"
-                    className="text-[9px] sm:text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#E5B869]/15 text-[#E5B869] border border-[#E5B869]/30 hover:bg-[#E5B869]/25 transition-all shrink-0 flex items-center gap-1"
+                    className="text-[9px] sm:text-[10px] font-bold px-2.5 py-1 rounded-full bg-[#E5B869]/20 text-[#A67512] dark:text-[#E5B869] border border-[#E5B869]/40 hover:bg-[#E5B869]/30 transition-all shrink-0 flex items-center gap-1 animate-pulse shadow-[0_0_12px_rgba(229,184,105,0.4)]"
                   >
                     <span>Try Demo</span> <Icons.ArrowRight />
                   </Link>
@@ -397,33 +397,33 @@ export default function LandingPage() {
                 {/* 4 Stat KPIs */}
                 <div className="grid grid-cols-2 gap-2.5 mb-4">
                   <div className="p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.06] dark:border-white/[0.06] min-w-0">
-                    <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block mb-0.5 truncate">Gross Sales</span>
+                    <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 block mb-0.5 truncate">Gross Sales</span>
                     <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate">£18,420</div>
-                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-1">
                       <Icons.TrendingUp /> +12.5%
                     </div>
                   </div>
 
                   <div className="p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.06] dark:border-white/[0.06] min-w-0">
-                    <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block mb-0.5 truncate">Total Orders</span>
+                    <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 block mb-0.5 truncate">Total Orders</span>
                     <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate">1,284</div>
-                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-1">
                       <Icons.TrendingUp /> +8.7%
                     </div>
                   </div>
 
                   <div className="p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.06] dark:border-white/[0.06] min-w-0">
-                    <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block mb-0.5 truncate">Net Profit</span>
+                    <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 block mb-0.5 truncate">Net Profit</span>
                     <div className="text-lg sm:text-2xl font-black text-[#E5B869] tracking-tight truncate">£4,280</div>
-                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-400 font-semibold mt-1">
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-emerald-600 dark:text-emerald-400 font-bold mt-1">
                       <Icons.TrendingUp /> 23.2%
                     </div>
                   </div>
 
                   <div className="p-3 rounded-xl bg-black/[0.03] dark:bg-white/[0.03] border border-slate-200/[0.06] dark:border-white/[0.06] min-w-0">
-                    <span className="text-[10px] font-medium text-slate-500 dark:text-slate-400 block mb-0.5 truncate">Expenses / Ops</span>
-                    <div className="text-lg sm:text-2xl font-black text-slate-700 dark:text-slate-200 tracking-tight truncate">£3,840</div>
-                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-rose-400 font-semibold mt-1">
+                    <span className="text-[10px] font-bold text-slate-700 dark:text-slate-300 block mb-0.5 truncate">Expenses / Ops</span>
+                    <div className="text-lg sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight truncate">£3,840</div>
+                    <div className="flex items-center gap-1 text-[9px] sm:text-[10px] text-rose-600 dark:text-rose-400 font-bold mt-1">
                       ↓ 7.1%
                     </div>
                   </div>
@@ -432,8 +432,8 @@ export default function LandingPage() {
                 {/* Revenue Rhythm Bar Visual */}
                 <div className="p-3 rounded-xl bg-black/[0.02] dark:bg-white/[0.02] border border-slate-200/[0.06] dark:border-white/[0.06] mb-4 w-full">
                   <div className="flex justify-between items-center mb-2 text-[11px]">
-                    <span className="font-semibold text-slate-600 dark:text-slate-300">Weekly Revenue Rhythm</span>
-                    <span className="text-[9px] text-slate-500 font-mono">May 2026</span>
+                    <span className="font-bold text-slate-900 dark:text-white">Weekly Revenue Rhythm</span>
+                    <span className="text-[9px] text-slate-700 dark:text-slate-300 font-bold font-mono">May 2026</span>
                   </div>
                   <div className="flex items-end justify-between gap-1.5 h-16 pt-2 border-b border-slate-200/[0.06] dark:border-white/[0.06] w-full relative">
                     {[45, 60, 50, 75, 55, 88, 70, 95, 65, 100].map((val, i) => (
@@ -452,7 +452,7 @@ export default function LandingPage() {
                       </div>
                     ))}
                   </div>
-                  <div className="flex justify-between text-[8px] text-slate-500 mt-1.5 font-mono">
+                  <div className="flex justify-between text-[8px] text-slate-700 dark:text-slate-300 mt-1.5 font-bold font-mono">
                     <span>Wk 1</span>
                     <span>Wk 2</span>
                     <span>Wk 3</span>
@@ -462,22 +462,22 @@ export default function LandingPage() {
 
                 {/* Platform Split Responsive Grid (2 cols on mobile, 4 on desktop) */}
                 <div>
-                  <span className="text-[10px] font-semibold text-slate-500 dark:text-slate-400 block mb-2">Active Platform Share</span>
+                  <span className="text-[10px] font-bold text-slate-800 dark:text-slate-200 block mb-2">Active Platform Share</span>
                   <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-center w-full">
                     <div className="p-1.5 sm:p-2 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-                      <span className="text-[9px] font-bold text-emerald-400 block truncate">Uber Eats</span>
+                      <span className="text-[9px] font-bold text-emerald-700 dark:text-emerald-400 block truncate">Uber Eats</span>
                       <span className="text-xs font-black text-slate-900 dark:text-white">42%</span>
                     </div>
                     <div className="p-1.5 sm:p-2 rounded-lg bg-orange-500/10 border border-orange-500/20">
-                      <span className="text-[9px] font-bold text-orange-400 block truncate">Just Eat</span>
+                      <span className="text-[9px] font-bold text-orange-700 dark:text-orange-400 block truncate">Just Eat</span>
                       <span className="text-xs font-black text-slate-900 dark:text-white">28%</span>
                     </div>
                     <div className="p-1.5 sm:p-2 rounded-lg bg-teal-500/10 border border-teal-500/20">
-                      <span className="text-[9px] font-bold text-teal-400 block truncate">Deliveroo</span>
+                      <span className="text-[9px] font-bold text-teal-700 dark:text-teal-400 block truncate">Deliveroo</span>
                       <span className="text-xs font-black text-slate-900 dark:text-white">19%</span>
                     </div>
                     <div className="p-1.5 sm:p-2 rounded-lg bg-slate-500/10 border border-slate-500/20">
-                      <span className="text-[9px] font-bold text-slate-500 dark:text-slate-400 block truncate">In-Store</span>
+                      <span className="text-[9px] font-bold text-slate-700 dark:text-slate-300 block truncate">In-Store</span>
                       <span className="text-xs font-black text-slate-900 dark:text-white">11%</span>
                     </div>
                   </div>
@@ -573,7 +573,7 @@ export default function LandingPage() {
                 <Icons.MenuBook />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Menu Management</h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed mb-4 flex-grow">
                 Keep menus synced across Uber Eats, Just Eat, and Deliveroo. We add categories, modify prices, configure modifier add-ons, and optimize dishes to maximize order basket values.
               </p>
             </div>
@@ -584,7 +584,7 @@ export default function LandingPage() {
                 <Icons.Share />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Social Media Marketing</h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed mb-4 flex-grow">
                 Engage hungry locals through eye-catching food reels, static posts, and strategic story campaigns on Instagram, TikTok, and Facebook that convert browsers into repeat diners.
               </p>
             </div>
@@ -595,7 +595,7 @@ export default function LandingPage() {
                 <Icons.MapPin />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Business Profiles & Maps</h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed mb-4 flex-grow">
                 Optimize your Google Business Profile, Apple Maps, and local search presence. Verified opening hours, location details, high-res menus, and local search visibility.
               </p>
             </div>
@@ -606,7 +606,7 @@ export default function LandingPage() {
                 <Icons.Headset />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Customer Support & Reviews</h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed mb-4 flex-grow">
                 We safeguard your restaurant&apos;s 5-star reputation. We handle online guest reviews, reply politely to feedback across platforms, and promptly resolve customer inquiries.
               </p>
             </div>
@@ -617,7 +617,7 @@ export default function LandingPage() {
                 <Icons.ChartBar />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Automated Financial Reporting</h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed mb-4 flex-grow">
                 No more guessing where your money goes. Receive weekly consolidated P&L statements that break down platform commissions, VAT, supplier invoices, staff wages, and genuine profits.
               </p>
             </div>
@@ -628,7 +628,7 @@ export default function LandingPage() {
                 <Icons.Rocket />
               </div>
               <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1.5">Growth & Order Surges</h3>
-              <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed mb-4 flex-grow">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 font-medium leading-relaxed mb-4 flex-grow">
                 Launch data-driven meal deals, promotional discounts, and localized ad campaigns on Uber Eats and social media to capture high-volume orders during peak dinner rushes.
               </p>
             </div>
@@ -1095,7 +1095,7 @@ export default function LandingPage() {
               >
                 <div className="text-2xl sm:text-3xl font-black text-[#E5B869] mb-2.5 font-mono">{step.step}</div>
                 <h3 className="text-sm sm:text-base font-bold text-slate-900 dark:text-white mb-1.5">{step.title}</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">{step.desc}</p>
+                <p className="text-xs text-slate-700 dark:text-slate-300 font-medium leading-relaxed">{step.desc}</p>
               </div>
             ))}
           </div>
@@ -1340,7 +1340,7 @@ export default function LandingPage() {
             </div>
 
             {/* Modal Body */}
-            <div className="overflow-y-auto pr-1 sm:pr-2 space-y-3.5 text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed font-normal">
+            <div className="overflow-y-auto pr-1 sm:pr-2 space-y-3.5 text-xs sm:text-sm text-slate-800 dark:text-slate-200 font-medium leading-relaxed font-normal">
               {activeLegalModal === 'privacy' && (
                 <>
                   <p className="text-slate-500 dark:text-slate-400 text-[11px] italic">Last Updated: September 2026</p>

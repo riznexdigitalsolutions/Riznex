@@ -145,13 +145,13 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
                 <tr><td colSpan={5} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : wages.length === 0 ? (
                 <tr><td colSpan={5} className="text-center py-12 text-slate-500">No wages recorded yet.</td></tr>
               ) : wages.map(w => (
-                <tr key={w.id} className={`border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
+                <tr key={w.id} className={`hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
                   <td className="px-4 py-3 text-center">
                     <input type="checkbox" checked={selectedIds.has(w.id)} onChange={(e) => { const next = new Set(selectedIds); if (e.target.checked) next.add(w.id); else next.delete(w.id); setSelectedIds(next) }} className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer" />
                   </td>

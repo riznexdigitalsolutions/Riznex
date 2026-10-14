@@ -243,31 +243,31 @@ export function HenleyExpensesDashboard() {
         <div className="space-y-5">
 
           {/* ── Quick Stats Row ─────────────────────────────── */}
-          <div className="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6">
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2.5 sm:gap-3 mb-6">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-purple-500/30 hover:bg-purple-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Staff Wages</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.wages)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.wages)}</div>
             </div>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-orange-500/30 hover:bg-orange-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Suppliers</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.suppliers)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.suppliers)}</div>
             </div>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-cyan-500/30 hover:bg-cyan-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Utilities</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.utilities)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.utilities)}</div>
             </div>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-pink-500/30 hover:bg-pink-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Marketing</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.marketing)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.marketing)}</div>
             </div>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 flex flex-col justify-center transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
+            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-3 sm:p-4 flex flex-col justify-center min-w-0 overflow-hidden transition-all hover:border-emerald-500/30 hover:bg-emerald-500/5">
               <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Other</div>
-              <div className="text-lg font-black text-slate-900 dark:text-white">{gbp(totals.other)}</div>
+              <div className="text-sm sm:text-base lg:text-sm xl:text-lg font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.other)}</div>
             </div>
             <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-4 flex flex-col justify-center relative overflow-hidden group">
               <div className="absolute top-0 w-full h-0.5 bg-gradient-to-r from-red-500 to-orange-500 opacity-50" />
               <div className="text-[10px] font-bold text-red-400/80 uppercase tracking-widest mb-1">Total Outgoing</div>
-              <div className="text-xl font-black text-slate-900 dark:text-white">{gbp(totals.grandTotal)}</div>
+              <div className="text-base sm:text-lg md:text-xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{gbp(totals.grandTotal)}</div>
             </div>
           </div>
           {storeFilter && <div className="mb-4 inline-flex items-center gap-2 bg-red-500/10 text-red-400 px-4 py-1.5 rounded-full text-xs font-bold z-10">½ split applied for shared {storeFilter} expenses</div>}
@@ -275,21 +275,21 @@ export function HenleyExpensesDashboard() {
           {activeTab === 'overview' && (
             <div className="mt-8 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-2xl">
               <div className="px-6 py-4 border-b border-slate-200 dark:border-[#1f2947] bg-[#161b2c] flex items-center justify-between">
-                <h3 className="text-lg font-black text-slate-900 dark:text-white">Master Ledger: All Outgoing Cash</h3>
-                <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Single Sheet View</div>
+                <h3 className="text-base sm:text-lg font-black text-white tracking-wide">Master Ledger: All Outgoing Cash</h3>
+                <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Single Sheet View</div>
               </div>
               <div className="overflow-x-auto max-h-[600px]">
                 <table className="w-full text-sm">
                   <thead className="sticky top-0 bg-[#161b2c] shadow-md z-10">
                     <tr className="border-b border-slate-200 dark:border-[#1f2947]">
-                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Date</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Type</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Store</th>
-                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-500 uppercase tracking-wider">Name / Category</th>
-                      <th className="px-4 py-3 text-right text-[11px] font-bold text-slate-500 uppercase tracking-wider">Amount</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Date</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Type</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Store</th>
+                      <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Name / Category</th>
+                      <th className="px-4 py-3 text-right text-[11px] font-bold text-slate-300 uppercase tracking-wider">Amount</th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody className="divide-y divide-[#1f2947]">
                     {[
                       ...wageItems.map(w => ({ id: w.id, date: w.weekEnd, type: 'Staff Wage', name: w.staff?.name || 'Staff', store: w.store, amount: w.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-purple-500/10 border-purple-500/20' })),
                       ...supplierItems.map(s => ({ id: s.id, date: s.invoiceDate, type: 'Supplier', name: s.supplier?.name || 'Unknown', store: s.store || s.supplier?.franchise || 'Combined', amount: s.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-orange-500/10 border-orange-500/20' })),
@@ -297,7 +297,7 @@ export function HenleyExpensesDashboard() {
                       ...marketingItems.map(m => ({ id: m.id, date: m.date, type: 'Marketing', name: m.subcategory || m.category, store: m.store, amount: m.displayAmount || m.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-pink-500/10 border-pink-500/20' })),
                       ...otherItems.map(o => ({ id: o.id, date: o.date, type: 'Other', name: o.subcategory || o.notes || o.category, store: o.store, amount: o.displayAmount || o.amount, color: 'text-slate-900 dark:text-white', bg: 'bg-emerald-500/10 border-slate-200 dark:border-[#E5B869]/20' }))
                     ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()).map((item, i) => (
-                      <tr key={i} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors">
+                      <tr key={i} className="hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
                         <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-medium">{item.date ? new Date(item.date).toLocaleDateString('en-GB') : '-'}</td>
                         <td className="px-4 py-3">
                           <span className={`text-[10px] px-2 py-0.5 rounded border font-bold ${item.bg} ${item.color}`}>
@@ -325,88 +325,88 @@ export function HenleyExpensesDashboard() {
 
       {/* UNIFIED AUTO-FILL MODAL */}
       {showUnifiedAutoFill && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-sm shadow-2xl">
-            <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2 flex items-center gap-2">⚡ Auto-Add All Fixed Costs</h2>
-            <p className="text-slate-500 dark:text-slate-400 text-sm mb-4">Select the Week Ending date to instantly generate <b>all</b> auto-wages and auto-expenses in one click.</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-3xl p-6 sm:p-7 w-full max-w-md shadow-2xl">
+            <h2 className="text-xl font-black text-slate-900 dark:text-white mb-2 flex items-center gap-2 tracking-tight">⚡ Auto-Add All Fixed Costs</h2>
+            <p className="text-slate-600 dark:text-slate-400 text-xs mb-4">Select the Week Ending date to instantly generate <b>all</b> auto-wages and auto-expenses in one click.</p>
             
-            <div className="bg-[#161b2c]/80 border border-slate-200 dark:border-[#1f2947] rounded-xl p-4 mb-6 space-y-4 max-h-[50vh] overflow-y-auto">
-              <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2 sticky top-0 bg-[#161b2c]/90 py-1 backdrop-blur-sm z-10">What will be generated:</h3>
+            <div className="bg-slate-50 dark:bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 mb-6 space-y-4 max-h-[50vh] overflow-y-auto">
+              <h3 className="text-xs font-black text-slate-900 dark:text-white uppercase tracking-wider mb-2 sticky top-0 bg-slate-50 dark:bg-[#161b2c] py-1 z-10 border-b border-slate-200 dark:border-[#1f2947]/50 pb-1.5">What will be generated:</h3>
               
               <div>
                 <div className="flex justify-between items-center text-sm mb-1.5">
                   <span className="text-slate-900 dark:text-white font-bold">Staff Wages (Herbies Only)</span>
-                  <span className="text-slate-900 dark:text-white font-bold">£1,625.00</span>
+                  <span className="text-slate-900 dark:text-white font-black">£1,625.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Owner Ali</span><span>£625.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Pavan</span><span>£600.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Lovely</span><span>£400.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Owner Ali</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£625.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Pavan</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£600.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Lovely</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£400.00</span></li>
                 </ul>
               </div>
 
               <div>
                 <div className="flex justify-between items-center text-sm mb-1.5">
                   <span className="text-slate-900 dark:text-white font-bold">Herbies Only Expenses</span>
-                  <span className="text-slate-900 dark:text-white font-bold">£340.00</span>
+                  <span className="text-slate-900 dark:text-white font-black">£340.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Herbies Franchise Fee</span><span>£250.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Herbies Head Office Mktg</span><span>£30.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• One Stop Supplier (Added)</span><span>£60.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Herbies Franchise Fee</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£250.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Herbies Head Office Mktg</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£30.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• One Stop Supplier (Added)</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£60.00</span></li>
                 </ul>
               </div>
 
               <div>
                 <div className="flex justify-between items-center text-sm mb-1.5">
-                  <span className="text-yellow-400 font-bold">Tasty Bun Only Expenses</span>
-                  <span className="text-yellow-400 font-bold">£90.00</span>
+                  <span className="text-amber-600 dark:text-yellow-400 font-bold">Tasty Bun Only Expenses</span>
+                  <span className="text-amber-600 dark:text-yellow-400 font-black">£90.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Tasty Bun Franchise Fee</span><span>£50.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Tasty Bun POS Fee</span><span>£40.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Tasty Bun Franchise Fee</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£50.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Tasty Bun POS Fee</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£40.00</span></li>
                 </ul>
               </div>
 
               <div>
                 <div className="flex justify-between items-center text-sm mb-1.5">
-                  <span className="text-indigo-400 font-bold">Combined Expenses</span>
-                  <span className="text-indigo-400 font-bold">£285.00</span>
+                  <span className="text-indigo-600 dark:text-indigo-400 font-bold">Combined Expenses</span>
+                  <span className="text-indigo-600 dark:text-indigo-400 font-black">£285.00</span>
                 </div>
                 <ul className="pl-4 space-y-1">
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Water, Gas & Electricity</span><span>£125.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Other Supplier</span><span>£50.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Car Installment</span><span>£45.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Bin Collection</span><span>£30.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Social Media Handling</span><span>£25.00</span></li>
-                  <li className="flex justify-between text-xs text-slate-500 dark:text-slate-400"><span>• Road Tax</span><span>£10.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Water, Gas & Electricity</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£125.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Other Supplier</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£50.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Car Installment</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£45.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Bin Collection</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£30.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Social Media Handling</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£25.00</span></li>
+                  <li className="flex justify-between text-xs text-slate-600 dark:text-slate-400 font-medium"><span>• Road Tax</span><span className="text-slate-900 dark:text-slate-200 font-semibold">£10.00</span></li>
                 </ul>
               </div>
 
-              <div className="pt-3 border-t border-slate-200 dark:border-[#1f2947] flex justify-between items-center sticky bottom-0 bg-[#161b2c] py-2">
-                <span className="text-xs font-bold text-slate-600 dark:text-slate-300 uppercase">Total Weekly Outgoing</span>
-                <span className="text-[#a17a36] dark:text-[#E5B869] font-black text-base">£2,340.00</span>
+              <div className="pt-3 border-t border-slate-200 dark:border-[#1f2947] flex justify-between items-center sticky bottom-0 bg-slate-50 dark:bg-[#161b2c] py-2">
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase">Total Weekly Outgoing</span>
+                <span className="text-amber-700 dark:text-[#E5B869] font-black text-base">£2,340.00</span>
               </div>
             </div>
             
             <div className="mb-6">
-              <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2">Sales Week Ending Date (Sunday)</label>
+              <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">Sales Week Ending Date (Sunday)</label>
               <input type="date" value={unifiedAutoFillDate} onChange={e => {
                 const d = new Date(e.target.value);
                 const day = d.getDay();
                 if (day !== 0) d.setDate(d.getDate() + (7 - day));
                 setUnifiedAutoFillDate(d.toISOString().split('T')[0]);
               }}
-                className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-emerald-500" />
+                className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-semibold rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
             </div>
 
             <div className="flex gap-3">
               <button onClick={() => setShowUnifiedAutoFill(false)}
-                className="flex-1 bg-[#161b2c] hover:bg-slate-300 dark:hover:bg-[#1f2947] text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold transition">
+                className="flex-1 border border-slate-300 dark:border-[#1f2947] hover:bg-slate-100 dark:hover:bg-[#1f2947] text-slate-700 dark:text-slate-300 rounded-xl py-2.5 text-sm font-bold transition">
                 Cancel
               </button>
               <button onClick={handleUnifiedAutoFill} disabled={isAutoFillingUnified}
-                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold shadow-lg hover:opacity-90 disabled:opacity-50 transition">
+                className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-emerald-500/20 hover:opacity-95 disabled:opacity-50 transition">
                 {isAutoFillingUnified ? 'Generating...' : 'Confirm'}
               </button>
             </div>

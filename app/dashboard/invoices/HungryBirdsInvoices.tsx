@@ -49,6 +49,23 @@ function InvoicesContent() {
   const [platformFilter, setPlatformFilter] = useState('')
   const [posFilter, setPosFilter] = useState('')
   const [storeFilter, setStoreFilter] = useState('')
+  const [retryingId, setRetryingId] = useState<string | null>(null)
+
+  const handleRetryOcr = async (id: string) => {
+    setRetryingId(id)
+    try {
+      const res = await fetch(`/api/invoices/${id}/ocr`, { method: 'POST' })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        alert('OCR Retry: ' + (err.error || 'Failed to process'))
+      }
+      await fetchData()
+    } catch (e: any) {
+      alert('OCR error: ' + e.message)
+    } finally {
+      setRetryingId(null)
+    }
+  }
 
   useEffect(() => {
     setActiveTab(searchParams.get('tab') || 'all')
@@ -434,7 +451,7 @@ function InvoicesContent() {
                 const isSelected = selectedIds.includes(inv.id)
                 
                 return (
-                <tr key={inv.id} className={`hover:bg-[#161b2c]/50 transition ${isSelected ? 'bg-blue-500/5' : ''}`}>
+                <tr key={inv.id} className={`hover:bg-amber-500/10 dark:hover:bg-[#161b2c]/50 transition ${isSelected ? 'bg-blue-500/5' : ''}`}>
                   <td className="px-5 py-4 w-12 text-center">
                     <input 
                       type="checkbox"
@@ -499,9 +516,12 @@ function InvoicesContent() {
                   </td>
                   <td className="px-5 py-4">
                     {inv.ocrStatus === 'done' ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title="Data extracted successfully">Extracted ✅</span> :
-                     (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing') ? <span className="text-amber-400 font-semibold text-xs" title="Processing with AI...">Processing ⏳</span> :
+                     (inv.ocrStatus === 'pending' || inv.ocrStatus === 'processing' || retryingId === inv.id) ? <span className="text-amber-400 font-semibold text-xs" title="Processing with AI...">Processing ⏳</span> :
                      (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
-                     <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>}
+                     <div className="flex items-center gap-2">
+                       <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>
+                       <button onClick={() => handleRetryOcr(inv.id)} className="text-blue-500 hover:text-blue-400 font-bold text-[11px] underline cursor-pointer bg-transparent border-0 p-0" title="Retry AI extraction">Retry 🔄</button>
+                     </div>}
                   </td>
                   <td className="px-5 py-4 text-right">
                     <div className="flex items-center justify-end gap-2.5">
@@ -551,43 +571,43 @@ function InvoicesContent() {
 
       {/* Upload Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 dark:bg-black/60 backdrop-blur-sm">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-6 w-full max-w-md shadow-2xl">
-            <h2 className="text-lg font-bold text-slate-900 dark:text-white mb-5">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/60 backdrop-blur-sm">
+          <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-3xl p-6 sm:p-7 w-full max-w-md shadow-2xl">
+            <h2 className="text-xl font-black text-slate-900 dark:text-white mb-5 tracking-tight">
               {type === 'pos' ? 'Upload POS / Bank Statement' : 'Upload Delivery Platform Invoice'}
             </h2>
             <form onSubmit={handleUpload} className="space-y-4">
               {type === 'platform' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Select Delivery Platform</label>
-                  <select value={platformName} onChange={e => setPlatformName(e.target.value)} className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm">
-                    <option value="Deliveroo">Deliveroo</option>
-                    <option value="Just Eat">Just Eat</option>
-                    <option value="Uber Eats">Uber Eats</option>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Select Delivery Platform</label>
+                  <select value={platformName} onChange={e => setPlatformName(e.target.value)} className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
+                    <option value="Deliveroo" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Deliveroo</option>
+                    <option value="Just Eat" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Just Eat</option>
+                    <option value="Uber Eats" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Uber Eats</option>
                   </select>
                 </div>
               )}
               
               {type === 'pos' && (
                 <div>
-                  <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Select Statement Source</label>
-                  <select value={posName} onChange={e => setPosName(e.target.value)} className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2.5 text-sm">
-                    <option value="Walk-in Card">Walk-in Card</option>
-                    <option value="Walk-in Cash">Walk-in Cash</option>
-                    <option value="POS Sales">POS Sales</option>
-                    <option value="Online Web">Online Web</option>
+                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Select Statement Source</label>
+                  <select value={posName} onChange={e => setPosName(e.target.value)} className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
+                    <option value="Walk-in Card" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Walk-in Card</option>
+                    <option value="Walk-in Cash" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Walk-in Cash</option>
+                    <option value="POS Sales" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">POS Sales</option>
+                    <option value="Online Web" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Online Web</option>
                   </select>
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-slate-500 dark:text-slate-400 mb-1">Upload File (PDF/Image)</label>
-                <input ref={fileInputRef} type="file" multiple accept=".pdf,image/*" required className="w-full bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-500/20 file:text-slate-900 dark:text-white hover:file:bg-blue-500/30 transition cursor-pointer" />
+                <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Upload File (PDF/Image)</label>
+                <input ref={fileInputRef} type="file" multiple accept=".pdf,image/*" required className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white rounded-xl px-3 py-2 text-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-bold file:bg-blue-500/20 file:text-slate-900 dark:file:text-white hover:file:bg-blue-500/30 transition cursor-pointer" />
               </div>
 
               <div className="flex gap-3 mt-6 pt-2">
-                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-200 dark:border-[#1f2947] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white rounded-xl py-2.5 text-sm font-semibold transition">Cancel</button>
-                <button type="submit" disabled={uploading} className="flex-1 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white rounded-xl py-2.5 text-sm font-bold hover:opacity-90 disabled:opacity-50 transition flex items-center justify-center gap-2">
+                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 border border-slate-300 dark:border-[#1f2947] hover:bg-slate-100 dark:hover:bg-[#1f2947] text-slate-700 dark:text-slate-300 rounded-xl py-2.5 text-sm font-bold transition">Cancel</button>
+                <button type="submit" disabled={uploading} className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-95 disabled:opacity-50 transition flex items-center justify-center gap-2">
                   {uploading ? (uploadProgress || 'Uploading...') : 'Upload & Process'}
                 </button>
               </div>

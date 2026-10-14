@@ -79,34 +79,34 @@ function MultiSelectPlatformFilter({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between gap-2 text-slate-900 dark:text-white bg-transparent px-3 py-1 text-sm font-semibold rounded-lg hover:bg-[#1c2238] transition focus:outline-none"
+        className="flex items-center justify-between gap-2 text-slate-900 dark:text-white bg-transparent px-3 py-1 text-sm font-semibold rounded-lg hover:bg-amber-500/10 dark:hover:bg-[#1c2238] transition focus:outline-none"
       >
         <span>{getLabel()}</span>
         <span className="text-[9px] text-slate-500 dark:text-slate-400">▼</span>
       </button>
 
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-56 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl shadow-2xl p-2 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
+        <div className="absolute left-0 mt-2 w-56 bg-white dark:bg-[#111625] border border-slate-200 dark:border-[#1f2947] shadow-2xl rounded-xl p-2 z-50 flex flex-col gap-1 max-h-64 overflow-y-auto">
           <button
             type="button"
             onClick={() => { onChange([]); setIsOpen(false); }}
-            className="text-left text-xs text-slate-900 dark:text-white hover:text-blue-300 font-bold px-2 py-1.5 rounded hover:bg-[#161b2c] transition"
+            className="text-left text-xs text-slate-900 dark:text-white hover:text-amber-600 dark:hover:text-amber-400 font-bold px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-[#161b2c] transition"
           >
             Clear All (All Platforms)
           </button>
-          <div className="h-[1px] bg-slate-300 dark:bg-[#1f2947] my-1" />
+          <div className="h-[1px] bg-slate-200 dark:bg-[#1f2947] my-1" />
           {options.map(opt => {
             const isChecked = selected.includes(opt.value)
             return (
               <label
                 key={opt.value}
-                className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-[#161b2c] text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-semibold cursor-pointer select-none transition"
+                className="flex items-center gap-2 px-2 py-1.5 rounded hover:bg-slate-100 dark:hover:bg-[#161b2c] text-slate-800 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white text-xs font-semibold cursor-pointer select-none transition"
               >
                 <input
                   type="checkbox"
                   checked={isChecked}
                   onChange={() => handleToggle(opt.value)}
-                  className="rounded border-slate-200 dark:border-[#1f2947] bg-[#161b2c] text-slate-900 dark:text-white cursor-pointer"
+                  className="rounded border-slate-300 dark:border-[#1f2947] bg-white dark:bg-[#161b2c] text-amber-500 focus:ring-amber-500/50 cursor-pointer"
                 />
                 <span>{opt.label}</span>
               </label>
@@ -410,17 +410,17 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
         {[
           { label: 'Total Orders', value: totals.orders.toString(), icon: '🛒', color: '#fbbf24' },
           { label: 'Gross Sales', value: gbp(totals.gross), icon: '💷', color: '#4f8ef7' },
           { label: 'Total Deductions', value: gbp(totals.gross - totals.net), icon: '📉', color: '#f04060' },
           { label: filter.platform ? `${platformLabel(filter.platform)} Avg Ded %` : 'Avg Ded % (All)', value: getAvgCommPercent(), icon: '📊', color: '#a78bfa' },
           { label: 'Net Received', value: gbp(totals.net), icon: '✅', color: '#22d3a5' },
-        ].map(c => (
-          <div key={c.label} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4">
-            <div className="text-[10px] uppercase tracking-widest text-slate-500 mb-1">{c.label}</div>
-            <div className="text-xl font-black text-slate-900 dark:text-white">{c.value}</div>
+        ].map((c, i) => (
+          <div key={c.label} className={`bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 sm:p-4 min-w-0 overflow-hidden flex flex-col justify-between ${i === 4 ? 'col-span-2 sm:col-span-2 md:col-span-1 lg:col-span-1' : ''}`}>
+            <div className="text-[10px] uppercase tracking-wider text-slate-500 mb-1 truncate">{c.label}</div>
+            <div className="text-base sm:text-lg md:text-xl font-black text-slate-900 dark:text-white tracking-tight tabular-nums truncate">{c.value}</div>
           </div>
         ))}
       </div>
@@ -438,13 +438,13 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
                 ))}
               </tr>
             </thead>
-            <tbody>
+            <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
                 <tr><td colSpan={10} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : sales.length === 0 ? (
                 <tr><td colSpan={10} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
               ) : sales.map(s => (
-                <tr key={s.id} className="border-b border-slate-200 dark:border-[#1f2947] hover:bg-[#161b2c] transition-colors">
+                <tr key={s.id} className="hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
                   <td className="px-4 py-3">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold"
                       style={{ background: `${platformColor(s.platform)}1a`, color: platformColor(s.platform), border: `1px solid ${platformColor(s.platform)}33` }}>

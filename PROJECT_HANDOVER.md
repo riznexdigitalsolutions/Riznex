@@ -67,12 +67,6 @@
   - Responsive inputs and dropdowns: `bg-slate-50 dark:bg-[#161b2c] border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white`.
   - Dropzone: `bg-slate-50/80 dark:bg-[#161b2c]/50 border-slate-300 dark:border-[#2d3b5e]` with high-contrast text.
   - High-contrast buttons and date input `[color-scheme:light] dark:[color-scheme:dark]`.
-
-### C. Landing Page Interactive AI OCR Scanner & Floating WhatsApp
-- **File:** `app/page.tsx`
-- **Mini-Demo Widget:** Added an interactive "Try Sample AI Invoice Scan" component on the homepage allowing prospective clients to test-drive Uber Eats and supplier statement extraction with live laser scanning animation in ~1.1s.
-- **Floating WhatsApp:** Added a persistent direct chat button linking to official WhatsApp (`+44 7392 683935`) with live agent response time indicators and dismissable tooltip.
-
 ---
 
 ## 5. Current Task & Next Steps

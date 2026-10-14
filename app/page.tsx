@@ -90,6 +90,11 @@ const Icons = {
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.8" d="M13 10V3L4 14h7v7l9-11h-7z" />
     </svg>
   ),
+  WhatsApp: () => (
+    <svg className="w-5 h-5 sm:w-6 sm:h-6 fill-current shrink-0" viewBox="0 0 24 24">
+      <path d="M12.031 2C6.511 2 2.016 6.495 2.016 12.015c0 1.956.565 3.784 1.542 5.337L2 22l4.821-1.523a9.97 9.97 0 005.21 1.458h.004c5.519 0 10.015-4.496 10.015-10.016C22.05 6.495 17.554 2 12.031 2zm5.836 14.183c-.244.686-1.42 1.258-1.956 1.34-.515.078-1.18.113-1.897-.117-.463-.148-1.057-.348-1.821-.68-3.218-1.395-5.314-4.664-5.474-4.877-.16-.214-1.306-1.737-1.306-3.313 0-1.576.828-2.35 1.121-2.67.293-.32.639-.4.852-.4.213 0 .426.002.613.011.199.01.465-.075.727.553.268.643.91 2.222.989 2.383.08.16.133.347.027.56-.107.214-.16.347-.32.534-.16.187-.336.418-.48.56-.16.16-.328.334-.141.654.186.32.83 1.353 1.776 2.193.242.215.385.347.625.347.24 0 .532-.08.799-.4.267-.32 1.146-1.334 1.452-1.787.306-.453.613-.373.852-.293.24.08 1.518.715 1.777.848.259.133.432.2.495.307.063.107.063.62-.181 1.306z" />
+    </svg>
+  ),
 };
 
 export default function LandingPage() {
@@ -101,6 +106,23 @@ export default function LandingPage() {
   const [formSent, setFormSent] = useState(false);
   const [formSubmitting, setFormSubmitting] = useState(false);
   const [mounted, setMounted] = useState(false);
+
+  // Mini AI OCR Scanner Demo Widget States
+  const [ocrSampleType, setOcrSampleType] = useState<'ubereats' | 'supplier' | 'custom'>('ubereats');
+  const [ocrScanning, setOcrScanning] = useState(false);
+  const [ocrCustomFileName, setOcrCustomFileName] = useState<string | null>(null);
+
+  // Floating WhatsApp Tooltip State
+  const [showWhatsAppTooltip, setShowWhatsAppTooltip] = useState(true);
+
+  const handleTriggerOcr = (type: 'ubereats' | 'supplier' | 'custom', customName?: string) => {
+    setOcrSampleType(type);
+    if (customName) setOcrCustomFileName(customName);
+    setOcrScanning(true);
+    setTimeout(() => {
+      setOcrScanning(false);
+    }, 1100);
+  };
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 200);
@@ -525,6 +547,257 @@ export default function LandingPage() {
             </div>
 
           </div>
+        </div>
+      </section>
+
+      {/* ── INTERACTIVE AI INVOICE SCANNER MINI-DEMO ── */}
+      <section id="ai-scanner" className="py-12 sm:py-16 px-3.5 sm:px-6 lg:px-8 border-t border-slate-200/[0.08] dark:border-white/[0.08] relative w-full overflow-hidden">
+        <div className="max-w-6xl mx-auto w-full">
+          
+          <div className="text-center max-w-3xl mx-auto mb-10">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#E5B869]/15 text-[#E5B869] text-[11px] font-bold uppercase tracking-wider mb-2.5 border border-[#E5B869]/30">
+              <span className="w-2 h-2 rounded-full bg-[#E5B869] animate-pulse"></span>
+              <span>⚡ Proprietary OCR Vision Engine</span>
+            </div>
+            <h2 className="text-2xl sm:text-4xl font-black text-slate-900 dark:text-white tracking-tight break-words">
+              Watch Our AI Audit Delivery Statements in <span className="text-[#E5B869]">2 Seconds</span>
+            </h2>
+            <p className="mt-2 text-slate-600 dark:text-slate-300 text-xs sm:text-sm max-w-2xl mx-auto leading-relaxed">
+              No more manual spreadsheet typing or guessing platform commissions. Click a sample below or upload any statement/receipt to see automated financial extraction in action.
+            </p>
+          </div>
+
+          {/* Interactive Card */}
+          <div className="rounded-3xl bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-2xl p-4 sm:p-8 backdrop-blur-xl">
+            
+            {/* Top Sample Selectors */}
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 mb-6">
+              <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mr-1">Select Sample:</span>
+              
+              <button
+                type="button"
+                onClick={() => handleTriggerOcr('ubereats')}
+                disabled={ocrScanning}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border cursor-pointer ${
+                  ocrSampleType === 'ubereats'
+                    ? 'bg-[#E5B869] text-black border-[#b58832] shadow-md shadow-[#E5B869]/30 scale-105'
+                    : 'bg-black/5 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-[#E5B869]/50'
+                }`}
+              >
+                <span>🚗 Uber Eats Statement</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 font-mono">£2,845.20</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleTriggerOcr('supplier')}
+                disabled={ocrScanning}
+                className={`px-3.5 py-2 rounded-xl text-xs font-bold transition-all flex items-center gap-2 border cursor-pointer ${
+                  ocrSampleType === 'supplier'
+                    ? 'bg-[#E5B869] text-black border-[#b58832] shadow-md shadow-[#E5B869]/30 scale-105'
+                    : 'bg-black/5 dark:bg-white/5 border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-300 hover:border-[#E5B869]/50'
+                }`}
+              >
+                <span>📦 Food Supplier (JJ/Booker)</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded bg-black/10 dark:bg-white/10 font-mono">£1,420.50</span>
+              </button>
+
+              <label className="cursor-pointer px-3.5 py-2 rounded-xl text-xs font-bold bg-black/5 dark:bg-white/5 border border-dashed border-slate-300 dark:border-white/20 text-slate-700 dark:text-slate-300 hover:border-[#E5B869] transition-all flex items-center gap-1.5">
+                <span>📎 Upload Your Invoice</span>
+                <input 
+                  type="file" 
+                  accept=".pdf,.png,.jpg,.jpeg" 
+                  className="hidden" 
+                  onChange={(e) => {
+                    const f = e.target.files?.[0];
+                    if (f) handleTriggerOcr('custom', f.name);
+                  }}
+                />
+              </label>
+            </div>
+
+            {/* Split Grid: Left Document Preview / Scan Animation - Right Extracted Data */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+              
+              {/* Left Column: Simulated Document with Laser Scan line */}
+              <div className="lg:col-span-5 relative rounded-2xl bg-white dark:bg-[#0c0f18] border border-slate-200 dark:border-slate-800 p-5 overflow-hidden flex flex-col justify-between shadow-inner min-h-[320px]">
+                
+                {/* Laser scan animation when scanning */}
+                {ocrScanning && (
+                  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-[#E5B869] to-transparent shadow-[0_0_15px_#E5B869] z-20 animate-[bounce_1.1s_infinite]" />
+                )}
+
+                {/* Document Header */}
+                <div>
+                  <div className="flex items-center justify-between pb-3 border-b border-slate-100 dark:border-slate-800 mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-6 h-6 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-xs">
+                        {ocrSampleType === 'ubereats' ? 'UE' : ocrSampleType === 'supplier' ? 'JJ' : 'DOC'}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-slate-900 dark:text-white">
+                          {ocrSampleType === 'ubereats' 
+                            ? 'Uber Eats Weekly Statement' 
+                            : ocrSampleType === 'supplier' 
+                            ? 'JJ Foodservice Tax Invoice' 
+                            : (ocrCustomFileName || 'Uploaded Invoice.pdf')}
+                        </div>
+                        <div className="text-[10px] text-slate-400 font-mono">
+                          {ocrSampleType === 'ubereats' ? 'Ref: PAY-GB-2026-W41' : ocrSampleType === 'supplier' ? 'Inv: #JJ-99824-26' : 'Custom Upload'}
+                        </div>
+                      </div>
+                    </div>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ocrScanning ? 'bg-amber-500/10 text-amber-500 animate-pulse' : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'}`}>
+                      {ocrScanning ? 'Scanning...' : 'Document Scanned'}
+                    </span>
+                  </div>
+
+                  {/* Document Body preview mock */}
+                  <div className="space-y-2 text-[11px] font-mono text-slate-600 dark:text-slate-400">
+                    <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
+                      <span>Store / Client:</span>
+                      <span className="font-bold text-slate-900 dark:text-white">Herbies & Tasty Bun (Henley)</span>
+                    </div>
+                    <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
+                      <span>Statement Period:</span>
+                      <span className="text-slate-800 dark:text-slate-200">
+                        {ocrSampleType === 'ubereats' ? '05 Oct 2026 – 11 Oct 2026' : '08 Oct 2026'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
+                      <span>Extraction Type:</span>
+                      <span className="text-amber-600 dark:text-amber-400 font-bold">
+                        {ocrSampleType === 'ubereats' ? 'Platform Sales + Fee Split' : 'Supplier Goods & VAT'}
+                      </span>
+                    </div>
+                    <div className="flex justify-between py-1 border-b border-slate-100 dark:border-slate-800/60">
+                      <span>Processing Mode:</span>
+                      <span className="text-emerald-600 dark:text-emerald-400 font-bold">RestaurantIQ Vision AI</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Status Footer */}
+                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between text-[11px]">
+                  <span className="text-slate-400">Processing Time:</span>
+                  <span className="font-bold text-[#E5B869] font-mono">1.1 seconds • 99.8% precision</span>
+                </div>
+              </div>
+
+              {/* Right Column: High-Tech Extracted Result Display */}
+              <div className="lg:col-span-7 flex flex-col justify-between rounded-2xl bg-slate-50 dark:bg-[#121624] border border-slate-200 dark:border-[#1f2947] p-5 sm:p-6 shadow-sm">
+                
+                {ocrScanning ? (
+                  <div className="flex flex-col items-center justify-center py-16 text-center">
+                    <div className="w-12 h-12 rounded-full border-4 border-[#E5B869]/20 border-t-[#E5B869] animate-spin mb-4" />
+                    <div className="text-sm font-black text-slate-900 dark:text-white">RestaurantIQ AI Vision Engine Active</div>
+                    <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">Cross-referencing gross sales, commission, and net payout...</div>
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      {/* Extraction Header */}
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="flex items-center gap-2">
+                          <span className="text-emerald-500 font-bold text-sm">✅ Extracted & Audited Successfully</span>
+                          <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-bold">Audit Verified</span>
+                        </div>
+                        <span className="text-[10px] text-slate-400 font-mono">Auto-reconciled</span>
+                      </div>
+
+                      {/* Main Metric Cards */}
+                      {ocrSampleType === 'ubereats' || ocrSampleType === 'custom' ? (
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                            <div className="p-3 rounded-xl bg-white dark:bg-[#161b2c] border border-slate-200 dark:border-slate-800">
+                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Gross Sales</span>
+                              <span className="text-base sm:text-lg font-black text-slate-900 dark:text-white">£2,845.20</span>
+                              <span className="text-[9px] text-slate-400 block mt-0.5">142 customer orders</span>
+                            </div>
+                            <div className="p-3 rounded-xl bg-white dark:bg-[#161b2c] border border-slate-200 dark:border-slate-800">
+                              <span className="text-[10px] font-bold text-rose-500 uppercase tracking-wider block">Uber Commission</span>
+                              <span className="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400">-£853.56</span>
+                              <span className="text-[9px] text-slate-400 block mt-0.5">30.0% contracted rate</span>
+                            </div>
+                            <div className="p-3 rounded-xl bg-white dark:bg-[#161b2c] border border-slate-200 dark:border-slate-800 col-span-2 sm:col-span-1">
+                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Promos & VAT</span>
+                              <span className="text-base sm:text-lg font-black text-slate-900 dark:text-white">-£245.71</span>
+                              <span className="text-[9px] text-slate-400 block mt-0.5">Ads £75 + VAT £170.71</span>
+                            </div>
+                          </div>
+
+                          {/* Highlight Net Received Banner */}
+                          <div className="p-4 rounded-xl bg-gradient-to-r from-emerald-500/10 via-emerald-500/5 to-transparent border border-emerald-500/30 flex items-center justify-between">
+                            <div>
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 block">Actual Bank Payout Expected</span>
+                              <span className="text-xl sm:text-2xl font-black text-emerald-600 dark:text-emerald-400">£1,745.93</span>
+                            </div>
+                            <div className="text-right">
+                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 dark:text-emerald-400 bg-emerald-500/20 px-2.5 py-1 rounded-full">
+                                <span>P&L Synchronized</span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="space-y-3">
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                            <div className="p-3 rounded-xl bg-white dark:bg-[#161b2c] border border-slate-200 dark:border-slate-800">
+                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Net Invoice Value</span>
+                              <span className="text-base sm:text-lg font-black text-slate-900 dark:text-white">£1,183.75</span>
+                              <span className="text-[9px] text-slate-400 block mt-0.5">12 items itemized</span>
+                            </div>
+                            <div className="p-3 rounded-xl bg-white dark:bg-[#161b2c] border border-slate-200 dark:border-slate-800">
+                              <span className="text-[10px] font-bold text-amber-500 uppercase tracking-wider block">Reclaimable VAT</span>
+                              <span className="text-base sm:text-lg font-black text-amber-600 dark:text-amber-400">£236.75</span>
+                              <span className="text-[9px] text-slate-400 block mt-0.5">20% Standard Rate</span>
+                            </div>
+                            <div className="p-3 rounded-xl bg-white dark:bg-[#161b2c] border border-slate-200 dark:border-slate-800 col-span-2 sm:col-span-1">
+                              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block">Category</span>
+                              <span className="text-base sm:text-lg font-black text-slate-900 dark:text-white">Food & Supplies</span>
+                              <span className="text-[9px] text-slate-400 block mt-0.5">Matched to Herbies</span>
+                            </div>
+                          </div>
+
+                          {/* Highlight Total Supplier Bill */}
+                          <div className="p-4 rounded-xl bg-gradient-to-r from-blue-500/10 via-blue-500/5 to-transparent border border-blue-500/30 flex items-center justify-between">
+                            <div>
+                              <span className="text-[10px] font-bold uppercase tracking-wider text-blue-700 dark:text-blue-400 block">Total Supplier Gross Payable</span>
+                              <span className="text-xl sm:text-2xl font-black text-blue-600 dark:text-blue-400">£1,420.50</span>
+                            </div>
+                            <div className="text-right">
+                              <span className="inline-flex items-center gap-1 text-[11px] font-bold text-blue-700 dark:text-blue-400 bg-blue-500/20 px-2.5 py-1 rounded-full">
+                                <span>Export Ready for Accountant</span>
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Action Bar */}
+                    <div className="mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                      <div className="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1.5">
+                        <span className="text-emerald-500 font-bold">⚡ Zero manual data entry.</span>
+                        <span>Directly updates your weekly P&L.</span>
+                      </div>
+                      <Link
+                        href="/demo"
+                        className="px-4 py-2 rounded-xl text-xs font-bold text-black bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:opacity-90 transition shadow-md flex items-center gap-1.5"
+                      >
+                        <span>See Complete Live Demo</span>
+                        <Icons.ArrowRight />
+                      </Link>
+                    </div>
+                  </>
+                )}
+
+              </div>
+
+            </div>
+
+          </div>
+
         </div>
       </section>
 
@@ -1437,6 +1710,47 @@ export default function LandingPage() {
           </div>
         </div>
       )}
+
+      {/* ── FLOATING WHATSAPP DIRECT CHAT BUTTON ── */}
+      <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2.5 pointer-events-auto">
+        {showWhatsAppTooltip && (
+          <div className="relative bg-white dark:bg-[#111625] border border-slate-200 dark:border-[#25D366]/40 shadow-2xl rounded-2xl p-3.5 max-w-[270px] animate-in fade-in slide-in-from-bottom-2 duration-300">
+            <button 
+              type="button"
+              onClick={() => setShowWhatsAppTooltip(false)}
+              className="absolute top-2 right-2 text-slate-400 hover:text-slate-600 dark:hover:text-white text-xs p-1"
+              aria-label="Close message"
+            >
+              ✕
+            </button>
+            <div className="flex items-center gap-2 mb-1.5">
+              <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse"></span>
+              <span className="text-[11px] font-bold text-slate-900 dark:text-white">UK Restaurant Operations</span>
+            </div>
+            <p className="text-[11px] text-slate-600 dark:text-slate-300 leading-snug">
+              Got a question about delivery setup or weekly reports? Chat with our specialist on WhatsApp.
+            </p>
+            <div className="mt-2 text-[10px] font-semibold text-[#25D366] flex items-center gap-1">
+              <span>●</span> Usually replies in under 5 minutes
+            </div>
+          </div>
+        )}
+
+        <a
+          href="https://wa.me/447392683935?text=Hello%20Riznex,%20I%20have%20a%20question%20about%20your%20restaurant%20management%20and%20weekly%20reporting."
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center gap-2.5 px-4 sm:px-5 py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white shadow-2xl shadow-[#25D366]/40 hover:scale-105 active:scale-95 transition-all cursor-pointer font-bold text-xs"
+          aria-label="Chat with Riznex on WhatsApp"
+        >
+          <Icons.WhatsApp />
+          <span className="hidden sm:inline-block font-extrabold tracking-wide">Chat with Us</span>
+          <span className="relative flex h-2.5 w-2.5 sm:hidden">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+          </span>
+        </a>
+      </div>
 
     </div>
   );

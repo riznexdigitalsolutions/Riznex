@@ -1307,6 +1307,7 @@ export function HungryBirdsDashboard() {
           offers={offers}
           currWeeklyData={curr6Stats.weeklyData}
           prevWeeklyData={prev6Stats.weeklyData}
+          rawSales={rawSales}
           platformData={platformData}
           isAdmin={session?.user?.role === 'admin'}
           clientId={session?.user?.role === 'admin' ? 'client-1' : (session?.user?.clientId || undefined)}

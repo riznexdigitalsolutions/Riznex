@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { gbp, fmtDate, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 function InvoicesContent() {
   const { data: session } = useSession()
@@ -395,6 +396,29 @@ function InvoicesContent() {
           )}
         </div>
       </div>
+
+      {/* Active Filters Bar */}
+      <ActiveFilters
+        platform={
+          activeTab === 'all' ? (storeFilter || '') :
+          activeTab === 'platform' ? (platformFilter || '') :
+          activeTab === 'pos' ? (posFilter || '') : ''
+        }
+        onClearPlatform={() => {
+          setStoreFilter('')
+          setPlatformFilter('')
+          setPosFilter('')
+        }}
+        filter={filter}
+        onClearFilter={() => setFilter(defaultDateFilter())}
+        onClearAll={() => {
+          setStoreFilter('')
+          setPlatformFilter('')
+          setPosFilter('')
+          setFilter(defaultDateFilter())
+        }}
+        className="px-1"
+      />
 
       {filteredInvoices.length === 0 ? (
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-12 text-center">

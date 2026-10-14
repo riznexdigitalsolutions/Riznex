@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { gbp, fmtDate, fmtDateInput, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface StaffWage {
   id: string; staffId: string; amount: number; weekEnd: string; store: string;
@@ -232,6 +233,20 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
             </button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={storeFilter}
+          onClearStore={() => setStoreFilter('')}
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => {
+            setStoreFilter('')
+            setStaffFilter('')
+            setFilter(defaultDateFilter())
+          }}
+          className="justify-center"
+        />
       </div>
 
       <div className="space-y-3">

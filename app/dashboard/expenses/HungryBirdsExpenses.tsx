@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { gbp, fmtDate, expenseCategoryLabel, EXPENSE_CATEGORIES, fmtDateInput, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface Expense {
   id: string; category: string; subcategory?: string
@@ -148,6 +149,14 @@ export function HungryBirdsExpenses() {
         <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
         <button onClick={() => setFilter({ category: '', ...defaultDateFilter() })} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs px-2 py-1 font-semibold transition">Reset</button>
       </div>
+
+      {/* Active Filters Bar */}
+      <ActiveFilters
+        filter={filter}
+        onClearFilter={() => setFilter(f => ({ ...f, ...defaultDateFilter() }))}
+        onClearAll={() => setFilter({ category: '', ...defaultDateFilter() })}
+        className="px-1"
+      />
 
       {/* Table */}
       <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">

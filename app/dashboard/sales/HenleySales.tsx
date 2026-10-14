@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { exportToPDF } from '@/lib/pdfExport'
 import { gbp, fmtDate, platformLabel, platformColor, PLATFORMS, fmtDateInput, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface Sale {
   id: string; platform: string; store: string; weekStart: string; weekEnd: string
@@ -408,6 +409,21 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
             </button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={activeTab === 'Combined' || activeTab === 'Monthly Combined' ? '' : activeTab.replace('Monthly ', '')}
+          onClearStore={() => router.push(`/dashboard/sales?tab=${activeTab.startsWith('Monthly ') ? 'Monthly Combined' : 'Combined'}`)}
+          platform={filter.platform}
+          onClearPlatform={val => setFilter(f => ({ ...f, platform: val }))}
+          filter={filter}
+          onClearFilter={() => setFilter(f => ({ ...f, ...defaultDateFilter() }))}
+          onClearAll={() => {
+            router.push(`/dashboard/sales?tab=${activeTab.startsWith('Monthly ') ? 'Monthly Combined' : 'Combined'}`)
+            setFilter({ platform: '', ...defaultDateFilter() })
+          }}
+          className="justify-center"
+        />
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">

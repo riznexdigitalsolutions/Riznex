@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { gbp, fmtDate, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 export function HenleySuppliers() {
   const { data: session } = useSession()
@@ -385,6 +386,20 @@ export function HenleySuppliers() {
             </button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={storeFilter}
+          onClearStore={() => setStoreFilter('')}
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => {
+            setStoreFilter('')
+            setSupplierFilter('')
+            setFilter(defaultDateFilter())
+          }}
+          className="justify-center"
+        />
       </div>
 
       <div className="flex flex-wrap gap-3 mb-6">

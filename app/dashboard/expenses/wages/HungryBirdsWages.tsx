@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { gbp, fmtDate, fmtDateInput } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface StaffWage {
   id: string; staffId: string; amount: number; weekEnd: string; store: string;
@@ -123,6 +124,14 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
             <button onClick={() => { setFilter(defaultDateFilter()); }} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs px-2 py-1 font-semibold transition flex-shrink-0">Reset</button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => setFilter(defaultDateFilter())}
+          className="px-1"
+        />
       </div>
 
       <div className="space-y-3">

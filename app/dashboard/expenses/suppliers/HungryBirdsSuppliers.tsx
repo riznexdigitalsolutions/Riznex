@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { gbp, fmtDate } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 export function HungryBirdsSuppliers() {
   const { data: session } = useSession()
@@ -155,6 +156,17 @@ export function HungryBirdsSuppliers() {
           </div>
         </div>
       </div>
+
+      {/* Active Filters Bar */}
+      <ActiveFilters
+        filter={filter}
+        onClearFilter={() => setFilter(defaultDateFilter())}
+        onClearAll={() => {
+          setSupplierFilter('')
+          setFilter(defaultDateFilter())
+        }}
+        className="px-1"
+      />
 
       {/* TABLE VIEW */}
       <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-xl">

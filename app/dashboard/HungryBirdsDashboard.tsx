@@ -8,6 +8,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsive
 
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
 import MultiPlatformFilter from '@/components/MultiPlatformFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 
 const HB_PLATFORMS = [
@@ -534,6 +535,16 @@ export function HungryBirdsDashboard() {
             </button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          platform={platform}
+          onClearPlatform={() => setPlatform('')}
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => { setFilter(defaultDateFilter()); setPlatform(''); }}
+          className="px-1"
+        />
       </div>
 
       <div className={activeTab === 'overview' ? 'flex flex-col gap-8' : 'hidden'}>

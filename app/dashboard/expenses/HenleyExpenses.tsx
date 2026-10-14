@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { gbp, fmtDate, expenseCategoryLabel, EXPENSE_CATEGORIES, fmtDateInput, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface Expense {
   id: string; category: string; subcategory?: string; store: string;
@@ -287,6 +288,19 @@ export function HenleyExpenses({ filterMode, is2025 = false }: { filterMode?: 'u
             </button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={storeFilter}
+          onClearStore={() => setStoreFilter('')}
+          filter={filter}
+          onClearFilter={() => setFilter(f => ({ ...f, ...defaultDateFilter() }))}
+          onClearAll={() => {
+            setStoreFilter('')
+            setFilter({ category: '', ...defaultDateFilter() })
+          }}
+          className="justify-center"
+        />
       </div>
 
       {/* Category totals */}

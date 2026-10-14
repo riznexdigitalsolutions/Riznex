@@ -7,6 +7,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell
 } from 'recharts'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 const PIE_COLORS = ['#4f8ef7','#7b5cf0','#22d3a5','#f97316','#fbbf24','#f04060','#e879f9','#38bdf8']
 
@@ -198,6 +199,14 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
             </button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => setFilter(defaultDateFilter())}
+          className="justify-center"
+        />
       </div>
 
       {r && (

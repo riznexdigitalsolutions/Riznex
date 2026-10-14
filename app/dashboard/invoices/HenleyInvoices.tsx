@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { gbp, fmtDate, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const { data: session } = useSession()
@@ -395,6 +396,23 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
             )}
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={storeFilter}
+          onClearStore={() => setStoreFilter('')}
+          platform={platformFilter}
+          onClearPlatform={() => setPlatformFilter('')}
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => {
+            setStoreFilter('')
+            setPlatformFilter('')
+            setStatusFilter('')
+            setFilter(defaultDateFilter())
+          }}
+          className="justify-center"
+        />
       </div>
 
 

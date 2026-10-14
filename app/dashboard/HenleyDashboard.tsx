@@ -9,6 +9,7 @@ import { ExcelStyleReport } from '@/components/ExcelStyleReport'
 
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
 import MultiPlatformFilter from '@/components/MultiPlatformFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 const PLATFORM_LABELS: Record<string, string> = {
   just_eat: 'Just Eat', uber_eats: 'Uber Eats', deliveroo: 'Deliveroo', walk_in: 'Walk-in', cash: 'Cash', mobile_app: 'Mobile App'
@@ -624,6 +625,18 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             </button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={is2025 ? (store === 'Herbies Pizza' ? '' : store) : store}
+          onClearStore={() => setStore('')}
+          platform={platform}
+          onClearPlatform={() => setPlatform('')}
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => { setFilter(defaultDateFilter()); if (!is2025) setStore(''); setPlatform(''); }}
+          className="px-1"
+        />
       </div>
 
       <div className={activeTab === 'overview' ? 'flex flex-col gap-8' : 'hidden'}>

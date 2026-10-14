@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { gbp, fmtDate, platformLabel, platformColor, PLATFORMS, fmtDateInput, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface Sale {
   id: string; platform: string; store: string; weekStart: string; weekEnd: string
@@ -275,6 +276,16 @@ function SalesContent() {
           Reset
         </button>
       </div>
+
+      {/* Active Filters Bar */}
+      <ActiveFilters
+        platform={filter.platform ? platformLabel(filter.platform) : ''}
+        onClearPlatform={() => setFilter(f => ({ ...f, platform: '' }))}
+        filter={filter}
+        onClearFilter={() => setFilter(f => ({ ...f, ...defaultDateFilter() }))}
+        onClearAll={() => setFilter({ platform: '', ...defaultDateFilter() })}
+        className="px-1"
+      />
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
         {[

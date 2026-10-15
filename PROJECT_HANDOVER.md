@@ -113,13 +113,27 @@
   - Filtering by `Tasty Bun POS` only: Returns 28 weeks, **£9,929.10**, **820 orders**.
   - Filtering both or any combination works seamlessly across all sales tables, cards, and charts.
 
+### E. Hungry Birds Fixed Expenses Duplicate Warning & Overwrite (October 15, 2026)
+- **User Requirement:** When generating auto-fill fixed expenses for Hungry Birds, if records already exist for that week, display a clear warning/alert stating that fixed expenses for this week have already been generated/updated (matching the duplicate detection behavior in Henley).
+- **Backend Fix (`app/api/expenses/auto-fill-hungry-birds/route.ts`):**
+  - Snaps `targetDate` to `weekStart` (Monday 00:00:00) and `weekEnd` (Sunday 23:59:59.999).
+  - Performs authoritative duplicate check across `staffWage`, `invoice` (`fileType: 'auto'`), `expense`, and `sale` (`Walk In Cash`) for `clientId: 'client-1'` within that week.
+  - If records exist and `overwrite` is not requested: Returns HTTP 400 with `{ alreadyExists: true, error: 'You have already auto-filled your fixed costs for this week (Week ending Sunday ...)! If you need to regenerate them, please delete the existing ones first.' }`.
+  - If `overwrite: true`: Safely cleans up the existing auto-generated records for that week and cleanly recreates them, returning a success message.
+- **Frontend Fix (`app/dashboard/expenses/HungryBirdsExpensesDashboard.tsx`):**
+  - In `handleAutoFill(forceOverwrite = false)`: If `data.alreadyExists`, displays a confirmation prompt:
+    `⚠️ Notice: Fixed expenses already generated!\n\n${data.error}\n\nDo you want to overwrite and re-update fixed expenses for this week?`
+    If user confirms OK, calls auto-fill with `overwrite: true`. If cancelled, aborts safely without altering data.
+  - In the Auto-Fill Modal:
+    - Added live calculation showing `🗓️ Snapping to: Week ending Sunday, DD MMM YYYY (YYYY-MM-DD)`.
+    - Added inline warning badge if fixed expenses for the selected week are already loaded in the dashboard view.
+
 ---
 
-## 5. Current Task & Next Steps
+## 5. Current Task & System Status
 
-- **System Status:** 100% operational, fully compiled with Next.js (`npm run build` completed with 0 errors), committed, and pushed to `main` branch.
-- **Hungry Birds (`client-1`):** 100% completed & locked. DO NOT modify.
-- **Henley (`cmpv4dvik0000vdj089wl6zmf`):** Fully up-to-date with separate Tasty Bun Website & Mobile App channels.
+- **System Status:** 100% operational, fully verified with Next.js (`npm run build` completed with 0 errors), committed, and pushed to `main` branch.
+- **All Clients Active & Open:** Both **Hungry Birds** (`client-1`) and **Henley on Thames** (`cmpv4dvik0000vdj089wl6zmf`) are actively supported, editable, and maintained.
 - **Workflow for Future Updates:**
   1. Make edits in `E:\Sales Software\restaurant-dashboard`.
   2. Sync modified files to `C:\Users\syedq\Documents\GitHub\Riznex` using `scratch/copy-files.js`.

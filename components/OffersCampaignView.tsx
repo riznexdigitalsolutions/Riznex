@@ -331,17 +331,25 @@ export default function OffersCampaignView({
     if (matching.length === 0 && platformConfig.id === 'website') {
       return {
         matching,
+        topRankList: ['Direct Storefront'],
+        discountList: ['Direct Loyalty / App Deals'],
+        allOffers: ['0% Commission Direct Orders', 'Exclusive Web & Mobile Offers'],
         topRank: 'Direct Storefront',
-        discount: 'Direct Loyalty / App Deals',
-        allOffers: ['0% Commission Direct Orders', 'Exclusive Web & Mobile Offers']
+        discount: 'Direct Loyalty / App Deals'
       }
     }
 
+    const uniqueDiscounts = Array.from(new Set(discountItems.map(d => d.trim()).filter(Boolean)))
+    const uniqueTopRanks = Array.from(new Set(topRankItems.map(t => t.trim()).filter(Boolean)))
+    const uniqueOtherOffers = Array.from(new Set(otherOffers.map(o => o.trim()).filter(Boolean)))
+
     return {
       matching,
-      topRank: topRankItems.length > 0 ? topRankItems.join(' • ') : 'Standard Visibility',
-      discount: discountItems.length > 0 ? discountItems.join(' • ') : 'No active discount',
-      allOffers: otherOffers.length > 0 ? otherOffers : ['Standard Menu Pricing']
+      topRankList: uniqueTopRanks.length > 0 ? uniqueTopRanks : ['Standard Visibility'],
+      discountList: uniqueDiscounts.length > 0 ? uniqueDiscounts : ['No active discount'],
+      allOffers: uniqueOtherOffers.length > 0 ? uniqueOtherOffers : ['Standard Menu Pricing'],
+      topRank: uniqueTopRanks.length > 0 ? uniqueTopRanks.join(' • ') : 'Standard Visibility',
+      discount: uniqueDiscounts.length > 0 ? uniqueDiscounts.join(' • ') : 'No active discount'
     }
   }
 
@@ -463,71 +471,129 @@ export default function OffersCampaignView({
             />
 
             {/* Header: Platform title & Active Deals count */}
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pb-4 border-b border-slate-100 dark:border-[#1f2947] mb-5">
-              <div className="flex items-center gap-3">
-                <span className="text-3xl">{p.icon}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-5 border-b border-slate-200 dark:border-[#1f2947] mb-6">
+              <div className="flex items-center gap-3.5">
+                <div 
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-sm shrink-0 border"
+                  style={{ backgroundColor: `${p.color}15`, borderColor: `${p.color}40` }}
+                >
+                  {p.icon}
+                </div>
                 <div>
-                  <h3 className="text-lg font-black text-slate-900 dark:text-white uppercase tracking-wider">{p.name}</h3>
-                  <span className="text-xs text-slate-400 font-bold uppercase tracking-wider">
-                    {isCurrent ? 'Current Active Offer' : 'Historical Campaign'}
-                  </span>
+                  <h3 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-wider">{p.name}</h3>
+                  <div className="flex items-center gap-2 mt-0.5">
+                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0" />
+                    <span className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                      {isCurrent ? 'Current Active Campaign' : 'Historical Campaign'}
+                    </span>
+                  </div>
                 </div>
               </div>
 
-              <div className="flex items-center gap-2">
-                <span className={`px-3 py-1 rounded-lg text-xs font-black uppercase tracking-wider ${p.badgeClass}`}>
+              <div className="flex items-center gap-2.5">
+                <span className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider ${p.badgeClass} shadow-sm flex items-center gap-1.5`}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-current" />
                   {details.matching.length > 0 ? `${details.matching.length} Active Deals` : 'Standard Visibility'}
                 </span>
                 {isAdmin && details.matching.length > 0 && (
                   <button
                     onClick={() => handleOpenEdit(details.matching[0])}
-                    className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline px-2.5 py-1 rounded-lg transition bg-blue-500/10 cursor-pointer"
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-black text-blue-600 dark:text-blue-400 hover:text-white hover:bg-blue-600 bg-blue-500/10 border border-blue-500/30 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
                   >
-                    ✎ Edit Offer
+                    <span>✎</span>
+                    <span>Edit Offer</span>
                   </button>
                 )}
               </div>
             </div>
 
-            {/* 3 Columns Grid matching Excel: % Off | Others | Top Rank */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
+            {/* 3 Executive Columns Grid: % Off | Others | Top Rank */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
               {/* 1. % Off */}
-              <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[140px] shadow-sm transition-all hover:border-slate-300 dark:hover:border-slate-700">
-                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <span>🔥</span> % Off Offer
+              <div className="bg-gradient-to-b from-slate-50 to-slate-100/60 dark:from-[#111728] dark:to-[#0c101d] border border-slate-200/90 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:shadow-md transition-all">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-[#1f2947]/80 mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs font-bold">
+                      🔥
+                    </div>
+                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      % Off Offer
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
+                    Discount
+                  </span>
                 </div>
-                <div className="text-base sm:text-lg font-black text-rose-600 dark:text-rose-400 tracking-tight my-auto">
-                  {details.discount}
-                </div>
-                <div className="text-[10px] text-slate-400 font-semibold mt-2">Active discount rate</div>
-              </div>
 
-              {/* 2. Others (All Offers Under) */}
-              <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[140px] shadow-sm transition-all hover:border-slate-300 dark:hover:border-slate-700">
-                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <span>🏷️</span> Others (All Offers Under)
-                </div>
-                <div className="space-y-1.5 my-auto">
-                  {details.allOffers.map((item, idx) => (
-                    <div key={idx} className="flex items-start gap-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
-                      <span className="text-[#E5B869] text-xs leading-none">•</span>
+                <div className="space-y-2 flex-1 flex flex-col justify-center py-1">
+                  {details.discountList.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-rose-500/[0.08] dark:bg-rose-500/[0.12] border border-rose-500/20 text-rose-700 dark:text-rose-300 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2.5 shadow-sm"
+                    >
+                      <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0" />
                       <span className="leading-snug">{item}</span>
                     </div>
                   ))}
                 </div>
-                <div className="text-[10px] text-slate-400 font-semibold mt-2">Bundle & order incentives</div>
+              </div>
+
+              {/* 2. Others (All Offers Under) */}
+              <div className="bg-gradient-to-b from-slate-50 to-slate-100/60 dark:from-[#111728] dark:to-[#0c101d] border border-slate-200/90 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:shadow-md transition-all">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-[#1f2947]/80 mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">
+                      🏷️
+                    </div>
+                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      Others (All Offers Under)
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
+                    Incentives
+                  </span>
+                </div>
+
+                <div className="space-y-2 flex-1 flex flex-col justify-center py-1">
+                  {details.allOffers.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-blue-500/[0.06] dark:bg-blue-500/[0.10] border border-blue-500/20 text-slate-800 dark:text-slate-200 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 shadow-sm"
+                    >
+                      <span className="w-2 h-2 rounded-full bg-[#E5B869] shrink-0" />
+                      <span className="leading-snug">{item}</span>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* 3. Top Rank */}
-              <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[140px] shadow-sm transition-all hover:border-slate-300 dark:hover:border-slate-700">
-                <div className="text-[11px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <span>⭐</span> Top Rank
+              <div className="bg-gradient-to-b from-slate-50 to-slate-100/60 dark:from-[#111728] dark:to-[#0c101d] border border-slate-200/90 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:shadow-md transition-all">
+                <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-[#1f2947]/80 mb-3">
+                  <div className="flex items-center gap-2">
+                    <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-bold">
+                      ⭐
+                    </div>
+                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
+                      Top Rank
+                    </span>
+                  </div>
+                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/25">
+                    Positioning
+                  </span>
                 </div>
-                <div className="text-base sm:text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2 my-auto">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse shrink-0" />
-                  <span>{details.topRank}</span>
+
+                <div className="space-y-2 flex-1 flex flex-col justify-center py-1">
+                  {details.topRankList.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="bg-amber-500/[0.08] dark:bg-amber-500/[0.12] border border-amber-500/25 text-amber-900 dark:text-amber-200 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2.5 shadow-sm"
+                    >
+                      <span className="text-amber-500 text-sm shrink-0">⭐</span>
+                      <span className="leading-snug">{item}</span>
+                    </div>
+                  ))}
                 </div>
-                <div className="text-[10px] text-slate-400 font-semibold mt-2">Promoted positioning</div>
               </div>
             </div>
           </div>
@@ -568,23 +634,28 @@ export default function OffersCampaignView({
               <div className="space-y-3 flex-1">
                 {/* 1. % off */}
                 <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3.5">
-                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <span>🔥</span> % Off Offer
                   </div>
-                  <div className="text-xs sm:text-sm font-black text-rose-600 dark:text-rose-400 tracking-tight">
-                    {details.discount}
+                  <div className="space-y-1.5">
+                    {details.discountList.map((item, idx) => (
+                      <div key={idx} className="bg-rose-500/[0.08] dark:bg-rose-500/[0.12] border border-rose-500/20 text-rose-700 dark:text-rose-300 px-2.5 py-1.5 rounded-lg text-xs font-black flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
+                        <span className="leading-snug">{item}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
                 {/* 2. Others (All offers under) */}
                 <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3.5">
-                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1.5 flex items-center gap-1.5">
+                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <span>🏷️</span> Others (All Offers Under)
                   </div>
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     {details.allOffers.map((item, idx) => (
-                      <div key={idx} className="flex items-start gap-1.5 text-xs font-semibold text-slate-800 dark:text-slate-200">
-                        <span className="text-[#E5B869] text-xs leading-none">•</span>
+                      <div key={idx} className="bg-blue-500/[0.06] dark:bg-blue-500/[0.10] border border-blue-500/20 text-slate-800 dark:text-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869] shrink-0" />
                         <span className="leading-snug">{item}</span>
                       </div>
                     ))}
@@ -593,12 +664,16 @@ export default function OffersCampaignView({
 
                 {/* 3. Top rank */}
                 <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3.5">
-                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-1 flex items-center gap-1.5">
+                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
                     <span>⭐</span> Top Rank
                   </div>
-                  <div className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse shrink-0" />
-                    <span>{details.topRank}</span>
+                  <div className="space-y-1.5">
+                    {details.topRankList.map((item, idx) => (
+                      <div key={idx} className="bg-amber-500/[0.08] dark:bg-amber-500/[0.12] border border-amber-500/25 text-amber-900 dark:text-amber-200 px-2.5 py-1.5 rounded-lg text-xs font-black flex items-center gap-2">
+                        <span className="text-amber-500 text-xs shrink-0">⭐</span>
+                        <span className="leading-snug">{item}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

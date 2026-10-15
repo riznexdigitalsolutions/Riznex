@@ -5,18 +5,15 @@
 
 ---
 
-## 1. Locked Production Systems & Scope Rules (from AGENTS.md)
+## 1. System Rules & Client Scope Guidelines (from AGENTS.md)
 
-1. **HUNGRY BIRDS IS 100% COMPLETED & LOCKED:**
-   - Client ID: `client-1`
-   - Fully audited, verified, and locked in production.
-   - **STRICT RULE:** You are strictly forbidden from modifying, altering, deleting, or refactoring ANY files, components, API routes, or database records related to Hungry Birds unless explicitly instructed by the user.
-2. **HENLEY SYSTEM (Active):**
-   - Client ID: `cmpv4dvik0000vdj089wl6zmf`
-   - Multi-store setup: "Herbies Pizza" and "Tasty Bun" (+ "Combined").
-3. **STRICT SCOPE BOUNDARIES:**
-   - Always keep system logic, database records, and component states strictly isolated between Hungry Birds and Henley.
-   - Never make cross-system "preventative" fixes or bulk edits that touch a locked system.
+1. **ALL CLIENTS ACTIVE & EDITABLE:**
+   - All client systems, including **Hungry Birds** (`client-1`) and **Henley on Thames** (`cmpv4dvik0000vdj089wl6zmf`), are open and unlocked for editing, refactoring, bug fixing, and enhancements across the entire codebase as needed.
+2. **DATA INTEGRITY & CLIENT CONTEXT:**
+   - Always ensure system logic, database records, and component states remain accurate for each client.
+   - Respect each client's unique store configuration, platforms, commission models, and data sources.
+3. **PRODUCTION QUALITY STANDARDS:**
+   - Verify builds (`npm run build`), test database interactions, and ensure clean commits before pushing changes to `main`.
 
 ---
 

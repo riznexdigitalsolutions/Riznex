@@ -1,7 +1,7 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
-import { gbp, fmtDate } from '@/lib/utils'
+import { gbp, fmtDate, getWeekStart, getWeekEnd } from '@/lib/utils'
 import { exportToPDF } from '@/lib/pdfExport'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
 
@@ -85,21 +85,38 @@ export function HungryBirdsExpensesDashboard() {
 
   useEffect(() => { fetchData() }, [fetchData])
 
-  async function handleAutoFill() {
+  async function handleAutoFill(forceOverwrite = false) {
     setAutoFilling(true)
-    const res = await fetch('/api/expenses/auto-fill-hungry-birds', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ date: autoFillDate })
-    })
-    setAutoFilling(false)
-    setShowAutoFill(false)
-    if (res.ok) {
-      alert('Successfully generated all fixed weekly expenses for the selected week!')
-      fetchData()
-    } else {
-      const data = await res.json()
-      alert('Error: ' + data.error)
+    try {
+      const res = await fetch('/api/expenses/auto-fill-hungry-birds', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date: autoFillDate, overwrite: forceOverwrite })
+      })
+      const data = await res.json().catch(() => ({}))
+      setAutoFilling(false)
+
+      if (res.ok) {
+        setShowAutoFill(false)
+        alert(data.message || (forceOverwrite ? 'Successfully regenerated and updated all fixed weekly expenses!' : 'Successfully generated all fixed weekly expenses for the selected week!'))
+        fetchData()
+      } else {
+        if (data.alreadyExists) {
+          const confirmOverwrite = confirm(
+            `⚠️ Notice: Fixed expenses already generated!\n\n` +
+            `${data.error}\n\n` +
+            `Do you want to overwrite and re-update fixed expenses for this week?`
+          )
+          if (confirmOverwrite) {
+            handleAutoFill(true)
+          }
+        } else {
+          alert('Notice: ' + (data.error || 'Failed to auto-fill expenses'))
+        }
+      }
+    } catch (e: any) {
+      setAutoFilling(false)
+      alert('Notice: ' + (e?.message || 'Error auto-filling'))
     }
   }
 
@@ -283,6 +300,30 @@ export function HungryBirdsExpensesDashboard() {
                 className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-semibold rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50" />
             </div>
 
+            {autoFillDate && (() => {
+              try {
+                const snapTarget = getWeekEnd(getWeekStart(new Date(autoFillDate)))
+                const snapStr = snapTarget.toISOString().split('T')[0]
+                const isAlreadyLoaded = wageItems.some((w: any) => w.weekEnd && w.weekEnd.startsWith(snapStr)) ||
+                                       utilityItems.some((u: any) => u.date && u.date.startsWith(snapStr)) ||
+                                       supplierItems.some((s: any) => s.invoiceDate && s.invoiceDate.startsWith(snapStr))
+                return (
+                  <div className="mb-4 space-y-2">
+                    <div className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                      <span>🗓️ Snapping to:</span>
+                      <span className="font-bold underline">Week ending Sunday, {fmtDate(snapTarget)} ({snapStr})</span>
+                    </div>
+                    {isAlreadyLoaded && (
+                      <div className="p-2.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-700 dark:text-amber-400 text-xs font-medium flex items-start gap-2">
+                        <span className="text-base leading-none">⚠️</span>
+                        <span>Notice: Fixed expenses for this week appear to be already loaded. Clicking <strong>Generate All</strong> will prompt you before overwriting.</span>
+                      </div>
+                    )}
+                  </div>
+                )
+              } catch(e) { return null }
+            })()}
+
             <div className="mb-6 bg-slate-50 dark:bg-[#161b2c] rounded-2xl p-4 max-h-48 overflow-y-auto border border-slate-200 dark:border-[#1f2947] text-xs space-y-4">
               <div>
                 <div className="font-bold text-slate-900 dark:text-white mb-2">👥 Wages (£1,300.00)</div>
@@ -326,7 +367,7 @@ export function HungryBirdsExpensesDashboard() {
             
             <div className="flex gap-3">
               <button onClick={() => setShowAutoFill(false)} className="flex-1 border border-slate-300 dark:border-[#1f2947] hover:bg-slate-100 dark:hover:bg-[#1f2947] text-slate-700 dark:text-slate-300 rounded-xl py-2.5 text-sm font-bold transition">Cancel</button>
-              <button onClick={handleAutoFill} disabled={autoFilling} className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-emerald-500/20 hover:opacity-95 disabled:opacity-50 transition">
+              <button onClick={() => handleAutoFill(false)} disabled={autoFilling} className="flex-1 bg-gradient-to-r from-emerald-500 to-teal-500 text-white rounded-xl py-2.5 text-sm font-bold shadow-lg shadow-emerald-500/20 hover:opacity-95 disabled:opacity-50 transition">
                 {autoFilling ? 'Generating…' : 'Generate All'}
               </button>
             </div>

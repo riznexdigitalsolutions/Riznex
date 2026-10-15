@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import prisma from '@/lib/prisma'
-import { getWeekStart, getWeekEnd } from '@/lib/utils'
+import { getWeekStart, getWeekEnd, fmtDate } from '@/lib/utils'
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
   if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { date } = await req.json()
+  const body = await req.json().catch(() => ({}))
+  const { date, overwrite } = body
   if (!date) return NextResponse.json({ error: 'Target date is required' }, { status: 400 })
 
   const clientId = 'client-1' // Hardcoded for Hungry Birds safely
@@ -17,8 +18,54 @@ export async function POST(req: NextRequest) {
   const weekStart = getWeekStart(targetDate)
   const weekEnd = getWeekEnd(weekStart)
   const weekEndStr = weekEnd.toISOString().split('T')[0]
+  const weekEndFormatted = fmtDate(weekEnd)
 
   try {
+    // 0. GUARD AGAINST DUPLICATES FOR THE SAME WEEK (matching Henley behavior)
+    const [dupWage, dupInv, dupExp, dupSale] = await Promise.all([
+      prisma.staffWage.findFirst({
+        where: { clientId, weekEnd: { gte: weekStart, lte: weekEnd } }
+      }),
+      prisma.invoice.findFirst({
+        where: { clientId, invoiceDate: { gte: weekStart, lte: weekEnd }, fileType: 'auto' }
+      }),
+      prisma.expense.findFirst({
+        where: { clientId, date: { gte: weekStart, lte: weekEnd }, store: 'Hungry Birds' }
+      }),
+      prisma.sale.findFirst({
+        where: { clientId, platform: 'Walk In Cash', weekEnd: { gte: weekStart, lte: weekEnd } }
+      })
+    ])
+
+    const alreadyExists = !!(dupWage || dupInv || dupExp || dupSale)
+
+    if (alreadyExists && !overwrite) {
+      return NextResponse.json({
+        alreadyExists: true,
+        weekEndStr,
+        weekEndFormatted,
+        error: `You have already auto-filled your fixed costs for this week (Week ending Sunday ${weekEndFormatted})! If you need to regenerate them, please delete the existing ones first.`
+      }, { status: 400 })
+    }
+
+    // If overwrite requested, safely clear previously auto-generated entries for this week before regenerating
+    if (overwrite) {
+      await Promise.all([
+        prisma.staffWage.deleteMany({
+          where: { clientId, weekEnd: { gte: weekStart, lte: weekEnd }, store: 'Hungry Birds' }
+        }),
+        prisma.invoice.deleteMany({
+          where: { clientId, invoiceDate: { gte: weekStart, lte: weekEnd }, fileType: 'auto' }
+        }),
+        prisma.expense.deleteMany({
+          where: { clientId, date: { gte: weekStart, lte: weekEnd }, store: 'Hungry Birds' }
+        }),
+        prisma.sale.deleteMany({
+          where: { clientId, platform: 'Walk In Cash', weekEnd: { gte: weekStart, lte: weekEnd } }
+        })
+      ])
+    }
+
     // We will generate Wages, Expenses, and Invoices (for suppliers)
 
     // 1. WAGES
@@ -116,7 +163,8 @@ export async function POST(req: NextRequest) {
             amount: e.amount,
             date: weekEnd,
             period: 'weekly',
-            store: 'Hungry Birds'
+            store: 'Hungry Birds',
+            notes: 'Auto-generated fixed expense'
           }
         })
       }
@@ -151,7 +199,12 @@ export async function POST(req: NextRequest) {
       })
     }
 
-    return NextResponse.json({ success: true, message: 'All fixed expenses and walk-in cash sales added for the week.' })
+    return NextResponse.json({
+      success: true,
+      message: overwrite
+        ? `Successfully regenerated and updated all fixed weekly expenses for week ending Sunday ${weekEndFormatted}.`
+        : `All fixed expenses and walk-in cash sales added for week ending Sunday ${weekEndFormatted}.`
+    })
   } catch (error: any) {
     console.error('Error auto-filling Hungry Birds expenses:', error)
     return NextResponse.json({ error: error.message || 'Server error' }, { status: 500 })

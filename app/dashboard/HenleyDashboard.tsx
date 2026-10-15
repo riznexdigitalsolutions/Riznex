@@ -16,6 +16,33 @@ const PLATFORM_LABELS: Record<string, string> = {
   just_eat: 'Just Eat', uber_eats: 'Uber Eats', deliveroo: 'Deliveroo', walk_in: 'Walk-in', cash: 'Cash', mobile_app: 'Mobile App'
 }
 
+const HENLEY_COMBINED_PLATFORMS = [
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Uber Eats', label: 'Uber Eats', color: '#22d3a5' },
+  { value: 'Herbies POS', label: 'Herbies POS', color: '#ef4444' },
+  { value: 'Herbies Web & App', label: 'Herbies Web & App', color: '#ec4899' },
+  { value: 'Tasty Bun POS', label: 'Tasty Bun POS', color: '#f59e0b' },
+  { value: 'Tasty Bun Web & App', label: 'Tasty Bun Web & App', color: '#e11d48' },
+]
+
+const HERBIES_PLATFORMS = [
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Herbies POS', label: 'Herbies POS', color: '#ef4444' },
+  { value: 'Herbies Web & App', label: 'Herbies Web & App', color: '#ec4899' },
+]
+
+const TASTY_BUN_PLATFORMS = [
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Uber Eats', label: 'Uber Eats', color: '#22d3a5' },
+  { value: 'Tasty Bun POS', label: 'Tasty Bun POS', color: '#f59e0b' },
+  { value: 'Tasty Bun Web & App', label: 'Tasty Bun Web & App', color: '#e11d48' },
+  { value: 'Tasty Bun Website', label: 'Tasty Bun Website', color: '#e11d48' },
+  { value: 'Tasty Bun Mobile App', label: 'Tasty Bun Mobile App', color: '#a855f7' },
+]
+
 export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   const { data: session } = useSession()
   const [report, setReport] = useState<any>(null)
@@ -590,7 +617,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 {!is2025 && (
                   <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
                     <button
-                      onClick={() => setStore('')}
+                      onClick={() => { setStore(''); setPlatform(''); }}
                       className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
                         store === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                       }`}
@@ -598,7 +625,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       Combined
                     </button>
                     <button
-                      onClick={() => setStore('Herbies Pizza')}
+                      onClick={() => { setStore('Herbies Pizza'); setPlatform(''); }}
                       className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                         store === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                       }`}
@@ -606,7 +633,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       Herbies Pizza
                     </button>
                     <button
-                      onClick={() => setStore('Tasty Bun')}
+                      onClick={() => { setStore('Tasty Bun'); setPlatform(''); }}
                       className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
                         store === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                       }`}
@@ -619,7 +646,11 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
 
                 {/* Multi-Select Platform Checkboxes */}
-                <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} />
+                <MultiPlatformFilter 
+                  selectedPlatforms={platform} 
+                  onChange={setPlatform} 
+                  options={store === 'Herbies Pizza' ? HERBIES_PLATFORMS : (store === 'Tasty Bun' ? TASTY_BUN_PLATFORMS : HENLEY_COMBINED_PLATFORMS)}
+                />
               </div>
 
               {/* Right Side: Date Filter & Reset */}
@@ -641,7 +672,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             {/* Active Filters Bar */}
             <ActiveFilters
               store={is2025 ? (store === 'Herbies Pizza' ? '' : store) : store}
-              onClearStore={() => setStore('')}
+              onClearStore={() => { setStore(''); setPlatform(''); }}
               platform={platform}
               onClearPlatform={() => setPlatform('')}
               filter={filter}

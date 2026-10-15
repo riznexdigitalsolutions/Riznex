@@ -48,11 +48,15 @@ function MultiSelectPlatformFilter({
     { value: "Deliveroo", label: "Deliveroo" },
     { value: "Just Eat", label: "Just Eat" },
     { value: "Uber Eats", label: "Uber Eats" },
-    { value: "Herbies Website", label: "Herbies Website" },
-    ...(!is2025 ? [{ value: "Tasty Bun Website", label: "Tasty Bun Website" }] : []),
-    { value: "Herbies Mobile App", label: "Herbies Mobile App" },
-    ...(!is2025 ? [{ value: "Tasty Bun Mobile App", label: "Tasty Bun Mobile App" }] : []),
-    { value: "POS", label: "In-Store POS" },
+    { value: "Herbies POS", label: "Herbies POS" },
+    { value: "Herbies Web & App", label: "Herbies Web & App" },
+    ...(!is2025 ? [
+      { value: "Tasty Bun POS", label: "Tasty Bun POS" },
+      { value: "Tasty Bun Web & App", label: "Tasty Bun Web & App" },
+      { value: "Tasty Bun Website", label: "Tasty Bun Website" },
+      { value: "Tasty Bun Mobile App", label: "Tasty Bun Mobile App" },
+    ] : []),
+    { value: "POS", label: "All In-Store POS" },
   ]
 
   const handleToggle = (value: string) => {
@@ -175,6 +179,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
     
     if (filter.from) params.set('from', filter.from)
     if (filter.to) params.set('to', filter.to)
+    if (filter.weekRanges) params.set('ranges', filter.weekRanges)
     const res = await fetch(`/api/sales?${params}`)
     const data = await res.json()
     setSales(Array.isArray(data) ? data : [])

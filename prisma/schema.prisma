@@ -178,7 +178,7 @@ model Invoice {
   amount       Float?
   invoiceDate  DateTime?
   ocrStatus    String    @default("pending") // "pending" | "processing" | "done" | "error"
-  ocrData      String?   // JSON string of extracted data
+  ocrData      String?   @db.Text // JSON string of extracted data
   notes        String?
   sourceInvoiceId String?
   sourceInvoice   Invoice?  @relation("GeneratedInvoices", fields: [sourceInvoiceId], references: [id], onDelete: Cascade)

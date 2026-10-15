@@ -52,7 +52,6 @@ function MultiSelectPlatformFilter({
     { value: "Herbies Web & App", label: "Herbies Web & App" },
     ...(!is2025 ? [
       { value: "Tasty Bun POS", label: "Tasty Bun POS" },
-      { value: "Tasty Bun Web & App", label: "Tasty Bun Web & App" },
       { value: "Tasty Bun Website", label: "Tasty Bun Website" },
       { value: "Tasty Bun Mobile App", label: "Tasty Bun Mobile App" },
     ] : []),

@@ -23,7 +23,8 @@ const HENLEY_COMBINED_PLATFORMS = [
   { value: 'Herbies POS', label: 'Herbies POS', color: '#ef4444' },
   { value: 'Herbies Web & App', label: 'Herbies Web & App', color: '#ec4899' },
   { value: 'Tasty Bun POS', label: 'Tasty Bun POS', color: '#f59e0b' },
-  { value: 'Tasty Bun Web & App', label: 'Tasty Bun Web & App', color: '#e11d48' },
+  { value: 'Tasty Bun Website', label: 'Tasty Bun Website', color: '#e11d48' },
+  { value: 'Tasty Bun Mobile App', label: 'Tasty Bun Mobile App', color: '#a855f7' },
 ]
 
 const HERBIES_PLATFORMS = [
@@ -38,7 +39,6 @@ const TASTY_BUN_PLATFORMS = [
   { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
   { value: 'Uber Eats', label: 'Uber Eats', color: '#22d3a5' },
   { value: 'Tasty Bun POS', label: 'Tasty Bun POS', color: '#f59e0b' },
-  { value: 'Tasty Bun Web & App', label: 'Tasty Bun Web & App', color: '#e11d48' },
   { value: 'Tasty Bun Website', label: 'Tasty Bun Website', color: '#e11d48' },
   { value: 'Tasty Bun Mobile App', label: 'Tasty Bun Mobile App', color: '#a855f7' },
 ]
@@ -378,7 +378,6 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     'Herbies POS',
     'Herbies Web & App',
     'Tasty Bun POS',
-    'Tasty Bun Web & App',
     'Tasty Bun Website',
     'Tasty Bun Mobile App',
   ]

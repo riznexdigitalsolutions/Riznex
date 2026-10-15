@@ -46,9 +46,8 @@ export async function GET(req: NextRequest) {
     'In-Store POS': 'POS',
     'Herbies POS': 'Herbies POS',
     'Tasty Bun POS': 'Tasty Bun POS',
-    'Tasty Bun Website': 'Tasty Bun Web & App',
-    'Tasty Bun Mobile App': 'Tasty Bun Web & App',
-    'Tasty Bun Web & App': 'Tasty Bun Web & App',
+    'Tasty Bun Website': 'Tasty Bun Website',
+    'Tasty Bun Mobile App': 'Tasty Bun Mobile App',
     'Herbies Website': 'Herbies Web & App',
     'Herbies Mobile App': 'Herbies Web & App',
     'Herbies Web & App': 'Herbies Web & App',
@@ -109,12 +108,15 @@ export async function GET(req: NextRequest) {
     const platformORs: any[] = []
     platforms.forEach(p => {
       const mapped = platformMap[p] || p
-      if (mapped === 'Tasty Bun Website' || mapped === 'Tasty Bun Mobile App' || mapped === 'Tasty Bun Web & App') {
+      if (mapped === 'Tasty Bun Website') {
         platformORs.push(
-          { platform: 'Tasty Bun Web & App' },
-          { platform: { contains: 'Tasty Bun Web' } },
-          { platform: { contains: 'Tasty Bun Mobile' } },
+          { platform: 'Tasty Bun Website' },
           { platform: { contains: 'Tasty Bun Website' } }
+        )
+      } else if (mapped === 'Tasty Bun Mobile App') {
+        platformORs.push(
+          { platform: 'Tasty Bun Mobile App' },
+          { platform: { contains: 'Tasty Bun Mobile' } }
         )
       } else if (mapped === 'Herbies Web & App' || mapped === 'Herbies Website' || mapped === 'Herbies Mobile App') {
         platformORs.push(

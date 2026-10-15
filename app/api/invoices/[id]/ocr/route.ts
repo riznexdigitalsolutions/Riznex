@@ -1195,11 +1195,8 @@ IMPORTANT:
         };
 
         await createTastyBunRecord(`${storeName} POS`, ocrData.andromedaPOS);
-        const webAndApp = {
-          sales: (ocrData.androweb?.sales || 0) + (ocrData.app?.sales || 0),
-          orders: (ocrData.androweb?.orders || 0) + (ocrData.app?.orders || 0)
-        };
-        await createTastyBunRecord(`${storeName} Web & App`, webAndApp);
+        await createTastyBunRecord(`${storeName} Website`, ocrData.androweb);
+        await createTastyBunRecord(`${storeName} Mobile App`, ocrData.app);
       } else {
         // Herbies Pizza: Create Sales record for POS
         const hasS4D = ocrData.s4dRegister && (ocrData.s4dRegister.gross > 0 || ocrData.consumerApp?.gross > 0 || ocrData.website?.gross > 0);

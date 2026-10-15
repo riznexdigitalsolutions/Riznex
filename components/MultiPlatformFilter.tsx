@@ -14,7 +14,6 @@ const DEFAULT_PLATFORMS: PlatformOption[] = [
   { value: 'Herbies POS', label: 'Herbies POS', color: '#ef4444' },
   { value: 'Herbies Web & App', label: 'Herbies Web & App', color: '#ec4899' },
   { value: 'Tasty Bun POS', label: 'Tasty Bun POS', color: '#f59e0b' },
-  { value: 'Tasty Bun Web & App', label: 'Tasty Bun Web & App', color: '#e11d48' },
   { value: 'Tasty Bun Website', label: 'Tasty Bun Website', color: '#e11d48' },
   { value: 'Tasty Bun Mobile App', label: 'Tasty Bun Mobile App', color: '#a855f7' },
 ]

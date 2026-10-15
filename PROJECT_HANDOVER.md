@@ -139,6 +139,13 @@
   - Created 2 `Sale` records (`platform: 'Walk In Card'`, `store: 'Hungry Birds'`) linked via `invoiceId`.
   - Invoices appear in the Sales Invoices tab ("Hungry Birds Direct (Card, Cash & Online Web)" and "Combined Sales Invoices Data"), and sales reflect on the Sales and Overview Dashboards.
 
+### G. Offers & Campaigns Card Simplification (October 15, 2026)
+- **User Requirement:** Too much design and overdone nested boxes in the Offers & Campaigns view. Simplify the card design to display offers with clean bullet points across Hungry Birds, Henley, and Admin.
+- **Component Updated (`components/OffersCampaignView.tsx`):**
+  - Removed the 3 heavy nested colored gradient boxes (`% Off Offer`, `Others (All Offers Under)`, `Top Rank`) and inner pill wrappers.
+  - Replaced with a clean, streamlined bulleted list inside each card for both the 4-card platform grid (`All Platforms`) and the focused single-platform view.
+  - Shared across **Hungry Birds**, **Henley**, and **Admin**.
+
 ---
 
 ## 5. Current Task & System Status

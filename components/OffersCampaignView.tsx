@@ -810,12 +810,12 @@ export default function OffersCampaignView({
       {/* ========================================================================= */}
       {/* TIER 2: OFFERS EXECUTIVE TOOLBAR (STORES + PLATFORMS - NO DATE FILTERS) */}
       {/* ========================================================================= */}
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 rounded-2xl p-3 shadow-xl backdrop-blur-md">
+      <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 rounded-2xl p-2.5 sm:p-3 shadow-xl backdrop-blur-md">
         <div className="flex flex-wrap items-center justify-between gap-3">
           {/* Left: Store Pills (if multi-store) & Direct Platform Tabs */}
-          <div className="flex flex-wrap items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3 max-w-full">
             {availableStores.length > 1 && (
-              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+              <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
                 {availableStores.map(s => {
                   const isSelected = (currentStore === s) || (!currentStore && s === 'Combined')
                   const isHerbies = s.includes('Herbies')
@@ -828,7 +828,7 @@ export default function OffersCampaignView({
                     <button
                       key={s}
                       onClick={() => onStoreChange && onStoreChange(s)}
-                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
                         isSelected
                           ? activeColor
                           : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
@@ -844,10 +844,10 @@ export default function OffersCampaignView({
             {availableStores.length > 1 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
 
             {/* Platform Direct Tabs: all | delvireo | u | just eat | web */}
-            <div className="flex flex-wrap items-center gap-1.5 bg-slate-100 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+            <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-[#0e121b] border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
               <button
                 onClick={() => setSelectedPlatform('all')}
-                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
                   selectedPlatform === 'all'
                     ? 'bg-gradient-to-r from-[#E5B869] to-[#C89B3C] text-slate-950 shadow-md font-black'
                     : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white'
@@ -980,8 +980,8 @@ export default function OffersCampaignView({
         </button>
 
         {showRoiTable && (
-          <div className="mt-4 bg-white dark:bg-[#0c101d] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-5 shadow-lg overflow-x-auto">
-            <table className="w-full text-left text-xs whitespace-nowrap">
+          <div className="mt-4 bg-white dark:bg-[#0c101d] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg overflow-x-auto w-full max-w-full -webkit-overflow-scrolling-touch">
+            <table className="w-full text-left text-xs whitespace-nowrap min-w-[750px]">
               <thead>
                 <tr className="text-slate-400 border-b border-slate-200 dark:border-[#1f2947] uppercase font-bold tracking-wider">
                   <th className="pb-3">Status</th>

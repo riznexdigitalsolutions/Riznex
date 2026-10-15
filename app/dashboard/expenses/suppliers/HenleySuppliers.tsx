@@ -452,9 +452,9 @@ export function HenleySuppliers() {
       {/* Unified Invoices Table */}
       {!loading && filteredSuppliers.length > 0 && (
         <div className="mt-8 space-y-4">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <h3 className="text-lg font-bold text-slate-900 dark:text-white">All Supplier Invoices</h3>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
@@ -488,8 +488,9 @@ export function HenleySuppliers() {
               )}
             </div>
           </div>
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-xl">
-            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-xl w-full max-w-full">
+            <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+              <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300 min-w-[750px]">
               <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
                 <tr>
                   <th className="px-5 py-4 w-12 text-center">
@@ -643,6 +644,7 @@ export function HenleySuppliers() {
                 )})}
               </tbody>
             </table>
+            </div>
           </div>
         </div>
       )}

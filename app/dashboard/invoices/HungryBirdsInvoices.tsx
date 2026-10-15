@@ -311,15 +311,15 @@ function InvoicesContent() {
   const header = getHeaderContent()
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-full min-w-0">
       {/* Centered Title & Description */}
-      <div className="text-center space-y-1.5 py-2">
-        <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{header.title}</h1>
+      <div className="text-center space-y-1.5 py-2 px-2">
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">{header.title}</h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{header.desc}</p>
       </div>
 
       {/* Filter Toolbar & Upload Action Underneath */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 backdrop-blur-sm shadow-lg">
+      <div className="w-full max-w-full p-2.5 sm:p-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl backdrop-blur-sm shadow-lg">
         <div className="flex gap-3 flex-wrap items-center w-full sm:w-auto">
           {activeTab === 'all' && (
             <>
@@ -427,9 +427,10 @@ function InvoicesContent() {
           <p className="text-slate-500 text-sm">There are no invoices matching this category.</p>
         </div>
       ) : (
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
-          <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-            <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden w-full max-w-full">
+          <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300 min-w-[750px]">
+              <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-5 py-4 w-12 text-center">
                   <input 
@@ -590,6 +591,7 @@ function InvoicesContent() {
               )})}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

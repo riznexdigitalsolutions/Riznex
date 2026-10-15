@@ -163,24 +163,24 @@ export function HenleyExpensesDashboard() {
   )
 
   return (
-    <div id="expenses-export-area" className="space-y-6">
+    <div id="expenses-export-area" className="space-y-6 max-w-full min-w-0">
 
       {/* ── Centered Header & Filters ─────────────────────────────────────── */}
       <div className="space-y-4">
         {/* Top Row: Centered Title & Subtitle */}
-        <div className="text-center space-y-1">
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Expenses Summary</h1>
+        <div className="text-center space-y-1 px-2">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">Expenses Summary</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Full breakdown of all outgoing cash</p>
         </div>
 
         {/* Middle Row: Centered Filter Toolbar */}
-        <div className="flex justify-center items-center print:hidden">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+        <div className="flex justify-center items-center w-full max-w-full print:hidden">
+          <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center justify-center gap-2 sm:gap-4 shadow-xl backdrop-blur-md">
             {/* Store toggle */}
-            <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+            <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
               <button 
                 onClick={() => setStoreFilter('')} 
-                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
+                className={`px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
               >
                 Combined
               </button>
@@ -278,8 +278,8 @@ export function HenleyExpensesDashboard() {
                 <h3 className="text-base sm:text-lg font-black text-white tracking-wide">Master Ledger: All Outgoing Cash</h3>
                 <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Single Sheet View</div>
               </div>
-              <div className="overflow-x-auto max-h-[600px]">
-                <table className="w-full text-sm">
+              <div className="overflow-x-auto max-h-[600px] w-full -webkit-overflow-scrolling-touch">
+                <table className="w-full text-sm min-w-[650px]">
                   <thead className="sticky top-0 bg-[#161b2c] shadow-md z-10">
                     <tr className="border-b border-slate-200 dark:border-[#1f2947]">
                       <th className="px-4 py-3 text-left text-[11px] font-bold text-slate-300 uppercase tracking-wider">Date</th>

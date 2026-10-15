@@ -167,18 +167,18 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
   }, []).sort((a: any, b: any) => a.name.localeCompare(b.name))
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-full min-w-0">
       {/* ── Centered Header & Filters ─────────────────────────────────────── */}
       <div className="space-y-4">
         {/* Top Row: Centered Title & Subtitle */}
-        <div className="text-center space-y-1">
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Staff Wages</h1>
+        <div className="text-center space-y-1 px-2">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">Staff Wages</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Manage weekly wage payouts for your staff</p>
         </div>
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
-        <div className="flex justify-center items-center print:hidden">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+        <div className="flex justify-center items-center w-full max-w-full print:hidden">
+          <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center justify-center gap-2 sm:gap-4 shadow-xl backdrop-blur-md">
             <select
               value={staffFilter}
               onChange={e => setStaffFilter(e.target.value)}
@@ -272,9 +272,9 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
         )}
       </div>
 
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden w-full max-w-full">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm min-w-[650px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
                 <th className="px-4 py-3 w-10 text-center">

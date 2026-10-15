@@ -11,7 +11,7 @@ export function ExcelStyleReport({
   const gbp = (val: number) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(val || 0)
 
   return (
-    <div className="w-full bg-black dark:bg-white text-black font-sans">
+    <div className="w-full bg-black dark:bg-white text-black font-sans max-w-full min-w-0">
       {/* Header */}
       <div className="mb-8 border-b-2 border-black pb-4">
         <h1 className="text-2xl font-bold uppercase">{title}</h1>
@@ -21,7 +21,8 @@ export function ExcelStyleReport({
       {/* 1. Totals */}
       <div className="mb-8">
         <h2 className="text-lg font-bold border-b border-gray-400 mb-2 uppercase">1. Financial Overview</h2>
-        <table className="w-full text-sm border-collapse">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm border-collapse min-w-[320px]">
           <tbody>
             <tr className="border-b border-gray-200">
               <td className="py-2 font-medium w-1/2">Total Orders</td>
@@ -45,10 +46,12 @@ export function ExcelStyleReport({
             </tr>
           </tbody>
         </table>
+        </div>
 
         {/* Expense Breakdown */}
         <h3 className="text-sm font-bold text-gray-700 mt-6 mb-2 uppercase">Expense Breakdown</h3>
-        <table className="w-full text-sm border-collapse">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm border-collapse min-w-[320px]">
           <thead>
             <tr className="bg-gray-100 border-b border-gray-400">
               <th className="py-2 px-2 text-left font-bold">Category</th>
@@ -98,12 +101,14 @@ export function ExcelStyleReport({
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* 2. Platform Performance */}
       <div className="mb-8">
         <h2 className="text-lg font-bold border-b border-gray-400 mb-2 uppercase">2. Platform Performance</h2>
-        <table className="w-full text-sm border-collapse">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm border-collapse min-w-[550px]">
           <thead>
             <tr className="bg-gray-100 border-b-2 border-gray-400">
               <th className="py-2 px-2 text-left font-bold w-1/5">Platform</th>
@@ -131,12 +136,14 @@ export function ExcelStyleReport({
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* 3. Supplier Purchases */}
       <div className="mb-8">
         <h2 className="text-lg font-bold border-b border-gray-400 mb-2 uppercase">3. Supplier Purchases</h2>
-        <table className="w-full text-sm border-collapse">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm border-collapse min-w-[450px]">
           <thead>
             <tr className="bg-gray-100 border-b-2 border-gray-400">
               <th className="py-2 px-2 text-left font-bold w-1/2">Supplier</th>
@@ -158,12 +165,14 @@ export function ExcelStyleReport({
             )}
           </tbody>
         </table>
+        </div>
       </div>
 
       {/* 4. Condensed Profit Summary */}
       <div className="mb-8 break-inside-avoid">
         <h2 className="text-lg font-bold border-b border-gray-400 mb-2 uppercase">4. Profit Summary</h2>
-        <table className="w-full text-sm border-collapse">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm border-collapse min-w-[320px]">
           <tbody>
             <tr className="border-b border-gray-300 bg-gray-50 font-bold">
               <td className="py-2 px-2 w-3/4">Gross Sales</td>
@@ -221,6 +230,7 @@ export function ExcelStyleReport({
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
 
     </div>

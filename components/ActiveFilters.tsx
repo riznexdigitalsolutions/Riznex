@@ -100,7 +100,7 @@ export default function ActiveFilters({
   }
 
   return (
-    <div className={`flex flex-wrap items-center gap-2 pt-2.5 pb-1 text-xs print:hidden animate-fadeIn ${className}`}>
+    <div className={`w-full max-w-full overflow-hidden flex flex-wrap items-center gap-2 pt-2.5 pb-1 text-xs print:hidden animate-fadeIn ${className}`}>
       <span className="text-slate-500 dark:text-slate-400 font-semibold text-xs mr-0.5">
         Active Filters:
       </span>

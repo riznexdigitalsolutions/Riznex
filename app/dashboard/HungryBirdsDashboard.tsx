@@ -498,24 +498,26 @@ export function HungryBirdsDashboard() {
   }
 
   return (
-    <div id="hungry-birds-export-area" className="space-y-8 pb-10">
+    <div id="hungry-birds-export-area" className="space-y-8 pb-10 max-w-full min-w-0">
       {/* Header & Filter Controls Section */}
       <div className="flex flex-col gap-6 relative z-10">
         
-        {/* Tier 1: Centered Title & PDF Export Button */}
-        <div className="flex justify-center items-start relative">
-          <div className="w-full text-center flex flex-col items-center justify-center">
-            <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center justify-center gap-3">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/hungry-birds-logo.jpg" alt="Hungry Birds Logo" className="h-12 w-auto rounded-xl shadow-md border border-slate-200 dark:border-[#1f2947] inline-block" />
-              <span>{session?.user?.clientName ?? 'Hungry Birds'}</span>
-            </h1>
-            <p className="text-slate-500 dark:text-slate-400 mt-1.5 font-medium">{getDynamicSubtitle()}</p>
+        {/* Tier 1: Dynamic Title & PDF Export Button */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-2 relative gap-4">
+          <div className="flex items-center gap-3">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/hungry-birds-logo.jpg" alt="Hungry Birds Logo" className="h-11 w-auto rounded-xl shadow-md border border-slate-200 dark:border-[#1f2947] shrink-0" />
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">
+                {session?.user?.clientName ?? 'Hungry Birds'}
+              </h1>
+              <p className="text-slate-500 dark:text-slate-400 mt-0.5 font-medium">{getDynamicSubtitle()}</p>
+            </div>
           </div>
-          <div className="print:hidden absolute top-0 right-0" data-html2canvas-ignore="true">
+          <div className="print:hidden self-start sm:self-auto" data-html2canvas-ignore="true">
             <button
               onClick={() => exportToPDF('hungry-birds-export-area', getPdfFilename())}
-              className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-4 py-2 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer"
+              className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-4 py-2.5 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer whitespace-nowrap"
             >
               <span>📄</span> Export PDF Report
             </button>
@@ -525,7 +527,7 @@ export function HungryBirdsDashboard() {
         {/* Tier 2: Filter Toolbar (Single Brand - No Store Tabs) */}
         {activeTab !== 'offers' && (
           <>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-4 print:hidden shadow-lg backdrop-blur-sm">
+            <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-3 sm:gap-4 print:hidden shadow-lg backdrop-blur-sm">
               {/* Left Side: Platform toggle tabs & selector */}
               <div className="flex flex-wrap items-center gap-3">
                 <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} options={HB_PLATFORMS} />
@@ -817,17 +819,17 @@ export function HungryBirdsDashboard() {
         </div>
 
         {/* Right Column (2 cols wide): Platform Performance Table */}
-        <div className="lg:col-span-2 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-0">
+        <div className="lg:col-span-2 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-8 shadow-2xl flex flex-col justify-between relative overflow-hidden z-0">
           <div className="absolute -bottom-32 -right-32 w-80 h-80 bg-blue-500/10 blur-[100px] -z-10 rounded-full mix-blend-screen pointer-events-none"></div>
           <div>
-            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-8 flex items-center gap-3">
+            <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6 sm:mb-8 flex items-center gap-3">
               <span className="w-8 h-8 rounded-lg bg-blue-500/10 text-slate-900 dark:text-white flex items-center justify-center border border-blue-500/20 shadow-inner text-lg">
                 📊
               </span>
               Platform Performance
             </h2>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm whitespace-nowrap">
+            <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+              <table className="w-full text-left text-sm whitespace-nowrap min-w-[550px]">
                 <thead>
                   <tr className="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-[#1f2947]">
                     <th className="pb-3 font-semibold uppercase tracking-wider text-xs">Platform</th>

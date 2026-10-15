@@ -104,11 +104,11 @@ export function HungryBirdsExpensesDashboard() {
   }
 
   return (
-    <div id="expenses-export-area" className="space-y-6">
+    <div id="expenses-export-area" className="space-y-6 min-w-0 max-w-full">
 
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white">Expenses Summary</h1>
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white">Expenses Summary</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Full breakdown of all outgoing cash</p>
         </div>
 
@@ -116,11 +116,11 @@ export function HungryBirdsExpensesDashboard() {
           <button onClick={() => setShowAutoFill(true)} className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-sm font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 transition print:hidden">
             ⚡ Auto-Fill Weekly Fixed Expenses
           </button>
-          <div className="flex items-center gap-3 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-3 py-1.5 print:hidden">
+          <div className="flex flex-wrap items-center gap-2 sm:gap-3 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-3 py-1.5 print:hidden">
             <DateFilter filter={filter} setFilter={setFilter} />
-            <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]" />
+            <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947] hidden sm:block" />
             <button onClick={() => setFilter(defaultDateFilter())} className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white text-xs px-2 py-1 font-semibold transition">Reset</button>
-            <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]" />
+            <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947] hidden sm:block" />
             <div data-html2canvas-ignore="true">
               <button onClick={() => exportToPDF('expenses-export-area', 'Expenses Report')} className="text-slate-900 dark:text-white hover:text-blue-300 text-xs px-2 py-1 font-semibold transition flex items-center gap-1">
                 <span>📄</span> Export PDF
@@ -136,10 +136,10 @@ export function HungryBirdsExpensesDashboard() {
         </div>
       ) : (
         <div className="space-y-5">
-          <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-8 flex flex-col items-center justify-center relative overflow-hidden group">
+          <div className="bg-red-500/5 border border-red-500/20 rounded-2xl p-6 sm:p-8 flex flex-col items-center justify-center relative overflow-hidden group">
             <div className="absolute top-0 w-full h-1 bg-gradient-to-r from-red-500 via-orange-500 to-red-500 opacity-50" />
-            <div className="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2 z-10">Total Outgoing</div>
-            <div className="text-6xl font-black text-slate-900 dark:text-white z-10 drop-shadow-md">{gbp(totals.grandTotal)}</div>
+            <div className="text-xs sm:text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-2 z-10">Total Outgoing</div>
+            <div className="text-3xl sm:text-5xl md:text-6xl font-black text-slate-900 dark:text-white z-10 drop-shadow-md text-center break-words">{gbp(totals.grandTotal)}</div>
             <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-red-500/10 rounded-full blur-3xl group-hover:bg-red-500/20 transition-all duration-500" />
           </div>
 

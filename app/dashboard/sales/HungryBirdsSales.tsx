@@ -202,7 +202,7 @@ function SalesContent() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-full min-w-0">
       {/* Top Header Row: Title on Left, Action Buttons on Right */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -210,7 +210,7 @@ function SalesContent() {
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mt-0.5">Weekly platform sales records</p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <input 
             type="file" 
             ref={fileInputRef}
@@ -243,7 +243,7 @@ function SalesContent() {
       </div>
 
       {/* Filter Toolbar Row (Positioned Cleanly Under Top Header) */}
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-3 py-2 flex flex-wrap items-center justify-between gap-3 shadow-md">
+      <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-2.5 sm:px-3 sm:py-2 flex flex-wrap items-center justify-between gap-3 shadow-md">
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={() => router.push('/dashboard/sales')}
@@ -305,9 +305,9 @@ function SalesContent() {
 
 
       {/* Table */}
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden w-full max-w-full">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm min-w-[850px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
                 {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Deduction %', 'Net Paid', 'Actions'].map(h => (

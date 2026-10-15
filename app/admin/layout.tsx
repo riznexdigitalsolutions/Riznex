@@ -68,11 +68,11 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           onClick={() => setOpen(false)} 
         />
       )}
-      <div className="flex-1 lg:ml-60 flex flex-col min-h-screen">
-        <header className="sticky top-0 z-30 bg-slate-100/80 dark:bg-[#0a0c14]/80 backdrop-blur border-b border-slate-200 dark:border-[#1f2947] px-6 py-3 flex items-center h-14 lg:hidden">
+      <div className="flex-1 lg:ml-60 flex flex-col min-h-screen min-w-0 max-w-full">
+        <header className="sticky top-0 z-30 bg-slate-100/80 dark:bg-[#0a0c14]/80 backdrop-blur border-b border-slate-200 dark:border-[#1f2947] px-4 sm:px-6 py-3 flex items-center h-14 lg:hidden">
           <button className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1" onClick={() => setOpen(true)}>☰</button>
         </header>
-        <main className="flex-1 p-4 sm:p-6 lg:pt-8 min-w-0 overflow-x-hidden">{children}</main>
+        <main className="flex-1 p-3 sm:p-6 lg:pt-8 min-w-0 max-w-full overflow-x-hidden">{children}</main>
       </div>
     </div>
   )

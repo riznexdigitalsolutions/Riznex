@@ -541,7 +541,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   return (
     <div className="space-y-8 pb-10 print-bw-report">
       {/* --- VISUAL DASHBOARD --- */}
-      <div id="dashboard-export-area" className="bg-transparent min-h-screen text-slate-700 dark:text-slate-200 p-1 sm:p-2 lg:p-4 font-sans flex flex-col gap-6 sm:gap-8 pb-32">
+      <div id="dashboard-export-area" className="bg-transparent min-h-screen text-slate-700 dark:text-slate-200 p-1 sm:p-2 lg:p-4 font-sans flex flex-col gap-6 sm:gap-8 pb-32 max-w-full min-w-0">
         {/* Header & Filter Controls Section */}
         <div className="flex flex-col gap-6 relative z-10">
         
@@ -567,7 +567,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             </div>
 
             <div className={activeTab === 'weekly' ? 'text-center' : ''}>
-              <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">
                 {activeTab === 'weekly' ? 'Weekly Comparison' : (session?.user?.clientName ?? 'Henley on Thames')}
               </h1>
               <p className={`text-slate-500 dark:text-slate-400 mt-1 font-medium ${activeTab === 'weekly' ? 'hidden' : ''}`}>{getDynamicSubtitle()}</p>
@@ -575,7 +575,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
           </div>
 
           <div className="print:hidden self-start sm:self-auto" data-html2canvas-ignore="true">
-            <button onClick={() => exportToPDF('dashboard-export-area', getExportFilename())} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-4 py-2.5 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
+            <button onClick={() => exportToPDF('dashboard-export-area', getExportFilename())} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-4 py-2.5 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer whitespace-nowrap">
               <span>📄</span> Export PDF Report
             </button>
           </div>
@@ -584,14 +584,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
         {/* Tier 2: Unified Executive Filter Toolbar */}
         {activeTab !== 'offers' && (
           <>
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-between gap-4 print:hidden shadow-xl backdrop-blur-md">
+            <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center justify-between gap-3 sm:gap-4 print:hidden shadow-xl backdrop-blur-md">
               {/* Left Side: Store Pills & Platform Filter */}
               <div className="flex flex-wrap items-center gap-3">
                 {!is2025 && (
-                  <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+                  <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
                     <button
                       onClick={() => setStore('')}
-                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
                         store === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
                       }`}
                     >

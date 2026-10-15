@@ -128,6 +128,17 @@
     - Added live calculation showing `🗓️ Snapping to: Week ending Sunday, DD MMM YYYY (YYYY-MM-DD)`.
     - Added inline warning badge if fixed expenses for the selected week are already loaded in the dashboard view.
 
+### F. Hungry Birds Walk-in Card Sales & Invoices Added for 04-Oct and 11-Oct (October 15, 2026)
+- **User Requirement:** Reconcile and add missing Walk-in Card sales from the uploaded Tide bank statement PDFs for Hungry Birds (`client-1`) and link them as sales invoices.
+- **Data Extracted Directly from Tide PDF Statements:**
+  - **Week Ending 04 Oct 2026 (28 Sep – 04 Oct):** 7 daily US Bank Europe Dac transfers totaling **£1,194.58** (28 Sep £145.41, 29 Sep £79.89, 30 Sep £199.72, 1 Oct £119.35, 2 Oct £155.89, 3 Oct £203.54, 4 Oct £290.78).
+  - **Week Ending 11 Oct 2026 (05 Oct – 11 Oct):** 7 daily US Bank Europe Dac transfers totaling **£1,262.07** (5 Oct £193.48, 6 Oct £139.35, 7 Oct £146.65, 8 Oct £198.15, 9 Oct £93.90, 10 Oct £182.36, 11 Oct £308.18).
+- **Records Created & Linked:**
+  - Created 2 `Invoice` records (`type: 'pos'`, `platform: 'Walk-in Card'`, amounts £1,194.58 and £1,262.07).
+  - Stored PDFs in `public/uploads/client-1/` with full daily transfer JSON breakdown in `ocrData`.
+  - Created 2 `Sale` records (`platform: 'Walk In Card'`, `store: 'Hungry Birds'`) linked via `invoiceId`.
+  - Invoices appear in the Sales Invoices tab ("Hungry Birds Direct (Card, Cash & Online Web)" and "Combined Sales Invoices Data"), and sales reflect on the Sales and Overview Dashboards.
+
 ---
 
 ## 5. Current Task & System Status

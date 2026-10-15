@@ -507,92 +507,55 @@ export default function OffersCampaignView({
               </div>
             </div>
 
-            {/* 3 Executive Columns Grid: % Off | Others | Top Rank */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {/* 1. % Off */}
-              <div className="bg-gradient-to-b from-slate-50 to-slate-100/60 dark:from-[#111728] dark:to-[#0c101d] border border-slate-200/90 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:shadow-md transition-all">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-[#1f2947]/80 mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-lg bg-rose-500/15 text-rose-600 dark:text-rose-400 flex items-center justify-center text-xs font-bold">
-                      🔥
-                    </div>
-                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                      % Off Offer
-                    </span>
+            {/* Simple Clean Bulleted Offers */}
+            <div className="py-2">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                  <div className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2.5">
+                    % Off Discount
                   </div>
-                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-rose-500/10 text-rose-600 dark:text-rose-400 border border-rose-500/20">
-                    Discount
-                  </span>
+                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                    {details.discountList.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-slate-400 dark:text-slate-500 font-bold shrink-0 leading-tight">•</span>
+                        <span className={item === 'No active discount' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-semibold'}>
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <div className="space-y-2 flex-1 flex flex-col justify-center py-1">
-                  {details.discountList.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-rose-500/[0.08] dark:bg-rose-500/[0.12] border border-rose-500/20 text-rose-700 dark:text-rose-300 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2.5 shadow-sm"
-                    >
-                      <span className="w-2 h-2 rounded-full bg-rose-500 shrink-0" />
-                      <span className="leading-snug">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 2. Others (All Offers Under) */}
-              <div className="bg-gradient-to-b from-slate-50 to-slate-100/60 dark:from-[#111728] dark:to-[#0c101d] border border-slate-200/90 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:shadow-md transition-all">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-[#1f2947]/80 mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-lg bg-blue-500/15 text-blue-600 dark:text-blue-400 flex items-center justify-center text-xs font-bold">
-                      🏷️
-                    </div>
-                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                      Others (All Offers Under)
-                    </span>
+                <div>
+                  <div className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2.5">
+                    Other Deals & Offers
                   </div>
-                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-blue-500/10 text-blue-600 dark:text-blue-400 border border-blue-500/20">
-                    Incentives
-                  </span>
+                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                    {details.allOffers.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-slate-400 dark:text-slate-500 font-bold shrink-0 leading-tight">•</span>
+                        <span className={item === 'Standard Menu Pricing' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-medium'}>
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
 
-                <div className="space-y-2 flex-1 flex flex-col justify-center py-1">
-                  {details.allOffers.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-blue-500/[0.06] dark:bg-blue-500/[0.10] border border-blue-500/20 text-slate-800 dark:text-slate-200 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold flex items-center gap-2.5 shadow-sm"
-                    >
-                      <span className="w-2 h-2 rounded-full bg-[#E5B869] shrink-0" />
-                      <span className="leading-snug">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* 3. Top Rank */}
-              <div className="bg-gradient-to-b from-slate-50 to-slate-100/60 dark:from-[#111728] dark:to-[#0c101d] border border-slate-200/90 dark:border-[#1f2947] rounded-2xl p-5 flex flex-col justify-between min-h-[160px] shadow-sm hover:shadow-md transition-all">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-200/60 dark:border-[#1f2947]/80 mb-3">
-                  <div className="flex items-center gap-2">
-                    <div className="w-6 h-6 rounded-lg bg-amber-500/15 text-amber-600 dark:text-amber-400 flex items-center justify-center text-xs font-bold">
-                      ⭐
-                    </div>
-                    <span className="text-[11px] font-black uppercase tracking-wider text-slate-700 dark:text-slate-300">
-                      Top Rank
-                    </span>
+                <div>
+                  <div className="text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2.5">
+                    Top Rank / Visibility
                   </div>
-                  <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/25">
-                    Positioning
-                  </span>
-                </div>
-
-                <div className="space-y-2 flex-1 flex flex-col justify-center py-1">
-                  {details.topRankList.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="bg-amber-500/[0.08] dark:bg-amber-500/[0.12] border border-amber-500/25 text-amber-900 dark:text-amber-200 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-black flex items-center gap-2.5 shadow-sm"
-                    >
-                      <span className="text-amber-500 text-sm shrink-0">⭐</span>
-                      <span className="leading-snug">{item}</span>
-                    </div>
-                  ))}
+                  <ul className="space-y-2 text-xs sm:text-sm text-slate-700 dark:text-slate-300">
+                    {details.topRankList.map((item, idx) => (
+                      <li key={idx} className="flex items-start gap-2">
+                        <span className="text-slate-400 dark:text-slate-500 font-bold shrink-0 leading-tight">•</span>
+                        <span className={item === 'Standard Visibility' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-medium'}>
+                          {item}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
@@ -630,52 +593,36 @@ export default function OffersCampaignView({
                 </span>
               </div>
 
-              {/* Card Body: 3 Balanced Offer Sections */}
-              <div className="space-y-3 flex-1">
-                {/* 1. % off */}
-                <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3.5">
-                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <span>🔥</span> % Off Offer
-                  </div>
-                  <div className="space-y-1.5">
-                    {details.discountList.map((item, idx) => (
-                      <div key={idx} className="bg-rose-500/[0.08] dark:bg-rose-500/[0.12] border border-rose-500/20 text-rose-700 dark:text-rose-300 px-2.5 py-1.5 rounded-lg text-xs font-black flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0" />
-                        <span className="leading-snug">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              {/* Card Body: Simple Clean Bulleted List */}
+              <div className="py-2.5 flex-1">
+                <ul className="space-y-2 text-xs sm:text-[13px] text-slate-700 dark:text-slate-300">
+                  {details.discountList.map((item, idx) => (
+                    <li key={`d-${idx}`} className="flex items-start gap-2">
+                      <span className="text-[#E5B869] font-bold text-sm shrink-0 leading-tight">•</span>
+                      <span className={item === 'No active discount' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-semibold'}>
+                        {item}
+                      </span>
+                    </li>
+                  ))}
 
-                {/* 2. Others (All offers under) */}
-                <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3.5">
-                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <span>🏷️</span> Others (All Offers Under)
-                  </div>
-                  <div className="space-y-1.5">
-                    {details.allOffers.map((item, idx) => (
-                      <div key={idx} className="bg-blue-500/[0.06] dark:bg-blue-500/[0.10] border border-blue-500/20 text-slate-800 dark:text-slate-200 px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#E5B869] shrink-0" />
-                        <span className="leading-snug">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                  {details.allOffers.map((item, idx) => (
+                    <li key={`o-${idx}`} className="flex items-start gap-2">
+                      <span className="text-[#E5B869] font-bold text-sm shrink-0 leading-tight">•</span>
+                      <span className={item === 'Standard Menu Pricing' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-medium'}>
+                        {item}
+                      </span>
+                    </li>
+                  ))}
 
-                {/* 3. Top rank */}
-                <div className="bg-slate-50 dark:bg-[#13192b]/70 border border-slate-200/70 dark:border-[#1f2947] rounded-xl p-3.5">
-                  <div className="text-[10px] font-black text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                    <span>⭐</span> Top Rank
-                  </div>
-                  <div className="space-y-1.5">
-                    {details.topRankList.map((item, idx) => (
-                      <div key={idx} className="bg-amber-500/[0.08] dark:bg-amber-500/[0.12] border border-amber-500/25 text-amber-900 dark:text-amber-200 px-2.5 py-1.5 rounded-lg text-xs font-black flex items-center gap-2">
-                        <span className="text-amber-500 text-xs shrink-0">⭐</span>
-                        <span className="leading-snug">{item}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
+                  {details.topRankList.map((item, idx) => (
+                    <li key={`t-${idx}`} className="flex items-start gap-2">
+                      <span className="text-[#E5B869] font-bold text-sm shrink-0 leading-tight">•</span>
+                      <span className={item === 'Standard Visibility' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-medium'}>
+                        {item}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
               </div>
 
               {/* Card Footer / Edit Actions for Admin */}

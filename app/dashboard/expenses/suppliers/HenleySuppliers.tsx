@@ -641,14 +641,14 @@ export function HenleySuppliers() {
                             <span className="text-slate-700">|</span>
                           </>
                         )}
-                        {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' ? (
+                        {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' && inv.filePath !== 'manual' ? (
                           <>
                             <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-500 dark:text-blue-400 hover:underline font-semibold text-xs">View</a>
                             <span className="text-slate-700">|</span>
                             <a href={`${inv.filePath}?download=1`} download className="text-emerald-500 dark:text-emerald-400 hover:underline font-semibold text-xs">Download</a>
                           </>
                         ) : (
-                          <span className="text-slate-500 text-xs italic">No file</span>
+                          <a href={`/api/invoices/${inv.id}/voucher`} target="_blank" rel="noreferrer" className="text-[#E5B869] hover:underline font-semibold text-xs">View Voucher</a>
                         )}
                         {isAdmin && (
                           <>

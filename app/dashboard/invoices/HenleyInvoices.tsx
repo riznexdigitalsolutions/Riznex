@@ -620,7 +620,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         </>
                       )}
                       
-                      {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' ? (
+                      {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' && inv.filePath !== 'manual' ? (
                         <>
                           <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-500 font-semibold text-xs transition whitespace-nowrap">
                             View File
@@ -631,7 +631,9 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                           </a>
                         </>
                       ) : (
-                        <span className="text-slate-400 text-xs italic">No File</span>
+                        <a href={`/api/invoices/${inv.id}/voucher`} target="_blank" rel="noreferrer" className="text-[#E5B869] hover:underline font-semibold text-xs transition whitespace-nowrap">
+                          View Voucher
+                        </a>
                       )}
                       
                       {session?.user?.role === 'admin' && (

@@ -187,7 +187,7 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
     : months
 
   return (
-    <>
+    <div className="flex flex-wrap items-center gap-1 sm:gap-1.5 max-w-full">
       <select
         value={filter.preset}
         onChange={e => handlePresetChange(e.target.value)}
@@ -313,7 +313,7 @@ export default function DateFilter({ filter, setFilter }: { filter: any, setFilt
             className="bg-transparent text-slate-600 dark:text-slate-300 text-sm focus:outline-none dark:[color-scheme:dark] cursor-pointer" />
         </>
       )}
-    </>
+    </div>
   )
 }
 

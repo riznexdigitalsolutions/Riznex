@@ -297,17 +297,36 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
       {/* Main */}
       <div className="flex-1 lg:ml-60 print:ml-0 flex flex-col min-h-screen min-w-0 max-w-full print:bg-black dark:print:bg-white print:text-black">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-slate-100/80 dark:bg-[#0a0c14]/80 backdrop-blur border-b border-slate-200 dark:border-[#1f2947] px-3 sm:px-6 py-2.5 sm:py-3 flex items-center gap-3 sm:gap-4 print:hidden">
-          <button
-            className="lg:hidden text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1"
-            onClick={() => setSidebarOpen(true)}
-          >
-            ☰
-          </button>
-          <div className="flex-1" />
-          <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+        <header className="sticky top-0 z-30 bg-slate-100/90 dark:bg-[#0a0c14]/90 backdrop-blur-md border-b border-slate-200 dark:border-[#1f2947] px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-3 sm:gap-4 print:hidden">
+          <div className="flex items-center gap-2.5">
+            <button
+              className="lg:hidden p-2 rounded-xl bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition shadow-sm flex items-center justify-center cursor-pointer"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+
+            {/* Mobile Client Brand Display */}
+            <div className="flex items-center gap-2 lg:hidden">
+              {activeClient === 'Hungry Birds' ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src="/hungry-birds-logo.jpg" alt="Logo" className="w-7 h-7 rounded-lg object-cover shadow-sm border border-slate-200 dark:border-[#1f2947]" />
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src="/riznex_logo.jpg" alt="Logo" className="w-7 h-7 rounded-lg object-contain bg-black dark:bg-white p-0.5 shadow-sm border border-slate-200 dark:border-[#1f2947]" />
+              )}
+              <span className="font-extrabold text-xs text-slate-900 dark:text-white truncate max-w-[150px]">
+                {activeClient ?? 'Dashboard'}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-slate-500 dark:text-slate-400">
             <ThemeToggle />
-              <span className="hidden sm:block">{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
+            <span className="hidden sm:block text-xs font-medium">{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
           </div>
         </header>
 

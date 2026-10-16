@@ -296,28 +296,6 @@ export default function OffersCampaignView({
     ? 'Historical performance generated during preceding campaign period across delivery platforms'
     : `Historical performance generated during preceding campaign period specifically for ${platformDisplayName}`
 
-  const currentEarliestDate = useMemo(() => {
-    if (selectedPlatform === 'all') return null
-    const pConfig = PLATFORMS_CONFIG.find(p => p.id === selectedPlatform)
-    if (!pConfig) return null
-    const details = getPlatformDetails(pConfig, currentOffersList)
-    const startDates = details.matching
-      .map(o => (o.startDate ? new Date(o.startDate).getTime() : 0))
-      .filter(d => d > 0)
-    return startDates.length > 0 ? new Date(Math.min(...startDates)) : null
-  }, [selectedPlatform, currentOffersList])
-
-  const previousEarliestDate = useMemo(() => {
-    if (selectedPlatform === 'all') return null
-    const pConfig = PLATFORMS_CONFIG.find(p => p.id === selectedPlatform)
-    if (!pConfig) return null
-    const details = getPlatformDetails(pConfig, previousOffersList)
-    const startDates = details.matching
-      .map(o => (o.startDate ? new Date(o.startDate).getTime() : 0))
-      .filter(d => d > 0)
-    return startDates.length > 0 ? new Date(Math.min(...startDates)) : null
-  }, [selectedPlatform, previousOffersList])
-
   // Parse structured card details for each platform
   const getPlatformDetails = (platformConfig: typeof PLATFORMS_CONFIG[0], offersGroup: OfferRecord[]) => {
     const matching = offersGroup.filter(o => {
@@ -374,6 +352,28 @@ export default function OffersCampaignView({
       discount: uniqueDiscounts.length > 0 ? uniqueDiscounts.join(' • ') : 'No active discount'
     }
   }
+
+  const currentEarliestDate = useMemo(() => {
+    if (selectedPlatform === 'all') return null
+    const pConfig = PLATFORMS_CONFIG.find(p => p.id === selectedPlatform)
+    if (!pConfig) return null
+    const details = getPlatformDetails(pConfig, currentOffersList)
+    const startDates = details.matching
+      .map(o => (o.startDate ? new Date(o.startDate).getTime() : 0))
+      .filter(d => d > 0)
+    return startDates.length > 0 ? new Date(Math.min(...startDates)) : null
+  }, [selectedPlatform, currentOffersList])
+
+  const previousEarliestDate = useMemo(() => {
+    if (selectedPlatform === 'all') return null
+    const pConfig = PLATFORMS_CONFIG.find(p => p.id === selectedPlatform)
+    if (!pConfig) return null
+    const details = getPlatformDetails(pConfig, previousOffersList)
+    const startDates = details.matching
+      .map(o => (o.startDate ? new Date(o.startDate).getTime() : 0))
+      .filter(d => d > 0)
+    return startDates.length > 0 ? new Date(Math.min(...startDates)) : null
+  }, [selectedPlatform, previousOffersList])
 
   // Handle open modal for Create or Edit
   const handleOpenAdd = (status: 'current' | 'previous') => {

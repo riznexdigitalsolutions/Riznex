@@ -146,6 +146,17 @@
   - Replaced with a clean, streamlined bulleted list inside each card for both the 4-card platform grid (`All Platforms`) and the focused single-platform view.
   - Shared across **Hungry Birds**, **Henley**, and **Admin**.
 
+### H. Herbies Pizza Just Eat Live Offers & Removal of Henley Edit Buttons (October 16, 2026)
+- **Herbies Pizza Just Eat Offers Updated:**
+  - Configured live Just Eat campaign details for Herbies Pizza (Henley, `cmpv4dvik0000vdj089wl6zmf`) from September onwards (`2026-09-07`):
+    - **Top Rank:** `Top Rank £30 per day (Postcode-wise)`
+    - **StampCard:** `StampCard: Active`
+    - **Discounts:** `• 40% off £25 (Just Eat selected customers)` and `• 30% off Herbies Original Pizzas`
+    - **Deals:** `• Free Drinks on £30 Spend`
+- **Removal of Edit Buttons from Henley Dashboard:**
+  - Removed the repetitive and cluttered footer edit buttons (`✎ Edit (Store)`) from the 4-card platform grid in `components/OffersCampaignView.tsx`.
+  - Configured `isAdmin={false}` for `OffersCampaignView` inside `app/dashboard/HenleyDashboard.tsx` to keep the Henley offers view purely read-only, clean, and unencumbered.
+
 ---
 
 ## 5. Current Task & System Status

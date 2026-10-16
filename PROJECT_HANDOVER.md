@@ -235,6 +235,18 @@
 - **Component Chart Enhancement:**
   - [`components/OffersCampaignView.tsx`](file:///e:/Sales%20Software/restaurant-dashboard/components/OffersCampaignView.tsx): Adjusted the `renderWeeklyChart` time boundary to capture the complete 7-day cycle containing the mid-week offer start date (`2026-09-24`).
 
+### O. Herbies Pizza Henley Deliveroo & Just Eat Campaign Alignment (October 17, 2026)
+- **User Verification via Portal Screenshots:**
+  - **Deliveroo Offers Portal:** Live continuous offer of `30% off with no minimum spend` on `Specific items (Pizzas)` starting **08 Jun 2026 20:00**.
+  - **Deliveroo Adverts Portal:** Live continuous ad campaign `Continuous campaign Mon, Jun 8, 2026` with budget of **£100.00 per week**.
+  - **Just Eat Portal:** Active campaigns for `Free Drinks on £30 Spend` (Free Item on £30 min spend) and `30% off Herbies Original Pizzas` (30% off selected items).
+- **Database Updates Executed:**
+  - Updated Herbies Pizza Deliveroo offers (`cmtsrsp4y000pwkgkzpr22n10` and `cmtsrtl4g000rwkgkv3o42qj1`) in `MarketingOffer` table with start date **`2026-06-08T00:00:00.000Z`**.
+  - Bullets displayed: `• 30% off with no minimum spend (Pizzas)` and `• Top Rank £100 per week`.
+- **Sales Attribution Verified:**
+  - **Total Deliveroo Sales Generated:** **£7,170.82** across **295 orders** over 18 continuous weeks (from 08-Jun through 11-Oct).
+  - **6-Week Chart:** Displays the most recent 6 weeks (07 Sep – 11 Oct: £1,442.96 / 60 orders).
+
 ---
 
 ## 5. Current Task & System Status (Handover Checkpoint)
@@ -242,7 +254,7 @@
 - **System Status:** 100% operational, fully verified with Next.js, committed, and pushed to GitHub `origin main`.
 - **Active Clients:**
   - **Hungry Birds:** Client ID `client-1`, fully configured with Online Web, Direct Walk-in Card, Cash, Deliveroo, Just Eat, Uber Eats, auto-filled fixed costs, and sales invoices.
-  - **Henley on Thames:** Client ID `cmpv4dvik0000vdj089wl6zmf`, fully configured with Herbies Pizza, Tasty Bun (separate Website, Mobile App, POS), Deliveroo, Just Eat, Uber Eats, suppliers, fixed costs, sales invoices, and active offers.
+  - **Henley on Thames:** Client ID `cmpv4dvik0000vdj089wl6zmf`, fully configured with Herbies Pizza (Deliveroo offers active from 08-Jun with £7,170.82 sales attributed, Just Eat campaigns), Tasty Bun (separate Website, Mobile App, POS, active offers from 24-Sept with £4,330.22 sales attributed), Deliveroo, Just Eat, Uber Eats, suppliers, fixed costs, and sales invoices.
 - **Role Permissions Active:**
   - **Client Role (`role === 'client'`):** Read-only mode across Overview, Sales, Expenses, and Sales Invoices. Clients can view data, download PDFs, view/download invoice and supplier vouchers, but cannot Add, Edit, Delete, or Upload records.
   - **Admin Role:** Retains full privileges across all clients, stores, and management actions.
@@ -255,5 +267,6 @@
      `node "C:\Users\syedq\.gemini\antigravity\brain\fff3c3be-ce4e-49ff-b76d-5be74530568c\scratch\copy-files.js"`
   3. Run `npm run build` in `C:\Users\syedq\Documents\GitHub\Riznex` to verify type safety and compilation.
   4. Commit and push to GitHub `origin main`. Hostinger production server pulls directly from `main`.
+
 
 

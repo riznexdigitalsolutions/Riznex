@@ -419,6 +419,23 @@ export default function OffersCampaignView({
     setShowModal(true)
   }
 
+  const handleOpenAddPlatform = (status: 'current' | 'previous', platformId: string) => {
+    setEditingOfferId(null)
+    setForm({
+      status,
+      platform: platformId,
+      store: currentStore && currentStore !== 'Combined' ? currentStore : availableStores.find(s => s !== 'Combined') || 'Combined',
+      startDate: new Date().toISOString().split('T')[0],
+      endDate: status === 'previous' ? new Date().toISOString().split('T')[0] : '',
+      topRank: '',
+      discountPercent: '',
+      offerItems: '',
+      amount: '',
+      notes: ''
+    })
+    setShowModal(true)
+  }
+
   const handleOpenEdit = (offer: OfferRecord) => {
     setEditingOfferId(offer.id)
     setForm({
@@ -465,13 +482,34 @@ export default function OffersCampaignView({
       })
       const saved = await res.json()
       if (!saved.error) {
-        let updated: OfferRecord[]
-        if (editingOfferId) {
-          updated = offers.map(o => (o.id === saved.id ? saved : o))
-        } else {
-          updated = [saved, ...offers]
+        // Re-fetch all offers from server to synchronize both the new current offer and auto-archived previous offers
+        try {
+          const cId = clientId || ''
+          const refreshUrl = `/api/offers?clientId=${cId}&is2025=${is2025 ? 'true' : 'false'}`
+          const refreshRes = await fetch(refreshUrl)
+          if (refreshRes.ok) {
+            const freshOffers = await refreshRes.json()
+            if (Array.isArray(freshOffers) && onOffersChange) {
+              onOffersChange(freshOffers)
+            }
+          } else {
+            let updated: OfferRecord[]
+            if (editingOfferId) {
+              updated = offers.map(o => (o.id === saved.id ? saved : o))
+            } else {
+              updated = [saved, ...offers]
+            }
+            if (onOffersChange) onOffersChange(updated)
+          }
+        } catch {
+          let updated: OfferRecord[]
+          if (editingOfferId) {
+            updated = offers.map(o => (o.id === saved.id ? saved : o))
+          } else {
+            updated = [saved, ...offers]
+          }
+          if (onOffersChange) onOffersChange(updated)
         }
-        if (onOffersChange) onOffersChange(updated)
         setShowModal(false)
       }
     } catch (e) {
@@ -589,15 +627,26 @@ export default function OffersCampaignView({
                 </div>
               </div>
 
-              <div className="flex items-center gap-2.5">
+              <div className="flex flex-wrap items-center gap-2.5">
                 <span className={`px-3 py-1.5 rounded-xl text-xs font-black uppercase tracking-wider ${p.badgeClass} shadow-sm flex items-center gap-1.5`}>
                   <span className="w-1.5 h-1.5 rounded-full bg-current" />
                   {details.matching.length > 0 ? `${details.matching.length} Active Deals` : 'Standard Visibility'}
                 </span>
-                {isAdmin && details.matching.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => handleOpenAddPlatform('current', p.id)}
+                  className="px-3.5 py-1.5 rounded-xl text-xs font-black text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 transition-all flex items-center gap-1.5 cursor-pointer shadow-md active:scale-95"
+                  title={`Add a new current offer for ${p.name}`}
+                >
+                  <span className="font-black text-sm">+</span>
+                  <span>Add Current Offer</span>
+                </button>
+                {details.matching.length > 0 && (
                   <button
+                    type="button"
                     onClick={() => handleOpenEdit(details.matching[0])}
-                    className="px-3.5 py-1.5 rounded-xl text-xs font-black text-blue-600 dark:text-blue-400 hover:text-white hover:bg-blue-600 bg-blue-500/10 border border-blue-500/30 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm"
+                    className="px-3.5 py-1.5 rounded-xl text-xs font-black text-blue-600 dark:text-blue-400 hover:text-white hover:bg-blue-600 bg-blue-500/10 border border-blue-500/30 transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95"
+                    title={`Edit existing offer for ${p.name}`}
                   >
                     <span>✎</span>
                     <span>Edit Offer</span>
@@ -733,6 +782,31 @@ export default function OffersCampaignView({
                     </ul>
                   )
                 })()}
+              </div>
+
+              {/* Card Action Footer: Add & Edit Buttons for Each Platform */}
+              <div className="pt-3 mt-3 border-t border-slate-100 dark:border-[#1f2947] flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => handleOpenAddPlatform(isCurrent ? 'current' : 'previous', p.id)}
+                  className="flex-1 py-2 px-3 rounded-xl text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-md hover:shadow-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer active:scale-95"
+                  title={`Add current offer for ${p.name}`}
+                >
+                  <span className="text-sm font-black">+</span>
+                  <span>Add Offer</span>
+                </button>
+
+                {details.matching.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={() => handleOpenEdit(details.matching[0])}
+                    className="py-2 px-3 rounded-xl text-xs font-bold bg-slate-100 dark:bg-[#151c2f] hover:bg-blue-500 hover:text-white dark:hover:bg-blue-600 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-[#253252] transition-all flex items-center justify-center gap-1 cursor-pointer active:scale-95"
+                    title={`Edit offer for ${p.name}`}
+                  >
+                    <span>✎</span>
+                    <span>Edit</span>
+                  </button>
+                )}
               </div>
 
             </div>
@@ -946,23 +1020,23 @@ export default function OffersCampaignView({
             </div>
           </div>
 
-          {/* Right: Admin Actions */}
-          {isAdmin && (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => handleOpenAdd('current')}
-                className="bg-gradient-to-r from-[#E5B869] to-[#C89B3C] hover:opacity-95 text-slate-950 font-black text-xs uppercase tracking-wider px-3.5 py-1.5 rounded-xl transition shadow-md flex items-center gap-1 cursor-pointer"
-              >
-                <span>+</span> Add Current Offer
-              </button>
-              <button
-                onClick={() => handleOpenAdd('previous')}
-                className="bg-slate-200 dark:bg-[#1a2235] hover:bg-slate-300 dark:hover:bg-[#25324d] text-slate-900 dark:text-white font-bold text-xs uppercase tracking-wider px-3 py-1.5 rounded-xl transition border border-slate-300 dark:border-[#2a3454] cursor-pointer"
-              >
-                + Add Previous Offer
-              </button>
-            </div>
-          )}
+          {/* Right: Actions */}
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => handleOpenAdd('current')}
+              className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-black text-xs uppercase tracking-wider px-3.5 py-2 rounded-xl transition shadow-md flex items-center gap-1.5 cursor-pointer active:scale-95"
+            >
+              <span className="text-sm font-black">+</span> Add Current Offer
+            </button>
+            <button
+              type="button"
+              onClick={() => handleOpenAdd('previous')}
+              className="bg-slate-100 hover:bg-slate-200 dark:bg-[#1a2235] dark:hover:bg-[#25324d] text-slate-800 dark:text-slate-200 font-bold text-xs uppercase tracking-wider px-3 py-2 rounded-xl transition border border-slate-300 dark:border-[#2a3454] cursor-pointer active:scale-95"
+            >
+              + Add Previous Offer
+            </button>
+          </div>
         </div>
       </div>
 
@@ -984,10 +1058,19 @@ export default function OffersCampaignView({
             </h3>
           </div>
           <div className="flex flex-wrap items-center gap-2">
-            <div className="flex items-center gap-2 text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-3 py-1 rounded-xl w-fit">
+            <div className="flex items-center gap-2 text-xs font-bold bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/30 px-3 py-1.5 rounded-xl w-fit">
               <span>📅 Set on Date:</span>
               <span className="font-black text-slate-900 dark:text-white">{currentSetOnDate}</span>
             </div>
+            <button
+              type="button"
+              onClick={() => handleOpenAdd('current')}
+              className="flex items-center gap-1.5 text-xs font-black bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white px-3.5 py-1.5 rounded-xl shadow-md transition-all cursor-pointer active:scale-95"
+              title="Add a new current offer"
+            >
+              <span className="text-sm font-black">+</span>
+              <span>Add Current Offer</span>
+            </button>
           </div>
         </div>
 
@@ -1020,9 +1103,20 @@ export default function OffersCampaignView({
               )}
             </h3>
           </div>
-          <div className="flex items-center gap-2 text-xs font-bold bg-slate-100 dark:bg-[#1a2235] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-[#2a3454] px-3 py-1 rounded-xl w-fit">
-            <span>📅 Set on Date:</span>
-            <span className="font-black text-slate-900 dark:text-white">{previousDateRange}</span>
+          <div className="flex flex-wrap items-center gap-2">
+            <div className="flex items-center gap-2 text-xs font-bold bg-slate-100 dark:bg-[#1a2235] text-slate-600 dark:text-slate-300 border border-slate-200 dark:border-[#2a3454] px-3 py-1.5 rounded-xl w-fit">
+              <span>📅 Set on Date:</span>
+              <span className="font-black text-slate-900 dark:text-white">{previousDateRange}</span>
+            </div>
+            <button
+              type="button"
+              onClick={() => handleOpenAdd('previous')}
+              className="flex items-center gap-1.5 text-xs font-bold bg-slate-200 hover:bg-slate-300 dark:bg-[#1f2947] dark:hover:bg-[#28355b] text-slate-800 dark:text-slate-200 px-3 py-1.5 rounded-xl shadow-sm transition-all cursor-pointer active:scale-95"
+              title="Add a historical previous offer"
+            >
+              <span className="text-sm font-bold">+</span>
+              <span>Add Past Offer</span>
+            </button>
           </div>
         </div>
 
@@ -1051,10 +1145,19 @@ export default function OffersCampaignView({
             >
               ✕
             </button>
-            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-5 flex items-center gap-2">
+            <h3 className="text-xl font-black text-slate-900 dark:text-white mb-4 flex items-center gap-2">
               <span>{editingOfferId ? '✎' : '+'}</span>
               <span>{editingOfferId ? 'Edit Marketing Offer' : 'Add Campaign Offer'}</span>
             </h3>
+
+            {form.status === 'current' && !editingOfferId && (
+              <div className="mb-4 p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-800 dark:text-emerald-300 text-xs flex items-start gap-2.5">
+                <span className="text-base shrink-0">⚡</span>
+                <span className="leading-relaxed">
+                  <strong>Automatic Offer Rotation:</strong> Adding this new Current Offer will automatically move the previous offer for this platform into <em>"Previous Offers"</em> with its end date set to the day before this new start date. All past sales data will automatically allocate to the Previous Offers section.
+                </span>
+              </div>
+            )}
 
             <div className="space-y-4 text-xs font-semibold">
               {/* Campaign Category (Current vs Previous) */}

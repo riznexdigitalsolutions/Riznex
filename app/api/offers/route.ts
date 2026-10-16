@@ -46,13 +46,46 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const targetStore = store || 'Combined'
+    const newStartDate = new Date(startDate)
+
+    // When creating a new current offer: automatically archive existing current offers for this platform and store
+    if (!status || status === 'current') {
+      // End date of previous offer is set to 1 second before the new offer's start date (23:59:59 of previous day)
+      const previousEndDate = new Date(newStartDate.getTime() - 1000)
+
+      const platformNorm = platform.toLowerCase().replace(/[\s-]/g, '_')
+      const platformAliases = Array.from(new Set([
+        platform,
+        platform.toLowerCase(),
+        platformNorm,
+        platform.replace(/_/g, ' '),
+        platform.toLowerCase().replace(/_/g, ' ')
+      ]))
+
+      const archived = await prisma.marketingOffer.updateMany({
+        where: {
+          clientId,
+          store: targetStore,
+          platform: { in: platformAliases },
+          status: 'current',
+          is2025: is2025 === true
+        },
+        data: {
+          status: 'previous',
+          endDate: previousEndDate
+        }
+      })
+      console.log(`Auto-archived ${archived.count} existing current offers for ${platform} (${targetStore}) to previous with endDate ${previousEndDate.toISOString()}`)
+    }
+
     const offer = await prisma.marketingOffer.create({
       data: {
         clientId,
         platform,
-        store: store || 'Combined',
+        store: targetStore,
         type: type || 'weekly',
-        startDate: new Date(startDate),
+        startDate: newStartDate,
         endDate: endDate ? new Date(endDate) : null,
         status: status || 'current',
         amount: parseFloat(amount || '0'),

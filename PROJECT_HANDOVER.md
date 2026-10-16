@@ -261,6 +261,18 @@
     - For **Herbies Pizza**: Deliveroo renders the active weeks since 08-Jun (most recent 6 weeks), while Just Eat starts from Week 37 (07-Sept).
   - **Previous Offers Chart Bounds:** Previous offers chart strictly bounded between `previousDateBounds.earliest` and `previousDateBounds.latest`.
 
+### Q. Direct Platform Offer Addition & Automated Previous Offer Archiving (October 17, 2026)
+- **User Requirement:** Ensure visible, direct "+ Add Offer" / "✎ Edit" buttons are placed on each platform card so users can add or modify offers anytime. When adding a new current offer, automatically archive the existing current offer for that platform and store into "Previous Offers" with its end date set to the day before the new offer's start date, automatically allocating past sales to the Previous Offers section.
+- **Frontend Enhancements (`components/OffersCampaignView.tsx`):**
+  - **4-Card Platform Grid:** Added a dedicated action footer inside each platform card (`Deliveroo`, `Uber Eats`, `Just Eat`, `Website`) with prominent `+ Add Offer` and `✎ Edit` buttons.
+  - **Single Platform View:** Added a dedicated `+ Add Current Offer` button and `✎ Edit Offer` button directly in the platform header.
+  - **Section Headers:** Added `+ Add Current Offer` button in Section 1 Header and `+ Add Past Offer` in Section 2 Header.
+  - **Auto-Archive Notice & Pre-population:** Added helper `handleOpenAddPlatform(status, platformId)` which pre-selects the platform and store, and displays an auto-rotation information notice in the modal.
+  - **Full Synchronization on Save:** In `handleSave`, re-fetches the entire offers list from `/api/offers` upon successful creation to instantly synchronize both the new current offer and the newly archived previous offers in the UI.
+- **Backend Automation (`app/api/offers/route.ts`):**
+  - In `POST /api/offers`: When creating a new current offer (`status: 'current'`), the server automatically queries all existing `current` offers for that `clientId`, `store`, and `platform` and moves them to `status: 'previous'`, setting their `endDate` to 1 second before the new offer's `startDate` (23:59:59 of the previous day).
+  - The previous offer and its associated sales data are instantly and cleanly allocated to the Previous Offers section and chart.
+
 ---
 
 ## 5. Current Task & System Status (Handover Checkpoint)
@@ -281,6 +293,7 @@
      `node "C:\Users\syedq\.gemini\antigravity\brain\fff3c3be-ce4e-49ff-b76d-5be74530568c\scratch\copy-files.js"`
   3. Run `npm run build` in `C:\Users\syedq\Documents\GitHub\Riznex` to verify type safety and compilation.
   4. Commit and push to GitHub `origin main`. Hostinger production server pulls directly from `main`.
+
 
 
 

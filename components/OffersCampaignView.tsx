@@ -625,21 +625,6 @@ export default function OffersCampaignView({
                 </ul>
               </div>
 
-              {/* Card Footer / Edit Actions for Admin */}
-              {isAdmin && details.matching.length > 0 && (
-                <div className="mt-4 pt-3 border-t border-slate-100 dark:border-[#1f2947] flex justify-end gap-2">
-                  {details.matching.map(m => (
-                    <button
-                      key={m.id}
-                      onClick={() => handleOpenEdit(m)}
-                      className="text-[11px] font-bold text-blue-600 dark:text-blue-400 hover:underline px-1.5 py-0.5 rounded transition"
-                      title="Edit offer details"
-                    >
-                      ✎ Edit ({m.store || 'Store'})
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
           )
         })}

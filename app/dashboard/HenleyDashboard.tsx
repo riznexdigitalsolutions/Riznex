@@ -1590,7 +1590,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             prevWeeklyData={prev6Stats.weeklyData}
             rawSales={rawSales}
             platformData={platformData}
-            isAdmin={session?.user?.role === 'admin'}
+            isAdmin={false}
             clientId={session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : (session?.user?.clientId || undefined)}
             currentStore={store || 'Combined'}
             onStoreChange={(s) => setStore(s === 'Combined' ? '' : s)}

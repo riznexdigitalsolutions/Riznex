@@ -180,6 +180,24 @@
   - `components/OffersCampaignView.tsx`: Stripped out fallback placeholder strings from `getPlatformDetails`, single platform view, and the 4-card platform grid. Removed the entire expandable records table section and its `showRoiTable` state.
   - `app/dashboard/HungryBirdsDashboard.tsx`: Set `isAdmin={false}` on `OffersCampaignView` for complete consistency with Henley on Thames.
 
+### K. Client View & Download Permissions, Dynamic Uploads Serving Route, and Reports Tab Removal (October 16, 2026)
+- **User Requirements:**
+  1. Fix broken file viewing and downloading across all clients for all uploaded invoice and receipt files (sales invoices, supplier invoices).
+  2. Remove the `📈 Reports` menu tab completely from the navigation for all users.
+  3. Enable **Sales** and **Expenses** navigation menus for client accounts alongside **Overview** and **Sales Invoices**.
+  4. Strict Read-Only for Clients (NO Edit / NO Delete / NO Add / NO Upload): Clients can view and download records and reports, but cannot add, edit, or delete data. Admin retains full privileges.
+- **Dynamic File Serving Route (`app/uploads/[...path]/route.ts`):**
+  - Resolves Next.js standalone static asset manifest issues for files uploaded at runtime. Streams files from `public/uploads/` with appropriate MIME types (`application/pdf`, images, etc.) and handles `?download=1` for attachment downloads.
+- **Navigation (`app/dashboard/layout.tsx`):**
+  - Removed `Reports` tab from both client and admin navigation.
+  - Enabled `Sales`, `Expenses`, `Overview`, and `Sales Invoices` for `role === 'client'`.
+- **Component Access Control:**
+  - `app/dashboard/invoices/HenleyInvoices.tsx` & `HungryBirdsInvoices.tsx`: Restricted `Edit`, `Delete`, and inline date/amount editing to admin only. Added direct `View File` and `Download` links.
+  - `app/dashboard/expenses/suppliers/HenleySuppliers.tsx` & `HungryBirdsSuppliers.tsx`: Restricted `Delete Selected`, `Upload Invoice`, `Add Supplier`, and row `Edit`/`Delete` to admin only. Enabled direct `View` and `Download` links for invoices.
+  - `app/dashboard/expenses/HenleyExpenses.tsx` & `HungryBirdsExpenses.tsx`: Restricted `Add Expense`, `Auto-Fill Fixed Costs`, `Setup Fixed Costs`, `Delete Selected`, and row `Edit`/`Del` to admin only.
+  - `app/dashboard/expenses/wages/HenleyWages.tsx` & `HungryBirdsWages.tsx`: Restricted `Add Wage`, `Auto-Fill Fixed Wages`, `Delete Selected`, and row `Edit`/`Del` to admin only.
+  - `app/dashboard/sales/HenleySales.tsx` & `HungryBirdsSales.tsx`: Restricted `Add Sales Record`, `Upload Orders`, and row `Edit`/`Del` to admin only. Kept `Export PDF` accessible to clients.
+
 ---
 
 ## 5. Current Task & System Status

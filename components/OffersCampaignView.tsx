@@ -121,7 +121,6 @@ export default function OffersCampaignView({
   const [showModal, setShowModal] = useState(false)
   const [editingOfferId, setEditingOfferId] = useState<string | null>(null)
   const [saving, setSaving] = useState(false)
-  const [showRoiTable, setShowRoiTable] = useState(false)
 
   // Form state
   const [form, setForm] = useState({
@@ -345,11 +344,11 @@ export default function OffersCampaignView({
 
     return {
       matching,
-      topRankList: uniqueTopRanks.length > 0 ? uniqueTopRanks : ['Standard Visibility'],
-      discountList: uniqueDiscounts.length > 0 ? uniqueDiscounts : ['No active discount'],
-      allOffers: uniqueOtherOffers.length > 0 ? uniqueOtherOffers : ['Standard Menu Pricing'],
-      topRank: uniqueTopRanks.length > 0 ? uniqueTopRanks.join(' • ') : 'Standard Visibility',
-      discount: uniqueDiscounts.length > 0 ? uniqueDiscounts.join(' • ') : 'No active discount'
+      topRankList: uniqueTopRanks,
+      discountList: uniqueDiscounts,
+      allOffers: uniqueOtherOffers,
+      topRank: uniqueTopRanks.length > 0 ? uniqueTopRanks.join(' • ') : '',
+      discount: uniqueDiscounts.length > 0 ? uniqueDiscounts.join(' • ') : ''
     }
   }
 
@@ -515,17 +514,23 @@ export default function OffersCampaignView({
       // Collect all active bullet items (no separate 3 columns)
       const combinedOffersList: string[] = []
       details.discountList.forEach(d => {
-        if (d && d !== 'No active discount' && !combinedOffersList.includes(d)) combinedOffersList.push(d)
+        if (d && !d.toLowerCase().includes('standard menu') && !combinedOffersList.includes(d)) {
+          combinedOffersList.push(d)
+        }
       })
       details.allOffers.forEach(o => {
-        if (o && o !== 'Standard Menu Pricing' && !combinedOffersList.includes(o)) combinedOffersList.push(o)
+        if (o && !o.toLowerCase().includes('standard menu') && !combinedOffersList.includes(o)) {
+          combinedOffersList.push(o)
+        }
       })
       details.topRankList.forEach(t => {
-        if (t && t !== 'Standard Visibility' && !combinedOffersList.includes(t)) combinedOffersList.push(t)
+        if (t && !t.toLowerCase().includes('standard menu') && !combinedOffersList.includes(t)) {
+          combinedOffersList.push(t)
+        }
       })
 
       if (combinedOffersList.length === 0) {
-        combinedOffersList.push('Standard Menu Pricing (No active promotions)')
+        combinedOffersList.push('No active offers')
       }
 
       return (
@@ -662,34 +667,45 @@ export default function OffersCampaignView({
 
               {/* Card Body: Simple Clean Bulleted List */}
               <div className="py-2.5 flex-1">
-                <ul className="space-y-2 text-xs sm:text-[13px] text-slate-700 dark:text-slate-300">
-                  {details.discountList.map((item, idx) => (
-                    <li key={`d-${idx}`} className="flex items-start gap-2">
-                      <span className="text-[#E5B869] font-bold text-sm shrink-0 leading-tight">•</span>
-                      <span className={item === 'No active discount' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-semibold'}>
-                        {item}
-                      </span>
-                    </li>
-                  ))}
+                {(() => {
+                  const cardOffers: string[] = []
+                  details.discountList.forEach(d => {
+                    if (d && !d.toLowerCase().includes('standard menu') && !cardOffers.includes(d)) {
+                      cardOffers.push(d)
+                    }
+                  })
+                  details.allOffers.forEach(o => {
+                    if (o && !o.toLowerCase().includes('standard menu') && !cardOffers.includes(o)) {
+                      cardOffers.push(o)
+                    }
+                  })
+                  details.topRankList.forEach(t => {
+                    if (t && !t.toLowerCase().includes('standard menu') && !cardOffers.includes(t)) {
+                      cardOffers.push(t)
+                    }
+                  })
 
-                  {details.allOffers.map((item, idx) => (
-                    <li key={`o-${idx}`} className="flex items-start gap-2">
-                      <span className="text-[#E5B869] font-bold text-sm shrink-0 leading-tight">•</span>
-                      <span className={item === 'Standard Menu Pricing' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-medium'}>
-                        {item}
-                      </span>
-                    </li>
-                  ))}
+                  if (cardOffers.length === 0) {
+                    return (
+                      <div className="text-xs text-slate-400 dark:text-slate-500 font-medium italic py-1">
+                        No active offers
+                      </div>
+                    )
+                  }
 
-                  {details.topRankList.map((item, idx) => (
-                    <li key={`t-${idx}`} className="flex items-start gap-2">
-                      <span className="text-[#E5B869] font-bold text-sm shrink-0 leading-tight">•</span>
-                      <span className={item === 'Standard Visibility' ? 'text-slate-400 dark:text-slate-500' : 'text-slate-900 dark:text-white font-medium'}>
-                        {item}
-                      </span>
-                    </li>
-                  ))}
-                </ul>
+                  return (
+                    <ul className="space-y-2 text-xs sm:text-[13px] text-slate-700 dark:text-slate-300">
+                      {cardOffers.map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-2">
+                          <span className="text-[#E5B869] font-bold text-sm shrink-0 leading-tight">•</span>
+                          <span className="text-slate-900 dark:text-white font-semibold">
+                            {item}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  )
+                })()}
               </div>
 
             </div>
@@ -977,91 +993,6 @@ export default function OffersCampaignView({
           previousChartTitle,
           previousChartSubtitle,
           previousEarliestDate
-        )}
-      </div>
-
-      {/* ========================================================================= */}
-      {/* EXPANDABLE DETAIL TABLE (LEGACY TABLE VIEW) */}
-      {/* ========================================================================= */}
-      <div className="pt-2">
-        <button
-          onClick={() => setShowRoiTable(!showRoiTable)}
-          className="text-xs font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white flex items-center gap-2 cursor-pointer transition py-2"
-        >
-          <span>{showRoiTable ? '▼' : '▶'}</span>
-          <span>View All Registered Campaign Records & Individual Platform Spends ({offers.length} records)</span>
-        </button>
-
-        {showRoiTable && (
-          <div className="mt-4 bg-white dark:bg-[#0c101d] border border-slate-200 dark:border-[#1f2947] rounded-2xl p-4 sm:p-5 shadow-lg overflow-x-auto w-full max-w-full -webkit-overflow-scrolling-touch">
-            <table className="w-full text-left text-xs whitespace-nowrap min-w-[750px]">
-              <thead>
-                <tr className="text-slate-400 border-b border-slate-200 dark:border-[#1f2947] uppercase font-bold tracking-wider">
-                  <th className="pb-3">Status</th>
-                  <th className="pb-3">Start Date</th>
-                  <th className="pb-3">End Date</th>
-                  <th className="pb-3">Platform</th>
-                  <th className="pb-3">Store</th>
-                  <th className="pb-3">Top Rank</th>
-                  <th className="pb-3">% Off</th>
-                  <th className="pb-3">All Offers Under</th>
-                  <th className="pb-3 text-right">Spend (£)</th>
-                  {isAdmin && <th className="pb-3 text-right">Actions</th>}
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-[#1f2947]/60">
-                {offers.length === 0 ? (
-                  <tr>
-                    <td colSpan={10} className="py-6 text-center text-slate-400">
-                      No marketing offer records found.
-                    </td>
-                  </tr>
-                ) : (
-                  offers.map((o) => (
-                    <tr key={o.id} className="hover:bg-slate-50 dark:hover:bg-white/5 transition">
-                      <td className="py-3 font-bold">
-                        <span
-                          className={`px-2 py-0.5 rounded text-[10px] uppercase font-black ${
-                            o.status === 'previous'
-                              ? 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300'
-                              : 'bg-emerald-500/15 text-emerald-700 dark:text-emerald-400'
-                          }`}
-                        >
-                          {o.status || 'current'}
-                        </span>
-                      </td>
-                      <td className="py-3 text-slate-600 dark:text-slate-300 font-medium">{formatDate(o.startDate)}</td>
-                      <td className="py-3 text-slate-400">{formatDate(o.endDate) || '-'}</td>
-                      <td className="py-3 font-bold text-slate-900 dark:text-white capitalize">{o.platform.replace(/_/g, ' ')}</td>
-                      <td className="py-3 text-slate-500">{o.store || 'Combined'}</td>
-                      <td className="py-3 text-slate-700 dark:text-slate-300 font-semibold">{o.topRank || '-'}</td>
-                      <td className="py-3 text-rose-600 dark:text-rose-400 font-bold">{o.discountPercent || '-'}</td>
-                      <td className="py-3 text-slate-600 dark:text-slate-400 max-w-xs truncate">{o.offerItems || o.notes || '-'}</td>
-                      <td className="py-3 text-right font-black text-slate-900 dark:text-white">
-                        {o.amount && o.amount > 0 ? gbp(o.amount) : '£0.00'}
-                      </td>
-                      {isAdmin && (
-                        <td className="py-3 text-right">
-                          <button
-                            onClick={() => handleOpenEdit(o)}
-                            className="text-blue-500 hover:text-blue-400 font-bold mr-3"
-                          >
-                            Edit
-                          </button>
-                          <button
-                            onClick={() => handleDelete(o.id)}
-                            className="text-red-500 hover:text-red-400 font-bold"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      )}
-                    </tr>
-                  ))
-                )}
-              </tbody>
-            </table>
-          </div>
         )}
       </div>
 

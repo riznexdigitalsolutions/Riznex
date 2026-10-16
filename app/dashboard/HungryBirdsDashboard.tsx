@@ -1314,7 +1314,7 @@ export function HungryBirdsDashboard() {
           prevWeeklyData={prev6Stats.weeklyData}
           rawSales={rawSales}
           platformData={platformData}
-          isAdmin={session?.user?.role === 'admin'}
+          isAdmin={false}
           clientId={session?.user?.role === 'admin' ? 'client-1' : (session?.user?.clientId || undefined)}
           currentStore="Combined"
           availableStores={['Combined']}

@@ -18,6 +18,7 @@ const EMPTY_FORM = {
 
 export function HungryBirdsExpenses() {
   const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'admin'
   const [expenses, setExpenses] = useState<Expense[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -101,7 +102,7 @@ export function HungryBirdsExpenses() {
           <div className="flex gap-1.5 bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-1.5 shadow-sm">
             <button onClick={() => setStoreFilter('')} className={`px-4 py-2 text-xs font-bold rounded-lg transition-all ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}>Overall</button>
           </div>
-          {selectedIds.size > 0 && (
+          {isAdmin && selectedIds.size > 0 && (
             <button 
               onClick={handleDeleteSelected}
               disabled={loading}
@@ -110,13 +111,15 @@ export function HungryBirdsExpenses() {
               Delete Selected ({selectedIds.size})
             </button>
           )}
-          <button
-            id="add-expense-btn"
-            onClick={() => { setShowForm(true); setEditId(null); setForm(EMPTY_FORM) }}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition"
-          >
-            + Add Expense
-          </button>
+          {isAdmin && (
+            <button
+              id="add-expense-btn"
+              onClick={() => { setShowForm(true); setEditId(null); setForm(EMPTY_FORM) }}
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition"
+            >
+              + Add Expense
+            </button>
+          )}
         </div>
       </div>
 
@@ -164,27 +167,29 @@ export function HungryBirdsExpenses() {
           <table className="w-full text-sm min-w-[700px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
-                <th className="px-4 py-3 w-12 text-center">
-                  <input 
-                    type="checkbox" 
-                    checked={filteredExpenses.length > 0 && selectedIds.size === filteredExpenses.length}
-                    onChange={(e) => {
-                      if (e.target.checked) setSelectedIds(new Set(filteredExpenses.map(x => x.id)))
-                      else setSelectedIds(new Set())
-                    }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
-                  />
-                </th>
-                {['Category', 'Subcategory', 'Amount', 'Period', 'Week', 'Month', 'Notes', 'Actions'].map(h => (
+                {isAdmin && (
+                  <th className="px-4 py-3 w-12 text-center">
+                    <input 
+                      type="checkbox" 
+                      checked={filteredExpenses.length > 0 && selectedIds.size === filteredExpenses.length}
+                      onChange={(e) => {
+                        if (e.target.checked) setSelectedIds(new Set(filteredExpenses.map(x => x.id)))
+                        else setSelectedIds(new Set())
+                      }}
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
+                    />
+                  </th>
+                )}
+                {['Category', 'Subcategory', 'Amount', 'Period', 'Week', 'Month', 'Notes', ...(isAdmin ? ['Actions'] : [])].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
-                <tr><td colSpan={9} className="text-center py-12 text-slate-500">Loading…</td></tr>
+                <tr><td colSpan={isAdmin ? 9 : 7} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : filteredExpenses.length === 0 ? (
-                <tr><td colSpan={9} className="text-center py-12 text-slate-500">No expenses recorded yet.</td></tr>
+                <tr><td colSpan={isAdmin ? 9 : 7} className="text-center py-12 text-slate-500">No expenses recorded yet.</td></tr>
               ) : filteredExpenses.map(e => {
                 const targetDate = e.date ? new Date(e.date) : null
                 const weekStartDt = targetDate && !isNaN(targetDate.getTime()) ? getWeekStart(targetDate) : null
@@ -196,19 +201,21 @@ export function HungryBirdsExpenses() {
                 const isSelected = selectedIds.has(e.id);
                 return (
                 <tr key={e.id} className={`transition-colors ${isSelected ? 'bg-blue-500/5' : 'hover:bg-amber-500/10 dark:hover:bg-[#161b2c]'}`}>
-                  <td className="px-4 py-3 w-12 text-center">
-                    <input 
-                      type="checkbox"
-                      checked={isSelected}
-                      onChange={() => {
-                        const next = new Set(selectedIds)
-                        if (next.has(e.id)) next.delete(e.id)
-                        else next.add(e.id)
-                        setSelectedIds(next)
-                      }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
-                    />
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3 w-12 text-center">
+                      <input 
+                        type="checkbox" 
+                        checked={isSelected}
+                        onChange={() => {
+                          const next = new Set(selectedIds)
+                          if (next.has(e.id)) next.delete(e.id)
+                          else next.add(e.id)
+                          setSelectedIds(next)
+                        }}
+                        className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
+                      />
+                    </td>
+                  )}
                   <td className="px-4 py-3">
                     <span className="inline-block bg-purple-500/10 text-slate-900 dark:text-white border border-purple-500/20 px-2.5 py-1 rounded-full text-[11px] font-bold">
                       {expenseCategoryLabel(e.category)}
@@ -220,15 +227,17 @@ export function HungryBirdsExpenses() {
                   <td className="px-4 py-3 text-slate-500 dark:text-slate-400 whitespace-nowrap">{weekStr}</td>
                   <td className="px-4 py-3 text-slate-500 dark:text-slate-400 whitespace-nowrap">{monthStr}</td>
                   <td className="px-4 py-3 text-slate-500 text-xs">{e.notes || '—'}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => {
-                        setForm({ category: e.category, subcategory: e.subcategory ?? '', amount: e.amount.toString(), period: e.period, date: e.date.split('T')[0], notes: e.notes ?? '' })
-                        setEditId(e.id); setShowForm(true)
-                      }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
-                      <button onClick={() => handleDelete(e.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => {
+                          setForm({ category: e.category, subcategory: e.subcategory ?? '', amount: e.amount.toString(), period: e.period, date: e.date.split('T')[0], notes: e.notes ?? '' })
+                          setEditId(e.id); setShowForm(true)
+                        }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                        <button onClick={() => handleDelete(e.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               )})}
             </tbody>

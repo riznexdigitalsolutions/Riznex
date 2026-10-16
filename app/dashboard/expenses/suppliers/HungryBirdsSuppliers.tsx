@@ -8,6 +8,7 @@ import ActiveFilters from '@/components/ActiveFilters'
 
 export function HungryBirdsSuppliers() {
   const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'admin'
   const [suppliers, setSuppliers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showSupplierForm, setShowSupplierForm] = useState(false)
@@ -127,15 +128,17 @@ export function HungryBirdsSuppliers() {
           <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Track supplier invoices and spending</p>
         </div>
         <div className="flex items-center gap-4 flex-wrap">
-          {selectedIds.size > 0 && (
+          {isAdmin && selectedIds.size > 0 && (
             <button onClick={handleDeleteSelected} disabled={loading} className="bg-red-500/10 text-red-500 border border-red-500/20 px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-red-500/20 transition whitespace-nowrap disabled:opacity-50">
               Delete Selected ({selectedIds.size})
             </button>
           )}
-          <button onClick={() => { setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }); setShowSupplierForm(true) }}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition">
-            + Add Supplier
-          </button>
+          {isAdmin && (
+            <button onClick={() => { setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }); setShowSupplierForm(true) }}
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl text-sm font-bold hover:opacity-90 transition">
+              + Add Supplier
+            </button>
+          )}
         </div>
       </div>
 
@@ -174,31 +177,33 @@ export function HungryBirdsSuppliers() {
           <table className="w-full text-sm min-w-[750px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
-                <th className="px-4 py-3 w-12 text-center">
-                  <input 
-                    type="checkbox" 
-                    checked={allInvoices.length > 0 && selectedIds.size === allInvoices.length}
-                    onChange={(e) => {
-                      if (e.target.checked) setSelectedIds(new Set(allInvoices.map(x => x.id)))
-                      else setSelectedIds(new Set())
-                    }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
-                  />
-                </th>
+                {isAdmin && (
+                  <th className="px-4 py-3 w-12 text-center">
+                    <input 
+                      type="checkbox" 
+                      checked={allInvoices.length > 0 && selectedIds.size === allInvoices.length}
+                      onChange={(e) => {
+                        if (e.target.checked) setSelectedIds(new Set(allInvoices.map(x => x.id)))
+                        else setSelectedIds(new Set())
+                      }}
+                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
+                    />
+                  </th>
+                )}
                 <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Supplier</th>
                 <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Category</th>
                 <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Date</th>
                 <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Amount</th>
                 <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Status</th>
                 <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">File</th>
-                <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Actions</th>
+                {isAdmin && <th className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">Actions</th>}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
-                <tr><td colSpan={8} className="text-center py-12 text-slate-500">Loading...</td></tr>
+                <tr><td colSpan={isAdmin ? 8 : 6} className="text-center py-12 text-slate-500">Loading...</td></tr>
               ) : allInvoices.length === 0 ? (
-                <tr><td colSpan={8} className="text-center py-12 text-slate-500">No invoices found.</td></tr>
+                <tr><td colSpan={isAdmin ? 8 : 6} className="text-center py-12 text-slate-500">No invoices found.</td></tr>
               ) : (
                 allInvoices.map(inv => {
                   const isSelected = selectedIds.has(inv.id)
@@ -207,19 +212,21 @@ export function HungryBirdsSuppliers() {
                   
                   return (
                     <tr key={inv.id} className={isSelected ? "transition-colors bg-blue-500/5" : "transition-colors hover:bg-amber-500/10 dark:hover:bg-[#161b2c]"}>
-                      <td className="px-4 py-3 w-12 text-center">
-                        <input 
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => {
-                            const next = new Set(selectedIds)
-                            if (next.has(inv.id)) next.delete(inv.id)
-                            else next.add(inv.id)
-                            setSelectedIds(next)
-                          }}
-                          className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
-                        />
-                      </td>
+                      {isAdmin && (
+                        <td className="px-4 py-3 w-12 text-center">
+                          <input 
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => {
+                              const next = new Set(selectedIds)
+                              if (next.has(inv.id)) next.delete(inv.id)
+                              else next.add(inv.id)
+                              setSelectedIds(next)
+                            }}
+                            className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
+                          />
+                        </td>
+                      )}
                       <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{inv.supplier.name}</td>
                       <td className="px-4 py-3 text-slate-500 dark:text-slate-400 capitalize">{inv.supplier.category}</td>
                       <td className="px-4 py-3 text-slate-600 dark:text-slate-300">{dateStr}</td>
@@ -233,12 +240,18 @@ export function HungryBirdsSuppliers() {
                       </td>
                       <td className="px-4 py-3">
                         {inv.fileUrl ? (
-                          <a href={inv.fileUrl} target="_blank" rel="noopener noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 text-xs font-semibold">View File</a>
+                          <div className="flex items-center gap-2">
+                            <a href={inv.fileUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 dark:text-blue-400 hover:underline text-xs font-semibold">View</a>
+                            <span className="text-slate-400 dark:text-slate-600">|</span>
+                            <a href={`${inv.fileUrl}?download=1`} download className="text-emerald-500 dark:text-emerald-400 hover:underline text-xs font-semibold">Download</a>
+                          </div>
                         ) : "-"}
                       </td>
-                      <td className="px-4 py-3 flex gap-3">
-                        <button onClick={() => handleDeleteInvoice(inv.id)} className="text-red-400 hover:text-red-300 text-xs font-semibold">Del</button>
-                      </td>
+                      {isAdmin && (
+                        <td className="px-4 py-3 flex gap-3">
+                          <button onClick={() => handleDeleteInvoice(inv.id)} className="text-red-400 hover:text-red-300 text-xs font-semibold">Del</button>
+                        </td>
+                      )}
                     </tr>
                   )
                 })

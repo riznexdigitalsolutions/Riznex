@@ -7,7 +7,54 @@ import { useState, useEffect, Suspense } from 'react'
 
 const getNavItems = (clientName?: string | null, role?: string) => {
   if (role === 'client') {
-    return [{ 
+    return [
+      { 
+        href: '/dashboard', 
+        icon: '📊', 
+        label: 'Overview',
+        subItems: [
+          { href: '/dashboard?tab=overview', label: 'Main Overview' },
+          { href: '/dashboard?tab=weekly', label: 'Weekly Comparison' },
+          { href: '/dashboard?tab=monthly', label: 'Monthly Comparison' },
+          { href: '/dashboard?tab=offers', label: 'Current Offers' }
+        ]
+      },
+      { 
+        href: '/dashboard/sales', 
+        icon: '💷', 
+        label: 'Sales',
+        subItems: clientName === 'Hungry Birds' ? undefined : [
+          { href: '/dashboard/sales?tab=combined', label: 'Combined Sales' }
+        ]
+      },
+      { 
+        href: '/dashboard/expenses', 
+        icon: '💸', 
+        label: 'Expenses',
+        subItems: [
+          { href: '/dashboard/expenses', label: 'Combined Expenses Dashboard' },
+          { href: '/dashboard/expenses/suppliers', label: 'Supplier Purchases' },
+          { href: '/dashboard/expenses/wages', label: 'Staff Wages' },
+          { href: '/dashboard/expenses/utilities', label: 'Utilities' },
+          { href: '/dashboard/expenses/marketing', label: 'Marketing' },
+          { href: '/dashboard/expenses/other', label: 'Other Expenses' }
+        ]
+      },
+      { 
+        href: '/dashboard/invoices', 
+        icon: '🧾', 
+        label: 'Sales Invoices',
+        subItems: [
+          { href: '/dashboard/invoices?tab=all', label: 'Combined Invoices Data' },
+          { href: '/dashboard/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
+          { href: '/dashboard/invoices?tab=pos', label: clientName === 'Hungry Birds' ? 'POS (Walk-in Card & Cash)' : 'Herbies Pizza & Tasty Bun POS Invoices' }
+        ]
+      }
+    ]
+  }
+
+  return [
+    { 
       href: '/dashboard', 
       icon: '📊', 
       label: 'Overview',
@@ -19,6 +66,27 @@ const getNavItems = (clientName?: string | null, role?: string) => {
       ]
     },
     { 
+      href: '/dashboard/sales', 
+      icon: '💷', 
+      label: 'Sales',
+      subItems: clientName === 'Hungry Birds' ? undefined : [
+        { href: '/dashboard/sales?tab=combined', label: 'Combined Sales' }
+      ]
+    },
+    { 
+      href: '/dashboard/expenses', 
+      icon: '💸', 
+      label: 'Expenses',
+      subItems: [
+        { href: '/dashboard/expenses', label: 'Combined Expenses Dashboard' },
+        { href: '/dashboard/expenses/suppliers', label: 'Supplier Purchases' },
+        { href: '/dashboard/expenses/wages', label: 'Staff Wages' },
+        { href: '/dashboard/expenses/utilities', label: 'Utilities' },
+        { href: '/dashboard/expenses/marketing', label: 'Marketing' },
+        { href: '/dashboard/expenses/other', label: 'Other Expenses' }
+      ]
+    },
+    { 
       href: '/dashboard/invoices', 
       icon: '🧾', 
       label: 'Sales Invoices',
@@ -27,56 +95,9 @@ const getNavItems = (clientName?: string | null, role?: string) => {
         { href: '/dashboard/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
         { href: '/dashboard/invoices?tab=pos', label: clientName === 'Hungry Birds' ? 'POS (Walk-in Card & Cash)' : 'Herbies Pizza & Tasty Bun POS Invoices' }
       ]
-    }]
-  }
-  return [
-  { 
-    href: '/dashboard', 
-    icon: '📊', 
-    label: 'Overview',
-    subItems: [
-      { href: '/dashboard?tab=overview', label: 'Main Overview' },
-      { href: '/dashboard?tab=weekly', label: 'Weekly Comparison' },
-      { href: '/dashboard?tab=monthly', label: 'Monthly Comparison' },
-      { href: '/dashboard?tab=offers', label: 'Current Offers' }
-    ]
-  },
-  { 
-    href: '/dashboard/sales', 
-    icon: '💷', 
-    label: 'Sales',
-    subItems: clientName === 'Hungry Birds' ? undefined : [
-      { href: '/dashboard/sales?tab=combined', label: 'Combined Sales' }
-    ]
-  },
-  { 
-    href: '/dashboard/expenses', 
-    icon: '💸', 
-    label: 'Expenses',
-    subItems: [
-      { href: '/dashboard/expenses', label: 'Combined Expenses Dashboard' },
-      { href: '/dashboard/expenses/suppliers', label: 'Supplier Purchases' },
-      { href: '/dashboard/expenses/wages', label: 'Staff Wages' },
-      { href: '/dashboard/expenses/utilities', label: 'Utilities' },
-      { href: '/dashboard/expenses/marketing', label: 'Marketing' },
-      { href: '/dashboard/expenses/other', label: 'Other Expenses' }
-    ]
-  },
-
-  { 
-    href: '/dashboard/invoices', 
-    icon: '🧾', 
-    label: 'Sales Invoices',
-    subItems: [
-      { href: '/dashboard/invoices?tab=all', label: 'Combined Invoices Data' },
-      { href: '/dashboard/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
-      { href: '/dashboard/invoices?tab=pos', label: clientName === 'Hungry Birds' ? 'POS (Walk-in Card & Cash)' : 'Herbies Pizza & Tasty Bun POS Invoices' }
-    ]
-  },
-  { href: '/dashboard/reports', icon: '📈', label: 'Reports' },
-  { href: '/dashboard/settings', icon: '⚙️', label: 'Settings' },
-  
-]
+    },
+    { href: '/dashboard/settings', icon: '⚙️', label: 'Settings' }
+  ]
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

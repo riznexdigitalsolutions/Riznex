@@ -23,6 +23,7 @@ const EMPTY_FORM = {
 
 function SalesContent() {
   const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'admin'
   const [sales, setSales] = useState<Sale[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -210,36 +211,38 @@ function SalesContent() {
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mt-0.5">Weekly platform sales records</p>
         </div>
 
-        <div className="flex items-center gap-3 flex-wrap">
-          <input 
-            type="file" 
-            ref={fileInputRef}
-            className="hidden" 
-            accept="image/*,.pdf" 
-            onChange={handleFileUpload} 
-          />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-            className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 disabled:opacity-50 transition whitespace-nowrap cursor-pointer"
-          >
-            {isUploading ? 'Uploading...' : '+ Upload Orders (PDF/Img)'}
-          </button>
-          <button
-            id="add-sale-btn"
-            onClick={() => { 
-              setShowForm(true); 
-              setEditId(null); 
-              setForm({ 
-                ...EMPTY_FORM, 
-                store: activeTab 
-              }) 
-            }}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer"
-          >
-            + Add Sales Record
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex items-center gap-3 flex-wrap">
+            <input 
+              type="file" 
+              ref={fileInputRef}
+              className="hidden" 
+              accept="image/*,.pdf" 
+              onChange={handleFileUpload} 
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 disabled:opacity-50 transition whitespace-nowrap cursor-pointer"
+            >
+              {isUploading ? 'Uploading...' : '+ Upload Orders (PDF/Img)'}
+            </button>
+            <button
+              id="add-sale-btn"
+              onClick={() => { 
+                setShowForm(true); 
+                setEditId(null); 
+                setForm({ 
+                  ...EMPTY_FORM, 
+                  store: activeTab 
+                }) 
+              }}
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer"
+            >
+              + Add Sales Record
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Filter Toolbar Row (Positioned Cleanly Under Top Header) */}
@@ -310,16 +313,16 @@ function SalesContent() {
           <table className="w-full text-sm min-w-[850px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
-                {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Deduction %', 'Net Paid', 'Actions'].map(h => (
+                {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Deduction %', 'Net Paid', ...(isAdmin ? ['Actions'] : [])].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
-                <tr><td colSpan={10} className="text-center py-12 text-slate-500">Loading…</td></tr>
+                <tr><td colSpan={isAdmin ? 10 : 9} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : sales.length === 0 ? (
-                <tr><td colSpan={10} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
+                <tr><td colSpan={isAdmin ? 10 : 9} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
               ) : sales.map(s => (
                 <tr key={s.id} className="hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
                   <td className="px-4 py-3">
@@ -336,11 +339,13 @@ function SalesContent() {
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp((s.grossSales - s.netPaid) - (s.commission ?? 0) - ((s.adSpends ?? 0) + (s.topRankFee ?? 0)))}</td>
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-semibold">{getRowDeductionPercent(s)}</td>
                   <td className="px-4 py-3 text-slate-900 dark:text-white font-bold">{gbp(s.netPaid)}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(s)} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => openEdit(s)} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

@@ -12,6 +12,7 @@ interface StaffWage {
 
 export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
   const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'admin'
   const [wages, setWages] = useState<StaffWage[]>([])
   const [staffList, setStaffList] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -106,14 +107,16 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
             <p className="text-slate-500 dark:text-slate-400 text-sm mt-1">Manage weekly wage payouts</p>
           </div>
           <div className="flex items-center gap-3 flex-wrap">
-            {selectedIds.size > 0 && (
+            {isAdmin && selectedIds.size > 0 && (
               <button onClick={handleDeleteSelected} className="flex items-center gap-2 bg-red-500/10 text-red-500 border border-red-500/20 px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-red-500 hover:text-slate-900 dark:hover:text-white transition">
                 🗑️ Delete Selected ({selectedIds.size})
               </button>
             )}
-            <button onClick={() => { setShowForm(true); setEditId(null); setForm({ staffId: staffList[0]?.id || '', hours: '', amount: '', weekEnd: fmtDateInput(new Date()), store: 'Hungry Birds' }) }} className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition">
-              + Add Wage
-            </button>
+            {isAdmin && (
+              <button onClick={() => { setShowForm(true); setEditId(null); setForm({ staffId: staffList[0]?.id || '', hours: '', amount: '', weekEnd: fmtDateInput(new Date()), store: 'Hungry Birds' }) }} className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition">
+                + Add Wage
+              </button>
+            )}
           </div>
         </div>
 
@@ -146,24 +149,28 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
           <table className="w-full text-sm min-w-[550px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
-                <th className="px-4 py-3 w-10 text-center">
-                  <input type="checkbox" checked={wages.length > 0 && selectedIds.size === wages.length} onChange={(e) => { if (e.target.checked) setSelectedIds(new Set(wages.map(w => w.id))); else setSelectedIds(new Set()) }} className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer" />
-                </th>
-                {['Staff', 'Amount', 'Week Ending', 'Actions'].map(h => (
+                {isAdmin && (
+                  <th className="px-4 py-3 w-10 text-center">
+                    <input type="checkbox" checked={wages.length > 0 && selectedIds.size === wages.length} onChange={(e) => { if (e.target.checked) setSelectedIds(new Set(wages.map(w => w.id))); else setSelectedIds(new Set()) }} className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer" />
+                  </th>
+                )}
+                {['Staff', 'Amount', 'Week Ending', ...(isAdmin ? ['Actions'] : [])].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
-                <tr><td colSpan={5} className="text-center py-12 text-slate-500">Loading…</td></tr>
+                <tr><td colSpan={isAdmin ? 5 : 3} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : wages.length === 0 ? (
-                <tr><td colSpan={5} className="text-center py-12 text-slate-500">No wages recorded yet.</td></tr>
+                <tr><td colSpan={isAdmin ? 5 : 3} className="text-center py-12 text-slate-500">No wages recorded yet.</td></tr>
               ) : wages.map(w => (
                 <tr key={w.id} className={`hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
-                  <td className="px-4 py-3 text-center">
-                    <input type="checkbox" checked={selectedIds.has(w.id)} onChange={(e) => { const next = new Set(selectedIds); if (e.target.checked) next.add(w.id); else next.delete(w.id); setSelectedIds(next) }} className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer" />
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3 text-center">
+                      <input type="checkbox" checked={selectedIds.has(w.id)} onChange={(e) => { const next = new Set(selectedIds); if (e.target.checked) next.add(w.id); else next.delete(w.id); setSelectedIds(next) }} className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer" />
+                    </td>
+                  )}
                   <td className="px-4 py-3 font-semibold text-slate-600 dark:text-slate-300">{w.staff?.name || 'Staff Member'}</td>
                   <td className="px-4 py-3 font-bold text-slate-900 dark:text-white">{gbp(w.amount)}</td>
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-medium">
@@ -176,12 +183,14 @@ export function HungryBirdsWages({ is2025 = false }: { is2025?: boolean }) {
                       return fmtDate(sunday);
                     })()}
                   </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => { setForm({ staffId: w.staffId, hours: '', amount: w.amount.toString(), weekEnd: w.weekEnd.split('T')[0], store: 'Hungry Birds' }); setEditId(w.id); setShowForm(true) }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
-                      <button onClick={() => handleDelete(w.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => { setForm({ staffId: w.staffId, hours: '', amount: w.amount.toString(), weekEnd: w.weekEnd.split('T')[0], store: 'Hungry Birds' }); setEditId(w.id); setShowForm(true) }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                        <button onClick={() => handleDelete(w.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

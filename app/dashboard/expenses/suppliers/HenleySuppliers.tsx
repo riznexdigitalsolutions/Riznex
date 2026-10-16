@@ -9,6 +9,7 @@ import ActiveFilters from '@/components/ActiveFilters'
 
 export function HenleySuppliers() {
   const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'admin'
   const [suppliers, setSuppliers] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showSupplierForm, setShowSupplierForm] = useState(false)
@@ -348,7 +349,7 @@ export function HenleySuppliers() {
               Reset
             </button>
 
-            {selectedIds.length > 0 && (
+            {isAdmin && selectedIds.length > 0 && (
               <>
                 <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
                 <button 
@@ -367,23 +368,27 @@ export function HenleySuppliers() {
               </>
             )}
 
-            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
+            {isAdmin && (
+              <>
+                <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
-            {/* Upload Invoice Button */}
-            <button 
-              onClick={() => { setSelectedSupplier(null); setShowInvoiceForm(true) }}
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center gap-1.5"
-            >
-              <span>+</span> Upload Invoice
-            </button>
+                {/* Upload Invoice Button */}
+                <button 
+                  onClick={() => { setSelectedSupplier(null); setShowInvoiceForm(true) }}
+                  className="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-emerald-500/20 cursor-pointer flex items-center gap-1.5"
+                >
+                  <span>+</span> Upload Invoice
+                </button>
 
-            {/* Add Supplier Button */}
-            <button 
-              onClick={() => { setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }); setShowSupplierForm(true) }}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-blue-500/20 cursor-pointer flex items-center gap-1.5"
-            >
-              <span>+</span> Add Supplier
-            </button>
+                {/* Add Supplier Button */}
+                <button 
+                  onClick={() => { setEditSupplierId(null); setSupForm({ name: '', customName: '', category: 'food', franchise: 'Combined' }); setShowSupplierForm(true) }}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold hover:opacity-90 transition shadow-lg shadow-blue-500/20 cursor-pointer flex items-center gap-1.5"
+                >
+                  <span>+</span> Add Supplier
+                </button>
+              </>
+            )}
           </div>
         </div>
 
@@ -477,7 +482,7 @@ export function HenleySuppliers() {
                   <option key={name as string} value={name as string}>{name as string}</option>
                 ))}
               </select>
-              {selectedIds.length > 0 && (
+              {isAdmin && selectedIds.length > 0 && (
                 <button 
                   onClick={handleDeleteSelected}
                   disabled={saving}
@@ -493,27 +498,29 @@ export function HenleySuppliers() {
               <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300 min-w-[750px]">
               <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
                 <tr>
-                  <th className="px-5 py-4 w-12 text-center">
-                    <input 
-                      type="checkbox" 
-                      checked={
-                        displayedInvoices.length > 0 && 
-                        selectedIds.length === displayedInvoices.length
-                      }
-                      onChange={(e) => {
-                        const allIds = displayedInvoices.map((i: any) => i.id)
-                        setSelectedIds(e.target.checked ? allIds : [])
-                      }}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 cursor-pointer"
-                    />
-                  </th>
+                  {isAdmin && (
+                    <th className="px-5 py-4 w-12 text-center">
+                      <input 
+                        type="checkbox" 
+                        checked={
+                          displayedInvoices.length > 0 && 
+                          selectedIds.length === displayedInvoices.length
+                        }
+                        onChange={(e) => {
+                          const allIds = displayedInvoices.map((i: any) => i.id)
+                          setSelectedIds(e.target.checked ? allIds : [])
+                        }}
+                        className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 cursor-pointer"
+                      />
+                    </th>
+                  )}
                   <th className="px-5 py-4 font-bold">Date</th>
                   <th className="px-5 py-4 font-bold">Week</th>
                   <th className="px-5 py-4 font-bold">Month</th>
                   <th className="px-5 py-4 font-bold">Supplier Name</th>
                   <th className="px-5 py-4 font-bold text-right">Amount</th>
                   <th className="px-5 py-4 font-bold">Status</th>
-                  <th className="px-5 py-4 font-bold text-right">File</th>
+                  <th className="px-5 py-4 font-bold text-right">File / Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-[#1f2947]">
@@ -534,18 +541,20 @@ export function HenleySuppliers() {
                   
                   return (
                   <tr key={inv.id} className={`hover:bg-amber-500/10 dark:hover:bg-[#161b2c]/50 transition ${isSelected ? 'bg-blue-500/5' : ''}`}>
-                    <td className="px-5 py-4 w-12 text-center">
-                      <input 
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() => {
-                          setSelectedIds(prev => prev.includes(inv.id) ? prev.filter(id => id !== inv.id) : [...prev, inv.id])
-                        }}
-                        className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
-                      />
-                    </td>
+                    {isAdmin && (
+                      <td className="px-5 py-4 w-12 text-center">
+                        <input 
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => {
+                            setSelectedIds(prev => prev.includes(inv.id) ? prev.filter(id => id !== inv.id) : [...prev, inv.id])
+                          }}
+                          className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white cursor-pointer"
+                        />
+                      </td>
+                    )}
                     <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
-                      {isEditing ? (
+                      {isAdmin && isEditing ? (
                         <input 
                           type="date" 
                           value={editForm.invoiceDate} 
@@ -554,7 +563,7 @@ export function HenleySuppliers() {
                           style={{ colorScheme: 'dark' }}
                         />
                       ) : (
-                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block">
+                        <div onClick={() => isAdmin && handleEditClick(inv)} className={isAdmin ? "cursor-pointer hover:text-slate-900 dark:text-white inline-block" : "inline-block"} title={isAdmin ? "Click to edit date" : undefined}>
                           {dateColStr}
                         </div>
                       )}
@@ -577,9 +586,9 @@ export function HenleySuppliers() {
                       </div>
                     </td>
                     <td className="px-5 py-4 text-right font-black text-slate-900 dark:text-white">
-                      {isEditing ? (
+                      {isAdmin && isEditing ? (
                         <div className="flex items-center justify-end gap-1">
-                          <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">AA£</span>
+                          <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">£</span>
                           <input 
                             type="number" 
                             step="0.01"
@@ -589,9 +598,8 @@ export function HenleySuppliers() {
                           />
                         </div>
                       ) : (
-                        <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-flex items-center gap-1.5">
+                        <div onClick={() => isAdmin && handleEditClick(inv)} className={`inline-flex items-center gap-1.5 ${isAdmin ? "cursor-pointer hover:text-slate-900 dark:text-white" : ""}`} title={isAdmin ? "Click to edit amount" : undefined}>
                           {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
-                          {inv._isSplit && <span className="text-[9px] font-bold text-slate-500 bg-slate-500/10 border border-slate-500/20 px-1.5 py-0.5 rounded-full">A£ split</span>}
                           {inv._isSplit && <span className="text-[9px] font-bold text-slate-500 bg-slate-500/10 border border-slate-500/20 px-1.5 py-0.5 rounded-full">½ split</span>}
                         </div>
                       )}
@@ -604,13 +612,15 @@ export function HenleySuppliers() {
                     </td>
                     <td className="px-5 py-4 text-right">
                       <div className="flex items-center justify-end gap-2.5">
-                        {isEditing ? (
+                        {isAdmin && isEditing && (
                           <>
                             <button onClick={handleSaveEdit} className="text-slate-900 dark:text-white hover:text-emerald-300 font-semibold text-xs">Save</button>
                             <span className="text-slate-700">|</span>
                             <button onClick={() => setEditingId(null)} className="text-slate-500 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-semibold text-xs">Cancel</button>
+                            <span className="text-slate-700">|</span>
                           </>
-                        ) : (
+                        )}
+                        {isAdmin && !isEditing && (
                           <>
                             <label className="text-indigo-400 hover:text-indigo-300 font-semibold text-xs cursor-pointer inline-flex items-center gap-1">
                               {uploadingInvoiceId === inv.id ? (
@@ -628,16 +638,28 @@ export function HenleySuppliers() {
                             </label>
                             <span className="text-slate-700">|</span>
                             <button onClick={() => handleEditClick(inv)} className="text-amber-400 hover:text-amber-300 font-semibold text-xs">Edit</button>
+                            <span className="text-slate-700">|</span>
                           </>
                         )}
-                        <span className="text-slate-700">|</span>
-                        <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 font-semibold text-xs">View</a>
-                        <span className="text-slate-700">|</span>
-                        <button onClick={async () => {
-                          if (!confirm('Are you sure you want to completely delete this invoice? All associated financial data will be instantly removed from the dashboard and overview.')) return
-                          await fetch(`/api/invoices/${inv.id}`, { method: 'DELETE' })
-                          fetchSuppliers()
-                        }} className="text-red-400 hover:text-red-300 font-semibold text-xs">Delete</button>
+                        {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' ? (
+                          <>
+                            <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-blue-500 dark:text-blue-400 hover:underline font-semibold text-xs">View</a>
+                            <span className="text-slate-700">|</span>
+                            <a href={`${inv.filePath}?download=1`} download className="text-emerald-500 dark:text-emerald-400 hover:underline font-semibold text-xs">Download</a>
+                          </>
+                        ) : (
+                          <span className="text-slate-500 text-xs italic">No file</span>
+                        )}
+                        {isAdmin && (
+                          <>
+                            <span className="text-slate-700">|</span>
+                            <button onClick={async () => {
+                              if (!confirm('Are you sure you want to completely delete this invoice? All associated financial data will be instantly removed from the dashboard and overview.')) return
+                              await fetch(`/api/invoices/${inv.id}`, { method: 'DELETE' })
+                              fetchSuppliers()
+                            }} className="text-red-400 hover:text-red-300 font-semibold text-xs">Delete</button>
+                          </>
+                        )}
                       </div>
                     </td>
                   </tr>

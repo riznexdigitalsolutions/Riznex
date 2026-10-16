@@ -536,7 +536,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                     />
                   </td>
                   <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
-                    {isEditing ? (
+                    {isEditing && session?.user?.role === 'admin' ? (
                       <input 
                         type="date" 
                         value={editForm.invoiceDate} 
@@ -545,7 +545,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         style={{ colorScheme: 'dark' }}
                       />
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit date">
+                      <div onClick={() => session?.user?.role === 'admin' && handleEditClick(inv)} className={session?.user?.role === 'admin' ? "cursor-pointer hover:text-slate-900 dark:text-white inline-block" : "inline-block"} title={session?.user?.role === 'admin' ? "Click to edit date" : undefined}>
                         {dateColStr}
                       </div>
                     )}
@@ -570,7 +570,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </td>
                   <td className="px-5 py-4 text-right font-black text-slate-900 dark:text-white">
-                    {isEditing ? (
+                    {isEditing && session?.user?.role === 'admin' ? (
                       <div className="flex items-center justify-end gap-1">
                         <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">£</span>
                         <input 
@@ -582,7 +582,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         />
                       </div>
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit amount">
+                      <div onClick={() => session?.user?.role === 'admin' && handleEditClick(inv)} className={session?.user?.role === 'admin' ? "cursor-pointer hover:text-slate-900 dark:text-white inline-block" : "inline-block"} title={session?.user?.role === 'admin' ? "Click to edit amount" : undefined}>
                         {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
                       </div>
                     )}
@@ -593,7 +593,9 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                      (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
                      <div className="flex items-center gap-2">
                        <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>
-                       <button onClick={() => handleRetryOcr(inv.id)} className="text-blue-500 hover:text-blue-400 font-bold text-[11px] underline cursor-pointer bg-transparent border-0 p-0" title="Retry AI extraction">Retry 🔄</button>
+                       {session?.user?.role === 'admin' && (
+                         <button onClick={() => handleRetryOcr(inv.id)} className="text-blue-500 hover:text-blue-400 font-bold text-[11px] underline cursor-pointer bg-transparent border-0 p-0" title="Retry AI extraction">Retry 🔄</button>
+                       )}
                      </div>}
                   </td>
                   <td className="px-5 py-4 text-right">
@@ -618,9 +620,19 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         </>
                       )}
                       
-                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
-                        View File
-                      </a>
+                      {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' ? (
+                        <>
+                          <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-500 font-semibold text-xs transition whitespace-nowrap">
+                            View File
+                          </a>
+                          <span className="text-slate-400 dark:text-slate-600">|</span>
+                          <a href={`${inv.filePath}?download=1`} download className="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-xs transition whitespace-nowrap">
+                            Download
+                          </a>
+                        </>
+                      ) : (
+                        <span className="text-slate-400 text-xs italic">No File</span>
+                      )}
                       
                       {session?.user?.role === 'admin' && (
                         <>

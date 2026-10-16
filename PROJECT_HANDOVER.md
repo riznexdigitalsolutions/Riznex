@@ -273,14 +273,31 @@
   - In `POST /api/offers`: When creating a new current offer (`status: 'current'`), the server automatically queries all existing `current` offers for that `clientId`, `store`, and `platform` and moves them to `status: 'previous'`, setting their `endDate` to 1 second before the new offer's `startDate` (23:59:59 of the previous day).
   - The previous offer and its associated sales data are instantly and cleanly allocated to the Previous Offers section and chart.
 
+### R. Multi-Client Parity & Strict Marketing Data Isolation (October 17, 2026)
+- **User Requirement:** Ensure the exact same offers menu settings, toolbar layout, interactive buttons, auto-rotation archiving, and chart bounding apply to all clients (Hungry Birds, Henley on Thames, etc.) while strictly preserving data isolation so that Henley's specific marketing campaigns (Herbies Pizza 30% off, Tasty Bun BOGO burgers, Top Rank budgets) are NOT replicated or copied into Hungry Birds.
+- **Architectural Parity & Client Independence:**
+  - **Unified Component:** Both [HenleyDashboard.tsx](file:///e:/Sales%20Software/restaurant-dashboard/app/dashboard/HenleyDashboard.tsx) and [HungryBirdsDashboard.tsx](file:///e:/Sales%20Software/restaurant-dashboard/app/dashboard/HungryBirdsDashboard.tsx) use the shared [OffersCampaignView.tsx](file:///e:/Sales%20Software/restaurant-dashboard/components/OffersCampaignView.tsx) component.
+  - **Identical Settings & Features for All Clients:**
+    - Platform filter tabs (`All Platforms`, `Deliveroo`, `Uber Eats`, `Just Eat`, `Website Direct`).
+    - Prominent `+ Add Current Offer` button in Section 1 Header.
+    - Direct `+ Add Offer` button on every platform card (4-card grid and single-card view).
+    - Direct `✎ Edit` button for active platform offers.
+    - Automated server-side archiving when adding new current offers (`app/api/offers/route.ts`).
+    - Week bounding on charts: only weeks within active offer bounds are displayed; preceding weeks are strictly excluded.
+    - Single-store vs multi-store adaptation: for single-store clients (Hungry Birds), store pills are cleanly omitted (`availableStores.length <= 1`), while for multi-store clients (Henley on Thames), store pills (`Combined`, `Herbies Pizza`, `Tasty Bun`) are automatically rendered.
+  - **Strict Data Isolation in Database:**
+    - Offers in MySQL (`MarketingOffer` table) are queried and inserted strictly by `clientId`.
+    - Henley on Thames (`cmpv4dvik0000vdj089wl6zmf`) retains all 17 campaign records (Herbies Pizza and Tasty Bun campaigns).
+    - Hungry Birds (`client-1`) starts with clean, independent offer state. Adding or modifying an offer under Hungry Birds saves exclusively to `client-1` without any cross-client data contamination.
+
 ---
 
 ## 5. Current Task & System Status (Handover Checkpoint)
 
 - **System Status:** 100% operational, fully verified with Next.js, committed, and pushed to GitHub `origin main`.
 - **Active Clients:**
-  - **Hungry Birds:** Client ID `client-1`, fully configured with Online Web, Direct Walk-in Card, Cash, Deliveroo, Just Eat, Uber Eats, auto-filled fixed costs, and sales invoices.
-  - **Henley on Thames:** Client ID `cmpv4dvik0000vdj089wl6zmf`, fully configured with Herbies Pizza (Deliveroo offers active from 08-Jun with £7,170.82 sales attributed, Just Eat campaigns), Tasty Bun (separate Website, Mobile App, POS, active offers from 24-Sept with £4,330.22 sales attributed), Deliveroo, Just Eat, Uber Eats, suppliers, fixed costs, and sales invoices.
+  - **Hungry Birds:** Client ID `client-1`, fully configured with Online Web, Direct Walk-in Card, Cash, Deliveroo, Just Eat, Uber Eats, auto-filled fixed costs, sales invoices, and identical offers campaign system.
+  - **Henley on Thames:** Client ID `cmpv4dvik0000vdj089wl6zmf`, fully configured with Herbies Pizza (Deliveroo offers active from 08-Jun with £7,170.82 sales attributed, Just Eat campaigns), Tasty Bun (separate Website, Mobile App, POS, active offers from 24-Sept with £4,330.22 sales attributed), Deliveroo, Just Eat, Uber Eats, suppliers, fixed costs, sales invoices, and auto-archived previous offers.
 - **Role Permissions Active:**
   - **Client Role (`role === 'client'`):** Read-only mode across Overview, Sales, Expenses, and Sales Invoices. Clients can view data, download PDFs, view/download invoice and supplier vouchers, but cannot Add, Edit, Delete, or Upload records.
   - **Admin Role:** Retains full privileges across all clients, stores, and management actions.
@@ -293,6 +310,7 @@
      `node "C:\Users\syedq\.gemini\antigravity\brain\fff3c3be-ce4e-49ff-b76d-5be74530568c\scratch\copy-files.js"`
   3. Run `npm run build` in `C:\Users\syedq\Documents\GitHub\Riznex` to verify type safety and compilation.
   4. Commit and push to GitHub `origin main`. Hostinger production server pulls directly from `main`.
+
 
 
 

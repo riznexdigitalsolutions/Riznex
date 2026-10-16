@@ -213,14 +213,36 @@
 - **Responsive DateFilter Toolbar (`components/DateFilter.tsx`):**
   - Re-architected date range dropdowns to flex-wrap gracefully (`flex flex-wrap items-center gap-1 sm:gap-1.5 max-w-full`) on small smartphone screens without cutting off dropdowns or pushing off-screen.
 
+### N. Tasty Bun Henley Active Offers & Platform Sales Attribution (October 16, 2026)
+- **User Requirement:** Configure active campaigns for **Tasty Bun** (Henley on Thames, `cmpv4dvik0000vdj089wl6zmf`) running from **24th September 2026 to present**:
+  - **All Delivery Platforms:** Buy 1 Get 1 Free Burgers (BOGO)
+  - **Deliveroo:** Top Rank £100 per week + Buy 1 Get 1 Free Burgers
+  - **Just Eat:** Top Rank £60 per day + Buy 1 Get 1 Free Burgers
+  - **Uber Eats:** 20% off on orders over £30 + Top Rank £10 per day + Buy 1 Get 1 Free Burgers
+  - Link all sales associated with each platform to these active offers.
+- **Database Updates Executed:**
+  - Archived 10 existing `current` offers for Tasty Bun to `previous` (`endDate: 2026-09-23T23:59:59.999Z`).
+  - Created 3 new `current` offers in `MarketingOffer` table starting `2026-09-24T00:00:00.000Z` (`endDate: null`, `is2025: false`):
+    - Deliveroo (ID: `cmvbkj6e10001wkd46i789l3u`)
+    - Just Eat (ID: `cmvbkj7730003wkd4k0152eql`)
+    - Uber Eats (ID: `cmvbkj7qe0005wkd48g43vx1i`)
+- **Associated Sales & Orders Verified:**
+  - **Deliveroo:** **£1,244.00** across **50 orders** (21–27 Sep: £532.24 / 22 orders; 28 Sep–04 Oct: £517.37 / 21 orders; 05–11 Oct: £194.39 / 7 orders)
+  - **Just Eat:** **£838.33** across **30 orders** (21–27 Sep: £254.84 / 8 orders; 28 Sep–04 Oct: £301.26 / 11 orders; 05–11 Oct: £282.23 / 11 orders)
+  - **Uber Eats:** **£2,247.89** across **63 orders** (21–27 Sep: £940.93 / 25 orders; 28 Sep–04 Oct: £917.24 / 27 orders; 05–11 Oct: £389.72 / 11 orders)
+  - **Delivery Combined:** **£4,330.22** across **143 orders**
+  - **Total Store (incl Direct POS, Web, App):** **£5,717.93** across **216 orders**
+- **Component Chart Enhancement:**
+  - [`components/OffersCampaignView.tsx`](file:///e:/Sales%20Software/restaurant-dashboard/components/OffersCampaignView.tsx): Adjusted the `renderWeeklyChart` time boundary to capture the complete 7-day cycle containing the mid-week offer start date (`2026-09-24`).
+
 ---
 
 ## 5. Current Task & System Status (Handover Checkpoint)
 
-- **System Status:** 100% operational, fully verified with Next.js (`npm run build` completed with 0 errors, 38/38 routes generated), committed (`31edb84`), and pushed to GitHub `origin main`.
+- **System Status:** 100% operational, fully verified with Next.js, committed, and pushed to GitHub `origin main`.
 - **Active Clients:**
   - **Hungry Birds:** Client ID `client-1`, fully configured with Online Web, Direct Walk-in Card, Cash, Deliveroo, Just Eat, Uber Eats, auto-filled fixed costs, and sales invoices.
-  - **Henley on Thames:** Client ID `cmpv4dvik0000vdj089wl6zmf`, fully configured with Herbies Pizza, Tasty Bun (separate Website, Mobile App, POS), Deliveroo, Just Eat, Uber Eats, suppliers, fixed costs, and sales invoices.
+  - **Henley on Thames:** Client ID `cmpv4dvik0000vdj089wl6zmf`, fully configured with Herbies Pizza, Tasty Bun (separate Website, Mobile App, POS), Deliveroo, Just Eat, Uber Eats, suppliers, fixed costs, sales invoices, and active offers.
 - **Role Permissions Active:**
   - **Client Role (`role === 'client'`):** Read-only mode across Overview, Sales, Expenses, and Sales Invoices. Clients can view data, download PDFs, view/download invoice and supplier vouchers, but cannot Add, Edit, Delete, or Upload records.
   - **Admin Role:** Retains full privileges across all clients, stores, and management actions.
@@ -233,4 +255,5 @@
      `node "C:\Users\syedq\.gemini\antigravity\brain\fff3c3be-ce4e-49ff-b76d-5be74530568c\scratch\copy-files.js"`
   3. Run `npm run build` in `C:\Users\syedq\Documents\GitHub\Riznex` to verify type safety and compilation.
   4. Commit and push to GitHub `origin main`. Hostinger production server pulls directly from `main`.
+
 

@@ -720,7 +720,7 @@ export default function OffersCampaignView({
     // If earliestDate is provided and single platform selected, filter weeks on or after offer start
     let activeData = data
     if (earliestDate && selectedPlatform !== 'all') {
-      const startTime = earliestDate.getTime() - (24 * 60 * 60 * 1000)
+      const startTime = earliestDate.getTime() - (7 * 24 * 60 * 60 * 1000)
       const filtered = data.filter(w => {
         if (!w.dateStr) return true
         return new Date(w.dateStr).getTime() >= startTime

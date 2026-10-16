@@ -171,6 +171,15 @@
   - Subtitles updated to reflect the most recent 6 weeks.
   - **Runtime Fix:** Fixed a `ReferenceError` where `useMemo` hooks (`currentEarliestDate`, `previousEarliestDate`) were called prior to `getPlatformDetails` declaration. Moved hooks to immediately follow `getPlatformDetails`.
 
+### J. Removal of Standard Menu Pricing & Expandable Records Section (October 16, 2026)
+- **User Requirement:**
+  - Remove all `"Standard Menu Pricing"`, `"No active discount"`, and `"Standard Visibility"` placeholder text across all offers. Only show actual active deals, and if none exist, display a clean `• No active offers`.
+  - Completely remove the bottom expandable section: `▼ View All Registered Campaign Records & Individual Platform Spends` and its legacy table.
+  - Apply the exact same clean offer structure universally across all clients (**Henley on Thames**, **Hungry Birds**) and **Admin**.
+- **Components Updated:**
+  - `components/OffersCampaignView.tsx`: Stripped out fallback placeholder strings from `getPlatformDetails`, single platform view, and the 4-card platform grid. Removed the entire expandable records table section and its `showRoiTable` state.
+  - `app/dashboard/HungryBirdsDashboard.tsx`: Set `isAdmin={false}` on `OffersCampaignView` for complete consistency with Henley on Thames.
+
 ---
 
 ## 5. Current Task & System Status

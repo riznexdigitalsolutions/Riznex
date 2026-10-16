@@ -169,6 +169,7 @@
   - Filtered total sales and orders from `earliestStartDate` of active campaign to present with safe fallback.
   - Updated `renderWeeklyChart`: Set chart slicing to `activeData.slice(-6)` and filtered by offer start date when applicable.
   - Subtitles updated to reflect the most recent 6 weeks.
+  - **Runtime Fix:** Fixed a `ReferenceError` where `useMemo` hooks (`currentEarliestDate`, `previousEarliestDate`) were called prior to `getPlatformDetails` declaration. Moved hooks to immediately follow `getPlatformDetails`.
 
 ---
 

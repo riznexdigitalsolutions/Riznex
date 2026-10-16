@@ -237,14 +237,26 @@ export default function OffersCampaignView({
     return s === c
   }
 
-  // Filter week-wise sales specifically for the selected platform (or all platforms combined)
+  // Check if platform belongs to active delivery/marketing platforms
+  const isDeliveryOfferPlatform = (sPlatformRaw: string) => {
+    if (!sPlatformRaw) return false
+    const sPlatform = sPlatformRaw.toLowerCase().replace(/[\s-]/g, '_')
+    if (sPlatform.includes('pos') || sPlatform.includes('walk_in') || sPlatform.includes('cash')) return false
+    return PLATFORMS_CONFIG.some(p => isPlatformMatch(sPlatformRaw, p.id))
+  }
+
+  // Filter week-wise sales specifically for the selected platform (or all offer platforms combined)
   const filteredCurrWeeklyData = useMemo(() => {
-    if (selectedPlatform === 'all' || !rawSales || rawSales.length === 0) return currWeeklyData
+    if (!rawSales || rawSales.length === 0) return currWeeklyData
     return currWeeklyData.map(w => {
       const wDate = w.dateStr ? String(w.dateStr).split('T')[0] : ''
       const matching = rawSales.filter((s: any) => {
         const sDate = s.weekStart ? String(s.weekStart).split('T')[0] : ''
-        return sDate === wDate && isPlatformMatch(s.platform, selectedPlatform) && isStoreMatch(s.store)
+        if (sDate !== wDate || !isStoreMatch(s.store)) return false
+        if (selectedPlatform === 'all') {
+          return isDeliveryOfferPlatform(s.platform)
+        }
+        return isPlatformMatch(s.platform, selectedPlatform)
       })
       const sales = matching.reduce((sum: number, s: any) => sum + (Number(s.grossSales) || 0), 0)
       const orders = matching.reduce((sum: number, s: any) => sum + (Number(s.totalOrders) || 0), 0)
@@ -258,12 +270,16 @@ export default function OffersCampaignView({
   }, [currWeeklyData, rawSales, selectedPlatform, currentStore])
 
   const filteredPrevWeeklyData = useMemo(() => {
-    if (selectedPlatform === 'all' || !rawSales || rawSales.length === 0) return prevWeeklyData
+    if (!rawSales || rawSales.length === 0) return prevWeeklyData
     return prevWeeklyData.map(w => {
       const wDate = w.dateStr ? String(w.dateStr).split('T')[0] : ''
       const matching = rawSales.filter((s: any) => {
         const sDate = s.weekStart ? String(s.weekStart).split('T')[0] : ''
-        return sDate === wDate && isPlatformMatch(s.platform, selectedPlatform) && isStoreMatch(s.store)
+        if (sDate !== wDate || !isStoreMatch(s.store)) return false
+        if (selectedPlatform === 'all') {
+          return isDeliveryOfferPlatform(s.platform)
+        }
+        return isPlatformMatch(s.platform, selectedPlatform)
       })
       const sales = matching.reduce((sum: number, s: any) => sum + (Number(s.grossSales) || 0), 0)
       const orders = matching.reduce((sum: number, s: any) => sum + (Number(s.totalOrders) || 0), 0)
@@ -353,7 +369,12 @@ export default function OffersCampaignView({
   }
 
   const currentEarliestDate = useMemo(() => {
-    if (selectedPlatform === 'all') return null
+    if (selectedPlatform === 'all') {
+      const startDates = currentOffersList
+        .map(o => (o.startDate ? new Date(o.startDate).getTime() : 0))
+        .filter(d => d > 0)
+      return startDates.length > 0 ? new Date(Math.min(...startDates)) : null
+    }
     const pConfig = PLATFORMS_CONFIG.find(p => p.id === selectedPlatform)
     if (!pConfig) return null
     const details = getPlatformDetails(pConfig, currentOffersList)
@@ -363,15 +384,21 @@ export default function OffersCampaignView({
     return startDates.length > 0 ? new Date(Math.min(...startDates)) : null
   }, [selectedPlatform, currentOffersList])
 
-  const previousEarliestDate = useMemo(() => {
-    if (selectedPlatform === 'all') return null
-    const pConfig = PLATFORMS_CONFIG.find(p => p.id === selectedPlatform)
-    if (!pConfig) return null
-    const details = getPlatformDetails(pConfig, previousOffersList)
-    const startDates = details.matching
+  const previousDateBounds = useMemo(() => {
+    const list = selectedPlatform === 'all'
+      ? previousOffersList
+      : getPlatformDetails(PLATFORMS_CONFIG.find(p => p.id === selectedPlatform) || PLATFORMS_CONFIG[0], previousOffersList).matching
+
+    const startDates = list
       .map(o => (o.startDate ? new Date(o.startDate).getTime() : 0))
       .filter(d => d > 0)
-    return startDates.length > 0 ? new Date(Math.min(...startDates)) : null
+    const endDates = list
+      .map(o => (o.endDate ? new Date(o.endDate).getTime() : 0))
+      .filter(d => d > 0)
+
+    const earliest = startDates.length > 0 ? new Date(Math.min(...startDates)) : null
+    const latest = endDates.length > 0 ? new Date(Math.max(...endDates)) : null
+    return { earliest, latest }
   }, [selectedPlatform, previousOffersList])
 
   // Handle open modal for Create or Edit
@@ -715,15 +742,30 @@ export default function OffersCampaignView({
     )
   }
 
-  // Render Week-Wise Performance Chart (Up to Most Recent 6 Weeks)
-  const renderWeeklyChart = (data: WeeklyStatItem[], title: string, subtitle: string, earliestDate?: Date | null) => {
-    // If earliestDate is provided and single platform selected, filter weeks on or after offer start
+  // Render Week-Wise Performance Chart (Up to Most Recent 6 Weeks of that offer)
+  const renderWeeklyChart = (
+    data: WeeklyStatItem[],
+    title: string,
+    subtitle: string,
+    earliestDate?: Date | null,
+    latestDate?: Date | null
+  ) => {
     let activeData = data
-    if (earliestDate && selectedPlatform !== 'all') {
-      const startTime = earliestDate.getTime() - (7 * 24 * 60 * 60 * 1000)
+
+    // Strictly filter out weeks that occurred before the offer started or after it ended
+    if (earliestDate || latestDate) {
       const filtered = data.filter(w => {
-        if (!w.dateStr) return true
-        return new Date(w.dateStr).getTime() >= startTime
+        if (!w.dateStr) return false
+        const wStart = new Date(w.dateStr).getTime()
+        const wEnd = wStart + (6 * 24 * 60 * 60 * 1000)
+
+        // If the entire week ended before the offer became active, it is a PREVIOUS week -> exclude
+        if (earliestDate && wEnd < earliestDate.getTime()) return false
+
+        // If the week started after the offer ended -> exclude
+        if (latestDate && wStart > latestDate.getTime()) return false
+
+        return true
       })
       if (filtered.length > 0) {
         activeData = filtered
@@ -992,7 +1034,8 @@ export default function OffersCampaignView({
           filteredPrevWeeklyData,
           previousChartTitle,
           previousChartSubtitle,
-          previousEarliestDate
+          previousDateBounds.earliest,
+          previousDateBounds.latest
         )}
       </div>
 

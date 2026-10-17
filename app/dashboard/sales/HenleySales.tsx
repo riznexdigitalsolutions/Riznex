@@ -6,6 +6,7 @@ import { useSearchParams, useRouter } from 'next/navigation'
 import { exportToPDF } from '@/lib/pdfExport'
 import { gbp, fmtDate, platformLabel, platformColor, PLATFORMS, fmtDateInput, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface Sale {
   id: string; platform: string; store: string; weekStart: string; weekEnd: string
@@ -47,11 +48,14 @@ function MultiSelectPlatformFilter({
     { value: "Deliveroo", label: "Deliveroo" },
     { value: "Just Eat", label: "Just Eat" },
     { value: "Uber Eats", label: "Uber Eats" },
-    { value: "Herbies Website", label: "Herbies Website" },
-    ...(!is2025 ? [{ value: "Tasty Bun Website", label: "Tasty Bun Website" }] : []),
-    { value: "Herbies Mobile App", label: "Herbies Mobile App" },
-    ...(!is2025 ? [{ value: "Tasty Bun Mobile App", label: "Tasty Bun Mobile App" }] : []),
-    { value: "POS", label: "In-Store POS" },
+    { value: "Herbies POS", label: "Herbies POS" },
+    { value: "Herbies Web & App", label: "Herbies Web & App" },
+    ...(!is2025 ? [
+      { value: "Tasty Bun POS", label: "Tasty Bun POS" },
+      { value: "Tasty Bun Website", label: "Tasty Bun Website" },
+      { value: "Tasty Bun Mobile App", label: "Tasty Bun Mobile App" },
+    ] : []),
+    { value: "POS", label: "All In-Store POS" },
   ]
 
   const handleToggle = (value: string) => {
@@ -174,6 +178,7 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
     
     if (filter.from) params.set('from', filter.from)
     if (filter.to) params.set('to', filter.to)
+    if (filter.weekRanges) params.set('ranges', filter.weekRanges)
     const res = await fetch(`/api/sales?${params}`)
     const data = await res.json()
     setSales(Array.isArray(data) ? data : [])
@@ -327,23 +332,23 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
   }
 
   return (
-    <div id="sales-export-area" className="space-y-6">
+    <div id="sales-export-area" className="space-y-6 max-w-full min-w-0">
       {/* ── Centered Header & Filters ─────────────────────────────────────── */}
       <div className="space-y-4">
         {/* Top Row: Centered Title & Subtitle */}
-        <div className="text-center space-y-1">
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Sales</h1>
+        <div className="text-center space-y-1 px-2">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">Sales</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Weekly platform sales records</p>
         </div>
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
-        <div className="flex justify-center items-center print:hidden">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+        <div className="flex justify-center items-center w-full max-w-full print:hidden">
+          <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center justify-center gap-2 sm:gap-4 shadow-xl backdrop-blur-md">
             {!is2025 && (
-              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+              <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
                 <button
                   onClick={() => router.push(`/dashboard/sales?tab=${activeTab.startsWith('Monthly ') ? 'Monthly Combined' : 'Combined'}`)}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${(activeTab === 'Combined' || activeTab === 'Monthly Combined') ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${(activeTab === 'Combined' || activeTab === 'Monthly Combined') ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                   Combined
                 </button>
@@ -392,22 +397,39 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
               </button>
             </div>
 
-            <button
-              id="add-sale-btn"
-              onClick={() => { 
-                setShowForm(true); 
-                setEditId(null); 
-                setForm({ 
-                  ...EMPTY_FORM, 
-                  store: activeTab 
-                }) 
-              }}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer flex items-center gap-1.5"
-            >
-              <span>+</span> Add Sales Record
-            </button>
+            {isAdmin && (
+              <button
+                id="add-sale-btn"
+                onClick={() => { 
+                  setShowForm(true); 
+                  setEditId(null); 
+                  setForm({ 
+                    ...EMPTY_FORM, 
+                    store: activeTab 
+                  }) 
+                }}
+                className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer flex items-center gap-1.5"
+              >
+                <span>+</span> Add Sales Record
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={activeTab === 'Combined' || activeTab === 'Monthly Combined' ? '' : activeTab.replace('Monthly ', '')}
+          onClearStore={() => router.push(`/dashboard/sales?tab=${activeTab.startsWith('Monthly ') ? 'Monthly Combined' : 'Combined'}`)}
+          platform={filter.platform}
+          onClearPlatform={val => setFilter(f => ({ ...f, platform: val }))}
+          filter={filter}
+          onClearFilter={() => setFilter(f => ({ ...f, ...defaultDateFilter() }))}
+          onClearAll={() => {
+            router.push(`/dashboard/sales?tab=${activeTab.startsWith('Monthly ') ? 'Monthly Combined' : 'Combined'}`)
+            setFilter({ platform: '', ...defaultDateFilter() })
+          }}
+          className="justify-center"
+        />
       </div>
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
@@ -428,21 +450,21 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
 
 
       {/* Table */}
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden w-full max-w-full">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm min-w-[850px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
-                {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Ded %', 'Net Paid', 'Actions'].map(h => (
+                {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Ded %', 'Net Paid', ...(isAdmin ? ['Actions'] : [])].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
-                <tr><td colSpan={10} className="text-center py-12 text-slate-500">Loading…</td></tr>
+                <tr><td colSpan={isAdmin ? 10 : 9} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : sales.length === 0 ? (
-                <tr><td colSpan={10} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
+                <tr><td colSpan={isAdmin ? 10 : 9} className="text-center py-12 text-slate-500">No sales records yet.</td></tr>
               ) : sales.map(s => (
                 <tr key={s.id} className="hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
                   <td className="px-4 py-3">
@@ -459,12 +481,14 @@ function SalesContent({ is2025 }: { is2025?: boolean }) {
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp((s.otherFees || 0) + (s.adminFee || 0) + (s.offersOnItems || 0) + (s.offerRedemptionFee || 0) - (s.refunds || 0))}</td>
                   <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{getRowCommPercent(s)}</td>
                   <td className="px-4 py-3 text-slate-900 dark:text-white font-bold">{gbp(s.netPaid)}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(s)} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
-                      <button onClick={() => handleDelete(s.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => openEdit(s)} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                        <button onClick={() => handleDelete(s.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

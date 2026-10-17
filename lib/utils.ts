@@ -61,7 +61,6 @@ export function platformLabel(platform: string, store?: string): string {
   if (isTasty) {
     if (platform === 'Website' || platform === 'Tasty Bun Website') return 'Tasty Bun Website'
     if (platform === 'Mobile App' || platform === 'Tasty Bun Mobile App') return 'Tasty Bun Mobile App'
-    if (platform === 'Web & App' || platform === 'Tasty Bun Web & App') return 'Tasty Bun Web & App'
   } else {
     if (platform === 'Website' || platform === 'Mobile App' || platform === 'Web & App') {
       return 'Herbies Web & App'
@@ -78,7 +77,6 @@ export function platformLabel(platform: string, store?: string): string {
     'Herbies POS': 'Herbies POS',
     'Tasty Bun POS': 'Tasty Bun POS',
     'Herbies Web & App': 'Herbies Web & App',
-    'Tasty Bun Web & App': 'Tasty Bun Web & App',
     'Herbies Website': 'Herbies Web & App',
     'Tasty Bun Website': 'Tasty Bun Website',
     'Herbies Mobile App': 'Herbies Web & App',
@@ -101,7 +99,6 @@ export function platformColor(platform: string): string {
     'Herbies POS': '#ef4444',
     'Tasty Bun POS': '#f59e0b',
     'Herbies Web & App': '#ec4899',
-    'Tasty Bun Web & App': '#e11d48',
     'Herbies Website': '#ec4899',
     'Tasty Bun Website': '#e11d48',
     'Herbies Mobile App': '#8b5cf6',
@@ -166,7 +163,6 @@ export const PLATFORMS = [
   { value: 'Herbies POS', label: 'Herbies POS', color: '#ef4444' },
   { value: 'Herbies Web & App', label: 'Herbies Web & App', color: '#ec4899' },
   { value: 'Tasty Bun POS', label: 'Tasty Bun POS', color: '#f59e0b' },
-  { value: 'Tasty Bun Web & App', label: 'Tasty Bun Web & App', color: '#e11d48' },
   { value: 'Tasty Bun Website', label: 'Tasty Bun Website', color: '#e11d48' },
   { value: 'Tasty Bun Mobile App', label: 'Tasty Bun Mobile App', color: '#a855f7' },
 ]

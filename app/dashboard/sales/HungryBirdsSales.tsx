@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { gbp, fmtDate, platformLabel, platformColor, PLATFORMS, fmtDateInput, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface Sale {
   id: string; platform: string; store: string; weekStart: string; weekEnd: string
@@ -22,6 +23,7 @@ const EMPTY_FORM = {
 
 function SalesContent() {
   const { data: session } = useSession()
+  const isAdmin = session?.user?.role === 'admin'
   const [sales, setSales] = useState<Sale[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
@@ -201,7 +203,7 @@ function SalesContent() {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 max-w-full min-w-0">
       {/* Top Header Row: Title on Left, Action Buttons on Right */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
@@ -209,40 +211,42 @@ function SalesContent() {
           <p className="text-slate-500 dark:text-slate-400 text-xs font-medium mt-0.5">Weekly platform sales records</p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <input 
-            type="file" 
-            ref={fileInputRef}
-            className="hidden" 
-            accept="image/*,.pdf" 
-            onChange={handleFileUpload} 
-          />
-          <button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={isUploading}
-            className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 disabled:opacity-50 transition whitespace-nowrap cursor-pointer"
-          >
-            {isUploading ? 'Uploading...' : '+ Upload Orders (PDF/Img)'}
-          </button>
-          <button
-            id="add-sale-btn"
-            onClick={() => { 
-              setShowForm(true); 
-              setEditId(null); 
-              setForm({ 
-                ...EMPTY_FORM, 
-                store: activeTab 
-              }) 
-            }}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer"
-          >
-            + Add Sales Record
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex items-center gap-3 flex-wrap">
+            <input 
+              type="file" 
+              ref={fileInputRef}
+              className="hidden" 
+              accept="image/*,.pdf" 
+              onChange={handleFileUpload} 
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="flex items-center gap-2 bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 disabled:opacity-50 transition whitespace-nowrap cursor-pointer"
+            >
+              {isUploading ? 'Uploading...' : '+ Upload Orders (PDF/Img)'}
+            </button>
+            <button
+              id="add-sale-btn"
+              onClick={() => { 
+                setShowForm(true); 
+                setEditId(null); 
+                setForm({ 
+                  ...EMPTY_FORM, 
+                  store: activeTab 
+                }) 
+              }}
+              className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-2 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap cursor-pointer"
+            >
+              + Add Sales Record
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Filter Toolbar Row (Positioned Cleanly Under Top Header) */}
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-3 py-2 flex flex-wrap items-center justify-between gap-3 shadow-md">
+      <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-2.5 sm:px-3 sm:py-2 flex flex-wrap items-center justify-between gap-3 shadow-md">
         <div className="flex flex-wrap items-center gap-3">
           <button
             onClick={() => router.push('/dashboard/sales')}
@@ -262,7 +266,6 @@ function SalesContent() {
             <option value="deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
             <option value="walk_in_cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Walk-in Cash</option>
             <option value="walk_in_card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Walk-in Card</option>
-            <option value="pos_sales" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS Sales</option>
             <option value="online_web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Online Web</option>
           </select>
           <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
@@ -276,6 +279,16 @@ function SalesContent() {
           Reset
         </button>
       </div>
+
+      {/* Active Filters Bar */}
+      <ActiveFilters
+        platform={filter.platform ? platformLabel(filter.platform) : ''}
+        onClearPlatform={() => setFilter(f => ({ ...f, platform: '' }))}
+        filter={filter}
+        onClearFilter={() => setFilter(f => ({ ...f, ...defaultDateFilter() }))}
+        onClearAll={() => setFilter({ platform: '', ...defaultDateFilter() })}
+        className="px-1"
+      />
 
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-2.5 sm:gap-4">
         {[
@@ -295,21 +308,21 @@ function SalesContent() {
 
 
       {/* Table */}
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden w-full max-w-full">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm min-w-[850px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
-                {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Deduction %', 'Net Paid', 'Actions'].map(h => (
+                {['Platform', 'Week', 'Orders', 'Gross Sales', 'Commissions', 'Ads / Top Rank', 'Other Deductions', 'Deduction %', 'Net Paid', ...(isAdmin ? ['Actions'] : [])].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider whitespace-nowrap">{h}</th>
                 ))}
               </tr>
             </thead>
             <tbody className="divide-y divide-[#1f2947]">
               {loading ? (
-                <tr><td colSpan={10} className="text-center py-12 text-slate-500">Loading…</td></tr>
+                <tr><td colSpan={isAdmin ? 10 : 9} className="text-center py-12 text-slate-500">Loading…</td></tr>
               ) : sales.length === 0 ? (
-                <tr><td colSpan={10} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
+                <tr><td colSpan={isAdmin ? 10 : 9} className="text-center py-12 text-slate-500">No sales records yet. Add your first record above.</td></tr>
               ) : sales.map(s => (
                 <tr key={s.id} className="hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors">
                   <td className="px-4 py-3">
@@ -326,11 +339,13 @@ function SalesContent() {
                   <td className="px-4 py-3 text-red-400 font-semibold">{gbp((s.grossSales - s.netPaid) - (s.commission ?? 0) - ((s.adSpends ?? 0) + (s.topRankFee ?? 0)))}</td>
                   <td className="px-4 py-3 text-slate-600 dark:text-slate-300 font-semibold">{getRowDeductionPercent(s)}</td>
                   <td className="px-4 py-3 text-slate-900 dark:text-white font-bold">{gbp(s.netPaid)}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => openEdit(s)} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => openEdit(s)} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               ))}
             </tbody>

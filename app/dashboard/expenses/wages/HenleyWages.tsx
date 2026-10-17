@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { gbp, fmtDate, fmtDateInput, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 interface StaffWage {
   id: string; staffId: string; amount: number; weekEnd: string; store: string;
@@ -166,18 +167,18 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
   }, []).sort((a: any, b: any) => a.name.localeCompare(b.name))
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-full min-w-0">
       {/* ── Centered Header & Filters ─────────────────────────────────────── */}
       <div className="space-y-4">
         {/* Top Row: Centered Title & Subtitle */}
-        <div className="text-center space-y-1">
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">Staff Wages</h1>
+        <div className="text-center space-y-1 px-2">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">Staff Wages</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Manage weekly wage payouts for your staff</p>
         </div>
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
-        <div className="flex justify-center items-center print:hidden">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+        <div className="flex justify-center items-center w-full max-w-full print:hidden">
+          <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center justify-center gap-2 sm:gap-4 shadow-xl backdrop-blur-md">
             <select
               value={staffFilter}
               onChange={e => setStaffFilter(e.target.value)}
@@ -203,7 +204,7 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
               Reset
             </button>
 
-            {selectedIds.size > 0 && (
+            {isAdmin && selectedIds.size > 0 && (
               <>
                 <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
                 <button
@@ -215,23 +216,41 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
               </>
             )}
 
-            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
+            {isAdmin && (
+              <>
+                <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
-            <button
-              onClick={() => setShowAutoFill(true)}
-              className="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 transition cursor-pointer flex items-center gap-1.5"
-            >
-              ⚡ Auto-Fill Fixed Wages
-            </button>
+                <button
+                  onClick={() => setShowAutoFill(true)}
+                  className="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-emerald-500/20 hover:opacity-90 transition cursor-pointer flex items-center gap-1.5"
+                >
+                  ⚡ Auto-Fill Fixed Wages
+                </button>
 
-            <button
-              onClick={() => { setShowForm(true); setEditId(null); setForm({ staffId: staffList[0]?.id || '', hours: '', amount: '', weekEnd: fmtDateInput(new Date()), store: 'Herbies Pizza' }) }}
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition cursor-pointer flex items-center gap-1.5"
-            >
-              <span>+</span> Add Wage
-            </button>
+                <button
+                  onClick={() => { setShowForm(true); setEditId(null); setForm({ staffId: staffList[0]?.id || '', hours: '', amount: '', weekEnd: fmtDateInput(new Date()), store: 'Herbies Pizza' }) }}
+                  className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition cursor-pointer flex items-center gap-1.5"
+                >
+                  <span>+</span> Add Wage
+                </button>
+              </>
+            )}
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={storeFilter}
+          onClearStore={() => setStoreFilter('')}
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => {
+            setStoreFilter('')
+            setStaffFilter('')
+            setFilter(defaultDateFilter())
+          }}
+          className="justify-center"
+        />
       </div>
 
       <div className="space-y-3">
@@ -257,22 +276,24 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
         )}
       </div>
 
-      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+      <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden w-full max-w-full">
+        <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+          <table className="w-full text-sm min-w-[650px]">
             <thead>
               <tr className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947]">
-                <th className="px-4 py-3 w-10 text-center">
-                  <input type="checkbox"
-                    checked={filteredWages.length > 0 && selectedIds.size === filteredWages.length}
-                    onChange={(e) => {
-                      if (e.target.checked) setSelectedIds(new Set(filteredWages.map(w => w.id)))
-                      else setSelectedIds(new Set())
-                    }}
-                    className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer"
-                  />
-                </th>
-                {['Staff Name', 'Store', 'Amount', 'Week Ending', 'Actions'].map(h => (
+                {isAdmin && (
+                  <th className="px-4 py-3 w-10 text-center">
+                    <input type="checkbox"
+                      checked={filteredWages.length > 0 && selectedIds.size === filteredWages.length}
+                      onChange={(e) => {
+                        if (e.target.checked) setSelectedIds(new Set(filteredWages.map(w => w.id)))
+                        else setSelectedIds(new Set())
+                      }}
+                      className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer"
+                    />
+                  </th>
+                )}
+                {['Staff Name', 'Store', 'Amount', 'Week Ending', ...(isAdmin ? ['Actions'] : [])].map(h => (
                   <th key={h} className="text-left px-4 py-3 text-[11px] font-bold text-slate-500 uppercase tracking-wider">{h}</th>
                 ))}
               </tr>
@@ -281,31 +302,33 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
               {loading && wages.length === 0 ? (
                 [...Array(5)].map((_, i) => (
                   <tr key={i} className="animate-pulse">
-                    <td className="px-4 py-4 text-center"><div className="w-4 h-4 bg-slate-300 dark:bg-[#1f2947] rounded mx-auto"></div></td>
+                    {isAdmin && <td className="px-4 py-4 text-center"><div className="w-4 h-4 bg-slate-300 dark:bg-[#1f2947] rounded mx-auto"></div></td>}
                     <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-32"></div></td>
                     <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-20"></div></td>
                     <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-16"></div></td>
                     <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-24"></div></td>
-                    <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-16"></div></td>
+                    {isAdmin && <td className="px-4 py-4"><div className="h-4 bg-slate-300 dark:bg-[#1f2947] rounded w-16"></div></td>}
                   </tr>
                 ))
               ) : filteredWages.length === 0 ? (
-                <tr><td colSpan={6} className="text-center py-12 text-slate-500 font-medium">No wages recorded yet.</td></tr>
+                <tr><td colSpan={isAdmin ? 6 : 4} className="text-center py-12 text-slate-500 font-medium">No wages recorded yet.</td></tr>
               ) : filteredWages.map(w => {
                 return (
                 <tr key={w.id} className={`hover:bg-amber-500/10 dark:hover:bg-[#161b2c] transition-colors ${selectedIds.has(w.id) ? 'bg-red-500/5' : ''}`}>
-                  <td className="px-4 py-3 text-center">
-                    <input type="checkbox"
-                      checked={selectedIds.has(w.id)}
-                      onChange={(e) => {
-                        const next = new Set(selectedIds)
-                        if (e.target.checked) next.add(w.id)
-                        else next.delete(w.id)
-                        setSelectedIds(next)
-                      }}
-                      className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer"
-                    />
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3 text-center">
+                      <input type="checkbox"
+                        checked={selectedIds.has(w.id)}
+                        onChange={(e) => {
+                          const next = new Set(selectedIds)
+                          if (e.target.checked) next.add(w.id)
+                          else next.delete(w.id)
+                          setSelectedIds(next)
+                        }}
+                        className="w-4 h-4 rounded border-slate-200 dark:border-[#1f2947] bg-slate-100 dark:bg-[#111520] text-red-500 focus:ring-red-500/50 cursor-pointer"
+                      />
+                    </td>
+                  )}
                   <td className="px-4 py-3 font-semibold text-slate-900 dark:text-white">{w.staff?.name || 'Unknown Staff'}</td>
                   <td className="px-4 py-3">
                     <span className="inline-block bg-slate-500/10 text-slate-500 dark:text-slate-400 border border-slate-500/20 px-2 py-0.5 rounded text-[10px] font-bold">
@@ -316,15 +339,17 @@ export function HenleyWages({ is2025 = false }: { is2025?: boolean }) {
                     {gbp(w.amount)}
                   </td>
                   <td className="px-4 py-3 text-slate-500 dark:text-slate-400">{w.weekEnd ? fmtDate(w.weekEnd) : '-'}</td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-1">
-                      <button onClick={() => {
-                        setForm({ staffId: w.staffId, hours: '', amount: w.amount.toString(), weekEnd: w.weekEnd.split('T')[0], store: 'Herbies Pizza' })
-                        setEditId(w.id); setShowForm(true)
-                      }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
-                      <button onClick={() => handleDelete(w.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
-                    </div>
-                  </td>
+                  {isAdmin && (
+                    <td className="px-4 py-3">
+                      <div className="flex items-center gap-1">
+                        <button onClick={() => {
+                          setForm({ staffId: w.staffId, hours: '', amount: w.amount.toString(), weekEnd: w.weekEnd.split('T')[0], store: 'Herbies Pizza' })
+                          setEditId(w.id); setShowForm(true)
+                        }} className="text-slate-900 dark:text-white hover:text-blue-300 p-1.5 rounded-lg hover:bg-blue-500/10 transition text-xs">Edit</button>
+                        <button onClick={() => handleDelete(w.id)} className="text-red-400 hover:text-red-300 p-1.5 rounded-lg hover:bg-red-500/10 transition text-xs">Del</button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               )})}
             </tbody>

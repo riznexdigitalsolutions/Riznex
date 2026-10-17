@@ -47,18 +47,23 @@ model Client {
 }
 
 model MarketingOffer {
-  id          String   @id @default(cuid())
-  clientId    String
-  client      Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  platform    String   // "just_eat" | "uber_eats" | "deliveroo" | "facebook" | "google"
-  store       String   @default("Combined") // "Combined" | "Herbies Pizza" | "Tasty Bun"
-  type        String   @default("weekly") // "weekly" | "monthly"
-  startDate   DateTime
-  amount      Float
-  notes       String?
-  is2025      Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String    @id @default(cuid())
+  clientId        String
+  client          Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  platform        String    // "just_eat" | "uber_eats" | "deliveroo" | "website" | "facebook" | "google"
+  store           String    @default("Combined") // "Combined" | "Herbies Pizza" | "Tasty Bun"
+  type            String    @default("weekly") // "weekly" | "monthly"
+  startDate       DateTime
+  endDate         DateTime?
+  status          String    @default("current") // "current" | "previous"
+  amount          Float     @default(0)
+  topRank         String?
+  discountPercent String?
+  offerItems      String?   @db.Text
+  notes           String?
+  is2025          Boolean   @default(false)
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
 }
 
 model Sale {
@@ -173,7 +178,7 @@ model Invoice {
   amount       Float?
   invoiceDate  DateTime?
   ocrStatus    String    @default("pending") // "pending" | "processing" | "done" | "error"
-  ocrData      String?   // JSON string of extracted data
+  ocrData      String?   @db.Text // JSON string of extracted data
   notes        String?
   sourceInvoiceId String?
   sourceInvoice   Invoice?  @relation("GeneratedInvoices", fields: [sourceInvoiceId], references: [id], onDelete: Cascade)

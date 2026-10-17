@@ -61,31 +61,68 @@ export async function GET(req: NextRequest) {
       }
     }
   
-    const salesWhere: any = buildWhere({ clientId, is2025 }, 'weekEnd')
+    const andClauses: any[] = [
+    { clientId },
+    { is2025 }
+  ]
+
+  if (dateWhereList.length === 1) {
+    andClauses.push({ weekEnd: dateWhereList[0] })
+  } else {
+    andClauses.push({ OR: dateWhereList.map(range => ({ weekEnd: range })) })
+  }
+
   if (platform) {
     const platforms = platform.split(',').map(p => p.trim()).filter(Boolean)
-    const platformConditions = platforms.map(p => {
-      if (p === 'Website' || p === 'POS' || p === 'Mobile App' || p === 'In-Store POS') {
-        return { OR: [{ platform: { contains: p } }, { platform: 'POS' }, { platform: { contains: 'POS' } }] }
-      }
-      return { platform: { contains: p } }
-    })
-    
-    if (platformConditions.length === 1) {
-      if (platformConditions[0].OR) {
-        if (salesWhere.OR) {
-          salesWhere.AND = [{ OR: salesWhere.OR }, { OR: platformConditions[0].OR }];
-          delete salesWhere.OR;
-        } else {
-          salesWhere.OR = platformConditions[0].OR;
-        }
+    const platformORs: any[] = []
+    platforms.forEach(p => {
+      if (p === 'Tasty Bun Website') {
+        platformORs.push(
+          { platform: 'Tasty Bun Website' },
+          { platform: { contains: 'Tasty Bun Website' } }
+        )
+      } else if (p === 'Tasty Bun Mobile App') {
+        platformORs.push(
+          { platform: 'Tasty Bun Mobile App' },
+          { platform: { contains: 'Tasty Bun Mobile' } }
+        )
+      } else if (p === 'Herbies Web & App' || p === 'Herbies Website' || p === 'Herbies Mobile App') {
+        platformORs.push(
+          { platform: 'Herbies Web & App' },
+          { platform: { contains: 'Herbies Web' } }
+        )
+      } else if (p === 'Herbies POS') {
+        platformORs.push(
+          { platform: 'Herbies POS' },
+          { platform: { contains: 'Herbies POS' } }
+        )
+      } else if (p === 'Tasty Bun POS') {
+        platformORs.push(
+          { platform: 'Tasty Bun POS' },
+          { platform: { contains: 'Tasty Bun POS' } }
+        )
+      } else if (p === 'POS' || p === 'In-Store POS') {
+        platformORs.push(
+          { platform: { contains: 'POS' } },
+          { platform: 'POS' }
+        )
+      } else if (p === 'Website' || p === 'Mobile App' || p === 'Web & App') {
+        platformORs.push(
+          { platform: { contains: 'Web' } },
+          { platform: { contains: 'Website' } },
+          { platform: { contains: 'Mobile App' } }
+        )
       } else {
-        Object.assign(salesWhere, platformConditions[0]);
+        platformORs.push({ platform: { contains: p } })
       }
-    } else if (platformConditions.length > 1) {
-      salesWhere.OR = platformConditions.flatMap(c => c.OR || [c]);
+    })
+
+    if (platformORs.length > 0) {
+      andClauses.push({ OR: platformORs })
     }
   }
+
+  const salesWhere: any = { AND: andClauses }
 
   // Sales
   const salesRaw = await prisma.sale.findMany({
@@ -230,7 +267,7 @@ export async function GET(req: NextRequest) {
       try { ocr = JSON.parse(s.invoice.ocrData) } catch (e) {}
     }
 
-    const isAlreadySplit = s.platform === 'Herbies POS' || s.platform === 'Herbies Web & App' || s.platform === 'Tasty Bun POS' || s.platform === 'Tasty Bun Web & App';
+    const isAlreadySplit = s.platform === 'Herbies POS' || s.platform === 'Herbies Web & App' || s.platform === 'Tasty Bun POS' || s.platform === 'Tasty Bun Website' || s.platform === 'Tasty Bun Mobile App';
 
     if (!isAlreadySplit && ocr && (ocr.website || ocr.consumerApp || ocr.s4dRegister || ocr.andromedaPOS || ocr.androweb || ocr.app)) {
       const isTasty = s.store && s.store.includes('Tasty')
@@ -248,10 +285,19 @@ export async function GET(req: NextRequest) {
       const posOrders = (ocr.andromedaPOS?.orders || 0)
       const hasSpecificOrders = (webAppOrders + posOrders) > 0
 
-      const channels = [
-        { name: `${storePrefix} Web & App`, gross: webAppGross, net: webAppNet, exactOrders: webAppOrders },
-        { name: `${storePrefix} POS`, gross: posGross, net: posNet, exactOrders: posOrders },
-      ]
+      let channels: any[] = []
+      if (isTasty) {
+        channels = [
+          { name: `Tasty Bun Website`, gross: ocr.androweb?.sales || 0, net: ocr.androweb?.sales || 0, exactOrders: ocr.androweb?.orders || 0 },
+          { name: `Tasty Bun Mobile App`, gross: ocr.app?.sales || 0, net: ocr.app?.sales || 0, exactOrders: ocr.app?.orders || 0 },
+          { name: `Tasty Bun POS`, gross: ocr.andromedaPOS?.sales || 0, net: ocr.andromedaPOS?.sales || 0, exactOrders: ocr.andromedaPOS?.orders || 0 },
+        ]
+      } else {
+        channels = [
+          { name: `${storePrefix} Web & App`, gross: webAppGross, net: webAppNet, exactOrders: webAppOrders },
+          { name: `${storePrefix} POS`, gross: posGross, net: posNet, exactOrders: posOrders },
+        ]
+      }
 
       const totalGross = channels.reduce((sum, c) => sum + c.gross, 0)
 
@@ -265,7 +311,7 @@ export async function GET(req: NextRequest) {
         let finalNetPaid = baseSales
 
         if (isTasty) {
-          // Tasty Bun: 4.0% commission on Net Sales for Web & App and POS
+          // Tasty Bun: 4.0% commission on Net Sales for direct channels
           commission = baseSales * 0.04
           finalNetPaid = baseSales - commission
         } else {
@@ -297,7 +343,7 @@ export async function GET(req: NextRequest) {
       else if (p === 'Mobile App' || p === 'Tasty Bun Mobile App') p = 'Tasty Bun Mobile App'
       else if (p === 'POS' || p === 'In-Store POS' || p === 'Tasty Bun POS') p = 'Tasty Bun POS'
     } else {
-      if (p === 'Website' || p === 'Mobile App' || p === 'Web & App' || p === 'Herbies Web & App') p = 'Herbies Web & App'
+      if (p === 'Website' || p === 'Mobile App' || p === 'Web & App' || p === 'Herbies Web & App' || p === 'Herbies Website' || p === 'Herbies Mobile App') p = 'Herbies Web & App'
       else if (p === 'POS' || p === 'In-Store POS' || p === 'Herbies POS') p = 'Herbies POS'
     }
 
@@ -305,7 +351,7 @@ export async function GET(req: NextRequest) {
     let finalNetPaid = s.netPaid || s.grossSales
 
     if (isTasty) {
-      if (p.includes('Website') || p.includes('Mobile App') || p.includes('Web & App') || p.includes('POS')) {
+      if (p.includes('Website') || p.includes('Mobile App') || p.includes('POS')) {
         commission = s.grossSales * 0.04
         finalNetPaid = s.grossSales - commission
       }

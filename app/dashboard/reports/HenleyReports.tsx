@@ -7,6 +7,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, Legend, PieChart, Pie, Cell
 } from 'recharts'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 const PIE_COLORS = ['#4f8ef7','#7b5cf0','#22d3a5','#f97316','#fbbf24','#f04060','#e879f9','#38bdf8']
 
@@ -140,28 +141,28 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
   })) : []
 
   return (
-    <div className="space-y-6 pb-10">
+    <div className="space-y-6 pb-10 max-w-full min-w-0">
       {/* ── Centered Header & Filters ─────────────────────────────────────── */}
       <div className="space-y-4">
         {/* Top Row: Centered Title & Subtitle */}
-        <div className="text-center space-y-1">
-          <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">CFO Financial Reports</h1>
+        <div className="text-center space-y-1 px-2">
+          <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">CFO Financial Reports</h1>
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">Advanced P&L, prime cost ratios, and platform margins</p>
         </div>
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
-        <div className="flex justify-center items-center print:hidden">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
-            <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+        <div className="flex justify-center items-center w-full max-w-full print:hidden">
+          <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center justify-center gap-2 sm:gap-4 shadow-xl backdrop-blur-md">
+            <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
               <button 
                 onClick={() => setPeriod('weekly')} 
-                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${period === 'weekly' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
+                className={`px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${period === 'weekly' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
               >
                 Weekly View
               </button>
               <button 
                 onClick={() => setPeriod('monthly')} 
-                className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${period === 'monthly' ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
+                className={`px-3 sm:px-4 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${period === 'monthly' ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
               >
                 Monthly View
               </button>
@@ -198,6 +199,14 @@ export function HenleyReports({ is2025 = false }: { is2025?: boolean }) {
             </button>
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => setFilter(defaultDateFilter())}
+          className="justify-center"
+        />
       </div>
 
       {r && (

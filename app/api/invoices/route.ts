@@ -21,22 +21,68 @@ export async function GET(req: NextRequest) {
 
   const where: any = { clientId, is2025 }
   if (type) where.type = type
+
+  const andClauses: any[] = []
+
+  // Date condition: if from/to specified, filter with a 7-day lookback for platform statements
+  if (from || to) {
+    const dateCondition: any = {}
+    if (from) {
+      const dateFrom = new Date(from)
+      const queryFrom = new Date(dateFrom.getTime() - 7 * 24 * 60 * 60 * 1000)
+      dateCondition.gte = queryFrom
+    }
+    if (to) {
+      const t = new Date(to)
+      t.setUTCHours(23, 59, 59, 999)
+      dateCondition.lte = t
+    }
+    andClauses.push({
+      OR: [
+        { invoiceDate: dateCondition },
+        { invoiceDate: null }
+      ]
+    })
+  }
+
   if (platform) {
-    if (platform.includes('Website')) {
-      where.platform = { contains: platform.replace('Website', 'POS') }
-    } else {
-      where.platform = { contains: platform }
+    const platforms = platform.split(',').map(p => p.trim()).filter(Boolean)
+    const platformORs: any[] = []
+    platforms.forEach(p => {
+      if (p === 'Herbies POS' || (p.includes('Herbies') && p.includes('POS'))) {
+        platformORs.push(
+          { platform: 'Herbies Pizza POS' },
+          { platform: { contains: 'Herbies Pizza POS' } },
+          { platform: { contains: 'Herbies POS' } }
+        )
+      } else if (p === 'Tasty Bun POS' || (p.includes('Tasty') && p.includes('POS'))) {
+        platformORs.push(
+          { platform: 'Tasty Bun POS' },
+          { platform: { contains: 'Tasty Bun POS' } }
+        )
+      } else if (p === 'POS') {
+        platformORs.push(
+          { platform: { contains: 'POS' } },
+          { type: 'pos' }
+        )
+      } else if (p.includes('Deliveroo')) {
+        platformORs.push({ platform: { contains: 'Deliveroo' } })
+      } else if (p.includes('Just Eat')) {
+        platformORs.push({ platform: { contains: 'Just Eat' } })
+      } else if (p.includes('Uber Eats') || p.includes('Uber')) {
+        platformORs.push({ platform: { contains: 'Uber' } })
+      } else {
+        platformORs.push({ platform: { contains: p } })
+      }
+    })
+    if (platformORs.length > 0) {
+      andClauses.push({ OR: platformORs })
     }
   }
-  const defaultFrom = is2025 ? new Date(2000, 0, 1) : new Date(Date.UTC(2026, 3, 1))
-  const dateFrom = from ? new Date(from) : defaultFrom
-  // Look back 7 days for platform statements whose week start is late previous month but week end is in target month
-  const queryFrom = from ? new Date(dateFrom.getTime() - 7 * 24 * 60 * 60 * 1000) : defaultFrom
 
-  where.OR = [
-    { invoiceDate: { gte: queryFrom, ...(to ? { lte: (() => { const t = new Date(to); t.setUTCHours(23, 59, 59, 999); return t })() } : {}) } },
-    { invoiceDate: null }
-  ]
+  if (andClauses.length > 0) {
+    where.AND = andClauses
+  }
 
   const invoices = await prisma.invoice.findMany({
     where,

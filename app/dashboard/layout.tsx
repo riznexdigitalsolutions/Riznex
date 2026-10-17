@@ -7,7 +7,54 @@ import { useState, useEffect, Suspense } from 'react'
 
 const getNavItems = (clientName?: string | null, role?: string) => {
   if (role === 'client') {
-    return [{ 
+    return [
+      { 
+        href: '/dashboard', 
+        icon: '📊', 
+        label: 'Overview',
+        subItems: [
+          { href: '/dashboard?tab=overview', label: 'Main Overview' },
+          { href: '/dashboard?tab=weekly', label: 'Weekly Comparison' },
+          { href: '/dashboard?tab=monthly', label: 'Monthly Comparison' },
+          { href: '/dashboard?tab=offers', label: 'Current Offers' }
+        ]
+      },
+      { 
+        href: '/dashboard/sales', 
+        icon: '💷', 
+        label: 'Sales',
+        subItems: clientName === 'Hungry Birds' ? undefined : [
+          { href: '/dashboard/sales?tab=combined', label: 'Combined Sales' }
+        ]
+      },
+      { 
+        href: '/dashboard/expenses', 
+        icon: '💸', 
+        label: 'Expenses',
+        subItems: [
+          { href: '/dashboard/expenses', label: 'Combined Expenses Dashboard' },
+          { href: '/dashboard/expenses/suppliers', label: 'Supplier Purchases' },
+          { href: '/dashboard/expenses/wages', label: 'Staff Wages' },
+          { href: '/dashboard/expenses/utilities', label: 'Utilities' },
+          { href: '/dashboard/expenses/marketing', label: 'Marketing' },
+          { href: '/dashboard/expenses/other', label: 'Other Expenses' }
+        ]
+      },
+      { 
+        href: '/dashboard/invoices', 
+        icon: '🧾', 
+        label: 'Sales Invoices',
+        subItems: [
+          { href: '/dashboard/invoices?tab=all', label: 'Combined Invoices Data' },
+          { href: '/dashboard/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
+          { href: '/dashboard/invoices?tab=pos', label: clientName === 'Hungry Birds' ? 'POS (Walk-in Card & Cash)' : 'Herbies Pizza & Tasty Bun POS Invoices' }
+        ]
+      }
+    ]
+  }
+
+  return [
+    { 
       href: '/dashboard', 
       icon: '📊', 
       label: 'Overview',
@@ -19,6 +66,27 @@ const getNavItems = (clientName?: string | null, role?: string) => {
       ]
     },
     { 
+      href: '/dashboard/sales', 
+      icon: '💷', 
+      label: 'Sales',
+      subItems: clientName === 'Hungry Birds' ? undefined : [
+        { href: '/dashboard/sales?tab=combined', label: 'Combined Sales' }
+      ]
+    },
+    { 
+      href: '/dashboard/expenses', 
+      icon: '💸', 
+      label: 'Expenses',
+      subItems: [
+        { href: '/dashboard/expenses', label: 'Combined Expenses Dashboard' },
+        { href: '/dashboard/expenses/suppliers', label: 'Supplier Purchases' },
+        { href: '/dashboard/expenses/wages', label: 'Staff Wages' },
+        { href: '/dashboard/expenses/utilities', label: 'Utilities' },
+        { href: '/dashboard/expenses/marketing', label: 'Marketing' },
+        { href: '/dashboard/expenses/other', label: 'Other Expenses' }
+      ]
+    },
+    { 
       href: '/dashboard/invoices', 
       icon: '🧾', 
       label: 'Sales Invoices',
@@ -27,56 +95,9 @@ const getNavItems = (clientName?: string | null, role?: string) => {
         { href: '/dashboard/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
         { href: '/dashboard/invoices?tab=pos', label: clientName === 'Hungry Birds' ? 'POS (Walk-in Card & Cash)' : 'Herbies Pizza & Tasty Bun POS Invoices' }
       ]
-    }]
-  }
-  return [
-  { 
-    href: '/dashboard', 
-    icon: '📊', 
-    label: 'Overview',
-    subItems: [
-      { href: '/dashboard?tab=overview', label: 'Main Overview' },
-      { href: '/dashboard?tab=weekly', label: 'Weekly Comparison' },
-      { href: '/dashboard?tab=monthly', label: 'Monthly Comparison' },
-      { href: '/dashboard?tab=offers', label: 'Current Offers' }
-    ]
-  },
-  { 
-    href: '/dashboard/sales', 
-    icon: '💷', 
-    label: 'Sales',
-    subItems: clientName === 'Hungry Birds' ? undefined : [
-      { href: '/dashboard/sales?tab=combined', label: 'Combined Sales' }
-    ]
-  },
-  { 
-    href: '/dashboard/expenses', 
-    icon: '💸', 
-    label: 'Expenses',
-    subItems: [
-      { href: '/dashboard/expenses', label: 'Combined Expenses Dashboard' },
-      { href: '/dashboard/expenses/suppliers', label: 'Supplier Purchases' },
-      { href: '/dashboard/expenses/wages', label: 'Staff Wages' },
-      { href: '/dashboard/expenses/utilities', label: 'Utilities' },
-      { href: '/dashboard/expenses/marketing', label: 'Marketing' },
-      { href: '/dashboard/expenses/other', label: 'Other Expenses' }
-    ]
-  },
-
-  { 
-    href: '/dashboard/invoices', 
-    icon: '🧾', 
-    label: 'Sales Invoices',
-    subItems: [
-      { href: '/dashboard/invoices?tab=all', label: 'Combined Invoices Data' },
-      { href: '/dashboard/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
-      { href: '/dashboard/invoices?tab=pos', label: clientName === 'Hungry Birds' ? 'POS (Walk-in Card & Cash)' : 'Herbies Pizza & Tasty Bun POS Invoices' }
-    ]
-  },
-  { href: '/dashboard/reports', icon: '📈', label: 'Reports' },
-  { href: '/dashboard/settings', icon: '⚙️', label: 'Settings' },
-  
-]
+    },
+    { href: '/dashboard/settings', icon: '⚙️', label: 'Settings' }
+  ]
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -121,26 +142,37 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-transparent flex">
       {/* Sidebar */}
-      <aside className={`fixed inset-y-0 left-0 z-50 w-60 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 print:hidden`}>
+      <aside className={`fixed inset-y-0 left-0 z-50 w-72 lg:w-60 bg-white dark:bg-[#0c101d] border-r border-slate-200 dark:border-[#E5B869]/30 shadow-2xl flex flex-col transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 print:hidden`}>
         {/* Logo & Admin Back Button */}
         <div className="flex flex-col border-b border-slate-200 dark:border-[#1f2947]">
-          <div className="flex items-center gap-3 px-5 py-6">
-            {activeClient === 'Hungry Birds' ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img src="/hungry-birds-logo.jpg" alt="Hungry Birds Logo" className="w-10 h-10 rounded-xl object-cover shadow-lg border border-slate-200 dark:border-[#1f2947] flex-shrink-0" />
-            ) : (
-              <img src="/riznex_logo.jpg" alt="Riznex Digital Solutions" className="w-12 h-12 rounded-xl object-contain bg-black dark:bg-white flex-shrink-0 p-1" />
-            )}
-            <div>
+          <div className="flex items-center justify-between px-5 py-6">
+            <div className="flex items-center gap-3">
               {activeClient === 'Hungry Birds' ? (
-                <div className="font-bold text-slate-900 dark:text-white text-sm leading-tight">Hungry Birds</div>
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src="/hungry-birds-logo.jpg" alt="Hungry Birds Logo" className="w-10 h-10 rounded-xl object-cover shadow-lg border border-slate-200 dark:border-[#1f2947] flex-shrink-0" />
               ) : (
-                <div className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wide">RIZNEX</div>
+                <img src="/riznex_logo.jpg" alt="Riznex Digital Solutions" className="w-12 h-12 rounded-xl object-contain bg-black dark:bg-white flex-shrink-0 p-1" />
               )}
-              <div className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight truncate max-w-[120px]">
-                {activeClient ?? 'Dashboard'}
+              <div>
+                {activeClient === 'Hungry Birds' ? (
+                  <div className="font-bold text-slate-900 dark:text-white text-sm leading-tight">Hungry Birds</div>
+                ) : (
+                  <div className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-wide">RIZNEX</div>
+                )}
+                <div className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight truncate max-w-[120px]">
+                  {activeClient ?? 'Dashboard'}
+                </div>
               </div>
             </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-1.5 rounded-xl text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-[#1f2947] transition"
+              aria-label="Close sidebar"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
           </div>
           {session?.user?.role === 'admin' && (
             <div className="px-5 pb-5 pt-1">
@@ -256,28 +288,50 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
 
       {/* Overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-white/50 dark:bg-black/50 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div 
+          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-40 lg:hidden transition-all duration-300" 
+          onClick={() => setSidebarOpen(false)} 
+        />
       )}
 
       {/* Main */}
-      <div className="flex-1 lg:ml-60 print:ml-0 flex flex-col min-h-screen print:bg-black dark:print:bg-white print:text-black">
+      <div className="flex-1 lg:ml-60 print:ml-0 flex flex-col min-h-screen min-w-0 max-w-full print:bg-black dark:print:bg-white print:text-black">
         {/* Top bar */}
-        <header className="sticky top-0 z-30 bg-slate-100/80 dark:bg-[#0a0c14]/80 backdrop-blur border-b border-slate-200 dark:border-[#1f2947] px-4 sm:px-6 py-3 flex items-center gap-4 print:hidden">
-          <button
-            className="lg:hidden text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white p-1"
-            onClick={() => setSidebarOpen(true)}
-          >
-            ☰
-          </button>
-          <div className="flex-1" />
-          <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+        <header className="sticky top-0 z-30 bg-slate-100/90 dark:bg-[#0a0c14]/90 backdrop-blur-md border-b border-slate-200 dark:border-[#1f2947] px-3 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between gap-3 sm:gap-4 print:hidden">
+          <div className="flex items-center gap-2.5">
+            <button
+              className="lg:hidden p-2 rounded-xl bg-black/5 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition shadow-sm flex items-center justify-center cursor-pointer"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Open menu"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+
+            {/* Mobile Client Brand Display */}
+            <div className="flex items-center gap-2 lg:hidden">
+              {activeClient === 'Hungry Birds' ? (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src="/hungry-birds-logo.jpg" alt="Logo" className="w-7 h-7 rounded-lg object-cover shadow-sm border border-slate-200 dark:border-[#1f2947]" />
+              ) : (
+                /* eslint-disable-next-line @next/next/no-img-element */
+                <img src="/riznex_logo.jpg" alt="Logo" className="w-7 h-7 rounded-lg object-contain bg-black dark:bg-white p-0.5 shadow-sm border border-slate-200 dark:border-[#1f2947]" />
+              )}
+              <span className="font-extrabold text-xs text-slate-900 dark:text-white truncate max-w-[150px]">
+                {activeClient ?? 'Dashboard'}
+              </span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2.5 sm:gap-3 text-sm text-slate-500 dark:text-slate-400">
             <ThemeToggle />
-              <span className="hidden sm:block">{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
+            <span className="hidden sm:block text-xs font-medium">{new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</span>
           </div>
         </header>
 
         {/* Page content */}
-        <main className="flex-1 p-3 sm:p-5 lg:p-6 min-w-0 overflow-x-hidden">
+        <main className="flex-1 p-2 sm:p-5 lg:p-6 min-w-0 max-w-full overflow-x-hidden">
           {children}
         </main>
       </div>

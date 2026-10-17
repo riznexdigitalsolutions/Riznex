@@ -9,10 +9,39 @@ import { ExcelStyleReport } from '@/components/ExcelStyleReport'
 
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
 import MultiPlatformFilter from '@/components/MultiPlatformFilter'
+import ActiveFilters from '@/components/ActiveFilters'
+import OffersCampaignView from '@/components/OffersCampaignView'
 
 const PLATFORM_LABELS: Record<string, string> = {
   just_eat: 'Just Eat', uber_eats: 'Uber Eats', deliveroo: 'Deliveroo', walk_in: 'Walk-in', cash: 'Cash', mobile_app: 'Mobile App'
 }
+
+const HENLEY_COMBINED_PLATFORMS = [
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Uber Eats', label: 'Uber Eats', color: '#22d3a5' },
+  { value: 'Herbies POS', label: 'Herbies POS', color: '#ef4444' },
+  { value: 'Herbies Web & App', label: 'Herbies Web & App', color: '#ec4899' },
+  { value: 'Tasty Bun POS', label: 'Tasty Bun POS', color: '#f59e0b' },
+  { value: 'Tasty Bun Website', label: 'Tasty Bun Website', color: '#e11d48' },
+  { value: 'Tasty Bun Mobile App', label: 'Tasty Bun Mobile App', color: '#a855f7' },
+]
+
+const HERBIES_PLATFORMS = [
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Herbies POS', label: 'Herbies POS', color: '#ef4444' },
+  { value: 'Herbies Web & App', label: 'Herbies Web & App', color: '#ec4899' },
+]
+
+const TASTY_BUN_PLATFORMS = [
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Uber Eats', label: 'Uber Eats', color: '#22d3a5' },
+  { value: 'Tasty Bun POS', label: 'Tasty Bun POS', color: '#f59e0b' },
+  { value: 'Tasty Bun Website', label: 'Tasty Bun Website', color: '#e11d48' },
+  { value: 'Tasty Bun Mobile App', label: 'Tasty Bun Mobile App', color: '#a855f7' },
+]
 
 export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   const { data: session } = useSession()
@@ -32,6 +61,15 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
 
   const searchParams = useSearchParams()
   const activeTab = searchParams?.get('tab') || 'overview'
+
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
+  }, [])
 
   useEffect(() => {
     const loadReport = () => {
@@ -340,7 +378,6 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     'Herbies POS',
     'Herbies Web & App',
     'Tasty Bun POS',
-    'Tasty Bun Web & App',
     'Tasty Bun Website',
     'Tasty Bun Mobile App',
   ]
@@ -530,7 +567,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   return (
     <div className="space-y-8 pb-10 print-bw-report">
       {/* --- VISUAL DASHBOARD --- */}
-      <div id="dashboard-export-area" className="bg-transparent min-h-screen text-slate-700 dark:text-slate-200 p-1 sm:p-2 lg:p-4 font-sans flex flex-col gap-6 sm:gap-8 pb-32">
+      <div id="dashboard-export-area" className="bg-transparent min-h-screen text-slate-700 dark:text-slate-200 p-1 sm:p-2 lg:p-4 font-sans flex flex-col gap-6 sm:gap-8 pb-32 max-w-full min-w-0">
         {/* Header & Filter Controls Section */}
         <div className="flex flex-col gap-6 relative z-10">
         
@@ -556,7 +593,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             </div>
 
             <div className={activeTab === 'weekly' ? 'text-center' : ''}>
-              <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">
                 {activeTab === 'weekly' ? 'Weekly Comparison' : (session?.user?.clientName ?? 'Henley on Thames')}
               </h1>
               <p className={`text-slate-500 dark:text-slate-400 mt-1 font-medium ${activeTab === 'weekly' ? 'hidden' : ''}`}>{getDynamicSubtitle()}</p>
@@ -564,66 +601,86 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
           </div>
 
           <div className="print:hidden self-start sm:self-auto" data-html2canvas-ignore="true">
-            <button onClick={() => exportToPDF('dashboard-export-area', getExportFilename())} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-4 py-2.5 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer">
+            <button onClick={() => exportToPDF('dashboard-export-area', getExportFilename())} className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl px-4 py-2.5 text-slate-900 dark:text-white hover:text-blue-300 hover:bg-slate-200 dark:hover:bg-[#1a2235] text-sm font-bold transition flex items-center gap-2 shadow-lg cursor-pointer whitespace-nowrap">
               <span>📄</span> Export PDF Report
             </button>
           </div>
         </div>
 
         {/* Tier 2: Unified Executive Filter Toolbar */}
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-between gap-4 print:hidden shadow-xl backdrop-blur-md">
-          {/* Left Side: Store Pills & Platform Filter */}
-          <div className="flex flex-wrap items-center gap-3">
-            {!is2025 && (
-              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
-                <button
-                  onClick={() => setStore('')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    store === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
+        {activeTab !== 'offers' && (
+          <>
+            <div className="w-full max-w-full bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center justify-between gap-3 sm:gap-4 print:hidden shadow-xl backdrop-blur-md">
+              {/* Left Side: Store Pills & Platform Filter */}
+              <div className="flex flex-wrap items-center gap-3">
+                {!is2025 && (
+                  <div className="flex items-center gap-1 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
+                    <button
+                      onClick={() => { setStore(''); setPlatform(''); }}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${
+                        store === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      Combined
+                    </button>
+                    <button
+                      onClick={() => { setStore('Herbies Pizza'); setPlatform(''); }}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                        store === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      Herbies Pizza
+                    </button>
+                    <button
+                      onClick={() => { setStore('Tasty Bun'); setPlatform(''); }}
+                      className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
+                        store === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                      }`}
+                    >
+                      Tasty Bun
+                    </button>
+                  </div>
+                )}
+
+                {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
+
+                {/* Multi-Select Platform Checkboxes */}
+                <MultiPlatformFilter 
+                  selectedPlatforms={platform} 
+                  onChange={setPlatform} 
+                  options={store === 'Herbies Pizza' ? HERBIES_PLATFORMS : (store === 'Tasty Bun' ? TASTY_BUN_PLATFORMS : HENLEY_COMBINED_PLATFORMS)}
+                />
+              </div>
+
+              {/* Right Side: Date Filter & Reset */}
+              <div className="flex flex-wrap items-center gap-3">
+                <DateFilter filter={filter} setFilter={setFilter} />
+
+                <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
+
+                <button 
+                  onClick={() => { setFilter(defaultDateFilter()); if(!is2025) setStore(''); setPlatform(''); }} 
+                  className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
                 >
-                  Combined
-                </button>
-                <button
-                  onClick={() => setStore('Herbies Pizza')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    store === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  Herbies Pizza
-                </button>
-                <button
-                  onClick={() => setStore('Tasty Bun')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${
-                    store === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  Tasty Bun
+                  <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  Reset
                 </button>
               </div>
-            )}
+            </div>
 
-            {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
-
-            {/* Multi-Select Platform Checkboxes */}
-            <MultiPlatformFilter selectedPlatforms={platform} onChange={setPlatform} />
-          </div>
-
-          {/* Right Side: Date Filter & Reset */}
-          <div className="flex flex-wrap items-center gap-3">
-            <DateFilter filter={filter} setFilter={setFilter} />
-
-            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
-
-            <button 
-              onClick={() => { setFilter(defaultDateFilter()); if(!is2025) setStore(''); setPlatform(''); }} 
-              className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-              Reset
-            </button>
-          </div>
-        </div>
+            {/* Active Filters Bar */}
+            <ActiveFilters
+              store={is2025 ? (store === 'Herbies Pizza' ? '' : store) : store}
+              onClearStore={() => { setStore(''); setPlatform(''); }}
+              platform={platform}
+              onClearPlatform={() => setPlatform('')}
+              filter={filter}
+              onClearFilter={() => setFilter(defaultDateFilter())}
+              onClearAll={() => { setFilter(defaultDateFilter()); if (!is2025) setStore(''); setPlatform(''); }}
+              className="px-1"
+            />
+          </>
+        )}
       </div>
 
       <div className={activeTab === 'overview' ? 'flex flex-col gap-8' : 'hidden'}>
@@ -1150,12 +1207,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-full mt-2">
 
               {/* Main Chart (Dark Theme) */}
-              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl h-[450px] sm:h-[500px] flex flex-col w-full mb-8">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-xs sm:text-sm">
                     <span className="text-slate-900 dark:text-white mr-2">1.</span>WEEKLY SALES & ORDERS
                   </h2>
-                  <div className="flex items-center gap-6 text-[13px] font-bold">
+                  <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-[13px] font-bold">
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span> 
                       <span className="text-slate-600 dark:text-slate-300">Sales (£)</span>
@@ -1166,9 +1223,9 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 min-h-0 w-full">
+                <div className="flex-1 min-h-0 w-full overflow-x-auto">
                   <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: 0, left: 0, bottom: 40 }}>
+                    <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: isMobile ? -10 : 0, left: isMobile ? -20 : 0, bottom: 40 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
                       <XAxis 
                         dataKey="name" 
@@ -1178,8 +1235,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           const data = curr6Stats.weeklyData.find((d: any) => d.name === payload.value);
                           return (
                             <g transform={`translate(${x},${y})`}>
-                              <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={12} fontWeight="bold">{payload.value}</text>
-                              {data?.dateRange && <text x={0} y={0} dy={32} textAnchor="middle" fill="#64748b" fontSize={11}>{data.dateRange}</text>}
+                              <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={isMobile ? 10 : 12} fontWeight="bold">{payload.value}</text>
+                              {data?.dateRange && (
+                                <text x={0} y={0} dy={30} textAnchor="middle" fill="#64748b" fontSize={isMobile ? 9 : 11}>
+                                  {isMobile ? data.dateRange.replace(/ Sept/g, ' Sep').replace(/ Oct/g, ' Oct').replace(/ Aug/g, ' Aug').replace(/ July/g, ' Jul') : data.dateRange}
+                                </text>
+                              )}
                             </g>
                           );
                         }}
@@ -1190,28 +1251,32 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       <YAxis 
                         yAxisId="left" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} 
                         axisLine={false} 
                         tickLine={false} 
                         tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} 
-                        dx={-10}
+                        dx={-5}
                       />
                       <YAxis 
                         yAxisId="right" 
                         orientation="right" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} 
                         axisLine={false} 
                         tickLine={false} 
-                        dx={10}
+                        dx={5}
                       />
                       <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any, name: string) => name === 'sales' ? gbp(v as number) : v} />
                       
                       <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                        <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                        {!isMobile && (
+                          <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                        )}
                       </Bar>
                       <Bar yAxisId="right" dataKey="orders" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                        <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                        {!isMobile && (
+                          <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                        )}
                       </Bar>
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -1223,10 +1288,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   {/* Top Row: 2 Pies */}
                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
-                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
-                    <div className="flex w-full items-center">
-                      <div className="w-[220px] h-[220px] relative">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-4 sm:mb-6 self-start text-base sm:text-lg">Sales Mix</h2>
+                    <div className="flex flex-col sm:flex-row w-full items-center gap-6">
+                      <div className="w-[220px] h-[220px] relative shrink-0">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie data={customSalesPieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
@@ -1240,14 +1305,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase">Total Sales</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                      <div className="w-full sm:flex-1 sm:pl-6 flex flex-col gap-2.5">
                         {customSalesPieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-[13px]">
-                            <div className="flex items-center gap-2">
-                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-600 dark:text-slate-300 font-medium">{d.name}</span>
+                          <div key={i} className="flex justify-between items-center text-xs sm:text-[13px]">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate">{d.name}</span>
                             </div>
-                            <span className="text-slate-500 dark:text-slate-400">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0 ml-2">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1255,10 +1320,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   </div>
 
                   {/* Expense Breakdown */}
-                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
-                    <div className="flex w-full items-center">
-                      <div className="w-[220px] h-[220px] relative">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-4 sm:mb-6 self-start text-base sm:text-lg">Expense Breakdown</h2>
+                    <div className="flex flex-col sm:flex-row w-full items-center gap-6">
+                      <div className="w-[220px] h-[220px] relative shrink-0">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie data={customExpensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
@@ -1272,14 +1337,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           <span className="text-[10px] text-slate-500 dark:text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                      <div className="w-full sm:flex-1 sm:pl-6 flex flex-col gap-2.5">
                         {customExpensePieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-[13px]">
-                            <div className="flex items-center gap-2">
-                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate max-w-[90px]" title={d.name}>{d.name}</span>
+                          <div key={i} className="flex justify-between items-center text-xs sm:text-[13px]">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate" title={d.name}>{d.name}</span>
                             </div>
-                            <span className="text-slate-500 dark:text-slate-400 shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0 ml-2">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1306,8 +1371,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                               const data = curr6Stats.weeklyData.find((d: any) => d.name === payload.value);
                               return (
                                 <g transform={`translate(${x},${y})`}>
-                                  <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={12} fontWeight="bold">{payload.value}</text>
-                                  {data?.dateRange && <text x={0} y={0} dy={32} textAnchor="middle" fill="#64748b" fontSize={11}>{data.dateRange}</text>}
+                                  <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={isMobile ? 10 : 12} fontWeight="bold">{payload.value}</text>
+                                  {data?.dateRange && (
+                                    <text x={0} y={0} dy={30} textAnchor="middle" fill="#64748b" fontSize={isMobile ? 9 : 11}>
+                                      {isMobile ? data.dateRange.replace(/ Sept/g, ' Sep').replace(/ Oct/g, ' Oct').replace(/ Aug/g, ' Aug').replace(/ July/g, ' Jul') : data.dateRange}
+                                    </text>
+                                  )}
                                 </g>
                               );
                             }}
@@ -1315,10 +1384,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                             axisLine={false} 
                             tickLine={false} 
                           />
-                          <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
+                          <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
                           <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
                           <Bar dataKey="suppliers" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                            <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                            {!isMobile && (
+                              <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                            )}
                           </Bar>
                         </BarChart>
                       </ResponsiveContainer>
@@ -1341,12 +1412,12 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-full mt-2">
 
               {/* Main Chart (Dark Theme) */}
-              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl h-[500px] flex flex-col w-full mb-8">
-                <div className="flex justify-between items-center mb-6">
-                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-sm">
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl h-[450px] sm:h-[500px] flex flex-col w-full mb-8">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-xs sm:text-sm">
                     <span className="text-slate-900 dark:text-white mr-2">1.</span>MONTHLY SALES & ORDERS
                   </h2>
-                  <div className="flex items-center gap-6 text-[13px] font-bold">
+                  <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-[13px] font-bold">
                     <div className="flex items-center gap-2">
                       <span className="w-3 h-3 rounded-full bg-[#3b82f6]"></span> 
                       <span className="text-slate-600 dark:text-slate-300">Sales (£)</span>
@@ -1357,14 +1428,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 min-h-0 w-full">
+                <div className="flex-1 min-h-0 w-full overflow-x-auto">
                   <ResponsiveContainer width="100%" height="100%">
-                    <ComposedChart data={displayMonthlyData} margin={{ top: 20, right: 0, left: 0, bottom: 20 }}>
+                    <ComposedChart data={displayMonthlyData} margin={{ top: 20, right: isMobile ? -10 : 0, left: isMobile ? -20 : 0, bottom: 20 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
                       <XAxis 
                         dataKey="name" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 'bold' }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12, fontWeight: 'bold' }} 
                         tickMargin={12} 
                         axisLine={false} 
                         tickLine={false} 
@@ -1372,28 +1443,32 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       <YAxis 
                         yAxisId="left" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} 
                         axisLine={false} 
                         tickLine={false} 
                         tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(0) + 'k' : v)} 
-                        dx={-10}
+                        dx={-5}
                       />
                       <YAxis 
                         yAxisId="right" 
                         orientation="right" 
                         stroke="#64748b" 
-                        tick={{ fill: '#94a3b8', fontSize: 12 }} 
+                        tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} 
                         axisLine={false} 
                         tickLine={false} 
-                        dx={10}
+                        dx={5}
                       />
                       <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any, name: string) => name === 'sales' ? gbp(v as number) : v} />
                       
                       <Bar yAxisId="left" dataKey="sales" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                        <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                        {!isMobile && (
+                          <LabelList dataKey="sales" position="top" fill="#3b82f6" fontSize={12} fontWeight="bold" formatter={(v: any) => gbp(v as number)} offset={8} />
+                        )}
                       </Bar>
                       <Bar yAxisId="right" dataKey="orders" fill="#f97316" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                        <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                        {!isMobile && (
+                          <LabelList dataKey="orders" position="top" fill="#f97316" fontSize={12} fontWeight="bold" offset={8} />
+                        )}
                       </Bar>
                     </ComposedChart>
                   </ResponsiveContainer>
@@ -1405,10 +1480,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 {/* Top Row: 2 Pies */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
                   {/* Sales Mix */}
-                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Sales Mix</h2>
-                    <div className="flex w-full items-center">
-                      <div className="w-[220px] h-[220px] relative">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-4 sm:mb-6 self-start text-base sm:text-lg">Sales Mix</h2>
+                    <div className="flex flex-col sm:flex-row w-full items-center gap-6">
+                      <div className="w-[220px] h-[220px] relative shrink-0">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie data={customSalesPieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
@@ -1422,14 +1497,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase mt-1">Total Sales</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                      <div className="w-full sm:flex-1 sm:pl-6 flex flex-col gap-2.5">
                         {customSalesPieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-[13px]">
-                            <div className="flex items-center gap-3">
-                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-600 dark:text-slate-300 font-medium">{d.name}</span>
+                          <div key={i} className="flex justify-between items-center text-xs sm:text-[13px]">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate">{d.name}</span>
                             </div>
-                            <span className="text-slate-500 dark:text-slate-400 font-semibold">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0 ml-2">{((d.value / (customSalesPieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1437,10 +1512,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   </div>
 
                   {/* Expense Breakdown */}
-                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col items-center">
-                    <h2 className="text-slate-900 dark:text-white font-bold mb-6 self-start text-lg">Expense Breakdown</h2>
-                    <div className="flex w-full items-center">
-                      <div className="w-[220px] h-[220px] relative">
+                  <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col items-center">
+                    <h2 className="text-slate-900 dark:text-white font-bold mb-4 sm:mb-6 self-start text-base sm:text-lg">Expense Breakdown</h2>
+                    <div className="flex flex-col sm:flex-row w-full items-center gap-6">
+                      <div className="w-[220px] h-[220px] relative shrink-0">
                         <ResponsiveContainer width="100%" height="100%">
                           <PieChart>
                             <Pie data={customExpensePieData} cx="50%" cy="50%" innerRadius={70} outerRadius={100} stroke="none" dataKey="value">
@@ -1454,14 +1529,14 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           <span className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase text-center leading-tight mt-1">Total<br/>Expenses</span>
                         </div>
                       </div>
-                      <div className="flex-1 pl-8 flex flex-col gap-3">
+                      <div className="w-full sm:flex-1 sm:pl-6 flex flex-col gap-2.5">
                         {customExpensePieData.map((d, i) => (
-                          <div key={i} className="flex justify-between items-center text-[13px]">
-                            <div className="flex items-center gap-3">
-                              <span className="w-3 h-3 rounded-full" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
-                              <span className="text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap" title={d.name}>{d.name}</span>
+                          <div key={i} className="flex justify-between items-center text-xs sm:text-[13px]">
+                            <div className="flex items-center gap-2 min-w-0">
+                              <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full shrink-0" style={{ backgroundColor: chartColors[i % chartColors.length] }}></span>
+                              <span className="text-slate-600 dark:text-slate-300 font-medium truncate" title={d.name}>{d.name}</span>
                             </div>
-                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
+                            <span className="text-slate-500 dark:text-slate-400 font-semibold shrink-0 ml-2">{((d.value / (customExpensePieTotal || 1)) * 100).toFixed(1)}%</span>
                           </div>
                         ))}
                       </div>
@@ -1470,27 +1545,29 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                 </div>
 
                 {/* Bottom Row: Supplier Purchases */}
-                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
+                <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl flex flex-col w-full h-[350px]">
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-slate-900 dark:text-white font-bold text-lg">Supplier Purchases</h2>
-                    <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Months</span>
+                    <h2 className="text-slate-900 dark:text-white font-bold text-base sm:text-lg">Supplier Purchases</h2>
+                    <span className="text-[10px] sm:text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Months</span>
                   </div>
-                  <div className="flex-1 min-h-0 w-full mt-2">
+                  <div className="flex-1 min-h-0 w-full mt-2 overflow-x-auto">
                     <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={displayMonthlyData} margin={{ top: 15, right: 0, left: -25, bottom: 20 }}>
+                      <BarChart data={displayMonthlyData} margin={{ top: 15, right: isMobile ? -10 : 0, left: isMobile ? -25 : -25, bottom: 20 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
                         <XAxis 
                           dataKey="name" 
                           stroke="#64748b" 
-                          tick={{ fill: '#94a3b8', fontSize: 12, fontWeight: 'bold' }}
+                          tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12, fontWeight: 'bold' }}
                           tickMargin={12} 
                           axisLine={false} 
                           tickLine={false} 
                         />
-                        <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
+                        <YAxis stroke="#64748b" tick={{ fill: '#94a3b8', fontSize: isMobile ? 10 : 12 }} axisLine={false} tickLine={false} tickFormatter={(v: any) => '£' + (v >= 1000 ? (v/1000).toFixed(1) + 'k' : v)} />
                         <Tooltip cursor={{ fill: '#1e293b' }} itemStyle={{ color: '#fff' }} contentStyle={{ backgroundColor: '#0a0c14', borderColor: '#1f2947', borderRadius: '8px', color: '#fff' }} formatter={(v: any) => gbp(v)} />
                         <Bar dataKey="suppliers" fill="#10b981" radius={[4, 4, 0, 0]} maxBarSize={60}>
-                          <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                          {!isMobile && (
+                            <LabelList dataKey="suppliers" position="top" fill="#10b981" fontSize={13} fontWeight="bold" formatter={(v: any) => gbp(v)} offset={8} />
+                          )}
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
@@ -1507,165 +1584,21 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
           </div>
   {/* --- OFFERS TAB --- */}
         <div className={activeTab === 'offers' ? 'block' : 'hidden'}>
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-8 shadow-xl mt-2 w-full">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white">Marketing & Offers ROI</h2>
-              {session?.user?.role === 'admin' && (
-                <button onClick={() => { setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Herbies Pizza', amount: '', startDate: '', type: 'weekly', notes: '' }); setShowOfferModal(true); }} className="bg-blue-600 hover:bg-blue-500 text-slate-900 dark:text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">+ Add Offer</button>
-              )}
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left text-sm">
-                <thead>
-                  <tr className="text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-[#1f2947]">
-                    <th className="pb-4">Start Date</th>
-                    <th className="pb-4">Platform</th>
-                    <th className="pb-4 text-right">Spend</th>
-                    <th className="pb-4 text-right">Orders</th>
-                    <th className="pb-4 text-right">Gross Sales</th>
-                    <th className="pb-4 text-right">Deductions</th>
-                    <th className="pb-4 text-right">Ded %</th>
-                    <th className="pb-4 text-right">Net Sales</th>
-                    <th className="pb-4 text-right">ROI</th>
-                    {session?.user?.role === 'admin' && <th className="pb-4"></th>}
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-[#1f2947]">
-                  {realOffersData.map((o, i) => (
-                    <tr key={i} className="group">
-                      <td className="py-4 text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap">{o.startDate}</td>
-                      <td className="py-4 text-slate-900 dark:text-white font-medium">
-                        {o.platform}
-                        {o.notes && <div className="text-xs text-slate-500 dark:text-slate-400 mt-1">{o.notes}</div>}
-                      </td>
-                      <td className="py-4 text-red-400 text-right">{o.spend > 0 ? gbp(o.spend) : '-'}</td>
-                      <td className="py-4 text-slate-900 dark:text-white text-right font-medium">{o.orders}</td>
-                      <td className="py-4 text-slate-900 dark:text-white text-right font-medium">{o.grossSales > 0 ? gbp(o.grossSales) : '-'}</td>
-                      <td className="py-4 text-slate-900 dark:text-white text-right">{o.deductions > 0 ? gbp(o.deductions) : '-'}</td>
-                      <td className="py-4 text-slate-500 dark:text-slate-400 text-right">{o.grossSales > 0 ? `${o.deductionPercent}%` : '-'}</td>
-                      <td className="py-4 text-slate-900 dark:text-white text-right">{o.revenue > 0 ? gbp(o.revenue) : '-'}</td>
-                      <td className="py-4 text-slate-900 dark:text-white font-bold text-right">{o.ROI}</td>
-                      {session?.user?.role === 'admin' && (
-                        <td className="py-4 text-right">
-                          {o.id !== 'none' && (
-                            <div className="flex items-center justify-end gap-3 opacity-0 group-hover:opacity-100 transition-all">
-                              <button onClick={() => {
-                                const originalOffer = offers.find(of => of.id === o.id);
-                                if(originalOffer) {
-                                  setEditingOfferId(originalOffer.id);
-                                  setOfferForm({
-                                    platform: originalOffer.platform,
-                                    store: originalOffer.store || 'Combined',
-                                    amount: originalOffer.amount ? originalOffer.amount.toString() : '',
-                                    startDate: new Date(originalOffer.startDate).toISOString().split('T')[0],
-                                    type: originalOffer.type || 'weekly',
-                                    notes: originalOffer.notes || ''
-                                  });
-                                  setShowOfferModal(true);
-                                }
-                              }} className="text-slate-500 hover:text-slate-900 dark:text-white text-lg transition-colors" title="Edit Offer">
-                                ✎
-                              </button>
-                              <button onClick={() => {
-                                if(confirm('Delete this offer?')) {
-                                  fetch('/api/offers', { method: 'DELETE', headers: {'Content-Type': 'application/json'}, body: JSON.stringify({ id: o.id }) })
-                                  setOffers(offers.filter((of: any) => of.id !== o.id))
-                                }
-                              }} className="text-slate-500 hover:text-red-400 text-lg transition-colors" title="Delete Offer">
-                                ✕
-                              </button>
-                            </div>
-                          )}
-                        </td>
-                      )}
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+          <OffersCampaignView
+            offers={offers}
+            currWeeklyData={curr6Stats.weeklyData}
+            prevWeeklyData={prev6Stats.weeklyData}
+            rawSales={rawSales}
+            platformData={platformData}
+            isAdmin={false}
+            clientId={session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : (session?.user?.clientId || undefined)}
+            currentStore={store || 'Combined'}
+            onStoreChange={(s) => setStore(s === 'Combined' ? '' : s)}
+            availableStores={is2025 ? ['Tasty Bun'] : ['Combined', 'Herbies Pizza', 'Tasty Bun']}
+            is2025={is2025}
+            onOffersChange={(updated) => setOffers(updated)}
+          />
         </div>
-
-        {/* --- ADD/EDIT OFFER MODAL --- */}
-        {showOfferModal && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/60 dark:bg-black/60 backdrop-blur-sm px-4">
-            <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl w-full max-w-md p-6 shadow-2xl relative">
-              <button onClick={() => { setShowOfferModal(false); setEditingOfferId(null); setOfferForm({ platform: 'just_eat', store: 'Herbies Pizza', amount: '', startDate: '', type: 'weekly', notes: '' }); }} className="absolute top-4 right-4 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white">✕</button>
-              <h2 className="text-xl font-bold text-slate-900 dark:text-white mb-6">{editingOfferId ? 'Edit Marketing Offer' : 'Add Marketing Offer'}</h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Store / Franchise</label>
-                  <select value={offerForm.store} onChange={(e) => setOfferForm({...offerForm, store: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
-                    <option value="Combined">Combined (All Stores)</option>
-                    <option value="Herbies Pizza">Herbies Pizza</option>
-                    <option value="Tasty Bun">Tasty Bun</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Platform</label>
-                  <select value={offerForm.platform} onChange={(e) => setOfferForm({...offerForm, platform: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
-                    <option value="just_eat">Just Eat</option>
-                    <option value="uber_eats">Uber Eats</option>
-                    <option value="deliveroo">Deliveroo</option>
-                    <option value="facebook">Facebook Marketing</option>
-                    <option value="google">Google Ads</option>
-                  </select>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Offer Title (e.g. 30% off, BOGO)</label>
-                  <input type="text" value={offerForm.notes} onChange={(e) => setOfferForm({...offerForm, notes: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 30% off Burgers" />
-                </div>
-                <div className="flex gap-4">
-                  <div className="w-1/2">
-                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Start Date</label>
-                    <input type="date" value={offerForm.startDate} onChange={(e) => setOfferForm({...offerForm, startDate: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500 [color-scheme:dark]" />
-                  </div>
-                  <div className="w-1/2">
-                    <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Duration</label>
-                    <select value={offerForm.type} onChange={(e) => setOfferForm({...offerForm, type: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500">
-                      <option value="weekly">Weekly</option>
-                      <option value="monthly">Monthly</option>
-                    </select>
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-slate-500 dark:text-slate-400 mb-1">Spend Amount (£) <span className="text-slate-500 font-normal">(Optional)</span></label>
-                  <input type="number" step="0.01" value={offerForm.amount} onChange={(e) => setOfferForm({...offerForm, amount: e.target.value})} className="w-full bg-transparent border border-slate-200 dark:border-[#1f2947] rounded-lg p-2.5 text-slate-900 dark:text-white text-sm outline-none focus:border-blue-500" placeholder="e.g. 200" />
-                </div>
-                <div className="pt-4">
-                  <button onClick={() => {
-                    const activeClientId = session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId;
-                    setSavingOffer(true)
-                    const method = editingOfferId ? 'PUT' : 'POST'
-                    const bodyObj = editingOfferId 
-                      ? { id: editingOfferId, ...offerForm }
-                      : { ...offerForm, clientId: activeClientId, is2025 }
-                      
-                    fetch('/api/offers', {
-                      method,
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify(bodyObj)
-                    }).then(res => res.json()).then(savedOffer => {
-                      if (!savedOffer.error) {
-                        if (editingOfferId) {
-                          setOffers(offers.map(o => o.id === savedOffer.id ? savedOffer : o))
-                        } else {
-                          setOffers([savedOffer, ...offers])
-                        }
-                      }
-                      setShowOfferModal(false)
-                      setSavingOffer(false)
-                      setEditingOfferId(null)
-                      setOfferForm({ platform: 'just_eat', store: 'Herbies Pizza', amount: '', startDate: '', type: 'weekly', notes: '' })
-                    })
-                  }} disabled={savingOffer || !offerForm.startDate || (!offerForm.amount && !offerForm.notes)} className="w-full bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-slate-900 dark:text-white font-bold py-3 rounded-lg transition-colors">
-                    {savingOffer ? 'Saving...' : (editingOfferId ? 'Update Offer' : 'Save Offer')}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
 
       {/* --- END VISUAL DASHBOARD --- */}
 

@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
   const to = searchParams.get('to')
   const is2025 = searchParams.get('is2025') === 'true'
 
-  const where: any = { clientId, is2025 }
+  const rangesStr = searchParams.get('ranges')
 
   // Platform filter: map codes to label substrings
   const platformMap: Record<string, string> = {
@@ -43,51 +43,111 @@ export async function GET(req: NextRequest) {
     'Walk In Cash': 'Cash',
     'Walk In Card': 'Card',
     'POS Sales': 'POS',
-    'In-Store POS': 'POS'
+    'In-Store POS': 'POS',
+    'Herbies POS': 'Herbies POS',
+    'Tasty Bun POS': 'Tasty Bun POS',
+    'Tasty Bun Website': 'Tasty Bun Website',
+    'Tasty Bun Mobile App': 'Tasty Bun Mobile App',
+    'Herbies Website': 'Herbies Web & App',
+    'Herbies Mobile App': 'Herbies Web & App',
+    'Herbies Web & App': 'Herbies Web & App',
   }
 
-  // Filter by explicit store name
-  const storeConditions: any[] = []
+  const andClauses: any[] = [
+    { clientId },
+    { is2025 }
+  ]
 
+  // Filter by explicit store name
   if (store && store !== 'Combined' && !store.startsWith('Monthly ')) {
-    storeConditions.push({ store })
+    andClauses.push({ store })
   }
   
   // Always exclude monthly records in weekly views
   const monthlyStores = ['Monthly Combined', 'Monthly Herbies Pizza', 'Monthly Tasty Bun']
   if (!store?.startsWith('Monthly')) {
-    storeConditions.push({ store: { notIn: monthlyStores } })
+    andClauses.push({ store: { notIn: monthlyStores } })
   } else {
-    // If it is a monthly view, filter by that exact store
-    storeConditions.push({ store })
+    andClauses.push({ store })
+  }
+
+  // Date condition
+  let dateWhereList: any[] = []
+  if (rangesStr) {
+    const parts = rangesStr.split('|').map(r => {
+      const [start, end] = r.split('_')
+      const endDate = new Date(end)
+      endDate.setUTCHours(23, 59, 59, 999)
+      return { gte: new Date(start), lte: endDate }
+    })
+    if (parts.length > 0) {
+      dateWhereList = parts
+    }
+  } else if (from || to) {
+    const dateObj: any = {}
+    if (from) dateObj.gte = new Date(from)
+    if (to) {
+      const t = new Date(to)
+      t.setUTCHours(23, 59, 59, 999)
+      dateObj.lte = t
+    }
+    dateWhereList = [dateObj]
+  } else {
+    const defaultFrom = is2025 ? new Date(2000, 0, 1) : new Date(Date.UTC(2026, 3, 1))
+    dateWhereList = [{ gte: defaultFrom }]
+  }
+
+  if (dateWhereList.length === 1) {
+    andClauses.push({ weekEnd: dateWhereList[0] })
+  } else if (dateWhereList.length > 1) {
+    andClauses.push({ OR: dateWhereList.map(r => ({ weekEnd: r })) })
   }
 
   if (platform) {
-    const platforms = platform.split(',').filter(Boolean)
-    const platformConditions = platforms.map(p => {
-      const label = platformMap[p] || p
-      return { platform: { contains: label } }
+    const platforms = platform.split(',').map(p => p.trim()).filter(Boolean)
+    const platformORs: any[] = []
+    platforms.forEach(p => {
+      const mapped = platformMap[p] || p
+      if (mapped === 'Tasty Bun Website') {
+        platformORs.push(
+          { platform: 'Tasty Bun Website' },
+          { platform: { contains: 'Tasty Bun Website' } }
+        )
+      } else if (mapped === 'Tasty Bun Mobile App') {
+        platformORs.push(
+          { platform: 'Tasty Bun Mobile App' },
+          { platform: { contains: 'Tasty Bun Mobile' } }
+        )
+      } else if (mapped === 'Herbies Web & App' || mapped === 'Herbies Website' || mapped === 'Herbies Mobile App') {
+        platformORs.push(
+          { platform: 'Herbies Web & App' },
+          { platform: { contains: 'Herbies Web' } }
+        )
+      } else if (mapped === 'Herbies POS') {
+        platformORs.push(
+          { platform: 'Herbies POS' },
+          { platform: { contains: 'Herbies POS' } }
+        )
+      } else if (mapped === 'Tasty Bun POS') {
+        platformORs.push(
+          { platform: 'Tasty Bun POS' },
+          { platform: { contains: 'Tasty Bun POS' } }
+        )
+      } else if (mapped === 'POS' || mapped === 'In-Store POS') {
+        platformORs.push(
+          { platform: { contains: 'POS' } },
+          { platform: 'POS' }
+        )
+      } else {
+        platformORs.push({ platform: { contains: mapped } })
+      }
     })
-    if (platformConditions.length > 0) {
-      storeConditions.push({ OR: platformConditions })
+    if (platformORs.length > 0) {
+      andClauses.push({ OR: platformORs })
     }
   }
 
-  if (storeConditions.length === 1) {
-    Object.assign(where, storeConditions[0])
-  } else if (storeConditions.length > 1) {
-    where.AND = storeConditions
-  }
-
-  const defaultFrom = is2025 ? new Date(2000, 0, 1) : new Date(Date.UTC(2026, 3, 1))
-  const dateFrom = from ? new Date(from) : defaultFrom
-  
-  where.weekEnd = { gte: dateFrom }
-  if (to) {
-    const t = new Date(to)
-    t.setUTCHours(23, 59, 59, 999)
-    where.weekEnd.lte = t
-  }
+  const where: any = { AND: andClauses }
 
   const sales = await prisma.sale.findMany({
     where,

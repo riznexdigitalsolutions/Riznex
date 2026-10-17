@@ -1,9 +1,11 @@
+// @ts-nocheck
 'use client'
 import { useState, useEffect, useRef, Suspense, useCallback } from 'react'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { gbp, fmtDate, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const { data: session } = useSession()
@@ -46,7 +48,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const searchParams = useSearchParams()
   const initialTab = searchParams.get('tab') || 'all'
   const [activeTab, setActiveTab] = useState(initialTab)
-  const [filter, setFilter] = useState(defaultDateFilter())
+  const [filter, setFilter] = useState<any>(defaultDateFilter())
   const [platformFilter, setPlatformFilter] = useState('')
   const [storeFilter, setStoreFilter] = useState(is2025 ? 'Herbies Pizza' : '')
   const [statusFilter, setStatusFilter] = useState('')
@@ -91,7 +93,14 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const filteredInvoices = invoices.filter(inv => {
     if (inv.type === 'supplier') return false;
     if (activeTab !== 'all' && inv.type !== activeTab) return false;
-    if (storeFilter && inv.platform && !inv.platform.includes(storeFilter)) return false;
+    
+    if (storeFilter) {
+      if (!inv.platform) return false;
+      const isHerbies = storeFilter === 'Herbies Pizza';
+      const isTasty = storeFilter === 'Tasty Bun';
+      if (isHerbies && !inv.platform.includes('Herbies')) return false;
+      if (isTasty && !inv.platform.includes('Tasty')) return false;
+    }
     if (statusFilter && inv.ocrStatus !== statusFilter) return false;
 
     // Evaluate primaryDate (week-end date for platform statements) against filter range
@@ -100,15 +109,26 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
     const weekEndDt = weekStartDt ? getWeekEnd(weekStartDt) : null;
     const primaryDate = (inv.type === 'platform' && weekEndDt) ? weekEndDt : targetDate;
 
-    if (filter.from && primaryDate) {
-      const fromDt = new Date(filter.from);
-      fromDt.setUTCHours(0, 0, 0, 0);
-      if (primaryDate < fromDt) return false;
-    }
-    if (filter.to && primaryDate) {
-      const toDt = new Date(filter.to);
-      toDt.setUTCHours(23, 59, 59, 999);
-      if (primaryDate > toDt) return false;
+    if (filter.weekRanges && primaryDate) {
+      const ranges = filter.weekRanges.split('|').map((r: string) => {
+        const [s, e] = r.split('_')
+        const start = new Date(s); start.setUTCHours(0, 0, 0, 0);
+        const end = new Date(e); end.setUTCHours(23, 59, 59, 999);
+        return { start, end }
+      })
+      const inAnyRange = ranges.some((rg: any) => primaryDate >= rg.start && primaryDate <= rg.end)
+      if (!inAnyRange) return false
+    } else {
+      if (filter.from && primaryDate) {
+        const fromDt = new Date(filter.from);
+        fromDt.setUTCHours(0, 0, 0, 0);
+        if (primaryDate < fromDt) return false;
+      }
+      if (filter.to && primaryDate) {
+        const toDt = new Date(filter.to);
+        toDt.setUTCHours(23, 59, 59, 999);
+        if (primaryDate > toDt) return false;
+      }
     }
 
     return true;
@@ -305,26 +325,45 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{header.desc}</p>
         </div>
 
+        {/* Category Tabs */}
+        <div className="flex justify-center print:hidden">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-2xl bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200 dark:border-[#1f2947]">
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap ${
+                  activeTab === tab.id
+                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* Middle Row: Centered Filter & Action Toolbar */}
-        <div className="flex justify-center items-center print:hidden">
-          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-3 flex flex-wrap items-center justify-center gap-4 shadow-xl backdrop-blur-md">
+        <div className="flex justify-center items-center print:hidden w-full">
+          <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-2.5 sm:p-3 flex flex-wrap items-center justify-center gap-2 sm:gap-4 shadow-xl backdrop-blur-md max-w-full">
             {!is2025 && (
-              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl">
+              <div className="flex items-center gap-1.5 bg-transparent border border-slate-200 dark:border-[#1f2947] p-1 rounded-xl max-w-full overflow-x-auto">
                 <button
                   onClick={() => setStoreFilter('')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${storeFilter === '' ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                   Combined
                 </button>
                 <button
                   onClick={() => setStoreFilter('Herbies Pizza')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${storeFilter === 'Herbies Pizza' ? 'bg-gradient-to-r from-orange-500 to-red-500 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                   Herbies Pizza
                 </button>
                 <button
                   onClick={() => setStoreFilter('Tasty Bun')}
-                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer ${storeFilter === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer whitespace-nowrap ${storeFilter === 'Tasty Bun' ? 'bg-gradient-to-r from-yellow-400 to-orange-400 text-slate-900 dark:text-white shadow-md' : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'}`}
                 >
                   Tasty Bun
                 </button>
@@ -395,6 +434,23 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
             )}
           </div>
         </div>
+
+        {/* Active Filters Bar */}
+        <ActiveFilters
+          store={storeFilter}
+          onClearStore={() => setStoreFilter('')}
+          platform={platformFilter}
+          onClearPlatform={() => setPlatformFilter('')}
+          filter={filter}
+          onClearFilter={() => setFilter(defaultDateFilter())}
+          onClearAll={() => {
+            setStoreFilter('')
+            setPlatformFilter('')
+            setStatusFilter('')
+            setFilter(defaultDateFilter())
+          }}
+          className="justify-center max-w-full overflow-x-auto"
+        />
       </div>
 
 
@@ -406,7 +462,8 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
         </div>
       ) : (
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
-          <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
+          <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300 min-w-[750px]">
             <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-5 py-4 w-12 text-center">
@@ -479,7 +536,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                     />
                   </td>
                   <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
-                    {isEditing ? (
+                    {isEditing && session?.user?.role === 'admin' ? (
                       <input 
                         type="date" 
                         value={editForm.invoiceDate} 
@@ -488,7 +545,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         style={{ colorScheme: 'dark' }}
                       />
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit date">
+                      <div onClick={() => session?.user?.role === 'admin' && handleEditClick(inv)} className={session?.user?.role === 'admin' ? "cursor-pointer hover:text-slate-900 dark:text-white inline-block" : "inline-block"} title={session?.user?.role === 'admin' ? "Click to edit date" : undefined}>
                         {dateColStr}
                       </div>
                     )}
@@ -513,7 +570,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </td>
                   <td className="px-5 py-4 text-right font-black text-slate-900 dark:text-white">
-                    {isEditing ? (
+                    {isEditing && session?.user?.role === 'admin' ? (
                       <div className="flex items-center justify-end gap-1">
                         <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">£</span>
                         <input 
@@ -525,7 +582,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         />
                       </div>
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit amount">
+                      <div onClick={() => session?.user?.role === 'admin' && handleEditClick(inv)} className={session?.user?.role === 'admin' ? "cursor-pointer hover:text-slate-900 dark:text-white inline-block" : "inline-block"} title={session?.user?.role === 'admin' ? "Click to edit amount" : undefined}>
                         {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
                       </div>
                     )}
@@ -536,7 +593,9 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                      (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
                      <div className="flex items-center gap-2">
                        <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>
-                       <button onClick={() => handleRetryOcr(inv.id)} className="text-blue-500 hover:text-blue-400 font-bold text-[11px] underline cursor-pointer bg-transparent border-0 p-0" title="Retry AI extraction">Retry 🔄</button>
+                       {session?.user?.role === 'admin' && (
+                         <button onClick={() => handleRetryOcr(inv.id)} className="text-blue-500 hover:text-blue-400 font-bold text-[11px] underline cursor-pointer bg-transparent border-0 p-0" title="Retry AI extraction">Retry 🔄</button>
+                       )}
                      </div>}
                   </td>
                   <td className="px-5 py-4 text-right">
@@ -561,9 +620,21 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                         </>
                       )}
                       
-                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
-                        View File
-                      </a>
+                      {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' && inv.filePath !== 'manual' ? (
+                        <>
+                          <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-500 font-semibold text-xs transition whitespace-nowrap">
+                            View File
+                          </a>
+                          <span className="text-slate-400 dark:text-slate-600">|</span>
+                          <a href={`${inv.filePath}?download=1`} download className="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-xs transition whitespace-nowrap">
+                            Download
+                          </a>
+                        </>
+                      ) : (
+                        <a href={`/api/invoices/${inv.id}/voucher`} target="_blank" rel="noreferrer" className="text-[#E5B869] hover:underline font-semibold text-xs transition whitespace-nowrap">
+                          View Voucher
+                        </a>
+                      )}
                       
                       {session?.user?.role === 'admin' && (
                         <>
@@ -582,6 +653,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
               )})}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 

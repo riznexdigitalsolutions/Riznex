@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { gbp, fmtDate, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
+import ActiveFilters from '@/components/ActiveFilters'
 
 function InvoicesContent() {
   const { data: session } = useSession()
@@ -82,7 +83,7 @@ function InvoicesContent() {
 
   const tabs = [
     { id: 'all', label: 'Combined Sales Invoices Data' },
-    { id: 'pos', label: 'Hungry Birds POS (Walk-in Card, Cash & POS)' },
+    { id: 'pos', label: 'Hungry Birds Direct (Card, Cash & Online Web)' },
     { id: 'platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' }
   ]
 
@@ -301,7 +302,7 @@ function InvoicesContent() {
       case 'platform':
         return { title: 'Delivery Platforms (Uber Eats, Just Eat, Deliveroo)', desc: 'Manage your delivery app weekly sales invoices.', buttonText: '+ Upload Delivery Invoice' }
       case 'pos':
-        return { title: 'POS & Walk-in Sales (Card, Cash & POS)', desc: 'Manage walk-in card machine invoices, walk-in cash sales, and in-store POS sales.', buttonText: '+ Upload Card/POS Invoice' }
+        return { title: 'Direct & Walk-in Sales (Card, Cash & Online Web)', desc: 'Manage walk-in card machine invoices, walk-in cash sales, and online web orders.', buttonText: '+ Upload Card/Web Invoice' }
       case 'all':
       default:
         return { title: 'Combined Sales Invoices Data', desc: 'Master view combining all POS and delivery platform sales invoices.', buttonText: '+ Upload Sales Invoice' }
@@ -310,15 +311,15 @@ function InvoicesContent() {
   const header = getHeaderContent()
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 max-w-full min-w-0">
       {/* Centered Title & Description */}
-      <div className="text-center space-y-1.5 py-2">
-        <h1 className="text-3xl font-black text-slate-900 dark:text-white tracking-tight">{header.title}</h1>
+      <div className="text-center space-y-1.5 py-2 px-2">
+        <h1 className="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight break-words">{header.title}</h1>
         <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{header.desc}</p>
       </div>
 
       {/* Filter Toolbar & Upload Action Underneath */}
-      <div className="flex flex-col sm:flex-row gap-4 items-center justify-between bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-4 backdrop-blur-sm shadow-lg">
+      <div className="w-full max-w-full p-2.5 sm:p-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl backdrop-blur-sm shadow-lg">
         <div className="flex gap-3 flex-wrap items-center w-full sm:w-auto">
           {activeTab === 'all' && (
             <>
@@ -333,7 +334,7 @@ function InvoicesContent() {
                 <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
                 <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
                 <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🖥️ POS Sales</option>
+                <option value="Online Web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🌐 Online Web</option>
               </select>
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
@@ -363,7 +364,7 @@ function InvoicesContent() {
                 <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All POS & Walk-in Sales</option>
                 <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
                 <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
-                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🖥️ POS Sales</option>
+                <option value="Online Web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🌐 Online Web</option>
               </select>
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
@@ -396,6 +397,29 @@ function InvoicesContent() {
         </div>
       </div>
 
+      {/* Active Filters Bar */}
+      <ActiveFilters
+        platform={
+          activeTab === 'all' ? (storeFilter || '') :
+          activeTab === 'platform' ? (platformFilter || '') :
+          activeTab === 'pos' ? (posFilter || '') : ''
+        }
+        onClearPlatform={() => {
+          setStoreFilter('')
+          setPlatformFilter('')
+          setPosFilter('')
+        }}
+        filter={filter}
+        onClearFilter={() => setFilter(defaultDateFilter())}
+        onClearAll={() => {
+          setStoreFilter('')
+          setPlatformFilter('')
+          setPosFilter('')
+          setFilter(defaultDateFilter())
+        }}
+        className="px-1"
+      />
+
       {filteredInvoices.length === 0 ? (
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl p-12 text-center">
           <div className="text-4xl mb-4">🧾</div>
@@ -403,9 +427,10 @@ function InvoicesContent() {
           <p className="text-slate-500 text-sm">There are no invoices matching this category.</p>
         </div>
       ) : (
-        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
-          <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300">
-            <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
+        <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden w-full max-w-full">
+          <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
+            <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300 min-w-[750px]">
+              <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
               <tr>
                 <th className="px-5 py-4 w-12 text-center">
                   <input 
@@ -463,7 +488,7 @@ function InvoicesContent() {
                     />
                   </td>
                   <td className="px-5 py-4 font-medium text-slate-900 dark:text-white">
-                    {isEditing ? (
+                    {isEditing && session?.user?.role === 'admin' ? (
                       <input 
                         type="date" 
                         value={editForm.invoiceDate} 
@@ -472,7 +497,7 @@ function InvoicesContent() {
                         style={{ colorScheme: 'dark' }}
                       />
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit date">
+                      <div onClick={() => session?.user?.role === 'admin' && handleEditClick(inv)} className={session?.user?.role === 'admin' ? "cursor-pointer hover:text-slate-900 dark:text-white inline-block" : "inline-block"} title={session?.user?.role === 'admin' ? "Click to edit date" : undefined}>
                         {dateColStr}
                       </div>
                     )}
@@ -497,7 +522,7 @@ function InvoicesContent() {
                     </div>
                   </td>
                   <td className="px-5 py-4 text-right font-black text-slate-900 dark:text-white">
-                    {isEditing ? (
+                    {isEditing && session?.user?.role === 'admin' ? (
                       <div className="flex items-center justify-end gap-1">
                         <span className="text-slate-500 dark:text-slate-400 text-xs font-normal">£</span>
                         <input 
@@ -509,7 +534,7 @@ function InvoicesContent() {
                         />
                       </div>
                     ) : (
-                      <div onClick={() => handleEditClick(inv)} className="cursor-pointer hover:text-slate-900 dark:text-white inline-block" title="Click to edit amount">
+                      <div onClick={() => session?.user?.role === 'admin' && handleEditClick(inv)} className={session?.user?.role === 'admin' ? "cursor-pointer hover:text-slate-900 dark:text-white inline-block" : "inline-block"} title={session?.user?.role === 'admin' ? "Click to edit amount" : undefined}>
                         {inv.amount ? gbp(inv.amount) : <span className="text-red-400 font-bold text-[10px] uppercase tracking-wider border border-red-500/20 bg-red-500/10 px-2 py-0.5 rounded-full w-max">Missing</span>}
                       </div>
                     )}
@@ -520,7 +545,9 @@ function InvoicesContent() {
                      (inv.notes && inv.notes.includes('Duplicate')) ? <span className="text-slate-900 dark:text-white font-semibold text-xs" title={inv.notes}>Duplicate ⚠️</span> :
                      <div className="flex items-center gap-2">
                        <span className="text-red-400 font-semibold text-xs" title={inv.notes || 'Processing failed'}>Failed ❌</span>
-                       <button onClick={() => handleRetryOcr(inv.id)} className="text-blue-500 hover:text-blue-400 font-bold text-[11px] underline cursor-pointer bg-transparent border-0 p-0" title="Retry AI extraction">Retry 🔄</button>
+                       {session?.user?.role === 'admin' && (
+                         <button onClick={() => handleRetryOcr(inv.id)} className="text-blue-500 hover:text-blue-400 font-bold text-[11px] underline cursor-pointer bg-transparent border-0 p-0" title="Retry AI extraction">Retry 🔄</button>
+                       )}
                      </div>}
                   </td>
                   <td className="px-5 py-4 text-right">
@@ -545,9 +572,21 @@ function InvoicesContent() {
                         </>
                       )}
                       
-                      <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-300 font-semibold text-xs transition whitespace-nowrap">
-                        View File
-                      </a>
+                      {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' && inv.filePath !== 'manual' ? (
+                        <>
+                          <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-500 font-semibold text-xs transition whitespace-nowrap">
+                            View File
+                          </a>
+                          <span className="text-slate-400 dark:text-slate-600">|</span>
+                          <a href={`${inv.filePath}?download=1`} download className="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-xs transition whitespace-nowrap">
+                            Download
+                          </a>
+                        </>
+                      ) : (
+                        <a href={`/api/invoices/${inv.id}/voucher`} target="_blank" rel="noreferrer" className="text-[#E5B869] hover:underline font-semibold text-xs transition whitespace-nowrap">
+                          View Voucher
+                        </a>
+                      )}
                       
                       {session?.user?.role === 'admin' && (
                         <>
@@ -566,6 +605,7 @@ function InvoicesContent() {
               )})}
             </tbody>
           </table>
+          </div>
         </div>
       )}
 
@@ -594,7 +634,6 @@ function InvoicesContent() {
                   <select value={posName} onChange={e => setPosName(e.target.value)} className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
                     <option value="Walk-in Card" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Walk-in Card</option>
                     <option value="Walk-in Cash" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Walk-in Cash</option>
-                    <option value="POS Sales" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">POS Sales</option>
                     <option value="Online Web" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Online Web</option>
                   </select>
                 </div>

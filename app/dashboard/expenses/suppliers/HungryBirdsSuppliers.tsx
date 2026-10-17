@@ -241,9 +241,22 @@ export function HungryBirdsSuppliers() {
                       <td className="px-4 py-3">
                         {inv.fileUrl && inv.fileUrl !== 'manual' && inv.fileUrl !== 'none' ? (
                           <div className="flex items-center gap-2">
-                            <a href={inv.fileUrl} target="_blank" rel="noopener noreferrer" className="text-blue-500 dark:text-blue-400 hover:underline text-xs font-semibold">View</a>
+                            <a 
+                              href={`${inv.fileUrl}?v=${inv.updatedAt ? new Date(inv.updatedAt).getTime() : 'orig'}`} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className="text-blue-500 dark:text-blue-400 hover:underline text-xs font-semibold"
+                            >
+                              View
+                            </a>
                             <span className="text-slate-400 dark:text-slate-600">|</span>
-                            <a href={`${inv.fileUrl}?download=1`} download className="text-emerald-500 dark:text-emerald-400 hover:underline text-xs font-semibold">Download</a>
+                            <a 
+                              href={`${inv.fileUrl}?download=1&v=${inv.updatedAt ? new Date(inv.updatedAt).getTime() : 'orig'}`} 
+                              download 
+                              className="text-emerald-500 dark:text-emerald-400 hover:underline text-xs font-semibold"
+                            >
+                              Download
+                            </a>
                           </div>
                         ) : (
                           <a href={`/api/invoices/${inv.id}/voucher`} target="_blank" rel="noopener noreferrer" className="text-[#E5B869] hover:underline text-xs font-semibold">View Voucher</a>

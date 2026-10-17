@@ -50,6 +50,7 @@ function InvoicesContent() {
   const [platformFilter, setPlatformFilter] = useState('')
   const [posFilter, setPosFilter] = useState('')
   const [storeFilter, setStoreFilter] = useState('')
+  const [supplierFilter, setSupplierFilter] = useState('')
   const [retryingId, setRetryingId] = useState<string | null>(null)
 
   const handleRetryOcr = async (id: string) => {
@@ -82,15 +83,18 @@ function InvoicesContent() {
   const uniqueSuppliers = Array.from(new Map((Array.isArray(suppliers) ? suppliers : []).map(s => [s.name, s])).values())
 
   const tabs = [
-    { id: 'all', label: 'Combined Sales Invoices Data' },
+    { id: 'all', label: 'Combined Sales & Supplier Invoices' },
     { id: 'pos', label: 'Hungry Birds Direct (Card, Cash & Online Web)' },
-    { id: 'platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' }
+    { id: 'platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
+    { id: 'supplier', label: 'Supplier Purchases Invoices' }
   ]
 
-  // Strictly filter out supplier expenses on Sales Invoices page!
   const filteredInvoices = invoices.filter(inv => {
-    if (inv.type === 'supplier' || inv.type === 'stock') return false; // REMOVE SUPPLIER EXPENSES FROM SALES INVOICES PAGE
     if (activeTab !== 'all' && inv.type !== activeTab) return false;
+    if (supplierFilter) {
+      const matchName = (inv.supplier?.name || inv.platform || '').toLowerCase()
+      if (!matchName.includes(supplierFilter.toLowerCase())) return false
+    }
     if (storeFilter && inv.platform && !inv.platform.includes(storeFilter)) return false;
     if (posFilter && activeTab === 'pos' && inv.platform && !inv.platform.includes(posFilter)) return false;
 
@@ -303,9 +307,11 @@ function InvoicesContent() {
         return { title: 'Delivery Platforms (Uber Eats, Just Eat, Deliveroo)', desc: 'Manage your delivery app weekly sales invoices.', buttonText: '+ Upload Delivery Invoice' }
       case 'pos':
         return { title: 'Direct & Walk-in Sales (Card, Cash & Online Web)', desc: 'Manage walk-in card machine invoices, walk-in cash sales, and online web orders.', buttonText: '+ Upload Card/Web Invoice' }
+      case 'supplier':
+        return { title: 'Supplier Purchases Invoices', desc: 'Manage invoices and receipts from food, packaging, and goods suppliers.', buttonText: '+ Upload Supplier Invoice' }
       case 'all':
       default:
-        return { title: 'Combined Sales Invoices Data', desc: 'Master view combining all POS and delivery platform sales invoices.', buttonText: '+ Upload Sales Invoice' }
+        return { title: 'Combined Sales & Supplier Invoices Data', desc: 'Master view combining all POS, delivery platform, and supplier invoices.', buttonText: '+ Upload Sales Invoice' }
     }
   }
   const header = getHeaderContent()
@@ -369,6 +375,22 @@ function InvoicesContent() {
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
           )}
+
+          {/* Supplier Filter Dropdown */}
+          <select
+            value={supplierFilter}
+            onChange={e => setSupplierFilter(e.target.value)}
+            className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer max-w-[130px] truncate"
+          >
+            <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Suppliers</option>
+            {uniqueSuppliers.map((s: any) => (
+              <option key={s.id || s.name} value={s.name} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">
+                {s.name}
+              </option>
+            ))}
+          </select>
+          <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
+
           <DateFilter filter={filter} setFilter={setFilter} />
         </div>
 
@@ -386,6 +408,9 @@ function InvoicesContent() {
             <button 
               onClick={() => {
                 setType(activeTab === 'all' ? 'platform' : activeTab)
+                if (activeTab === 'supplier') {
+                  setSupplierId(uniqueSuppliers[0]?.id || '')
+                }
                 setIsModalOpen(true)
               }}
               disabled={uploading}
@@ -409,12 +434,15 @@ function InvoicesContent() {
           setPlatformFilter('')
           setPosFilter('')
         }}
+        supplier={supplierFilter}
+        onClearSupplier={() => setSupplierFilter('')}
         filter={filter}
         onClearFilter={() => setFilter(defaultDateFilter())}
         onClearAll={() => {
           setStoreFilter('')
           setPlatformFilter('')
           setPosFilter('')
+          setSupplierFilter('')
           setFilter(defaultDateFilter())
         }}
         className="px-1"
@@ -574,11 +602,20 @@ function InvoicesContent() {
                       
                       {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' && inv.filePath !== 'manual' ? (
                         <>
-                          <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-500 font-semibold text-xs transition whitespace-nowrap">
+                          <a 
+                            href={`${inv.filePath}?v=${inv.updatedAt ? new Date(inv.updatedAt).getTime() : 'orig'}`} 
+                            target="_blank" 
+                            rel="noreferrer" 
+                            className="text-slate-900 dark:text-white hover:text-blue-500 font-semibold text-xs transition whitespace-nowrap"
+                          >
                             View File
                           </a>
                           <span className="text-slate-400 dark:text-slate-600">|</span>
-                          <a href={`${inv.filePath}?download=1`} download className="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-xs transition whitespace-nowrap">
+                          <a 
+                            href={`${inv.filePath}?download=1&v=${inv.updatedAt ? new Date(inv.updatedAt).getTime() : 'orig'}`} 
+                            download 
+                            className="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-xs transition whitespace-nowrap"
+                          >
                             Download
                           </a>
                         </>

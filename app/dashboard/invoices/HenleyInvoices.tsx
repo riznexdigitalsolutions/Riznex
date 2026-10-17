@@ -52,6 +52,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const [platformFilter, setPlatformFilter] = useState('')
   const [storeFilter, setStoreFilter] = useState(is2025 ? 'Herbies Pizza' : '')
   const [statusFilter, setStatusFilter] = useState('')
+  const [supplierFilter, setSupplierFilter] = useState('')
   const [retryingId, setRetryingId] = useState<string | null>(null)
 
   const handleRetryOcr = async (id: string) => {
@@ -87,19 +88,24 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const tabs = [
     { id: 'all', label: 'All Invoices' },
     { id: 'platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
-    { id: 'pos', label: is2025 ? 'Herbies Pizza POS Invoices' : 'Herbies Pizza & Tasty Bun POS Invoices' }
+    { id: 'pos', label: is2025 ? 'Herbies Pizza POS Invoices' : 'Herbies Pizza & Tasty Bun POS Invoices' },
+    { id: 'supplier', label: 'Supplier Purchases Invoices' }
   ]
 
   const filteredInvoices = invoices.filter(inv => {
-    if (inv.type === 'supplier') return false;
     if (activeTab !== 'all' && inv.type !== activeTab) return false;
     
+    if (supplierFilter) {
+      const matchName = (inv.supplier?.name || inv.platform || '').toLowerCase()
+      if (!matchName.includes(supplierFilter.toLowerCase())) return false
+    }
+
     if (storeFilter) {
-      if (!inv.platform) return false;
+      const checkStr = (inv.platform || inv.supplier?.name || inv.fileName || '');
       const isHerbies = storeFilter === 'Herbies Pizza';
       const isTasty = storeFilter === 'Tasty Bun';
-      if (isHerbies && !inv.platform.includes('Herbies')) return false;
-      if (isTasty && !inv.platform.includes('Tasty')) return false;
+      if (isHerbies && !checkStr.includes('Herbies') && !checkStr.toLowerCase().includes('herbie')) return false;
+      if (isTasty && !checkStr.includes('Tasty') && !checkStr.toLowerCase().includes('tasty')) return false;
     }
     if (statusFilter && inv.ocrStatus !== statusFilter) return false;
 
@@ -308,9 +314,11 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
         return { title: 'Platform Invoices', desc: 'Manage your Uber Eats, Just Eat, and Deliveroo statements.', buttonText: '+ Upload Platform Invoice' }
       case 'pos':
         return { title: is2025 ? 'Herbies Pizza POS Invoices' : 'Herbies & Tasty Bun POS Invoices', desc: 'Manage invoices from your internal POS systems.', buttonText: '+ Upload POS Invoice' }
+      case 'supplier':
+        return { title: 'Supplier Purchases Invoices', desc: 'Manage invoices and delivery receipts from food, packaging, and goods suppliers.', buttonText: '+ Upload Supplier Invoice' }
       case 'all':
       default:
-        return { title: 'All Sales Invoices', desc: 'Overview of all your POS and platform statements.', buttonText: '+ Upload Invoice' }
+        return { title: 'All Sales & Supplier Invoices', desc: 'Overview of all your POS, platform, and supplier statements.', buttonText: '+ Upload Invoice' }
     }
   }
   const header = getHeaderContent()
@@ -372,6 +380,22 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
             {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
 
+            {/* Supplier Filter Dropdown */}
+            <select
+              value={supplierFilter}
+              onChange={e => setSupplierFilter(e.target.value)}
+              className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer transition-colors max-w-[130px] truncate"
+            >
+              <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Suppliers</option>
+              {uniqueSuppliers.map((s: any) => (
+                <option key={s.id || s.name} value={s.name} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">
+                  {s.name}
+                </option>
+              ))}
+            </select>
+
+            <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
+
             <select
               value={statusFilter}
               onChange={e => setStatusFilter(e.target.value)}
@@ -391,7 +415,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             <button 
-              onClick={() => { setFilter(defaultDateFilter()); setStoreFilter(''); setStatusFilter(''); }} 
+              onClick={() => { setFilter(defaultDateFilter()); setStoreFilter(''); setStatusFilter(''); setSupplierFilter(''); }} 
               className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
@@ -417,7 +441,9 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
               <button 
                 onClick={() => {
                   setType(activeTab === 'all' ? 'platform' : activeTab)
-                  if (storeFilter === 'Tasty Bun') {
+                  if (activeTab === 'supplier') {
+                    setSupplierId(uniqueSuppliers[0]?.id || '')
+                  } else if (storeFilter === 'Tasty Bun') {
                     setPlatformName('Tasty Bun Deliveroo')
                     setPosName('Tasty Bun POS')
                   } else {
@@ -441,12 +467,15 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
           onClearStore={() => setStoreFilter('')}
           platform={platformFilter}
           onClearPlatform={() => setPlatformFilter('')}
+          supplier={supplierFilter}
+          onClearSupplier={() => setSupplierFilter('')}
           filter={filter}
           onClearFilter={() => setFilter(defaultDateFilter())}
           onClearAll={() => {
             setStoreFilter('')
             setPlatformFilter('')
             setStatusFilter('')
+            setSupplierFilter('')
             setFilter(defaultDateFilter())
           }}
           className="justify-center max-w-full overflow-x-auto"
@@ -622,11 +651,20 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                       
                       {inv.filePath && inv.filePath !== '/auto-filled' && inv.filePath !== 'none' && inv.filePath !== 'manual' ? (
                         <>
-                          <a href={inv.filePath} target="_blank" rel="noreferrer" className="text-slate-900 dark:text-white hover:text-blue-500 font-semibold text-xs transition whitespace-nowrap">
+                          <a 
+                            href={`${inv.filePath}?v=${inv.updatedAt ? new Date(inv.updatedAt).getTime() : 'orig'}`} 
+                            target="_blank" 
+                            rel="noreferrer" 
+                            className="text-slate-900 dark:text-white hover:text-blue-500 font-semibold text-xs transition whitespace-nowrap"
+                          >
                             View File
                           </a>
                           <span className="text-slate-400 dark:text-slate-600">|</span>
-                          <a href={`${inv.filePath}?download=1`} download className="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-xs transition whitespace-nowrap">
+                          <a 
+                            href={`${inv.filePath}?download=1&v=${inv.updatedAt ? new Date(inv.updatedAt).getTime() : 'orig'}`} 
+                            download 
+                            className="text-blue-600 dark:text-blue-400 hover:underline font-semibold text-xs transition whitespace-nowrap"
+                          >
                             Download
                           </a>
                         </>

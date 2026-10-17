@@ -310,6 +310,19 @@
 
 ---
 
+### G. Invoices Supplier Filter & Cache-Buster Fix (October 2026)
+- **Files Modified:**
+  - `components/ActiveFilters.tsx`: Added supplier filter prop and purple active pill tag.
+  - `app/dashboard/invoices/HenleyInvoices.tsx`: Added supplier filter dropdown, 'Supplier Purchases Invoices' tab, and `?v=...` cache-busting link hrefs.
+  - `app/dashboard/invoices/HungryBirdsInvoices.tsx`: Added supplier filter dropdown, 'Supplier Purchases Invoices' tab, and `?v=...` cache-busting link hrefs.
+  - `app/dashboard/expenses/suppliers/HenleySuppliers.tsx` & `HungryBirdsSuppliers.tsx`: Added `?v=...` cache buster to View and Download links.
+  - `app/uploads/[...path]/route.ts`: Replaced immutable caching with `no-cache, no-store, must-revalidate, max-age=0`.
+- **Result:**
+  - Real authentic uploaded original invoice PDFs are served directly with cache-busting.
+  - Invoices page includes Supplier tab and toolbar filter dropdown for both clients.
+
+---
+
 ## 5. Current Task & System Status (Handover Checkpoint)
 
 - **System Status:** 100% operational, fully verified with Next.js, committed, and pushed to GitHub `origin main`.

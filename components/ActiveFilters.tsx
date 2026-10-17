@@ -7,6 +7,8 @@ interface ActiveFiltersProps {
   onClearStore?: () => void;
   platform?: string;
   onClearPlatform?: (platformToClear?: string) => void;
+  supplier?: string;
+  onClearSupplier?: () => void;
   filter?: any;
   onClearFilter?: () => void;
   onClearAll?: () => void;
@@ -52,6 +54,8 @@ export default function ActiveFilters({
   onClearStore,
   platform,
   onClearPlatform,
+  supplier,
+  onClearSupplier,
   filter,
   onClearFilter,
   onClearAll,
@@ -69,12 +73,15 @@ export default function ActiveFilters({
     : []
   const hasPlatform = platformList.length > 0
 
+  // Check supplier
+  const hasSupplier = Boolean(supplier && supplier !== '' && supplier !== 'all')
+
   // Check period
   const periodLabel = getPeriodLabel(filter)
   const hasPeriod = Boolean(periodLabel)
 
   // If nothing is active, return null
-  if (!hasStore && !hasPlatform && !hasPeriod) {
+  if (!hasStore && !hasPlatform && !hasSupplier && !hasPeriod) {
     return null
   }
 
@@ -95,6 +102,7 @@ export default function ActiveFilters({
     } else {
       if (onClearStore) onClearStore()
       if (onClearPlatform) onClearPlatform('')
+      if (onClearSupplier) onClearSupplier()
       if (onClearFilter) onClearFilter()
     }
   }
@@ -147,6 +155,26 @@ export default function ActiveFilters({
           )}
         </span>
       ))}
+
+      {/* Supplier Pill */}
+      {Boolean(supplier) && (
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-xs font-bold bg-purple-50 dark:bg-purple-950/40 text-purple-700 dark:text-purple-400 border border-purple-200 dark:border-purple-800/60 shadow-sm transition hover:border-purple-300">
+          <span>Supplier: {supplier}</span>
+          {onClearSupplier && (
+            <button
+              type="button"
+              onClick={onClearSupplier}
+              title="Remove supplier filter"
+              className="hover:bg-purple-200/50 dark:hover:bg-purple-800/50 rounded p-0.5 text-purple-700 dark:text-purple-400 transition cursor-pointer"
+            >
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+          )}
+        </span>
+      )}
 
       {/* Period Pill */}
       {hasPeriod && (

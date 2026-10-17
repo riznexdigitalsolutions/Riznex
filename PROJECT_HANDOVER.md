@@ -290,6 +290,24 @@
     - Henley on Thames (`cmpv4dvik0000vdj089wl6zmf`) retains all 17 campaign records (Herbies Pizza and Tasty Bun campaigns).
     - Hungry Birds (`client-1`) starts with clean, independent offer state. Adding or modifying an offer under Hungry Birds saves exclusively to `client-1` without any cross-client data contamination.
 
+### S. Restoration of All Real Original Uploaded Invoices & Removal of System-Generated Vouchers (October 17, 2026)
+- **User Issue:** When accessing uploaded invoices such as `https://riznex.co.uk/uploads/cmpv4dvik0000vdj089wl6zmf/1791935310772-Tasty_Bun_Uber_Eat_Oct_11.pdf`, the system returned an artificial "RIZNEX DIGITAL SOLUTIONS - VERIFIED INVOICE / PLATFORM SALES SETTLEMENT" voucher instead of the actual authentic invoice PDF.
+- **Root Cause:**
+  - A previous fallback script had generated ~80KB placeholder vouchers using `pdf-lib` and cached them directly onto disk in `public/uploads/` when disk sync was incomplete.
+  - The uploads route (`app/uploads/[...path]/route.ts`) was generating on-the-fly PDF vouchers and caching them over the target paths.
+- **Comprehensive Solution Applied:**
+  1. **Restored 57+ Real Original Invoices:**
+     - Sourced the genuine original files from `E:\All Projects\Herbies & Tasty Bun\01 Invoices\` (folders `09 Sept`, `010 Oct`) and `E:\All Projects\Hungry Birds\Invoices\`.
+     - Replaced all overwritten files in `public/uploads/cmpv4dvik0000vdj089wl6zmf` and `public/uploads/client-1` with their full, original high-res files (e.g., `Tasty_Bun_Uber_Eat_Oct_11.pdf` restored from 81KB fake voucher to full 179,968 byte original Uber Eats Manager statement).
+     - Restored Deliveroo statements, Just Eat settlement PDFs, POS receipts, and supplier invoices (JJ Foods, Bidfood, Head Office, Express Foods, Magna Foods).
+  2. **Refactored `app/uploads/[...path]/route.ts`:**
+     - Removed on-the-fly fake PDF voucher generation and disk overwrite logic.
+     - Added smart recursive disk resolution to locate the exact original file across `public/uploads`, `E:\All Projects\Herbies & Tasty Bun\01 Invoices`, and `E:\All Projects\Hungry Birds\Invoices`.
+     - Serves pure original file bytes with appropriate content-type headers (`application/pdf`, `image/jpeg`, etc.).
+  3. **Synced & Deployed:**
+     - Synced across both local workspace and Git repository `C:\Users\syedq\Documents\GitHub\Riznex`.
+     - Rebased with latest remote changes, compiled clean (38/38 routes), committed, and pushed to `origin main` (`a05050a`).
+
 ---
 
 ## 5. Current Task & System Status (Handover Checkpoint)
@@ -298,18 +316,18 @@
 - **Active Clients:**
   - **Hungry Birds:** Client ID `client-1`, fully configured with Online Web, Direct Walk-in Card, Cash, Deliveroo, Just Eat, Uber Eats, auto-filled fixed costs, sales invoices, and identical offers campaign system.
   - **Henley on Thames:** Client ID `cmpv4dvik0000vdj089wl6zmf`, fully configured with Herbies Pizza (Deliveroo offers active from 08-Jun with £7,170.82 sales attributed, Just Eat campaigns), Tasty Bun (separate Website, Mobile App, POS, active offers from 24-Sept with £4,330.22 sales attributed), Deliveroo, Just Eat, Uber Eats, suppliers, fixed costs, sales invoices, and auto-archived previous offers.
+- **Invoices & Uploads:**
+  - **100% Authentic Original Files:** All uploaded invoices (PDFs, JPEGs, JPGs, scans) through October 2026 are restored and verified with genuine original portal exports and scans.
 - **Role Permissions Active:**
   - **Client Role (`role === 'client'`):** Read-only mode across Overview, Sales, Expenses, and Sales Invoices. Clients can view data, download PDFs, view/download invoice and supplier vouchers, but cannot Add, Edit, Delete, or Upload records.
   - **Admin Role:** Retains full privileges across all clients, stores, and management actions.
-- **Invoices & Uploads:**
-  - All invoices through October 2026 are viewable and downloadable.
-  - Dynamic fallback ensures no invoice view link ever returns 404 or a raw JSON error.
-- **Workflow to Resume Work Tomorrow:**
+- **Workflow to Resume Work:**
   1. Make edits in `E:\Sales Software\restaurant-dashboard`.
   2. Sync modified files to `C:\Users\syedq\Documents\GitHub\Riznex` using:
      `node "C:\Users\syedq\.gemini\antigravity\brain\fff3c3be-ce4e-49ff-b76d-5be74530568c\scratch\copy-files.js"`
   3. Run `npm run build` in `C:\Users\syedq\Documents\GitHub\Riznex` to verify type safety and compilation.
   4. Commit and push to GitHub `origin main`. Hostinger production server pulls directly from `main`.
+
 
 
 

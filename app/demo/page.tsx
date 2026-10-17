@@ -1072,26 +1072,28 @@ function DemoContent() {
                 </div>
               </div>
 
-              {/* Two Column Section: Profit Summary (Left) & Platform + Supplier Tables (Right) */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              {/* Two Column Section: Profit Summary (Left) & Platform + Supplier Tables (Right) with Independent Sliders */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
-                {/* Left Column: Profit Summary Waterfall */}
-                <div className="bg-white dark:bg-[#111520] border border-[#E5B869]/30 rounded-3xl p-5 sm:p-7 shadow-md flex flex-col relative overflow-hidden">
-                  <div className="flex items-center justify-between mb-6">
-                    <div className="flex items-center gap-2.5">
-                      <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-sm">
-                        💰
-                      </span>
-                      <h2 className="text-lg font-black text-slate-900 dark:text-white">Profit Summary</h2>
-                    </div>
-                    <button 
-                      onClick={() => setExpandProfitSummary(!expandProfitSummary)} 
-                      className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
-                      title={expandProfitSummary ? "Collapse All" : "Expand All"}
-                    >
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d={expandProfitSummary ? "m18 15-6-6-6 6" : "m6 9 6 6 6-6"}/></svg>
-                    </button>
-                  </div>
+                {/* Left Column: Profit Summary Waterfall with Independent Slider */}
+                <div className="lg:h-[720px] lg:overflow-y-auto custom-scrollbar pr-1 overscroll-contain">
+                  <div className="bg-white dark:bg-[#111520] border border-[#E5B869]/30 rounded-3xl p-5 sm:p-7 shadow-md flex flex-col justify-between min-h-full relative overflow-hidden">
+                    <div>
+                      <div className="flex items-center justify-between mb-6">
+                        <div className="flex items-center gap-2.5">
+                          <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-sm">
+                            💰
+                          </span>
+                          <h2 className="text-lg font-black text-slate-900 dark:text-white">Profit Summary</h2>
+                        </div>
+                        <button 
+                          onClick={() => setExpandProfitSummary(!expandProfitSummary)} 
+                          className="p-1.5 rounded-lg hover:bg-black/5 dark:hover:bg-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white transition cursor-pointer"
+                          title={expandProfitSummary ? "Collapse All" : "Expand All"}
+                        >
+                          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d={expandProfitSummary ? "m18 15-6-6-6 6" : "m6 9 6 6 6-6"}/></svg>
+                        </button>
+                      </div>
 
                   <div className="flex justify-between items-center mb-4">
                     <span className="text-slate-700 dark:text-slate-300 font-bold text-base">Gross Sales</span>
@@ -1267,16 +1269,18 @@ function DemoContent() {
                     </div>
 
                   </div>
-
-                  {/* Net Profit Result */}
-                  <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
-                    <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-lg">= Net Profit</span>
-                    <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-xl">{gbp(currentData.netProfit)}</span>
-                  </div>
                 </div>
 
-                {/* Right Column: Platform Performance & Supplier Purchases */}
-                <div className="lg:col-span-2 space-y-6">
+                {/* Net Profit Result */}
+                <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
+                  <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-lg">= Net Profit</span>
+                  <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-xl">{gbp(currentData.netProfit)}</span>
+                </div>
+              </div>
+            </div>
+
+                {/* Right Column: Platform Performance & Supplier Purchases with Independent Slider */}
+                <div className="lg:col-span-2 lg:h-[720px] lg:overflow-y-auto space-y-6 custom-scrollbar pr-2 overscroll-contain">
 
                   {/* Platform Performance Table */}
                   <div className="bg-white dark:bg-[#111520] border border-[#E5B869]/30 rounded-3xl p-5 sm:p-7 shadow-md overflow-hidden">

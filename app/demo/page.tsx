@@ -373,12 +373,12 @@ function DemoContent() {
         </div>
       </div>
 
-      <div className="flex flex-1 relative">
+      <div className="flex flex-1 relative lg:h-[calc(100vh-45px)] lg:overflow-hidden">
 
-        {/* ── SIDEBAR NAVIGATION (Matching Authentic Client Layout) ──────────── */}
-        <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0 pt-10' : '-translate-x-full'}`}>
+        {/* ── SIDEBAR NAVIGATION (Matching Authentic Client Layout - Independent Slider) ── */}
+        <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 lg:static lg:translate-x-0 lg:h-full lg:flex-shrink-0 ${sidebarOpen ? 'translate-x-0 pt-10' : '-translate-x-full'}`}>
           {/* Sidebar Header */}
-          <div className="flex items-center justify-between px-5 py-6 border-b border-slate-200 dark:border-[#1f2947]">
+          <div className="flex items-center justify-between px-5 py-6 border-b border-slate-200 dark:border-[#1f2947] flex-shrink-0">
             <div className="flex items-center gap-3">
               <img 
                 src="/images/new-logo.jpg" 
@@ -402,8 +402,8 @@ function DemoContent() {
             </button>
           </div>
 
-          {/* Sidebar Nav Links */}
-          <nav className="flex-1 px-3 py-5 space-y-4 overflow-y-auto">
+          {/* Sidebar Nav Links - Independent Slider / Scroll Container */}
+          <nav className="flex-1 px-3 py-5 space-y-4 overflow-y-auto custom-scrollbar overscroll-contain">
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3">
               MENU
             </div>
@@ -504,8 +504,8 @@ function DemoContent() {
 
           </nav>
 
-          {/* User Profile in Sidebar */}
-          <div className="p-4 border-t border-slate-200 dark:border-[#1f2947] bg-white dark:bg-[#0d1019] space-y-3">
+          {/* User Profile in Sidebar - Locked at Bottom */}
+          <div className="p-4 border-t border-slate-200 dark:border-[#1f2947] bg-white dark:bg-[#0d1019] space-y-3 flex-shrink-0">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-purple-600/30 border border-purple-500/40 text-slate-900 dark:text-white dark:text-purple-300 font-black flex items-center justify-center text-sm">
                 R
@@ -536,7 +536,9 @@ function DemoContent() {
             onClick={() => setSidebarOpen(false)} 
           />
         )}
-        <main className="flex-1 bg-slate-50 dark:bg-[#0e121b] p-3.5 sm:p-6 lg:p-8 overflow-y-auto pb-64 sm:pb-72">
+
+        {/* ── MAIN CONTENT AREA (Independent Slider / Scroll Container) ──────── */}
+        <main className="flex-1 bg-slate-50 dark:bg-[#0e121b] p-3.5 sm:p-6 lg:p-8 overflow-y-auto custom-scrollbar overscroll-contain lg:h-full pb-16 sm:pb-20">
           
           {/* Top Bar: Mobile Hamburger & Live Date */}
           <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-200/50 dark:border-[#1f2947]/50 lg:border-none">
@@ -802,14 +804,12 @@ function DemoContent() {
                 </div>
               </div>
 
-              {/* Two Column Section: Profit Summary (Left) & Platform + Supplier Tables (Right) with Independent Sliders */}
+              {/* Two Column Section: Profit Summary (Left) & Platform + Supplier Tables (Right) */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
-                {/* Left Column: Profit Summary Waterfall with Independent Slider */}
-                <div className="lg:h-[720px] lg:overflow-y-auto custom-scrollbar pr-1 overscroll-contain">
-                  <div className="bg-white dark:bg-[#111520] border border-[#E5B869]/30 rounded-3xl p-5 sm:p-7 shadow-md flex flex-col justify-between min-h-full relative overflow-hidden">
-                    <div>
-                      <div className="flex items-center justify-between mb-6">
+                {/* Left Column: Profit Summary Waterfall */}
+                <div className="bg-white dark:bg-[#111520] border border-[#E5B869]/30 rounded-3xl p-5 sm:p-7 shadow-md flex flex-col relative overflow-hidden">
+                  <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-2.5">
                           <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-sm">
                             💰
@@ -999,18 +999,16 @@ function DemoContent() {
                     </div>
 
                   </div>
+
+                  {/* Net Profit Result */}
+                  <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
+                    <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-lg">= Net Profit</span>
+                    <span className={`font-black text-xl ${currentData.netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(currentData.netProfit)}</span>
+                  </div>
                 </div>
 
-                {/* Net Profit Result */}
-                <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
-                  <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-lg">= Net Profit</span>
-                  <span className={`font-black text-xl ${currentData.netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(currentData.netProfit)}</span>
-                </div>
-              </div>
-            </div>
-
-                {/* Right Column: Platform Performance & Supplier Purchases with Independent Slider */}
-                <div className="lg:col-span-2 lg:h-[720px] lg:overflow-y-auto space-y-6 custom-scrollbar pr-2 overscroll-contain">
+                {/* Right Column: Platform Performance & Supplier Purchases */}
+                <div className="lg:col-span-2 space-y-6">
 
                   {/* Platform Performance Table */}
                   <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
@@ -1608,7 +1606,7 @@ function DemoContent() {
           )}
 
           {/* Bottom margin spacer for fixed banner */}
-          <div className="h-32 sm:h-40"></div>
+          <div className="h-10 sm:h-12"></div>
         </main>
       </div>
 

@@ -343,37 +343,67 @@ function DemoContent() {
   }
 
   return (
-    <div className="min-h-screen bg-transparent text-slate-700 dark:text-slate-200 flex font-sans selection:bg-[#E5B869] selection:text-black">
+    <div className="min-h-screen bg-transparent text-slate-700 dark:text-slate-200 flex flex-col font-sans selection:bg-[#E5B869] selection:text-black">
       
-      {/* ── SIDEBAR NAVIGATION (Matching Main Dashboard Layout System) ───────── */}
-      <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 ease-in-out ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}>
-        {/* Sidebar Header */}
-        <div className="flex items-center justify-between px-5 py-6 border-b border-slate-200 dark:border-[#1f2947] flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <img 
-              src="/images/new-logo.jpg" 
-              alt="Riznex Logo" 
-              className="w-11 h-11 rounded-xl object-contain bg-black dark:bg-white p-1 flex-shrink-0 shadow"
-            />
-            <div>
-              <div className="font-extrabold text-slate-900 dark:text-white text-sm tracking-wide">RIZNEX</div>
-              <div className="text-[11px] text-[#E5B869] font-medium leading-tight">The Royal Grill & Lounge</div>
-              <div className="text-[9px] text-slate-500 dark:text-slate-400 font-mono">Sample Client Demo</div>
-            </div>
-          </div>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition"
-            aria-label="Close sidebar"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+      {/* ── TOP DEMO CALLOUT BANNER ────────────────────────────────────────── */}
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-[#D9A336] via-[#F5CB6C] to-[#C89B3C] text-black px-3.5 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-xl">
+        <div className="flex items-center gap-2 text-xs sm:text-sm font-black">
+          <span className="bg-white dark:bg-black text-[#E5B869] text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider shadow">
+            Simulated Demo
+          </span>
+          <span className="hidden sm:inline font-bold">
+            Interactive Restaurant Intelligence Preview with realistic sample UK multi-brand data.
+          </span>
+          <span className="sm:hidden font-bold">Sample Client Demo</span>
         </div>
+        <div className="flex items-center gap-2 ml-auto">
+          <button 
+            onClick={() => setShowOrderModal(true)}
+            className="px-3.5 py-1 text-xs font-black bg-white dark:bg-black text-[#E5B869] hover:bg-white/85 dark:hover:bg-black/85 rounded-lg transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
+          >
+            <span>Get Your Setup (£300)</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <Link 
+            href="/"
+            className="text-xs font-bold text-black/80 hover:text-black underline px-2 py-1"
+          >
+            Back to Home
+          </Link>
+        </div>
+      </div>
 
-        {/* Sidebar Nav Links with scroll */}
-        <nav className="flex-1 px-3 py-5 space-y-4 overflow-y-auto custom-scrollbar">
+      <div className="flex flex-1 relative">
+
+        {/* ── SIDEBAR NAVIGATION (Matching Authentic Client Layout) ──────────── */}
+        <aside className={`fixed inset-y-0 left-0 z-40 w-64 bg-gradient-to-b from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border-r border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none flex flex-col transition-transform duration-300 lg:static lg:translate-x-0 ${sidebarOpen ? 'translate-x-0 pt-10' : '-translate-x-full'}`}>
+          {/* Sidebar Header */}
+          <div className="flex items-center justify-between px-5 py-6 border-b border-slate-200 dark:border-[#1f2947]">
+            <div className="flex items-center gap-3">
+              <img 
+                src="/images/new-logo.jpg" 
+                alt="Riznex Logo" 
+                className="w-11 h-11 rounded-xl object-contain bg-black dark:bg-white p-1 flex-shrink-0 shadow"
+              />
+              <div>
+                <div className="font-extrabold text-slate-900 dark:text-white text-sm tracking-wide">RIZNEX</div>
+                <div className="text-[11px] text-[#E5B869] font-medium leading-tight">The Royal Grill & Lounge</div>
+                <div className="text-[9px] text-slate-500 dark:text-slate-400 font-mono">Sample Client Demo</div>
+              </div>
+            </div>
+            <button
+              onClick={() => setSidebarOpen(false)}
+              className="lg:hidden p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition"
+              aria-label="Close sidebar"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+
+          {/* Sidebar Nav Links */}
+          <nav className="flex-1 px-3 py-5 space-y-4 overflow-y-auto">
             <div className="text-[10px] font-bold text-slate-500 uppercase tracking-widest px-3">
               MENU
             </div>
@@ -474,8 +504,8 @@ function DemoContent() {
 
           </nav>
 
-          {/* User Profile in Sidebar - Locked at Bottom */}
-          <div className="p-4 border-t border-slate-200 dark:border-[#1f2947] bg-white dark:bg-[#0d1019] space-y-3 flex-shrink-0">
+          {/* User Profile in Sidebar */}
+          <div className="p-4 border-t border-slate-200 dark:border-[#1f2947] bg-white dark:bg-[#0d1019] space-y-3">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-xl bg-purple-600/30 border border-purple-500/40 text-slate-900 dark:text-white dark:text-purple-300 font-black flex items-center justify-center text-sm">
                 R
@@ -497,49 +527,16 @@ function DemoContent() {
               </button>
             </div>
           </div>
-      </aside>
+        </aside>
 
-      {/* Mobile Backdrop Overlay */}
-      {sidebarOpen && (
-        <div 
-          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 lg:hidden transition-all duration-300" 
-          onClick={() => setSidebarOpen(false)} 
-        />
-      )}
-
-      {/* ── MAIN CONTENT COLUMN (Exact same system as main dashboard: flex-1 lg:ml-64) ── */}
-      <div className="flex-1 lg:ml-64 flex flex-col min-h-screen min-w-0 max-w-full">
-
-        {/* ── TOP DEMO CALLOUT BANNER ────────────────────────────────────────── */}
-        <div className="sticky top-0 z-30 bg-gradient-to-r from-[#D9A336] via-[#F5CB6C] to-[#C89B3C] text-black px-3.5 py-2 sm:py-2.5 flex flex-wrap items-center justify-between gap-3 shadow-xl">
-          <div className="flex items-center gap-2 text-xs sm:text-sm font-black">
-            <span className="bg-white dark:bg-black text-[#E5B869] text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-wider shadow">
-              Simulated Demo
-            </span>
-            <span className="hidden sm:inline font-bold">
-              Interactive Restaurant Intelligence Preview with realistic sample UK multi-brand data.
-            </span>
-            <span className="sm:hidden font-bold">Sample Client Demo</span>
-          </div>
-          <div className="flex items-center gap-2 ml-auto">
-            <button 
-              onClick={() => setShowOrderModal(true)}
-              className="px-3.5 py-1 text-xs font-black bg-white dark:bg-black text-[#E5B869] hover:bg-white/85 dark:hover:bg-black/85 rounded-lg transition-all shadow-md flex items-center gap-1.5 cursor-pointer"
-            >
-              <span>Get Your Setup (£300)</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
-            <Link 
-              href="/"
-              className="text-xs font-bold text-black/80 hover:text-black underline px-2 py-1"
-            >
-              Back to Home
-            </Link>
-          </div>
-        </div>
-
-        {/* ── MAIN CONTENT AREA ──────────────────────────────────────────────── */}
-        <main className="flex-1 bg-slate-50 dark:bg-[#0e121b] p-3.5 sm:p-6 lg:p-8 pb-32">
+        {/* Mobile Backdrop Overlay */}
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/70 backdrop-blur-sm z-30 lg:hidden transition-all duration-300" 
+            onClick={() => setSidebarOpen(false)} 
+          />
+        )}
+        <main className="flex-1 bg-slate-50 dark:bg-[#0e121b] p-3.5 sm:p-6 lg:p-8 overflow-y-auto pb-64 sm:pb-72">
           
           {/* Top Bar: Mobile Hamburger & Live Date */}
           <div className="flex items-center justify-between mb-4 pb-2 border-b border-slate-200/50 dark:border-[#1f2947]/50 lg:border-none">
@@ -805,12 +802,14 @@ function DemoContent() {
                 </div>
               </div>
 
-              {/* Two Column Section: Profit Summary (Left) & Platform + Supplier Tables (Right) */}
+              {/* Two Column Section: Profit Summary (Left) & Platform + Supplier Tables (Right) with Independent Sliders */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
 
-                {/* Left Column: Profit Summary Waterfall */}
-                <div className="bg-white dark:bg-[#111520] border border-[#E5B869]/30 rounded-3xl p-5 sm:p-7 shadow-md flex flex-col relative overflow-hidden">
-                  <div className="flex items-center justify-between mb-6">
+                {/* Left Column: Profit Summary Waterfall with Independent Slider */}
+                <div className="lg:h-[720px] lg:overflow-y-auto custom-scrollbar pr-1 overscroll-contain">
+                  <div className="bg-white dark:bg-[#111520] border border-[#E5B869]/30 rounded-3xl p-5 sm:p-7 shadow-md flex flex-col justify-between min-h-full relative overflow-hidden">
+                    <div>
+                      <div className="flex items-center justify-between mb-6">
                         <div className="flex items-center gap-2.5">
                           <span className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center border border-emerald-500/20 text-sm">
                             💰
@@ -1000,16 +999,18 @@ function DemoContent() {
                     </div>
 
                   </div>
-
-                  {/* Net Profit Result */}
-                  <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
-                    <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-lg">= Net Profit</span>
-                    <span className={`font-black text-xl ${currentData.netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(currentData.netProfit)}</span>
-                  </div>
                 </div>
 
-                {/* Right Column: Platform Performance & Supplier Purchases */}
-                <div className="lg:col-span-2 space-y-6">
+                {/* Net Profit Result */}
+                <div className="mt-6 pt-4 border-t border-slate-200 dark:border-[#E5B869]/20 flex justify-between items-center">
+                  <span className="text-[#B8860B] dark:text-[#E5B869] font-black text-lg">= Net Profit</span>
+                  <span className={`font-black text-xl ${currentData.netProfit >= 0 ? 'text-[#B8860B] dark:text-[#E5B869]' : 'text-rose-600 dark:text-rose-400'}`}>{gbp(currentData.netProfit)}</span>
+                </div>
+              </div>
+            </div>
+
+                {/* Right Column: Platform Performance & Supplier Purchases with Independent Slider */}
+                <div className="lg:col-span-2 lg:h-[720px] lg:overflow-y-auto space-y-6 custom-scrollbar pr-2 overscroll-contain">
 
                   {/* Platform Performance Table */}
                   <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-3xl p-5 sm:p-7 shadow-2xl overflow-hidden">
@@ -1607,12 +1608,12 @@ function DemoContent() {
           )}
 
           {/* Bottom margin spacer for fixed banner */}
-          <div className="h-10 sm:h-12"></div>
+          <div className="h-32 sm:h-40"></div>
         </main>
       </div>
 
       {/* ── STICKY BOTTOM HIGH-CONVERSION BANNER ───────────────────────────── */}
-      <div className="fixed bottom-0 inset-x-0 lg:left-64 z-30 bg-[#0B0D14]/98 border-t border-[#E5B869]/30 backdrop-blur-xl px-4 py-3 sm:py-3.5 shadow-2xl">
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-[#0B0D14]/98 border-t border-[#E5B869]/30 backdrop-blur-xl px-4 py-3 sm:py-3.5 shadow-2xl">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
           <div className="flex items-center gap-3 text-center sm:text-left">
             <div className="w-9 h-9 rounded-xl bg-[#E5B869]/20 border border-[#E5B869]/40 flex items-center justify-center text-[#E5B869] text-base shrink-0 hidden sm:flex">

@@ -152,7 +152,11 @@ export async function POST(req: NextRequest) {
   })
 
   if (existingExact) {
-    return NextResponse.json({ error: 'Duplicate file detected' }, { status: 409 })
+    const tabName = existingExact.type === 'pos' ? 'In-Store POS Invoices' : (existingExact.type === 'platform' ? 'Uber Eats, Just Eat, Deliveroo Invoices' : 'Supplier Purchases Invoices')
+    const dateStr = existingExact.invoiceDate ? new Date(existingExact.invoiceDate).toLocaleDateString('en-GB') : 'Unknown Date'
+    return NextResponse.json({ 
+      error: `Duplicate file detected: This file already exists in your records as "${existingExact.fileName}" under the "${tabName}" tab (Platform: ${existingExact.platform || 'N/A'}, Date: ${dateStr}). Please check that you selected the correct file in your file chooser.` 
+    }, { status: 409 })
   }
 
   const uploadsDir = path.join(process.cwd(), 'public', 'uploads', clientId)

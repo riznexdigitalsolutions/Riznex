@@ -43,7 +43,7 @@ export async function POST(
       filePath: publicPath,
       fileName: file.name,
       fileType,
-      fileData: buffer.toString('base64'),
+      fileData: buffer.toString('base64') as any,
       ocrStatus: 'done',
     }
   })

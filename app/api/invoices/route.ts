@@ -86,7 +86,27 @@ export async function GET(req: NextRequest) {
 
   const invoices = await prisma.invoice.findMany({
     where,
-    include: { supplier: { select: { id: true, name: true } } },
+    select: {
+      id: true,
+      clientId: true,
+      supplierId: true,
+      type: true,
+      platform: true,
+      fileName: true,
+      filePath: true,
+      fileType: true,
+      fileHash: true,
+      amount: true,
+      invoiceDate: true,
+      ocrStatus: true,
+      ocrData: true,
+      notes: true,
+      sourceInvoiceId: true,
+      is2025: true,
+      createdAt: true,
+      updatedAt: true,
+      supplier: { select: { id: true, name: true } },
+    },
     orderBy: { createdAt: 'desc' },
   })
   return NextResponse.json(invoices)
@@ -148,7 +168,14 @@ export async function POST(req: NextRequest) {
   const hash = crypto.createHash('sha256').update(finalBuffer).digest('hex')
 
   const existingExact = await prisma.invoice.findFirst({
-    where: { clientId, fileHash: hash }
+    where: { clientId, fileHash: hash },
+    select: {
+      id: true,
+      type: true,
+      platform: true,
+      fileName: true,
+      invoiceDate: true,
+    }
   })
 
   if (existingExact) {
@@ -183,6 +210,27 @@ export async function POST(req: NextRequest) {
       ocrStatus: 'pending',
       is2025,
     },
+    select: {
+      id: true,
+      clientId: true,
+      supplierId: true,
+      type: true,
+      platform: true,
+      fileName: true,
+      filePath: true,
+      fileType: true,
+      fileHash: true,
+      amount: true,
+      invoiceDate: true,
+      ocrStatus: true,
+      ocrData: true,
+      notes: true,
+      sourceInvoiceId: true,
+      is2025: true,
+      createdAt: true,
+      updatedAt: true,
+      supplier: { select: { id: true, name: true } },
+    }
   })
 
   return NextResponse.json(invoice, { status: 201 })
@@ -200,6 +248,10 @@ export async function DELETE(req: NextRequest) {
     where: { 
       id: { in: body.ids }, 
       ...(clientId ? { clientId } : {})
+    },
+    select: {
+      id: true,
+      filePath: true,
     }
   })
 

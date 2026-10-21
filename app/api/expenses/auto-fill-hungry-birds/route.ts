@@ -27,7 +27,8 @@ export async function POST(req: NextRequest) {
         where: { clientId, weekEnd: { gte: weekStart, lte: weekEnd } }
       }),
       prisma.invoice.findFirst({
-        where: { clientId, invoiceDate: { gte: weekStart, lte: weekEnd }, fileType: 'auto' }
+        where: { clientId, invoiceDate: { gte: weekStart, lte: weekEnd }, fileType: 'auto' },
+        select: { id: true }
       }),
       prisma.expense.findFirst({
         where: { clientId, date: { gte: weekStart, lte: weekEnd }, store: 'Hungry Birds' }
@@ -118,7 +119,8 @@ export async function POST(req: NextRequest) {
       }
 
       const existingInv = await prisma.invoice.findFirst({
-        where: { clientId, supplierId: supplier.id, type: 'supplier', invoiceDate: weekEnd }
+        where: { clientId, supplierId: supplier.id, type: 'supplier', invoiceDate: weekEnd },
+        select: { id: true }
       })
 
       if (!existingInv) {

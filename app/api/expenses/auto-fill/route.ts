@@ -145,7 +145,8 @@ export async function POST(req: NextRequest) {
         type: 'supplier',
         invoiceDate: { gte: weekStart, lte: weekEnd },
         notes: { contains: 'Auto-filled' }
-      }
+      },
+      select: { id: true }
     })
 
     if (!existingOneStop) {

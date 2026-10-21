@@ -103,7 +103,15 @@ export async function GET(req: NextRequest) {
   // Supplier invoices
   let supplierInvoices = await prisma.invoice.findMany({
     where: buildWhere({ clientId, is2025, type: 'supplier', supplier: { franchise: 'Hungry Birds' } }, 'invoiceDate'),
-    include: { supplier: { select: { name: true, category: true, franchise: true } } },
+    select: {
+      id: true,
+      clientId: true,
+      amount: true,
+      invoiceDate: true,
+      platform: true,
+      supplierId: true,
+      supplier: { select: { name: true, category: true, franchise: true } },
+    },
     orderBy: { invoiceDate: 'asc' },
   })
 

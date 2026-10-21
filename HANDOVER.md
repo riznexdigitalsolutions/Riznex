@@ -323,6 +323,19 @@
 
 ---
 
+### H. Database-Backed Persistent Invoice Engine (October 2026)
+- **Problem Solved:**
+  - On Hostinger, when Git deployments or server refreshes occurred, untracked files in `public/uploads` could be wiped from disk, causing "Original Invoice File Not Found" when users clicked "View File".
+  - In addition, duplicate file errors were previously vague ("Duplicate file detected") without indicating which tab or platform the invoice was located in.
+- **Permanent Solution Implemented:**
+  1. **Prisma Schema Update:** Added `fileData String? @db.LongText` to the `Invoice` model and synced to production MySQL via `prisma db push`.
+  2. **Dual-Persistence Uploads:** Both `POST /api/invoices` and `POST /api/invoices/[id]/upload` save uploaded files to disk AND store the full binary bytes as base64 in MySQL.
+  3. **Self-Healing File Serving:** In `app/uploads/[...path]/route.ts`, if a file is ever missing from disk, the server immediately retrieves `fileData` from MySQL, restores the file to disk cache, and serves it with 200 OK.
+  4. **Detailed Duplicate Error Reporting:** When a duplicate file hash is uploaded, the API now specifies the exact file name, tab, platform, and invoice date where the record already exists.
+  5. **Historical Backup:** Populated 525 historical invoice files directly into MySQL and Git tracking.
+
+---
+
 ## 5. Current Task & System Status (Handover Checkpoint)
 
 - **System Status:** 100% operational, fully verified with Next.js, committed, and pushed to GitHub `origin main`.

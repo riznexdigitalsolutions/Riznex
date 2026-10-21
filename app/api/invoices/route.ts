@@ -177,6 +177,7 @@ export async function POST(req: NextRequest) {
       filePath: publicPath,
       fileType: finalFileType,
       fileHash: hash,
+      fileData: finalBuffer.toString('base64'),
       amount: amount ? parseFloat(amount) : null,
       invoiceDate: invoiceDate ? new Date(invoiceDate) : null,
       ocrStatus: 'pending',

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { readFile, stat, copyFile, mkdir } from 'fs/promises'
+import { readFile, stat, copyFile, mkdir, writeFile } from 'fs/promises'
 import fs from 'fs'
 import path from 'path'
 import prisma from '@/lib/prisma'
@@ -86,7 +86,7 @@ export async function GET(
       }
     }
 
-    // If not found directly, check if we can resolve the original file from disk or database reference
+    // If not found directly, check if we can resolve the original file from database or disk
     if (!resolvedPath) {
       const uploadUrl = `/uploads/${safeSegments.join('/')}`
       const invoice = await prisma.invoice.findFirst({
@@ -99,27 +99,52 @@ export async function GET(
         }
       })
 
-      const targetFileName = invoice?.fileName || fileName.replace(/^\d+-/, '')
-      
-      // Check secondary local directories if on development / Windows server
-      const searchDirs = [
-        path.join(process.cwd(), 'public', 'uploads'),
-        path.join('E:', 'All Projects', 'Herbies & Tasty Bun', '01 Invoices'),
-        path.join('E:', 'All Projects', 'Hungry Birds', 'Invoices'),
-      ]
-
-      for (const d of searchDirs) {
-        const match = findFileByName(d, targetFileName)
-        if (match) {
-          resolvedPath = match
-          // Cache the found original file to the primary public/uploads location
-          try {
+      // 1. Direct restore from database fileData if present
+      if (invoice?.fileData) {
+        try {
+          const dbBuffer = Buffer.from(invoice.fileData, 'base64')
+          if (dbBuffer.length > 0) {
             const dest = possiblePaths[0]
             await mkdir(path.dirname(dest), { recursive: true })
-            await copyFile(match, dest)
+            await writeFile(dest, dbBuffer)
             resolvedPath = dest
-          } catch {}
-          break
+          }
+        } catch (e) {
+          console.warn('Could not restore from invoice fileData:', e)
+        }
+      }
+
+      // 2. Fallback: Search secondary local directories if on development / Windows server
+      if (!resolvedPath) {
+        const targetFileName = invoice?.fileName || fileName.replace(/^\d+-/, '')
+        const searchDirs = [
+          path.join(process.cwd(), 'public', 'uploads'),
+          path.join('E:', 'All Projects', 'Herbies & Tasty Bun', '01 Invoices'),
+          path.join('E:', 'All Projects', 'Hungry Birds', 'Invoices'),
+        ]
+
+        for (const d of searchDirs) {
+          const match = findFileByName(d, targetFileName)
+          if (match) {
+            resolvedPath = match
+            // Cache the found original file to the primary public/uploads location and DB
+            try {
+              const dest = possiblePaths[0]
+              await mkdir(path.dirname(dest), { recursive: true })
+              await copyFile(match, dest)
+              resolvedPath = dest
+
+              // Also persist to DB if missing
+              if (invoice && !invoice.fileData) {
+                const fBuf = await readFile(match)
+                await prisma.invoice.update({
+                  where: { id: invoice.id },
+                  data: { fileData: fBuf.toString('base64') }
+                }).catch(() => {})
+              }
+            } catch {}
+            break
+          }
         }
       }
     }

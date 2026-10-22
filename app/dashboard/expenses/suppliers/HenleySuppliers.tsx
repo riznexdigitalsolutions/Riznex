@@ -463,23 +463,23 @@ export function HenleySuppliers() {
               <select
                 value={sortBy}
                 onChange={e => setSortBy(e.target.value)}
-                className="bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500 transition cursor-pointer"
+                className="bg-white dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-800 dark:text-slate-100 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm transition cursor-pointer"
               >
-                <option value="uploadDate">Sort: Upload Date (Newest)</option>
-                <option value="uploadDateAsc">Sort: Upload Date (Oldest)</option>
-                <option value="invoiceDate">Sort: Invoice Date (Newest)</option>
-                <option value="invoiceDateAsc">Sort: Invoice Date (Oldest)</option>
-                <option value="amountDesc">Sort: Amount (Highest)</option>
-                <option value="amountAsc">Sort: Amount (Lowest)</option>
+                <option value="uploadDate" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Sort: Upload Date (Newest)</option>
+                <option value="uploadDateAsc" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Sort: Upload Date (Oldest)</option>
+                <option value="invoiceDate" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Sort: Invoice Date (Newest)</option>
+                <option value="invoiceDateAsc" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Sort: Invoice Date (Oldest)</option>
+                <option value="amountDesc" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Sort: Amount (Highest)</option>
+                <option value="amountAsc" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Sort: Amount (Lowest)</option>
               </select>
               <select
                 value={supplierFilter}
                 onChange={e => setSupplierFilter(e.target.value)}
-                className="bg-[#161b2c] border border-slate-200 dark:border-[#1f2947] text-slate-600 dark:text-slate-300 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:border-blue-500 transition cursor-pointer"
+                className="bg-white dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-800 dark:text-slate-100 rounded-xl px-3 py-2 text-sm font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500/50 shadow-sm transition cursor-pointer"
               >
-                <option value="">All Suppliers</option>
+                <option value="" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">All Suppliers</option>
                 {Array.from(new Set(suppliers.map(s => s.name))).sort().map(name => (
-                  <option key={name as string} value={name as string}>{name as string}</option>
+                  <option key={name as string} value={name as string} className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">{name as string}</option>
                 ))}
               </select>
               {isAdmin && selectedIds.length > 0 && (
@@ -496,7 +496,7 @@ export function HenleySuppliers() {
           <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden shadow-xl w-full max-w-full">
             <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
               <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300 min-w-[750px]">
-              <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
+              <thead className="bg-slate-100 dark:bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-700 dark:text-slate-200">
                 <tr>
                   {isAdmin && (
                     <th className="px-5 py-4 w-12 text-center">
@@ -510,20 +510,20 @@ export function HenleySuppliers() {
                           const allIds = displayedInvoices.map((i: any) => i.id)
                           setSelectedIds(e.target.checked ? allIds : [])
                         }}
-                        className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 cursor-pointer"
+                        className="w-4 h-4 rounded border-slate-300 dark:border-[#2d3b5e] bg-white dark:bg-[#1f2947] text-blue-600 focus:ring-blue-500 cursor-pointer"
                       />
                     </th>
                   )}
-                  <th className="px-5 py-4 font-bold">Date</th>
-                  <th className="px-5 py-4 font-bold">Week</th>
-                  <th className="px-5 py-4 font-bold">Month</th>
-                  <th className="px-5 py-4 font-bold">Supplier Name</th>
-                  <th className="px-5 py-4 font-bold text-right">Amount</th>
-                  <th className="px-5 py-4 font-bold">Status</th>
-                  <th className="px-5 py-4 font-bold text-right">File / Actions</th>
+                  <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Date</th>
+                  <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Week</th>
+                  <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Month</th>
+                  <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Supplier Name</th>
+                  <th className="px-5 py-4 font-bold text-right text-slate-700 dark:text-slate-200 tracking-wider">Amount</th>
+                  <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Status</th>
+                  <th className="px-5 py-4 font-bold text-right text-slate-700 dark:text-slate-200 tracking-wider">File / Actions</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#1f2947]">
+              <tbody className="divide-y divide-slate-200 dark:divide-[#1f2947]">
                 {displayedInvoices.map((inv: any) => {
                   const targetDate = inv.invoiceDate ? new Date(inv.invoiceDate) : null
                   const weekStartDt = targetDate && !isNaN(targetDate.getTime()) ? getWeekStart(targetDate) : null

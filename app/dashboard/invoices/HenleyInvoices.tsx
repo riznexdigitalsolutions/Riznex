@@ -95,9 +95,20 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const filteredInvoices = invoices.filter(inv => {
     if (activeTab !== 'all' && inv.type !== activeTab) return false;
     
-    if (supplierFilter) {
+    if (supplierFilter && activeTab === 'supplier') {
       const matchName = (inv.supplier?.name || inv.platform || '').toLowerCase()
       if (!matchName.includes(supplierFilter.toLowerCase())) return false
+    }
+
+    if (platformFilter && activeTab !== 'supplier') {
+      const p = platformFilter.toLowerCase()
+      const invPlat = (inv.platform || '').toLowerCase()
+      const invFileName = (inv.fileName || '').toLowerCase()
+      if (p === 'pos') {
+        if (inv.type !== 'pos' && !invPlat.includes('pos') && !invFileName.includes('pos')) return false
+      } else {
+        if (!invPlat.includes(p) && !invFileName.includes(p)) return false
+      }
     }
 
     if (storeFilter) {
@@ -339,7 +350,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
             {tabs.map(tab => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
+                onClick={() => { setActiveTab(tab.id); if (tab.id === 'supplier') { setPlatformFilter(''); } else { setSupplierFilter(''); } }}
                 className={`px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
@@ -380,19 +391,36 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
             {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
 
-            {/* Supplier Filter Dropdown */}
-            <select
-              value={supplierFilter}
-              onChange={e => setSupplierFilter(e.target.value)}
-              className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer transition-colors max-w-[130px] truncate"
-            >
-              <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Suppliers</option>
-              {uniqueSuppliers.map((s: any) => (
-                <option key={s.id || s.name} value={s.name} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">
-                  {s.name}
-                </option>
-              ))}
-            </select>
+            {/* Platform Filter Dropdown for Platform, POS, and All tabs */}
+            {activeTab !== 'supplier' && (
+              <select
+                value={platformFilter}
+                onChange={e => setPlatformFilter(e.target.value)}
+                className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer transition-colors max-w-[130px] truncate"
+              >
+                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
+                <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
+                <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
+                <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
+                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS</option>
+              </select>
+            )}
+
+            {/* Supplier Filter Dropdown strictly for Supplier Purchases */}
+            {activeTab === 'supplier' && (
+              <select
+                value={supplierFilter}
+                onChange={e => setSupplierFilter(e.target.value)}
+                className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer transition-colors max-w-[130px] truncate"
+              >
+                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Suppliers</option>
+                {uniqueSuppliers.map((s: any) => (
+                  <option key={s.id || s.name} value={s.name} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+            )}
 
             <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
@@ -415,7 +443,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             <button 
-              onClick={() => { setFilter(defaultDateFilter()); setStoreFilter(''); setStatusFilter(''); setSupplierFilter(''); }} 
+              onClick={() => { setFilter(defaultDateFilter()); setStoreFilter(''); setStatusFilter(''); setSupplierFilter(''); setPlatformFilter(''); }} 
               className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>

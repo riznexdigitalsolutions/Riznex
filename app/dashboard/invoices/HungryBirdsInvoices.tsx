@@ -352,10 +352,11 @@ function InvoicesContent() {
                 onChange={e => setPlatformFilter(e.target.value)}
                 className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
               >
-                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Delivery Platforms</option>
+                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
                 <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
                 <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
                 <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
+                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS</option>
               </select>
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
@@ -377,19 +378,23 @@ function InvoicesContent() {
           )}
 
           {/* Supplier Filter Dropdown */}
-          <select
-            value={supplierFilter}
-            onChange={e => setSupplierFilter(e.target.value)}
-            className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer max-w-[130px] truncate"
-          >
-            <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Suppliers</option>
-            {uniqueSuppliers.map((s: any) => (
-              <option key={s.id || s.name} value={s.name} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">
-                {s.name}
-              </option>
-            ))}
-          </select>
-          <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
+          {activeTab === 'supplier' && (
+            <>
+              <select
+                value={supplierFilter}
+                onChange={e => setSupplierFilter(e.target.value)}
+                className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer max-w-[130px] truncate"
+              >
+                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Suppliers</option>
+                {uniqueSuppliers.map((s: any) => (
+                  <option key={s.id || s.name} value={s.name} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">
+                    {s.name}
+                  </option>
+                ))}
+              </select>
+              <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
+            </>
+          )}
 
           <DateFilter filter={filter} setFilter={setFilter} />
         </div>

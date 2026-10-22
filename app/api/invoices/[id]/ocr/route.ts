@@ -949,6 +949,18 @@ IMPORTANT:
         d.setUTCFullYear(2025);
         ocrData.invoiceDate = d;
       }
+    } else {
+      // For live client invoices (2026), correct OCR misreading 2026 as 2020 or < 2024
+      if (finalInvoiceDate && finalInvoiceDate.getUTCFullYear() < 2024) {
+        finalInvoiceDate.setUTCFullYear(2026);
+      }
+      if (ocrData.invoiceDate) {
+        const d = new Date(ocrData.invoiceDate);
+        if (d.getUTCFullYear() < 2024) {
+          d.setUTCFullYear(2026);
+          ocrData.invoiceDate = d;
+        }
+      }
     }
 
 

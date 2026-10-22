@@ -25,7 +25,8 @@ export async function GET(req: NextRequest) {
     is2025,
     OR: [
       { invoiceDate: { gte: dateFrom, ...(to ? { lte: (() => { const t = new Date(to); t.setUTCHours(23, 59, 59, 999); return t })() } : {}) } },
-      { invoiceDate: null }
+      { invoiceDate: null },
+      { createdAt: { gte: fourteenDaysAgo } }
     ]
   }
 

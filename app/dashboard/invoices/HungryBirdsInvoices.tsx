@@ -83,18 +83,17 @@ function InvoicesContent() {
   const uniqueSuppliers = Array.from(new Map((Array.isArray(suppliers) ? suppliers : []).map(s => [s.name, s])).values())
 
   const tabs = [
-    { id: 'all', label: 'Combined Sales & Supplier Invoices' },
+    { id: 'all', label: 'Combined Invoices Data' },
     { id: 'pos', label: 'Hungry Birds Direct (Card, Cash & Online Web)' },
-    { id: 'platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
-    { id: 'supplier', label: 'Supplier Purchases Invoices' }
+    { id: 'platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' }
   ]
 
   const filteredInvoices = invoices.filter(inv => {
-    if (activeTab !== 'all' && inv.type !== activeTab) return false;
-    if (supplierFilter) {
-      const matchName = (inv.supplier?.name || inv.platform || '').toLowerCase()
-      if (!matchName.includes(supplierFilter.toLowerCase())) return false
-    }
+    // Strictly Sales Invoices only
+    if (inv.type === 'supplier' || inv.type === 'expense') return false;
+
+    if (activeTab === 'platform' && inv.type !== 'platform') return false;
+    if (activeTab === 'pos' && inv.type !== 'pos') return false;
     if (storeFilter && inv.platform && !inv.platform.includes(storeFilter)) return false;
     if (posFilter && activeTab === 'pos' && inv.platform && !inv.platform.includes(posFilter)) return false;
 
@@ -307,11 +306,9 @@ function InvoicesContent() {
         return { title: 'Delivery Platforms (Uber Eats, Just Eat, Deliveroo)', desc: 'Manage your delivery app weekly sales invoices.', buttonText: '+ Upload Delivery Invoice' }
       case 'pos':
         return { title: 'Direct & Walk-in Sales (Card, Cash & Online Web)', desc: 'Manage walk-in card machine invoices, walk-in cash sales, and online web orders.', buttonText: '+ Upload Card/Web Invoice' }
-      case 'supplier':
-        return { title: 'Supplier Purchases Invoices', desc: 'Manage invoices and receipts from food, packaging, and goods suppliers.', buttonText: '+ Upload Supplier Invoice' }
       case 'all':
       default:
-        return { title: 'Combined Sales & Supplier Invoices Data', desc: 'Master view combining all POS, delivery platform, and supplier invoices.', buttonText: '+ Upload Sales Invoice' }
+        return { title: 'Combined Sales Invoices Data', desc: 'Master view combining all POS and delivery platform invoices.', buttonText: '+ Upload Sales Invoice' }
     }
   }
   const header = getHeaderContent()
@@ -345,7 +342,7 @@ function InvoicesContent() {
               <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
             </>
           )}
-          {activeTab === 'platform' && (
+          {activeTab !== 'pos' && (
             <>
               <select
                 value={platformFilter}
@@ -377,24 +374,7 @@ function InvoicesContent() {
             </>
           )}
 
-          {/* Supplier Filter Dropdown */}
-          {activeTab === 'supplier' && (
-            <>
-              <select
-                value={supplierFilter}
-                onChange={e => setSupplierFilter(e.target.value)}
-                className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer max-w-[130px] truncate"
-              >
-                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Suppliers</option>
-                {uniqueSuppliers.map((s: any) => (
-                  <option key={s.id || s.name} value={s.name} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-              <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
-            </>
-          )}
+
 
           <DateFilter filter={filter} setFilter={setFilter} />
         </div>

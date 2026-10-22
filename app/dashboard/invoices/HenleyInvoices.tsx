@@ -76,7 +76,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   }, [searchParams])
   
   // Form State
-  const [type, setType] = useState('supplier')
+  const [type, setType] = useState('platform')
   const [supplierId, setSupplierId] = useState('')
   const [platformName, setPlatformName] = useState('Herbies Pizza Deliveroo')
   const [posName, setPosName] = useState('Herbies Pizza POS')
@@ -88,19 +88,17 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const tabs = [
     { id: 'all', label: 'All Invoices' },
     { id: 'platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
-    { id: 'pos', label: is2025 ? 'Herbies Pizza POS Invoices' : 'Herbies Pizza & Tasty Bun POS Invoices' },
-    { id: 'supplier', label: 'Supplier Purchases Invoices' }
+    { id: 'pos', label: is2025 ? 'Herbies Pizza POS Invoices' : 'Herbies Pizza & Tasty Bun POS Invoices' }
   ]
 
   const filteredInvoices = invoices.filter(inv => {
-    if (activeTab !== 'all' && inv.type !== activeTab) return false;
-    
-    if (supplierFilter && activeTab === 'supplier') {
-      const matchName = (inv.supplier?.name || inv.platform || '').toLowerCase()
-      if (!matchName.includes(supplierFilter.toLowerCase())) return false
-    }
+    // Strictly Sales Invoices only - exclude supplier purchases or expenses
+    if (inv.type === 'supplier' || inv.type === 'expense') return false;
 
-    if (platformFilter && activeTab !== 'supplier') {
+    if (activeTab === 'platform' && inv.type !== 'platform') return false;
+    if (activeTab === 'pos' && inv.type !== 'pos') return false;
+
+    if (platformFilter) {
       const p = platformFilter.toLowerCase()
       const invPlat = (inv.platform || '').toLowerCase()
       const invFileName = (inv.fileName || '').toLowerCase()
@@ -322,14 +320,12 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const getHeaderContent = () => {
     switch (activeTab) {
       case 'platform':
-        return { title: 'Platform Invoices', desc: 'Manage your Uber Eats, Just Eat, and Deliveroo statements.', buttonText: '+ Upload Platform Invoice' }
+        return { title: 'Platform Invoices', desc: 'Manage your Uber Eats, Just Eat, and Deliveroo statements.', buttonText: 'Upload Platform Invoice' }
       case 'pos':
-        return { title: is2025 ? 'Herbies Pizza POS Invoices' : 'Herbies & Tasty Bun POS Invoices', desc: 'Manage invoices from your internal POS systems.', buttonText: '+ Upload POS Invoice' }
-      case 'supplier':
-        return { title: 'Supplier Purchases Invoices', desc: 'Manage invoices and delivery receipts from food, packaging, and goods suppliers.', buttonText: '+ Upload Supplier Invoice' }
+        return { title: is2025 ? 'Herbies Pizza POS Invoices' : 'Herbies & Tasty Bun POS Invoices', desc: 'Manage invoices from your internal POS systems.', buttonText: 'Upload POS Invoice' }
       case 'all':
       default:
-        return { title: 'All Sales & Supplier Invoices', desc: 'Overview of all your POS, platform, and supplier statements.', buttonText: '+ Upload Invoice' }
+        return { title: 'All Sales Invoices', desc: 'Overview of all your POS and platform statements.', buttonText: 'Upload Sales Invoice' }
     }
   }
   const header = getHeaderContent()
@@ -350,7 +346,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
             {tabs.map(tab => (
               <button
                 key={tab.id}
-                onClick={() => { setActiveTab(tab.id); if (tab.id === 'supplier') { setPlatformFilter(''); } else { setSupplierFilter(''); } }}
+                onClick={() => setActiveTab(tab.id)}
                 className={`px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
@@ -391,36 +387,18 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
             {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
 
-            {/* Platform Filter Dropdown for Platform, POS, and All tabs */}
-            {activeTab !== 'supplier' && (
-              <select
-                value={platformFilter}
-                onChange={e => setPlatformFilter(e.target.value)}
-                className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer transition-colors max-w-[130px] truncate"
-              >
-                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
-                <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
-                <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
-                <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
-                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS</option>
-              </select>
-            )}
-
-            {/* Supplier Filter Dropdown strictly for Supplier Purchases */}
-            {activeTab === 'supplier' && (
-              <select
-                value={supplierFilter}
-                onChange={e => setSupplierFilter(e.target.value)}
-                className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer transition-colors max-w-[130px] truncate"
-              >
-                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Suppliers</option>
-                {uniqueSuppliers.map((s: any) => (
-                  <option key={s.id || s.name} value={s.name} className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">
-                    {s.name}
-                  </option>
-                ))}
-              </select>
-            )}
+            {/* Platform Filter Dropdown */}
+            <select
+              value={platformFilter}
+              onChange={e => setPlatformFilter(e.target.value)}
+              className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer transition-colors max-w-[130px] truncate"
+            >
+              <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
+              <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
+              <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
+              <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
+              <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS</option>
+            </select>
 
             <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
@@ -443,7 +421,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
             <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 
             <button 
-              onClick={() => { setFilter(defaultDateFilter()); setStoreFilter(''); setStatusFilter(''); setSupplierFilter(''); setPlatformFilter(''); }} 
+              onClick={() => { setFilter(defaultDateFilter()); setStoreFilter(''); setStatusFilter(''); setPlatformFilter(''); }} 
               className="text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-300/50 dark:hover:bg-[#1f2947]/50 px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 cursor-pointer"
             >
               <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
@@ -468,10 +446,8 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
             {session?.user?.role === 'admin' && (
               <button 
                 onClick={() => {
-                  setType(activeTab === 'all' ? 'platform' : activeTab)
-                  if (activeTab === 'supplier') {
-                    setSupplierId(uniqueSuppliers[0]?.id || '')
-                  } else if (storeFilter === 'Tasty Bun') {
+                  setType(activeTab === 'pos' ? 'pos' : 'platform')
+                  if (storeFilter === 'Tasty Bun') {
                     setPlatformName('Tasty Bun Deliveroo')
                     setPosName('Tasty Bun POS')
                   } else {
@@ -483,7 +459,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                 disabled={uploading}
                 className="bg-gradient-to-r from-blue-500 to-purple-600 text-slate-900 dark:text-white px-4 py-1.5 rounded-xl text-xs font-bold shadow-lg shadow-blue-500/20 hover:opacity-90 transition whitespace-nowrap disabled:opacity-50 cursor-pointer flex items-center gap-1.5"
               >
-                <span>+</span> {header.buttonText}
+                <span>+</span> {header.buttonText.replace(/^\+\s*/, '')}
               </button>
             )}
           </div>
@@ -729,15 +705,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
           <div className="bg-white dark:bg-[#111625] border border-slate-200 dark:border-amber-500/30 rounded-3xl p-6 sm:p-7 w-full max-w-md shadow-2xl">
             <h2 className="text-xl font-black text-slate-900 dark:text-white mb-5 tracking-tight">Upload Invoice</h2>
             <form onSubmit={handleUpload} className="space-y-4">
-              {['supplier', 'stock'].includes(type) && (
-                <div>
-                  <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Invoice Type</label>
-                  <select value={type} onChange={e => setType(e.target.value)} className="w-full bg-slate-50 dark:bg-[#161b2c] border border-slate-300 dark:border-[#1f2947] text-slate-900 dark:text-white font-medium rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-amber-500/50">
-                    <option value="supplier" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Supplier Invoice (Food, Drink, Misc)</option>
-                    <option value="stock" className="bg-white dark:bg-[#161b2c] text-slate-900 dark:text-white">Stock Count / Inventory</option>
-                  </select>
-                </div>
-              )}
+
               {(type === 'platform' || type === 'pos') && (
                 <div className="flex gap-4">
                   <div className="flex-1">

@@ -99,6 +99,10 @@ model Sale {
   is2025      Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([clientId, is2025, weekEnd], map: "idx_sale_client_2025_weekend")
+  @@index([clientId, is2025, store], map: "idx_sale_client_2025_store")
+  @@index([clientId, is2025, platform], map: "idx_sale_client_2025_platform")
 }
 
 model Expense {
@@ -117,6 +121,9 @@ model Expense {
   is2025      Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([clientId, is2025, date], map: "idx_expense_client_2025_date")
+  @@index([clientId, is2025, category], map: "idx_expense_client_2025_category")
 }
 
 model Staff {
@@ -147,6 +154,8 @@ model StaffWage {
   is2025      Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([clientId, is2025, weekEnd], map: "idx_staffwage_client_2025_weekend")
 }
 
 model Supplier {
@@ -190,6 +199,10 @@ model Invoice {
   is2025       Boolean   @default(false)
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+
+  @@index([clientId, is2025, type, invoiceDate], map: "idx_invoice_client_2025_type_date")
+  @@index([clientId, is2025, platform], map: "idx_invoice_client_2025_platform")
+  @@index([clientId, is2025, createdAt], map: "idx_invoice_client_2025_created")
 }
 
 model Stock {
@@ -203,5 +216,6 @@ model Stock {
   is2025      Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-}
 
+  @@index([clientId, is2025, weekEnd], map: "idx_stock_client_2025_weekend")
+}

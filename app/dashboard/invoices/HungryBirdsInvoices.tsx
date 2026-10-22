@@ -128,21 +128,25 @@ function InvoicesContent() {
     if (!currentClientId) return;
 
     try {
+      setLoading(true)
       const params = new URLSearchParams()
       params.set('clientId', currentClientId)
       if (filter.from) params.set('from', filter.from)
       if (filter.to) params.set('to', filter.to)
       if (platformFilter && activeTab === 'platform') params.set('platform', platformFilter)
       
-      const supplierParams = new URLSearchParams()
-      supplierParams.set('clientId', currentClientId)
+      const promises: Promise<any>[] = [
+        fetch(`/api/invoices?${params}`).then(r => r.json())
+      ]
+      if (suppliers.length === 0) {
+        const supplierParams = new URLSearchParams()
+        supplierParams.set('clientId', currentClientId)
+        promises.push(fetch(`/api/suppliers?${supplierParams}`).then(r => r.json()))
+      }
 
-      const [invRes, supRes] = await Promise.all([
-        fetch(`/api/invoices?${params}`).then(r => r.json()),
-        fetch(`/api/suppliers?${supplierParams}`).then(r => r.json()),
-      ])
+      const [invRes, supRes] = await Promise.all(promises)
       setInvoices(Array.isArray(invRes) ? invRes : [])
-      setSuppliers(Array.isArray(supRes) ? supRes : [])
+      if (supRes && Array.isArray(supRes)) setSuppliers(supRes)
     } catch (err) {
       console.error("Failed to fetch invoices", err)
       setInvoices([])

@@ -52,6 +52,15 @@ export function HungryBirdsDashboard() {
 
   useEffect(() => {
     const clientId = (session?.user?.role === 'admin' ? 'client-1' : session?.user?.clientId)
+    if (!clientId) return
+    fetch(`/api/offers?clientId=${clientId}&is2025=false`, { cache: 'no-store' })
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setOffers(data) })
+      .catch(console.error)
+  }, [session])
+
+  useEffect(() => {
+    const clientId = (session?.user?.role === 'admin' ? 'client-1' : session?.user?.clientId)
     if (!session) return
     setLoading(true)
     const params = new URLSearchParams()
@@ -67,14 +76,6 @@ export function HungryBirdsDashboard() {
       .then(r => r.json())
       .then(data => { setReport(data); setLoading(false) })
       .catch(() => setLoading(false))
-
-    // Load offers
-    if (clientId) {
-      fetch(`/api/offers?clientId=${clientId}&is2025=false`, { cache: 'no-store' })
-        .then(r => r.json())
-        .then(data => { if (Array.isArray(data)) setOffers(data) })
-        .catch(console.error)
-    }
   }, [session, filter, platform])
 
   if (loading && !report) return (

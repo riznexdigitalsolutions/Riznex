@@ -157,21 +157,29 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
   const fetchData = useCallback(async () => {
     if (!session) return
+    setLoading(true)
     const params = new URLSearchParams()
     params.set('clientId', session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : (session?.user?.clientId || ''))
     if (filter.from) params.set('from', filter.from)
     if (filter.to) params.set('to', filter.to)
     if (platformFilter) params.set('platform', platformFilter)
     if (is2025) params.set('is2025', 'true')
-    const [invRes, supRes] = await Promise.all([
-      fetch(`/api/invoices?${params}`).then(r => r.json()),
-      fetch(`/api/suppliers?clientId=${session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId}`).then(r => r.json()),
-    ])
+
+    const promises: Promise<any>[] = [
+      fetch(`/api/invoices?${params}`).then(r => r.json())
+    ]
+    if (suppliers.length === 0) {
+      promises.push(
+        fetch(`/api/suppliers?clientId=${session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId}`).then(r => r.json())
+      )
+    }
+
+    const [invRes, supRes] = await Promise.all(promises)
     setInvoices(Array.isArray(invRes) ? invRes : [])
-    setSuppliers(Array.isArray(supRes) ? supRes : [])
+    if (supRes && Array.isArray(supRes)) setSuppliers(supRes)
     
     setLoading(false)
-  }, [session, filter, platformFilter, is2025])
+  }, [session, filter, platformFilter, is2025, suppliers.length])
 
   useEffect(() => { fetchData() }, [fetchData])
 

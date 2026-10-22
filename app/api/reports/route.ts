@@ -124,45 +124,39 @@ export async function GET(req: NextRequest) {
 
   const salesWhere: any = { AND: andClauses }
 
-  // Sales
-  const salesRaw = await prisma.sale.findMany({
-    where: salesWhere,
-    include: { invoice: true },
-    orderBy: { weekStart: 'asc' },
-  })
-
-  // Expenses
-  const expenses = await prisma.expense.findMany({
-    where: buildWhere({ clientId, is2025, period: { not: 'template' } }, 'date'),
-    orderBy: { date: 'asc' },
-  })
-
-  // Supplier invoices
-  const supplierInvoicesRaw = await prisma.invoice.findMany({
-    where: buildWhere({ clientId, is2025, type: 'supplier' }, 'invoiceDate'),
-    select: {
-      id: true,
-      clientId: true,
-      amount: true,
-      invoiceDate: true,
-      platform: true,
-      supplierId: true,
-      supplier: { select: { name: true, category: true, franchise: true } },
-    },
-    orderBy: { invoiceDate: 'asc' },
-  })
-
-  // Stocks
-  const stocksRaw = await prisma.stock.findMany({
-    where: buildWhere({ clientId, is2025 }, 'weekEnd'),
-    orderBy: { weekEnd: 'asc' },
-  })
-
-  // Staff Wages
-  const staffWagesRaw = await prisma.staffWage.findMany({
-    where: buildWhere({ clientId, is2025 }, 'weekEnd'),
-    include: { staff: true },
-  })
+  // Execute all report queries in parallel with lean invoice selection (prevents loading huge LongText fileData)
+  const [salesRaw, expenses, supplierInvoicesRaw, stocksRaw, staffWagesRaw] = await Promise.all([
+    prisma.sale.findMany({
+      where: salesWhere,
+      include: { invoice: { select: { id: true, ocrData: true } } },
+      orderBy: { weekStart: 'asc' },
+    }),
+    prisma.expense.findMany({
+      where: buildWhere({ clientId, is2025, period: { not: 'template' } }, 'date'),
+      orderBy: { date: 'asc' },
+    }),
+    prisma.invoice.findMany({
+      where: buildWhere({ clientId, is2025, type: 'supplier' }, 'invoiceDate'),
+      select: {
+        id: true,
+        clientId: true,
+        amount: true,
+        invoiceDate: true,
+        platform: true,
+        supplierId: true,
+        supplier: { select: { name: true, category: true, franchise: true } },
+      },
+      orderBy: { invoiceDate: 'asc' },
+    }),
+    prisma.stock.findMany({
+      where: buildWhere({ clientId, is2025 }, 'weekEnd'),
+      orderBy: { weekEnd: 'asc' },
+    }),
+    prisma.staffWage.findMany({
+      where: buildWhere({ clientId, is2025 }, 'weekEnd'),
+      include: { staff: true },
+    }),
+  ])
 
   // To absolutely prevent double counting, filter out any manual expenses categorized as 'wages' or 'supplier'.
   // The `StaffWage` and `Invoice` (type: supplier) tables are the strict source of truth for these costs.

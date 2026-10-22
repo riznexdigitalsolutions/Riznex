@@ -72,9 +72,19 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   }, [])
 
   useEffect(() => {
+    const clientId = session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId
+    if (!clientId) return
+    fetch(`/api/offers?clientId=${clientId}&is2025=${is2025 ? 'true' : 'false'}`, { cache: 'no-store' })
+      .then(r => r.json())
+      .then(data => { if (Array.isArray(data)) setOffers(data) })
+      .catch(console.error)
+  }, [session, is2025])
+
+  useEffect(() => {
     const loadReport = () => {
       const clientId = session?.user?.role === 'admin' ? 'cmpv4dvik0000vdj089wl6zmf' : session?.user?.clientId
       if (!session) return
+      setLoading(true)
       const params = new URLSearchParams()
       if (clientId) params.set('clientId', clientId)
       if (filter.from) params.set('from', filter.from)
@@ -91,17 +101,9 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
         .then(r => r.json())
         .then(data => { setReport(data); setLoading(false) })
         .catch(() => setLoading(false))
-
-      // Load offers
-      fetch(`/api/offers?clientId=${clientId}&is2025=${is2025 ? 'true' : 'false'}`, { cache: 'no-store' })
-        .then(r => r.json())
-        .then(data => { if (Array.isArray(data)) setOffers(data) })
-        .catch(console.error)
     }
 
     loadReport()
-    window.addEventListener('focus', loadReport)
-    return () => window.removeEventListener('focus', loadReport)
   }, [session, filter, store, platform, is2025])
 
   if (loading && !report) return (

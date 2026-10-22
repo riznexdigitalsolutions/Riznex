@@ -88,44 +88,38 @@ export async function GET(req: NextRequest) {
     }
   }
 
-  // Sales
-  const sales = await prisma.sale.findMany({
-    where: salesWhere,
-    orderBy: { weekStart: 'asc' },
-  })
-
-  // Expenses (Include manual ones that may have been filtered out before)
-  let expensesRaw = await prisma.expense.findMany({
-    where: buildWhere({ clientId, is2025, period: { not: 'template' }, store: 'Hungry Birds' }, 'date'),
-    orderBy: { date: 'asc' },
-  })
-
-  // Supplier invoices
-  let supplierInvoices = await prisma.invoice.findMany({
-    where: buildWhere({ clientId, is2025, type: 'supplier', supplier: { franchise: 'Hungry Birds' } }, 'invoiceDate'),
-    select: {
-      id: true,
-      clientId: true,
-      amount: true,
-      invoiceDate: true,
-      platform: true,
-      supplierId: true,
-      supplier: { select: { name: true, category: true, franchise: true } },
-    },
-    orderBy: { invoiceDate: 'asc' },
-  })
-
-  // Stocks
-  let stocks = await prisma.stock.findMany({
-    where: buildWhere({ clientId, is2025, franchise: 'Hungry Birds' }, 'weekEnd'),
-    orderBy: { weekEnd: 'asc' },
-  })
-
-  // Staff Wages
-  let staffWages = await prisma.staffWage.findMany({
-    where: buildWhere({ clientId, is2025, store: 'Hungry Birds' }, 'weekEnd'),
-    include: { staff: true },
-  })
+  // Execute all queries in parallel for instant response
+  const [sales, expensesRaw, supplierInvoices, stocks, staffWages] = await Promise.all([
+    prisma.sale.findMany({
+      where: salesWhere,
+      orderBy: { weekStart: 'asc' },
+    }),
+    prisma.expense.findMany({
+      where: buildWhere({ clientId, is2025, period: { not: 'template' }, store: 'Hungry Birds' }, 'date'),
+      orderBy: { date: 'asc' },
+    }),
+    prisma.invoice.findMany({
+      where: buildWhere({ clientId, is2025, type: 'supplier', supplier: { franchise: 'Hungry Birds' } }, 'invoiceDate'),
+      select: {
+        id: true,
+        clientId: true,
+        amount: true,
+        invoiceDate: true,
+        platform: true,
+        supplierId: true,
+        supplier: { select: { name: true, category: true, franchise: true } },
+      },
+      orderBy: { invoiceDate: 'asc' },
+    }),
+    prisma.stock.findMany({
+      where: buildWhere({ clientId, is2025, franchise: 'Hungry Birds' }, 'weekEnd'),
+      orderBy: { weekEnd: 'asc' },
+    }),
+    prisma.staffWage.findMany({
+      where: buildWhere({ clientId, is2025, store: 'Hungry Birds' }, 'weekEnd'),
+      include: { staff: true },
+    }),
+  ])
 
 
 

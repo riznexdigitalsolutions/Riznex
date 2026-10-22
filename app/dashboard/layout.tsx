@@ -44,11 +44,6 @@ const getNavItems = (clientName?: string | null, role?: string) => {
         href: '/dashboard/invoices', 
         icon: '🧾', 
         label: 'Sales Invoices',
-        subItems: [
-          { href: '/dashboard/invoices?tab=all', label: 'Combined Invoices Data' },
-          { href: '/dashboard/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
-          { href: '/dashboard/invoices?tab=pos', label: clientName === 'Hungry Birds' ? 'POS (Walk-in Card & Cash)' : 'Herbies Pizza & Tasty Bun POS Invoices' }
-        ]
       }
     ]
   }
@@ -90,11 +85,6 @@ const getNavItems = (clientName?: string | null, role?: string) => {
       href: '/dashboard/invoices', 
       icon: '🧾', 
       label: 'Sales Invoices',
-      subItems: [
-        { href: '/dashboard/invoices?tab=all', label: 'Combined Invoices Data' },
-        { href: '/dashboard/invoices?tab=platform', label: 'Uber Eats, Just Eat, Deliveroo Invoices' },
-        { href: '/dashboard/invoices?tab=pos', label: clientName === 'Hungry Birds' ? 'POS (Walk-in Card & Cash)' : 'Herbies Pizza & Tasty Bun POS Invoices' }
-      ]
     },
     { href: '/dashboard/settings', icon: '⚙️', label: 'Settings' }
   ]
@@ -125,7 +115,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
   const currentTab = searchParams.get('tab')
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [expandedMenu, setExpandedMenu] = useState<string | null>(
-    pathname.startsWith('/dashboard/invoices') ? 'Sales Invoices' :
+    
     pathname.startsWith('/dashboard/sales') ? 'Sales' :
     pathname.startsWith('/dashboard/expenses') ? 'Expenses' : 
     pathname === '/dashboard' ? 'Overview' : pathname.startsWith('/dashboard/2025') ? '2025 Audit' : null
@@ -133,7 +123,7 @@ function DashboardSidebar({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (pathname.startsWith('/dashboard/2025')) setExpandedMenu('2025 Audit')
-    else if (pathname.startsWith('/dashboard/invoices')) setExpandedMenu('Sales Invoices')
+    
     else if (pathname.startsWith('/dashboard/sales')) setExpandedMenu('Sales')
     else if (pathname.startsWith('/dashboard/expenses')) setExpandedMenu('Expenses')
     else if (pathname === '/dashboard') setExpandedMenu('Overview')

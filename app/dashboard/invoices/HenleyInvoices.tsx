@@ -95,8 +95,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
     // Strictly Sales Invoices only - exclude supplier purchases or expenses
     if (inv.type === 'supplier' || inv.type === 'expense') return false;
 
-    if (activeTab === 'platform' && inv.type !== 'platform') return false;
-    if (activeTab === 'pos' && inv.type !== 'pos') return false;
+
 
     if (platformFilter) {
       const p = platformFilter.toLowerCase()
@@ -325,18 +324,11 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
   if (loading) return <div className="flex justify-center p-12"><div className="w-8 h-8 border-2 border-t-blue-500 rounded-full animate-spin" /></div>
 
-  const getHeaderContent = () => {
-    switch (activeTab) {
-      case 'platform':
-        return { title: 'Platform Invoices', desc: 'Manage your Uber Eats, Just Eat, and Deliveroo statements.', buttonText: 'Upload Platform Invoice' }
-      case 'pos':
-        return { title: is2025 ? 'Herbies Pizza POS Invoices' : 'Herbies & Tasty Bun POS Invoices', desc: 'Manage invoices from your internal POS systems.', buttonText: 'Upload POS Invoice' }
-      case 'all':
-      default:
-        return { title: 'All Sales Invoices', desc: 'Overview of all your POS and platform statements.', buttonText: 'Upload Sales Invoice' }
-    }
+  const header = {
+    title: 'All Sales Invoices',
+    desc: 'Overview of all your POS and platform statements.',
+    buttonText: 'Upload Sales Invoice'
   }
-  const header = getHeaderContent()
 
   return (
     <div className="space-y-6">
@@ -348,24 +340,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
           <p className="text-slate-500 dark:text-slate-400 text-sm font-medium">{header.desc}</p>
         </div>
 
-        {/* Category Tabs */}
-        <div className="flex justify-center print:hidden">
-          <div className="flex flex-wrap items-center justify-center gap-1.5 p-1 rounded-2xl bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200 dark:border-[#1f2947]">
-            {tabs.map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className={`px-4 py-2 text-xs sm:text-sm font-bold rounded-xl transition-all cursor-pointer whitespace-nowrap ${
-                  activeTab === tab.id
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                    : 'text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
-          </div>
-        </div>
+
 
         {/* Middle Row: Centered Filter & Action Toolbar */}
         <div className="flex justify-center items-center print:hidden w-full">
@@ -505,7 +480,7 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden">
           <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
             <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300 min-w-[750px]">
-            <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
+            <thead className="bg-slate-100 dark:bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-700 dark:text-slate-200">
               <tr>
                 <th className="px-5 py-4 w-12 text-center">
                   <input 
@@ -515,19 +490,19 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
                       if (e.target.checked) setSelectedIds(filteredInvoices.map((inv: any) => inv.id))
                       else setSelectedIds([])
                     }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
+                    className="w-4 h-4 rounded border-slate-300 dark:border-[#2d3b5e] bg-white dark:bg-[#1f2947] text-blue-600 focus:ring-blue-500 cursor-pointer"
                   />
                 </th>
-                <th className="px-5 py-4 font-bold">Date</th>
-                <th className="px-5 py-4 font-bold">Week</th>
-                <th className="px-5 py-4 font-bold">Month</th>
-                <th className="px-5 py-4 font-bold">Details</th>
-                <th className="px-5 py-4 font-bold text-right">Amount</th>
-                <th className="px-5 py-4 font-bold">Status</th>
-                <th className="px-5 py-4 font-bold text-right">File</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Date</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Week</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Month</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Details</th>
+                <th className="px-5 py-4 font-bold text-right text-slate-700 dark:text-slate-200 tracking-wider">Amount</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Status</th>
+                <th className="px-5 py-4 font-bold text-right text-slate-700 dark:text-slate-200 tracking-wider">File</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1f2947]">
+            <tbody className="divide-y divide-slate-200 dark:divide-[#1f2947]">
               {[...filteredInvoices].sort((a, b) => {
                 const aNeedsAttn = ['pending', 'processing', 'error', 'failed'].includes(a.ocrStatus) ? 1 : 0;
                 const bNeedsAttn = ['pending', 'processing', 'error', 'failed'].includes(b.ocrStatus) ? 1 : 0;

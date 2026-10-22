@@ -92,10 +92,7 @@ function InvoicesContent() {
     // Strictly Sales Invoices only
     if (inv.type === 'supplier' || inv.type === 'expense') return false;
 
-    if (activeTab === 'platform' && inv.type !== 'platform') return false;
-    if (activeTab === 'pos' && inv.type !== 'pos') return false;
     if (storeFilter && inv.platform && !inv.platform.includes(storeFilter)) return false;
-    if (posFilter && activeTab === 'pos' && inv.platform && !inv.platform.includes(posFilter)) return false;
 
     if (filter.from || filter.to) {
       const targetDate = inv.invoiceDate ? new Date(inv.invoiceDate) : null
@@ -304,18 +301,11 @@ function InvoicesContent() {
 
   if (loading) return <div className="flex justify-center p-12"><div className="w-8 h-8 border-2 border-t-blue-500 rounded-full animate-spin" /></div>
 
-  const getHeaderContent = () => {
-    switch (activeTab) {
-      case 'platform':
-        return { title: 'Delivery Platforms (Uber Eats, Just Eat, Deliveroo)', desc: 'Manage your delivery app weekly sales invoices.', buttonText: '+ Upload Delivery Invoice' }
-      case 'pos':
-        return { title: 'Direct & Walk-in Sales (Card, Cash & Online Web)', desc: 'Manage walk-in card machine invoices, walk-in cash sales, and online web orders.', buttonText: '+ Upload Card/Web Invoice' }
-      case 'all':
-      default:
-        return { title: 'Combined Sales Invoices Data', desc: 'Master view combining all POS and delivery platform invoices.', buttonText: '+ Upload Sales Invoice' }
-    }
-  }
-  const header = getHeaderContent()
+  const header = {
+    title: 'All Sales Invoices',
+    desc: 'Master view combining all POS and delivery platform invoices.',
+    buttonText: '+ Upload Sales Invoice'
+  };
 
   return (
     <div className="space-y-6 max-w-full min-w-0">
@@ -328,55 +318,20 @@ function InvoicesContent() {
       {/* Filter Toolbar & Upload Action Underneath */}
       <div className="w-full max-w-full p-2.5 sm:p-4 flex flex-col sm:flex-row gap-3 sm:gap-4 items-center justify-between bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl backdrop-blur-sm shadow-lg">
         <div className="flex gap-3 flex-wrap items-center w-full sm:w-auto">
-          {activeTab === 'all' && (
-            <>
-              <select
-                value={storeFilter}
-                onChange={e => setStoreFilter(e.target.value)}
-                className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
-              >
-                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
-                <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
-                <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
-                <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
-                <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
-                <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
-                <option value="Online Web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🌐 Online Web</option>
-              </select>
-              <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
-            </>
-          )}
-          {activeTab !== 'pos' && (
-            <>
-              <select
-                value={platformFilter}
-                onChange={e => setPlatformFilter(e.target.value)}
-                className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
-              >
-                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
-                <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
-                <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
-                <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
-                <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS</option>
-              </select>
-              <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
-            </>
-          )}
-          {activeTab === 'pos' && (
-            <>
-              <select
-                value={posFilter}
-                onChange={e => setPosFilter(e.target.value)}
-                className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
-              >
-                <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All POS & Walk-in Sales</option>
-                <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
-                <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
-                <option value="Online Web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🌐 Online Web</option>
-              </select>
-              <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
-            </>
-          )}
+          <select
+            value={storeFilter}
+            onChange={e => setStoreFilter(e.target.value)}
+            className="bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer"
+          >
+            <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
+            <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
+            <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
+            <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
+            <option value="Cash" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💵 Walk-in Cash</option>
+            <option value="Card" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">💳 Walk-in Card</option>
+            <option value="Online Web" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white font-bold">🌐 Online Web</option>
+          </select>
+          <div className="w-[1px] h-4 bg-slate-300 dark:bg-[#1f2947]"></div>
 
 
 
@@ -447,7 +402,7 @@ function InvoicesContent() {
         <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-2xl overflow-hidden w-full max-w-full">
           <div className="overflow-x-auto w-full -webkit-overflow-scrolling-touch">
             <table className="w-full text-left text-sm text-slate-600 dark:text-slate-300 min-w-[750px]">
-              <thead className="bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-500">
+              <thead className="bg-slate-100 dark:bg-[#161b2c] border-b border-slate-200 dark:border-[#1f2947] text-xs uppercase text-slate-700 dark:text-slate-200">
               <tr>
                 <th className="px-5 py-4 w-12 text-center">
                   <input 
@@ -457,19 +412,19 @@ function InvoicesContent() {
                       if (e.target.checked) setSelectedIds(filteredInvoices.map((inv: any) => inv.id))
                       else setSelectedIds([])
                     }}
-                    className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-300 dark:bg-[#1f2947] text-slate-900 dark:text-white focus:ring-blue-500 focus:ring-offset-[#111520] cursor-pointer"
+                    className="w-4 h-4 rounded border-slate-300 dark:border-[#2d3b5e] bg-white dark:bg-[#1f2947] text-blue-600 focus:ring-blue-500 cursor-pointer"
                   />
                 </th>
-                <th className="px-5 py-4 font-bold">Date</th>
-                <th className="px-5 py-4 font-bold">Week</th>
-                <th className="px-5 py-4 font-bold">Month</th>
-                <th className="px-5 py-4 font-bold">Details</th>
-                <th className="px-5 py-4 font-bold text-right">Amount</th>
-                <th className="px-5 py-4 font-bold">Status</th>
-                <th className="px-5 py-4 font-bold text-right">File</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Date</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Week</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Month</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Details</th>
+                <th className="px-5 py-4 font-bold text-right text-slate-700 dark:text-slate-200 tracking-wider">Amount</th>
+                <th className="px-5 py-4 font-bold text-slate-700 dark:text-slate-200 tracking-wider">Status</th>
+                <th className="px-5 py-4 font-bold text-right text-slate-700 dark:text-slate-200 tracking-wider">File</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-[#1f2947]">
+            <tbody className="divide-y divide-slate-200 dark:divide-[#1f2947]">
               {[...filteredInvoices].sort((a, b) => {
                 const aProcessing = a.ocrStatus === 'processing' || a.ocrStatus === 'pending' ? 1 : 0
                 const bProcessing = b.ocrStatus === 'processing' || b.ocrStatus === 'pending' ? 1 : 0

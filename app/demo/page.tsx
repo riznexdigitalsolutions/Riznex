@@ -460,47 +460,19 @@ function DemoContent() {
               </div>
             </div>
 
-            {/* 2. Sales Invoices Group (Exact 3 Sub-Sections Requested By User!) */}
-            <div className="space-y-1">
-              <div className="px-3 py-2 text-xs font-bold text-slate-600 dark:text-slate-300 flex items-center justify-between rounded-xl bg-black/[0.04] dark:bg-white/[0.04] border border-slate-200/[0.08] dark:border-white/[0.08]">
-                <span className="flex items-center gap-2">
-                  <span>🧾</span> Sales Invoices
-                </span>
-                <span className="text-[10px] text-slate-500 dark:text-slate-400">▼</span>
-              </div>
-              <div className="pl-4 pr-1 py-1 space-y-1">
-                <button
-                  onClick={() => { setActiveTab('invoices_combined'); setSidebarOpen(false) }}
-                  className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
-                    activeTab === 'invoices_combined'
-                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <span className="truncate">• Combined Invoices Data</span>
-                </button>
-                <button
-                  onClick={() => { setActiveTab('invoices_platform'); setSidebarOpen(false) }}
-                  className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
-                    activeTab === 'invoices_platform'
-                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <span className="truncate leading-tight">• Uber Eats, Just Eat, Deliveroo Invoices</span>
-                </button>
-                <button
-                  onClick={() => { setActiveTab('invoices_pos'); setSidebarOpen(false) }}
-                  className={`w-full text-left px-3 py-2 text-xs rounded-xl transition-all flex items-center justify-between cursor-pointer ${
-                    activeTab === 'invoices_pos'
-                      ? 'bg-blue-600 text-slate-900 dark:text-white font-bold shadow-lg shadow-blue-600/30'
-                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-black/5 dark:hover:bg-white/5'
-                  }`}
-                >
-                  <span className="truncate leading-tight">• Prime Pizza & Smash Burger POS Invoices</span>
-                </button>
-              </div>
-            </div>
+            {/* 2. Sales Invoices */}
+            <button
+              onClick={() => { setActiveTab('invoices_combined'); setSidebarOpen(false) }}
+              className={`w-full text-left px-3 py-2.5 text-xs font-bold rounded-xl transition-all flex items-center justify-between cursor-pointer ${
+                activeTab.startsWith('invoices')
+                  ? 'bg-[#D1A041] text-black shadow-md font-bold'
+                  : 'text-slate-600 dark:text-slate-400 hover:text-[#D1A041] hover:bg-[#D1A041]/10'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                <span>🧾</span> Sales Invoices
+              </span>
+            </button>
 
           </nav>
 

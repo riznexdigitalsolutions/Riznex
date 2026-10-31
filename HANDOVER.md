@@ -407,7 +407,27 @@
       - `[🛵 Delivery Platforms]` (Deliveroo, Just Eat, Uber Eats)
       - `[🌐 Website & Direct Payments]` (Online Web, Walk-in Card, Walk-in Cash)
     - Directly passes `type: 'pos'` and `platform: 'Online Web'` or `'Walk-in Card'` for direct uploads, fully restoring user capability to upload website order statements and Tide card statements.
-- **Deployment:** Compiled clean (`npm run build` 38/38 routes 0 errors), committed (`20e7b62`), and pushed to GitHub `origin main`.
+- **Deployment:** Compiled clean (`npm run build` 38/38 routes 0 errors), committed (`20e7b62`, `075d70c`), and pushed to GitHub `origin main`.
+
+---
+
+### Y. Hungry Birds Online Web Orders Extraction & Reconciliation (October 31, 2026)
+- **User Action:** Provided two Order History PDF statements for Hungry Birds online web orders.
+- **Extracted Details:**
+  1. **Week Ending 18 Oct 2026 (12 Oct – 18 Oct 2026):**
+     - Order #37814: Gary Booker — 14 Oct 2026 6:06 PM — £32.49 (Card Payment Paypal, Delivery)
+     - Order #37827: Toby Briggs — 15 Oct 2026 7:22 PM — £25.47 (Card Payment Paypal, Delivery)
+     - **Total:** 2 orders, **£57.96** gross sales, £0.00 commission, **£57.96** net paid.
+     - **Invoice & File:** Created invoice `cmvx0e5i60001wkdkzhwjiyk6` (`Order_history_18Oct2026.pdf`), created linked `Sale` record `cmvx0e6e60003wkdkrt2i1snk`.
+  2. **Week Ending 25 Oct 2026 (19 Oct – 25 Oct 2026):**
+     - Order #37962: Mark Woodruff — 23 Oct 2026 6:04 PM — £20.98 (Card Payment Paypal, Delivery)
+     - Order #38017: Beth Szwarc — 24 Oct 2026 6:41 PM — £42.44 (Card Payment Paypal, Delivery)
+     - **Total:** 2 orders, **£63.42** gross sales, £0.00 commission, **£63.42** net paid.
+     - **Invoice & File:** Created invoice `cmvx0e73h0005wkdk82s6y0od` (`Order_history_25Oct2026.pdf`), created linked `Sale` record `cmvx0e7lv0007wkdktqk1675w`.
+- **Files & Verification:**
+  - Files saved to `public/uploads/client-1/Order_history_18Oct2026.pdf` and `Order_history_25Oct2026.pdf`.
+  - Stored in MySQL `fileData` (Base64) for instant recovery.
+  - Committed (`9d75527`) and pushed to GitHub `origin main`. Both records appear in Sales, Overview, and Sales Invoices.
 
 ---
 

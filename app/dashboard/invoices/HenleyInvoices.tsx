@@ -378,18 +378,14 @@ function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
 
             {!is2025 && <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>}
 
-            {/* Platform Filter Dropdown */}
-            <select
-              value={platformFilter}
-              onChange={e => setPlatformFilter(e.target.value)}
-              className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer transition-colors max-w-[130px] truncate"
-            >
-              <option value="" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">All Platforms</option>
-              <option value="Uber Eats" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Uber Eats</option>
-              <option value="Just Eat" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Just Eat</option>
-              <option value="Deliveroo" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">Deliveroo</option>
-              <option value="POS" className="bg-slate-100 dark:bg-[#111520] text-slate-900 dark:text-white">POS</option>
-            </select>
+            {/* Platform Filter Checklist Dropdown */}
+            <MultiPlatformFilter
+              selectedPlatforms={platformFilter}
+              onChange={setPlatformFilter}
+              options={HENLEY_INVOICE_PLATFORMS}
+              variant="toolbar"
+              className="bg-transparent text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-xs font-bold focus:outline-none cursor-pointer flex items-center gap-1.5 transition-colors"
+            />
 
             <div className="w-[1px] h-5 bg-slate-300 dark:bg-[#1f2947] hidden sm:block"></div>
 

@@ -388,24 +388,35 @@
 
 ---
 
-## 5. Current Task & System Status (Handover Checkpoint - October 23, 2026)
+### X. Multi-Select Platform Checklist & Hungry Birds Website/Card Upload Restoration (October 31, 2026)
+- **User Requirement:**
+  1. Enable checklist multi-select on Sales Invoices so users can check one, multiple, or all platforms at the same time.
+  2. Restore and clearly surface upload options for **Hungry Birds Website** (`Online Web`) and **Card payments** (`Walk-in Card` / Tide statement) in the "+ Upload Sales Invoice" modal.
+- **Problem Diagnosed:**
+  - On Sales Invoices (`/dashboard/invoices`), the platform filter was a standard single-choice `<select>` element, preventing users from selecting multiple platforms simultaneously.
+  - In `HungryBirdsInvoices.tsx`, when category tabs were previously unified, the upload button defaulted `type` to `'platform'`. As a result, the upload modal only rendered the delivery platforms (`Deliveroo`, `Just Eat`, `Uber Eats`), hiding the options for `Online Web`, `Walk-in Card`, and `Walk-in Cash`.
+- **Solution Applied:**
+  - **Checklist Multi-Select Component (`components/MultiPlatformFilter.tsx`):**
+    - Added `variant="toolbar"` support for seamless toolbar integration and theme-aware contrast (`bg-white dark:bg-[#111520]`).
+    - Added checklist dropdown with master `All Platforms` checkbox, individual checkboxes, color badges, and active count pills.
+  - **Sales Invoices Pages (`HungryBirdsInvoices.tsx` & `HenleyInvoices.tsx`):**
+    - Integrated `MultiPlatformFilter` into both Hungry Birds (`Just Eat`, `Uber Eats`, `Deliveroo`, `Online Web`, `Walk-in Card`, `Walk-in Cash`) and Henley on Thames (`Uber Eats`, `Just Eat`, `Deliveroo`, `In-Store POS`).
+    - Updated client-side filter logic and `GET /api/invoices` backend query to match multiple comma-separated platforms dynamically across all sources.
+  - **Upload Modal for Hungry Birds (`HungryBirdsInvoices.tsx`):**
+    - Added prominent channel category buttons inside the modal:
+      - `[🛵 Delivery Platforms]` (Deliveroo, Just Eat, Uber Eats)
+      - `[🌐 Website & Direct Payments]` (Online Web, Walk-in Card, Walk-in Cash)
+    - Directly passes `type: 'pos'` and `platform: 'Online Web'` or `'Walk-in Card'` for direct uploads, fully restoring user capability to upload website order statements and Tide card statements.
+- **Deployment:** Compiled clean (`npm run build` 38/38 routes 0 errors), committed (`20e7b62`), and pushed to GitHub `origin main`.
+
+---
+
+## 5. Current Task & System Status (Handover Checkpoint - October 31, 2026)
 
 - **System Status:** 100% operational, fully verified with Next.js (`npm run build` 38/38 routes 0 errors), committed, and pushed to GitHub `origin main`.
-- **Performance:** 10x faster reports API (1.6s vs 14s), 10 composite database indexes active in MySQL.
-- **Sales Invoices:** Direct single tab without accordion subcategories, unified table, clear store & delivery/POS platform filters, high-contrast readable table headers.
-- **Expenses & Suppliers:** Instant 14-day visibility safety net, OCR year guard, high-contrast legible modals and tables.
-- **Active Clients:** Henley on Thames (`cmpv4dvik0000vdj089wl6zmf`) & Hungry Birds (`client-1`), both verified and fully functional.
-- **Invoices & Uploads:**
-  - **100% Authentic Original Files:** All uploaded invoices (PDFs, JPEGs, JPGs, scans) through October 2026 are restored and verified with genuine original portal exports and scans.
-- **Role Permissions Active:**
-  - **Client Role (`role === 'client'`):** Read-only mode across Overview, Sales, Expenses, and Sales Invoices. Clients can view data, download PDFs, view/download invoice and supplier vouchers, but cannot Add, Edit, Delete, or Upload records.
-  - **Admin Role:** Retains full privileges across all clients, stores, and management actions.
-- **Workflow to Resume Work:**
-  1. Make edits in `E:\Sales Software\restaurant-dashboard`.
-  2. Sync modified files to `C:\Users\syedq\Documents\GitHub\Riznex` using:
-     `node "C:\Users\syedq\.gemini\antigravity\brain\fff3c3be-ce4e-49ff-b76d-5be74530568c\scratch\copy-files.js"`
-  3. Run `npm run build` in `C:\Users\syedq\Documents\GitHub\Riznex` to verify type safety and compilation.
-  4. Commit and push to GitHub `origin main`. Hostinger production server pulls directly from `main`.
+- **Sales Invoices Platform Filter:** Multi-select checklist with checkboxes across all platforms on both Hungry Birds and Henley on Thames.
+- **Upload Modal:** Clear dual-category selector (`Delivery Platforms` vs `Website & Direct Payments`), allowing immediate upload of `Online Web` and `Walk-in Card`.
+- **Performance & Security:** Remote MySQL database indexes active, long text bypass in place, and authentic original files served directly.
 
 
 

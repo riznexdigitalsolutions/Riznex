@@ -22,12 +22,16 @@ interface MultiPlatformFilterProps {
   selectedPlatforms: string; // comma-separated or single string or empty for all
   onChange: (newPlatformStr: string) => void;
   options?: PlatformOption[];
+  variant?: 'default' | 'toolbar';
+  className?: string;
 }
 
 export default function MultiPlatformFilter({
   selectedPlatforms,
   onChange,
-  options = DEFAULT_PLATFORMS
+  options = DEFAULT_PLATFORMS,
+  variant = 'default',
+  className
 }: MultiPlatformFilterProps) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -49,11 +53,7 @@ export default function MultiPlatformFilter({
   const isAllSelected = currentArray.length === 0 || currentArray.length === options.length
 
   const handleToggleAll = () => {
-    if (isAllSelected) {
-      onChange('') // Clear selection (All Platforms)
-    } else {
-      onChange('') // All Platforms
-    }
+    onChange('') // Reset to All Platforms
   }
 
   const handleToggleOption = (value: string) => {
@@ -86,31 +86,47 @@ export default function MultiPlatformFilter({
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       {/* Trigger Button */}
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] hover:border-blue-500/50 rounded-xl px-3.5 py-2 flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-all shadow-sm cursor-pointer"
-      >
-        <span className="text-sm opacity-80">📱</span>
-        <span>{getTriggerLabel()}</span>
-        {!isAllSelected && (
-          <span className="bg-blue-500/20 text-slate-900 dark:text-white border border-blue-500/30 text-[10px] font-black px-1.5 py-0.5 rounded-full">
-            {currentArray.length}
-          </span>
-        )}
-        <span className={`text-[10px] text-slate-500 dark:text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
-      </button>
+      {variant === 'toolbar' ? (
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className={className || "bg-transparent text-slate-900 dark:text-white px-2 py-1 text-xs font-bold focus:outline-none cursor-pointer flex items-center gap-1.5 transition-colors"}
+        >
+          <span>{getTriggerLabel()}</span>
+          {!isAllSelected && (
+            <span className="bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30 text-[10px] font-black px-1.5 py-0.2 rounded-full">
+              {currentArray.length}
+            </span>
+          )}
+          <span className={`text-[10px] text-slate-500 dark:text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+        </button>
+      ) : (
+        <button
+          type="button"
+          onClick={() => setIsOpen(!isOpen)}
+          className={className || "bg-slate-100 dark:bg-[#0a0c14] border border-slate-200 dark:border-[#1f2947] hover:border-blue-500/50 rounded-xl px-3.5 py-2 flex items-center gap-2 text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-slate-900 dark:hover:text-white transition-all shadow-sm cursor-pointer"}
+        >
+          <span className="text-sm opacity-80">📱</span>
+          <span>{getTriggerLabel()}</span>
+          {!isAllSelected && (
+            <span className="bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30 text-[10px] font-black px-1.5 py-0.5 rounded-full">
+              {currentArray.length}
+            </span>
+          )}
+          <span className={`text-[10px] text-slate-500 dark:text-slate-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}>▼</span>
+        </button>
+      )}
 
       {/* Custom Dropdown Menu */}
       {isOpen && (
-        <div className="absolute left-0 mt-2 w-64 bg-slate-100 dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl shadow-2xl z-50 p-3 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute left-0 mt-2 w-64 bg-white dark:bg-[#111520] border border-slate-200 dark:border-[#1f2947] rounded-2xl shadow-2xl z-50 p-3 backdrop-blur-xl animate-in fade-in zoom-in-95 duration-150">
           <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 px-2 py-1.5 flex items-center justify-between border-b border-slate-200/60 dark:border-[#1f2947]/60 mb-2">
             <span>Filter Platforms</span>
             {currentArray.length > 0 && (
               <button
                 type="button"
                 onClick={() => onChange('')}
-                className="text-slate-900 dark:text-white hover:text-blue-300 font-bold lowercase text-[11px]"
+                className="text-blue-600 dark:text-blue-400 hover:underline font-bold lowercase text-[11px] cursor-pointer"
               >
                 reset
               </button>
@@ -122,14 +138,14 @@ export default function MultiPlatformFilter({
             <label
               onClick={handleToggleAll}
               className={`flex items-center gap-3 px-2.5 py-2 rounded-xl text-xs font-bold cursor-pointer transition-colors ${
-                isAllSelected ? 'bg-blue-500/10 text-slate-900 dark:text-white border border-blue-500/20' : 'text-slate-600 dark:text-slate-300 hover:bg-[#161b2c]'
+                isAllSelected ? 'bg-blue-500/10 text-blue-700 dark:text-white border border-blue-500/20' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#161b2c]'
               }`}
             >
               <input
                 type="checkbox"
                 checked={isAllSelected}
                 onChange={() => {}}
-                className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-200 dark:bg-[#1a2235] text-slate-900 dark:text-white focus:ring-blue-500 cursor-pointer"
+                className="w-4 h-4 rounded border-slate-300 dark:border-[#2d3b5e] bg-white dark:bg-[#1a2235] text-blue-600 focus:ring-blue-500 cursor-pointer"
               />
               <span>All Platforms</span>
             </label>
@@ -145,7 +161,7 @@ export default function MultiPlatformFilter({
                     handleToggleOption(opt.value)
                   }}
                   className={`flex items-center justify-between px-2.5 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-colors ${
-                    isChecked ? 'bg-blue-500/10 text-slate-900 dark:text-white border border-blue-500/20' : 'text-slate-600 dark:text-slate-300 hover:bg-[#161b2c]'
+                    isChecked ? 'bg-blue-500/10 text-blue-700 dark:text-white border border-blue-500/20' : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-[#161b2c]'
                   }`}
                 >
                   <div className="flex items-center gap-3">
@@ -153,7 +169,7 @@ export default function MultiPlatformFilter({
                       type="checkbox"
                       checked={isChecked}
                       onChange={() => {}}
-                      className="w-4 h-4 rounded border-[#2d3b5e] bg-slate-200 dark:bg-[#1a2235] text-slate-900 dark:text-white focus:ring-blue-500 cursor-pointer"
+                      className="w-4 h-4 rounded border-slate-300 dark:border-[#2d3b5e] bg-white dark:bg-[#1a2235] text-blue-600 focus:ring-blue-500 cursor-pointer"
                     />
                     <span className="flex items-center gap-2">
                       {opt.color && (
@@ -162,7 +178,7 @@ export default function MultiPlatformFilter({
                       {opt.label}
                     </span>
                   </div>
-                  {isChecked && <span className="text-slate-900 dark:text-white text-xs font-bold">✓</span>}
+                  {isChecked && <span className="text-blue-600 dark:text-white text-xs font-bold">✓</span>}
                 </label>
               )
             })}
@@ -172,4 +188,3 @@ export default function MultiPlatformFilter({
     </div>
   )
 }
-

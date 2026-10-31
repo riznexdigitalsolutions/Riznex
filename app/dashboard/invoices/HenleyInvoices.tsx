@@ -6,6 +6,14 @@ import { useSearchParams } from 'next/navigation'
 import { gbp, fmtDate, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
 import ActiveFilters from '@/components/ActiveFilters'
+import MultiPlatformFilter, { PlatformOption } from '@/components/MultiPlatformFilter'
+
+const HENLEY_INVOICE_PLATFORMS: PlatformOption[] = [
+  { value: 'Uber Eats', label: 'Uber Eats', color: '#22d3a5' },
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'POS', label: 'In-Store POS', color: '#ef4444' },
+];
 
 function InvoicesContent({ is2025 = false }: { is2025?: boolean }) {
   const { data: session } = useSession()

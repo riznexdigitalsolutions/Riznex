@@ -71,6 +71,12 @@ export async function GET(req: NextRequest) {
         platformORs.push({ platform: { contains: 'Just Eat' } })
       } else if (p.includes('Uber Eats') || p.includes('Uber')) {
         platformORs.push({ platform: { contains: 'Uber' } })
+      } else if (p.includes('Cash')) {
+        platformORs.push({ platform: { contains: 'Cash' } })
+      } else if (p.includes('Card')) {
+        platformORs.push({ platform: { contains: 'Card' } })
+      } else if (p.includes('Web')) {
+        platformORs.push({ platform: { contains: 'Web' } })
       } else {
         platformORs.push({ platform: { contains: p } })
       }

@@ -5,6 +5,16 @@ import { useSearchParams } from 'next/navigation'
 import { gbp, fmtDate, getWeekStart, getWeekEnd } from '@/lib/utils'
 import DateFilter, { defaultDateFilter } from '@/components/DateFilter'
 import ActiveFilters from '@/components/ActiveFilters'
+import MultiPlatformFilter, { PlatformOption } from '@/components/MultiPlatformFilter'
+
+const HB_INVOICE_PLATFORMS: PlatformOption[] = [
+  { value: 'Just Eat', label: 'Just Eat', color: '#f97316' },
+  { value: 'Uber Eats', label: 'Uber Eats', color: '#22d3a5' },
+  { value: 'Deliveroo', label: 'Deliveroo', color: '#4f8ef7' },
+  { value: 'Online Web', label: '🌐 Online Web', color: '#a855f7' },
+  { value: 'Walk-in Card', label: '💳 Walk-in Card', color: '#3b82f6' },
+  { value: 'Walk-in Cash', label: '💵 Walk-in Cash', color: '#10b981' },
+];
 
 function InvoicesContent() {
   const { data: session } = useSession()
@@ -50,6 +60,8 @@ function InvoicesContent() {
   const [platformFilter, setPlatformFilter] = useState('')
   const [posFilter, setPosFilter] = useState('')
   const [storeFilter, setStoreFilter] = useState('')
+  const [selectedPlatforms, setSelectedPlatforms] = useState('')
+  const [uploadCategory, setUploadCategory] = useState<'platform' | 'pos'>('platform')
   const [supplierFilter, setSupplierFilter] = useState('')
   const [retryingId, setRetryingId] = useState<string | null>(null)
 
@@ -92,7 +104,28 @@ function InvoicesContent() {
     // Strictly Sales Invoices only
     if (inv.type === 'supplier' || inv.type === 'expense') return false;
 
-    if (storeFilter && inv.platform && !inv.platform.includes(storeFilter)) return false;
+    if (selectedPlatforms) {
+      const selectedArr = selectedPlatforms.split(',').map((s: string) => s.trim().toLowerCase()).filter(Boolean);
+      if (selectedArr.length > 0) {
+        const invPlat = (inv.platform || '').toLowerCase();
+        const invFileName = (inv.fileName || '').toLowerCase();
+        const matches = selectedArr.some((sel: string) => {
+          if (sel === 'walk-in cash' || sel === 'cash') {
+            return invPlat.includes('cash') || invFileName.includes('cash');
+          }
+          if (sel === 'walk-in card' || sel === 'card') {
+            return invPlat.includes('card') || invFileName.includes('card') || invFileName.includes('tide') || invFileName.includes('bank');
+          }
+          if (sel === 'online web' || sel === 'web') {
+            return invPlat.includes('online web') || invPlat.includes('web') || invFileName.includes('order_history') || invFileName.includes('web');
+          }
+          return invPlat.includes(sel) || invFileName.includes(sel);
+        });
+        if (!matches) return false;
+      }
+    } else if (storeFilter && inv.platform && !inv.platform.includes(storeFilter)) {
+      return false;
+    }
 
     if (filter.from || filter.to) {
       const targetDate = inv.invoiceDate ? new Date(inv.invoiceDate) : null
@@ -130,7 +163,8 @@ function InvoicesContent() {
       params.set('clientId', currentClientId)
       if (filter.from) params.set('from', filter.from)
       if (filter.to) params.set('to', filter.to)
-      if (platformFilter && activeTab === 'platform') params.set('platform', platformFilter)
+      if (selectedPlatforms) params.set('platform', selectedPlatforms)
+      else if (platformFilter && activeTab === 'platform') params.set('platform', platformFilter)
       
       const promises: Promise<any>[] = [
         fetch(`/api/invoices?${params}`).then(r => r.json())

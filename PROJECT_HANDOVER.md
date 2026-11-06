@@ -14,6 +14,11 @@
    - Respect each client's unique store configuration, platforms, commission models, and data sources.
 3. **PRODUCTION QUALITY STANDARDS:**
    - Verify builds (`npm run build`), test database interactions, and ensure clean commits before pushing changes to `main`.
+4. **SUPPLIER INVOICE EXTRACTION STRICT RULE:**
+   - When uploading / processing any supplier invoice on the website, ONLY extract and save:
+     1. **Total Invoice Amount (inclusive of VAT)**
+     2. **Invoice Date**
+   - Strictly ignore and omit everything else (no line items, no customer/staff details, no banking details, no extra metadata).
 
 ---
 

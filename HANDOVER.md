@@ -431,9 +431,30 @@
 
 ---
 
-## 5. Current Task & System Status (Handover Checkpoint - October 31, 2026)
+### Z. Zetem Ltd. Supplier & Invoice Addition for Tasty Bun Henley (November 6, 2026)
+- **User Action:** Add supplier `Zetem Ltd.` to Henley on Thames (`cmpv4dvik0000vdj089wl6zmf`) assigned exclusively to **Tasty Bun**.
+- **Supplier Record Created:**
+  - Name: `Zetem Ltd.`
+  - Franchise: `Tasty Bun` (100% allocated to Tasty Bun store)
+  - Category: `packaging`
+  - Contact: `02382 146060 / sales@zetem.co.uk`
+  - Supplier ID: `cmw5ihy9j0001wkwo16xcic33`
+- **Invoice Record & File Created:**
+  - Invoice No: `001171`
+  - Date: `2026-11-03`
+  - Subtotal: `£166.60` | VAT: `£33.32` | Total: `£199.92`
+  - Payment: Paid in full via Card (Global Payments Order #1069, Auth: 794921)
+  - Items: Bagasse takeaway boxes (HB9, HB10), aluminium foil, baking parchment, nitrile gloves.
+  - File stored in `public/uploads/cmpv4dvik0000vdj089wl6zmf/1794001646199-Zetem_Invoice_001171.jpg` and backed up in MySQL `fileData` (Base64).
+  - Invoice ID: `cmw5ihyz40003wkwoi44lnxvd`
+  - Linked to `Tasty Bun` store in Henley Expenses & Suppliers.
+
+---
+
+## 5. Current Task & System Status (Handover Checkpoint - November 6, 2026)
 
 - **System Status:** 100% operational, fully verified with Next.js (`npm run build` 38/38 routes 0 errors), committed, and pushed to GitHub `origin main`.
+- **Henley Suppliers:** Added `Zetem Ltd.` exclusively for Tasty Bun (`franchise: 'Tasty Bun'`) with invoice #001171 (£199.92 dated 03-Nov-2026).
 - **Sales Invoices Platform Filter:** Multi-select checklist with checkboxes across all platforms on both Hungry Birds and Henley on Thames.
 - **Upload Modal:** Clear dual-category selector (`Delivery Platforms` vs `Website & Direct Payments`), allowing immediate upload of `Online Web` and `Walk-in Card`.
 - **Performance & Security:** Remote MySQL database indexes active, long text bypass in place, and authentic original files served directly.

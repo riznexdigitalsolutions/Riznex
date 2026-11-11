@@ -437,6 +437,7 @@ export async function GET(req: NextRequest) {
       total: totalExpenses,
       byCategory: expenseBreakdown,
       wagesByStaff: wagesByStaff,
+      wages: staffWages,
       items: filteredExpenses,
     },
     suppliers: {

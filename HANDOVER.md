@@ -495,13 +495,31 @@
 
 ---
 
+### AC. Henley Weekly Net Profit Comparison Chart & All-Weeks Support (November 11, 2026)
+- **Feature Implemented:**
+  1. **New Chart Added: `2. WEEKLY NET PROFIT`**:
+     - Located directly below `1. WEEKLY SALES & ORDERS` in Henley on Thames Weekly Comparison tab.
+     - Displays **2 side-by-side bars** for each week:
+       - **Tasty Bun Net Profit Bar:** Amber / Gold (`#f59e0b`).
+       - **Herbies Pizza Net Profit Bar:** Red / Orange (`#ef4444`).
+     - **Exact Net Profit Numbers:** Each bar displays its exact net profit figure directly on top of the bar (e.g. `+£723.29` for Tasty Bun, `+£231.87` for Herbies Pizza on Week 2 Nov 2026), 100% matching the Overview Net Profit card.
+     - **Negative Value & Reference Line Support:** Features a clean horizontal dashed reference line at `y = 0` (`stroke="#475569"`), with labels positioned cleanly outside the tip of both positive and negative bars.
+     - **Custom Interactive Tooltip:** Displays Week name, Date Range, Tasty Bun Profit, Herbies Pizza Profit, and Combined Total Net Profit.
+  2. **All Available Weeks Support:**
+     - Removed hardcoded `slice(0, 6)` restriction; all 32 historical weeks and any filtered period are now fully displayed chronologically.
+     - Added dynamic horizontal scroll container (`minWidth: curr6Stats.weeklyData.length > 8 ? ${curr6Stats.weeklyData.length * 85}px : '100%'`) across all weekly charts so they scroll smoothly when displaying all weeks without crowding bars.
+  3. **Backend Wages Exposure (`app/api/reports/route.ts`):**
+     - Returned `wages: staffWages` inside `expenses` so that weekly staff wages are available client-side for precise week-by-week net profit computation.
+- **Build & Verification:** Next.js production build verified with `38/38` routes passing cleanly (0 errors), committed, and pushed to GitHub `origin main`.
+
+---
+
 ## 5. Current Task & System Status (Handover Checkpoint - November 11, 2026)
 
 - **System Status:** 100% operational, fully verified with Next.js (`npm run build` 38/38 routes 0 errors), committed, and pushed to GitHub `origin main`.
+- **Henley Weekly Net Profit Chart:** Fully implemented under Weekly tab with Tasty Bun and Herbies Pizza profit bars matching the Overview card to the penny.
+- **All-Weeks Support:** All historical weeks (all 32 weeks) and filtered months now fully viewable with responsive horizontal scrolling.
 - **Herbies Head Office Invoice #SI-16946:** Fixed date to `2026-11-04` (£291.99), active and visible under November 2026.
 - **UK Date Safeguard:** Enforced strict DD/MM/YYYY parsing with filename month cross-checking in `app/api/invoices/[id]/ocr/route.ts`.
 - **Monthly Comparison Alignment:** Monthly comparison sheet uses Sunday `weekEnd` snapping, ensuring 100% exact alignment with the Main Overview dashboard across all months.
-- **Henley Suppliers:** Added `Zetem Ltd.` exclusively for Tasty Bun (`franchise: 'Tasty Bun'`) with invoice #001171 (£199.92 dated 03-Nov-2026).
-- **Sales Invoices Platform Filter:** Multi-select checklist with checkboxes across all platforms on both Hungry Birds and Henley on Thames.
-- **Upload Modal:** Clear dual-category selector (`Delivery Platforms` vs `Website & Direct Payments`), allowing immediate upload of `Online Web` and `Walk-in Card`.
 - **Performance & Security:** Remote MySQL database indexes active, long text bypass in place, and authentic original files served directly.

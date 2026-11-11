@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { exportToPDF } from '@/lib/pdfExport'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Line, LabelList, PieChart, Pie, Cell } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ComposedChart, Line, LabelList, PieChart, Pie, Cell, ReferenceLine } from 'recharts'
 import { gbp } from '@/lib/utils'
 import { ExcelStyleReport } from '@/components/ExcelStyleReport'
 
@@ -407,11 +407,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   // --- Weekly Comparison Data Logic ---
   const uniqueWeeksSet = new Set<string>();
   rawSales.forEach((s: any) => { if (s.weekStart) uniqueWeeksSet.add(s.weekStart); });
-  const uniqueWeeks = Array.from(uniqueWeeksSet).sort((a: any, b: any) => new Date(b).getTime() - new Date(a).getTime());
-
-  // We want the last 6 weeks (from the latest available date)
-  const latest6WeeksDates = uniqueWeeks.slice(0, 6).reverse(); // oldest to newest
-  const previous6WeeksDates = uniqueWeeks.slice(6, 12).reverse();
+  // All weeks sorted chronologically (oldest to newest)
+  const allChronologicalWeeks = Array.from(uniqueWeeksSet).sort((a: any, b: any) => new Date(a).getTime() - new Date(b).getTime());
 
   const getWeeklyStats = (weekDates: string[]) => {
     const weeklyData = weekDates.map(dateStr => {
@@ -422,26 +419,88 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
       const wAdSpends = weekSales.reduce((sum: number, s: any) => sum + (s.adSpends || 0), 0);
       const wOtherFees = weekSales.reduce((sum: number, s: any) => sum + (s.otherFees || 0), 0);
       
-      const wProfit = wNetPaid - wAdSpends - wOtherFees;
       const mapKey = dateStr.split('T')[0];
-        const wSuppliers = weeklyMap[mapKey]?.suppliers || 0;
-        
-        const d = new Date(dateStr);
-        const endD = new Date(d);
-        endD.setDate(d.getDate() + 6);
+      const wSuppliers = weeklyMap[mapKey]?.suppliers || 0;
+      
+      const d = new Date(dateStr);
+      const endD = new Date(d);
+      endD.setDate(d.getDate() + 6);
+      endD.setHours(23, 59, 59, 999);
       const formatD = (date: Date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
       
       const w1 = new Date(d.getFullYear(), 0, 4);
       const isoWeek = 1 + Math.round(((d.getTime() - w1.getTime()) / 86400000 - 3 + (w1.getDay() + 6) % 7) / 7);
 
-            return {
+      // --- Franchise Net Profit Breakdown (Matches Overview Card exactly) ---
+      // 1. Tasty Bun Net Profit
+      const tSales = weekSales.filter((s: any) => s.store?.includes('Tasty') || s.platform?.includes('Tasty'));
+      const tNetSales = tSales.reduce((sum: number, s: any) => sum + (s.netPaid || 0), 0);
+      
+      const tExp = (r?.expenses?.items || []).filter((e: any) => {
+        const ed = new Date(e.date);
+        return ed >= d && ed <= endD;
+      }).reduce((sum: number, e: any) => {
+        const st = (e.store || '').toLowerCase();
+        if (st.includes('tasty')) return sum + (e.amount || 0);
+        if (st.includes('herbies')) return sum;
+        return sum + ((e.amount || 0) * 0.5);
+      }, 0);
+      
+      const tSupp = (r?.suppliers?.items || []).filter((s: any) => {
+        const sd = new Date(s.invoiceDate);
+        return sd >= d && sd <= endD;
+      }).reduce((sum: number, s: any) => {
+        const f = s.supplier?.franchise || 'Combined';
+        if (f === 'Tasty Bun') return sum + (s.amount || 0);
+        if (f === 'Herbies Pizza') return sum;
+        return sum + ((s.amount || 0) * 0.5);
+      }, 0);
+      
+      const tastyBunProfit = Number((tNetSales - tExp - tSupp).toFixed(2));
+
+      // 2. Herbies Pizza Net Profit
+      const hSales = weekSales.filter((s: any) => !s.store?.includes('Tasty') && !s.platform?.includes('Tasty'));
+      const hNetSales = hSales.reduce((sum: number, s: any) => sum + (s.netPaid || 0), 0);
+      
+      const hExp = (r?.expenses?.items || []).filter((e: any) => {
+        const ed = new Date(e.date);
+        return ed >= d && ed <= endD;
+      }).reduce((sum: number, e: any) => {
+        const st = (e.store || '').toLowerCase();
+        if (st.includes('herbies')) return sum + (e.amount || 0);
+        if (st.includes('tasty')) return sum;
+        return sum + ((e.amount || 0) * 0.5);
+      }, 0);
+      
+      const hSupp = (r?.suppliers?.items || []).filter((s: any) => {
+        const sd = new Date(s.invoiceDate);
+        return sd >= d && sd <= endD;
+      }).reduce((sum: number, s: any) => {
+        const f = s.supplier?.franchise || 'Combined';
+        if (f === 'Herbies Pizza') return sum + (s.amount || 0);
+        if (f === 'Tasty Bun') return sum;
+        return sum + ((s.amount || 0) * 0.5);
+      }, 0);
+      
+      const hWages = (r?.expenses?.wages || []).filter((wg: any) => {
+        const wd = new Date(wg.weekEnd);
+        return wd >= d && wd <= endD;
+      }).reduce((sum: number, wg: any) => sum + (wg.amount || 0), 0);
+      
+      const herbiesProfit = Number((hNetSales - hExp - hSupp - hWages).toFixed(2));
+      const totalNetProfit = Number((tastyBunProfit + herbiesProfit).toFixed(2));
+
+      return {
         dateStr,
         name: `Week ${isoWeek}`,
         dateRange: `${formatD(d)} - ${formatD(endD)}`,
-        sales: wSales,
+        sales: Number(wSales.toFixed(2)),
         orders: wOrders,
         aov: wOrders > 0 ? wSales / wOrders : 0,
-        profit: wProfit,
+        profit: totalNetProfit,
+        tastyBunProfit,
+        herbiesProfit,
+        totalProfit: totalNetProfit,
         suppliers: wSuppliers
       };
     });
@@ -454,8 +513,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     return { weeklyData, totalSales, totalOrders, totalProfit, aov: totalAov };
   };
 
-  const curr6Stats = getWeeklyStats(latest6WeeksDates);
-  const prev6Stats = getWeeklyStats(previous6WeeksDates);
+  const curr6Stats = getWeeklyStats(allChronologicalWeeks);
+  const prev6Stats = getWeeklyStats(allChronologicalWeeks.slice(-12, -6));
 
   const calcTrend = (curr: number, prev: number) => {
     if (prev === 0) return curr > 0 ? 100 : 0;
@@ -1230,6 +1289,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   </div>
                 </div>
                 <div className="flex-1 min-h-0 w-full overflow-x-auto">
+                  <div style={{ minWidth: curr6Stats.weeklyData.length > 8 ? `${curr6Stats.weeklyData.length * 85}px` : '100%', height: '100%' }}>
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: isMobile ? -10 : 0, left: isMobile ? -20 : 0, bottom: 40 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
@@ -1286,9 +1346,155 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       </Bar>
                     </ComposedChart>
                   </ResponsiveContainer>
+                  </div>
                 </div>
               </div>
 
+
+              {/* 2. Weekly Net Profit Chart */}
+              <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-4 sm:p-6 shadow-xl h-[460px] sm:h-[510px] flex flex-col w-full mb-8">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
+                  <h2 className="text-slate-900 dark:text-white font-bold uppercase tracking-wide text-xs sm:text-sm flex items-center">
+                    <span className="text-slate-900 dark:text-white mr-2">2.</span>WEEKLY NET PROFIT
+                  </h2>
+                  <div className="flex items-center gap-4 sm:gap-6 text-xs sm:text-[13px] font-bold">
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-[#f59e0b]"></span> 
+                      <span className="text-slate-600 dark:text-slate-300">Tasty Bun (£)</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="w-3 h-3 rounded-full bg-[#ef4444]"></span> 
+                      <span className="text-slate-600 dark:text-slate-300">Herbies Pizza (£)</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex-1 min-h-0 w-full overflow-x-auto">
+                  <div style={{ minWidth: curr6Stats.weeklyData.length > 8 ? `${curr6Stats.weeklyData.length * 85}px` : '100%', height: '100%' }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={curr6Stats.weeklyData} margin={{ top: 25, right: isMobile ? -10 : 0, left: isMobile ? -20 : 0, bottom: 40 }}>
+                        <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
+                        <ReferenceLine y={0} stroke="#475569" strokeWidth={1.5} strokeDasharray="3 3" />
+                        <XAxis 
+                          dataKey="name" 
+                          stroke="#64748b" 
+                          tick={(props: any) => {
+                            const { x, y, payload } = props;
+                            const data = curr6Stats.weeklyData.find((d: any) => d.name === payload.value);
+                            return (
+                              <g transform={`translate(${x},${y})`}>
+                                <text x={0} y={0} dy={16} textAnchor="middle" fill="#94a3b8" fontSize={isMobile ? 10 : 12} fontWeight="bold">{payload.value}</text>
+                                {data?.dateRange && (
+                                  <text x={0} y={0} dy={30} textAnchor="middle" fill="#64748b" fontSize={isMobile ? 9 : 11}>
+                                    {isMobile ? data.dateRange.replace(/ Sept/g, ' Sep').replace(/ Oct/g, ' Oct').replace(/ Aug/g, ' Aug').replace(/ July/g, ' Jul') : data.dateRange}
+                                  </text>
+                                )}
+                              </g>
+                            );
+                          }}
+                          tickMargin={12} 
+                          axisLine={false} 
+                          tickLine={false} 
+                        />
+                        <YAxis 
+                          stroke="#64748b" 
+                          tick={{ fill: "#94a3b8", fontSize: isMobile ? 10 : 12 }} 
+                          axisLine={false} 
+                          tickLine={false} 
+                          tickFormatter={(v: any) => (v < 0 ? '-£' : '£') + (Math.abs(v) >= 1000 ? (Math.abs(v)/1000).toFixed(0) + 'k' : Math.abs(v))} 
+                          dx={-5}
+                        />
+                        <Tooltip 
+                          cursor={{ fill: '#1e293b' }} 
+                          content={({ active, payload }: any) => {
+                            if (!active || !payload || !payload.length) return null;
+                            const d = payload[0]?.payload;
+                            if (!d) return null;
+                            return (
+                              <div className="bg-[#0a0c14] border border-[#1f2947] rounded-xl p-3 shadow-2xl text-xs sm:text-sm min-w-[210px]">
+                                <div className="font-bold text-white mb-0.5">{d.name}</div>
+                                <div className="text-slate-400 text-[11px] mb-2.5">{d.dateRange}</div>
+                                <div className="flex items-center justify-between gap-4 py-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-[#f59e0b]"></span>
+                                    <span className="text-slate-300 font-medium">Tasty Bun:</span>
+                                  </div>
+                                  <span className={`font-bold ${d.tastyBunProfit >= 0 ? 'text-amber-400' : 'text-red-400'}`}>
+                                    {gbp(d.tastyBunProfit)}
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between gap-4 py-1">
+                                  <div className="flex items-center gap-2">
+                                    <span className="w-2.5 h-2.5 rounded-full bg-[#ef4444]"></span>
+                                    <span className="text-slate-300 font-medium">Herbies Pizza:</span>
+                                  </div>
+                                  <span className={`font-bold ${d.herbiesProfit >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                                    {gbp(d.herbiesProfit)}
+                                  </span>
+                                </div>
+                                <div className="border-t border-slate-800 my-2 pt-2 flex items-center justify-between gap-4">
+                                  <span className="text-slate-400 font-bold uppercase text-[11px]">Total Net Profit:</span>
+                                  <span className={`font-black ${d.totalProfit >= 0 ? 'text-emerald-400' : 'text-red-400'}`}>
+                                    {gbp(d.totalProfit)}
+                                  </span>
+                                </div>
+                              </div>
+                            );
+                          }}
+                        />
+                        
+                        <Bar dataKey="tastyBunProfit" name="Tasty Bun" fill="#f59e0b" radius={[4, 4, 0, 0]} maxBarSize={48}>
+                          {!isMobile && (
+                            <LabelList 
+                              dataKey="tastyBunProfit" 
+                              content={(props: any) => {
+                                const { x, y, width, height, value } = props;
+                                if (value === undefined || value === null || value === 0) return null;
+                                const isNeg = value < 0;
+                                return (
+                                  <text
+                                    x={x + width / 2}
+                                    y={isNeg ? y + height + 14 : y - 6}
+                                    fill="#f59e0b"
+                                    textAnchor="middle"
+                                    fontSize={11}
+                                    fontWeight="bold"
+                                  >
+                                    {gbp(value)}
+                                  </text>
+                                );
+                              }}
+                            />
+                          )}
+                        </Bar>
+                        <Bar dataKey="herbiesProfit" name="Herbies Pizza" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={48}>
+                          {!isMobile && (
+                            <LabelList 
+                              dataKey="herbiesProfit" 
+                              content={(props: any) => {
+                                const { x, y, width, height, value } = props;
+                                if (value === undefined || value === null || value === 0) return null;
+                                const isNeg = value < 0;
+                                return (
+                                  <text
+                                    x={x + width / 2}
+                                    y={isNeg ? y + height + 14 : y - 6}
+                                    fill="#ef4444"
+                                    textAnchor="middle"
+                                    fontSize={11}
+                                    fontWeight="bold"
+                                  >
+                                    {gbp(value)}
+                                  </text>
+                                );
+                              }}
+                            />
+                          )}
+                        </Bar>
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                </div>
+              </div>
                 {/* 3 Bottom Widgets */}
                 <div className="flex flex-col gap-6 w-full mb-8">
                   {/* Top Row: 2 Pies */}
@@ -1363,9 +1569,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
                     <div className="flex justify-between items-center mb-6">
                       <h2 className="text-slate-900 dark:text-white font-bold text-lg">Supplier Purchases</h2>
-                      <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Weeks</span>
+                      <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">{`${curr6Stats.weeklyData.length} Weeks`}</span>
                     </div>
-                    <div className="flex-1 min-h-0 w-full mt-2">
+                    <div className="flex-1 min-h-0 w-full overflow-x-auto mt-2">
+                      <div style={{ minWidth: curr6Stats.weeklyData.length > 8 ? `${curr6Stats.weeklyData.length * 85}px` : '100%', height: '100%' }}>
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={curr6Stats.weeklyData} margin={{ top: 15, right: 0, left: -25, bottom: 40 }}>
                           <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
@@ -1399,6 +1606,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           </Bar>
                         </BarChart>
                       </ResponsiveContainer>
+                      </div>
                     </div>
                   </div>
                 </div>

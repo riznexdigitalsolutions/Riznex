@@ -479,10 +479,28 @@
 
 ---
 
+### AB. UK Date Misreading Safeguard & Herbies Head Office SI-16946 Correction (November 11, 2026)
+- **Problem Diagnosed:** The user uploaded a Herbies Head Office sales invoice (`Z Herbies Head Offc 11 Nov 04.jpeg`, Invoice #SI-16946, total £291.99 dated `04/11/2026`), but could not find it in their current supplier view. Re-uploading showed: `Duplicate Invoice Detected... This exact invoice file has already been uploaded`.
+- **Root Cause Identified:**
+  - Gemini Vision OCR read `04/11/2026` in US date format as **11 April 2026** (`2026-04-11`) instead of UK date format **04 November 2026** (`2026-11-04`).
+  - As a result, the invoice was saved with `invoiceDate = 2026-04-11`, filing it back in **April 2026** and hiding it from the user's November view.
+- **Solution Applied:**
+  1. **Database Record Corrected:**
+     - Updated invoice `cmwcoevul00036jmwigrtpb62` to `invoiceDate = 2026-11-04T00:00:00.000Z` and amount £291.99.
+     - The invoice now appears immediately at the top of **Expenses → Suppliers & Purchases → Herbies Head office** for November 2026.
+  2. **OCR System UK Date Strict Rule & Safeguard (`app/api/invoices/[id]/ocr/route.ts`):**
+     - Updated supplier OCR prompt to explicitly mandate British format: `Dates are strictly formatted as DD/MM/YYYY (Day/Month/Year). For example, "04/11/2026" is 4th November 2026 ("2026-11-04"), NEVER 11th April ("2026-04-11"). Always read the first number as DAY and the second number as MONTH.`
+     - Added an automatic day/month inversion safeguard: if AI inverts day and month (e.g. extracts April 11) but the uploaded filename explicitly references the month (e.g. `Nov`), the system automatically swaps day and month to match the true UK date.
+  3. **Build & Git Sync:** Verified with `npm run build` (38/38 routes, 0 errors), committed, and pushed to GitHub `origin main`.
+
+---
+
 ## 5. Current Task & System Status (Handover Checkpoint - November 11, 2026)
 
 - **System Status:** 100% operational, fully verified with Next.js (`npm run build` 38/38 routes 0 errors), committed, and pushed to GitHub `origin main`.
-- **Monthly Comparison Alignment:** Monthly comparison sheet now uses Sunday `weekEnd` snapping, ensuring 100% exact penny-for-penny and order-for-order alignment with the Main Overview dashboard across all months.
+- **Herbies Head Office Invoice #SI-16946:** Fixed date to `2026-11-04` (£291.99), active and visible under November 2026.
+- **UK Date Safeguard:** Enforced strict DD/MM/YYYY parsing with filename month cross-checking in `app/api/invoices/[id]/ocr/route.ts`.
+- **Monthly Comparison Alignment:** Monthly comparison sheet uses Sunday `weekEnd` snapping, ensuring 100% exact alignment with the Main Overview dashboard across all months.
 - **Henley Suppliers:** Added `Zetem Ltd.` exclusively for Tasty Bun (`franchise: 'Tasty Bun'`) with invoice #001171 (£199.92 dated 03-Nov-2026).
 - **Sales Invoices Platform Filter:** Multi-select checklist with checkboxes across all platforms on both Hungry Birds and Henley on Thames.
 - **Upload Modal:** Clear dual-category selector (`Delivery Platforms` vs `Website & Direct Payments`), allowing immediate upload of `Online Web` and `Walk-in Card`.

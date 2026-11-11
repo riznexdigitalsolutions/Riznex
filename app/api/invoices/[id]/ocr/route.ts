@@ -90,7 +90,7 @@ Return ONLY a valid JSON object with exactly these fields. Use null if a value i
 IMPORTANT:
 - Extract the FINAL TOTAL AMOUNT of the invoice. This is the most critical field. It is usually at the bottom next to "TOTAL" or "Amount Due" or "Total GBP Incl. VAT" or "Invoice Total".
 - Extract the Invoice Date (not the Due Date).
-- Use British format for ambiguous dates (e.g. 15-07-26 means 15th July 2026, NOT July 26th 2015).
+- CRITICAL UK DATE FORMAT: All invoices are British UK businesses. Dates are strictly formatted as DD/MM/YYYY (Day/Month/Year). For example, "04/11/2026" is 4th November 2026 ("2026-11-04"), NEVER 11th April ("2026-04-11"). Always read the first number as DAY and the second number as MONTH.
 - If the image is cut off or a value isn't found, output 0 for numbers.
 - For missing dates, use null.
 - DO NOT use markdown formatting, ONLY return JSON.`;
@@ -939,6 +939,24 @@ IMPORTANT:
         }
       }
     }
+    // Safeguard: Check if AI inverted day and month (e.g. 04/11 read as April 11 instead of November 4)
+    if (finalInvoiceDate && invoice.fileName) {
+      const shortMonths = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+      const fnMatch = invoice.fileName.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*/i);
+      if (fnMatch) {
+        const fnMonthIndex = shortMonths.indexOf(fnMatch[1].toLowerCase());
+        const extractedMonth = finalInvoiceDate.getUTCMonth();
+        const extractedDay = finalInvoiceDate.getUTCDate();
+        
+        if (extractedMonth !== fnMonthIndex && extractedDay === fnMonthIndex + 1 && extractedMonth + 1 <= 31) {
+          const flippedDate = new Date(Date.UTC(finalInvoiceDate.getUTCFullYear(), fnMonthIndex, extractedMonth + 1, 12, 0, 0));
+          console.log(`[OCR UK DATE AUTO-CORRECTION] Swapped inverted date from ${finalInvoiceDate.toISOString()} to ${flippedDate.toISOString()} based on filename: ${invoice.fileName}`);
+          finalInvoiceDate = flippedDate;
+          if (ocrData) ocrData.invoiceDate = flippedDate.toISOString().split('T')[0];
+        }
+      }
+    }
+
     // Force 2025 year if flag is set
     if (invoice.is2025) {
       if (finalInvoiceDate) finalInvoiceDate.setUTCFullYear(2025);

@@ -518,7 +518,7 @@
 
 - **System Status:** 100% operational, fully verified with Next.js (`npm run build` 38/38 routes 0 errors), committed, and pushed to GitHub `origin main`.
 - **Henley Weekly Net Profit Chart:** Fully implemented under Weekly tab with Tasty Bun and Herbies Pizza profit bars matching the Overview card to the penny.
-- **All-Weeks Support:** All historical weeks (all 32 weeks) and filtered months now fully viewable with responsive horizontal scrolling.
+- **Strict Last 6 Weeks Display:** All weekly comparison charts (Sales & Orders, Net Profit, and Supplier Purchases) strictly display only the latest 6 weeks, fitting cleanly on screen with no horizontal scrollbar.
 - **Herbies Head Office Invoice #SI-16946:** Fixed date to `2026-11-04` (£291.99), active and visible under November 2026.
 - **UK Date Safeguard:** Enforced strict DD/MM/YYYY parsing with filename month cross-checking in `app/api/invoices/[id]/ocr/route.ts`.
 - **Monthly Comparison Alignment:** Monthly comparison sheet uses Sunday `weekEnd` snapping, ensuring 100% exact alignment with the Main Overview dashboard across all months.

@@ -206,14 +206,17 @@ export function HungryBirdsDashboard() {
     displayWeeklyData.unshift({ name: '-', label: '-', sales: 0, orders: 0, suppliers: 0 });
   }
 
-  // 2. Group by Month
+  // 2. Group by Month (aligned with Sunday weekEnd to match Overview cards & DateFilter)
   const monthlyMap: any = {};
   rawSales.forEach((s: any) => {
     let d = new Date();
-    if (s.weekStart) d = new Date(s.weekStart);
+    if (s.weekEnd) d = new Date(s.weekEnd);
+    else if (s.date) d = new Date(s.date);
+    else if (s.weekStart) d = new Date(s.weekStart);
     if (isNaN(d.getTime())) d = new Date();
     const mStr = d.toLocaleString('en-GB', { month: 'short', year: 'numeric' });
-    if (!monthlyMap[mStr]) monthlyMap[mStr] = { name: mStr, sales: 0, orders: 0, suppliers: 0, date: d };
+    const monthDate = new Date(d.getFullYear(), d.getMonth(), 1);
+    if (!monthlyMap[mStr]) monthlyMap[mStr] = { name: mStr, sales: 0, orders: 0, suppliers: 0, date: monthDate };
     monthlyMap[mStr].sales += (Number(s.grossSales) || 0);
     monthlyMap[mStr].orders += (Number(s.totalOrders) || 0);
   });
@@ -222,15 +225,16 @@ export function HungryBirdsDashboard() {
     if (s.invoiceDate) d = new Date(s.invoiceDate);
     if (isNaN(d.getTime())) d = new Date();
     const mStr = d.toLocaleString('en-GB', { month: 'short', year: 'numeric' });
-    if (!monthlyMap[mStr]) monthlyMap[mStr] = { name: mStr, sales: 0, orders: 0, suppliers: 0, date: d };
+    const monthDate = new Date(d.getFullYear(), d.getMonth(), 1);
+    if (!monthlyMap[mStr]) monthlyMap[mStr] = { name: mStr, sales: 0, orders: 0, suppliers: 0, date: monthDate };
     monthlyMap[mStr].suppliers += (Number(s.amount) || 0);
   });
 
   const realMonthlyData = Object.values(monthlyMap).sort((a: any, b: any) => a.date.getTime() - b.date.getTime()).map((m: any) => ({
     name: m.name,
-    sales: Math.round(m.sales) || 0,
+    sales: Number((m.sales).toFixed(2)) || 0,
     orders: Math.round(m.orders) || 0,
-    suppliers: Math.round(m.suppliers) || 0
+    suppliers: Number((m.suppliers).toFixed(2)) || 0
   }));
   
   let displayMonthlyData = realMonthlyData.slice(-4);

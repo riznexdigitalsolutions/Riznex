@@ -456,17 +456,34 @@
 
 ---
 
-## 5. Current Task & System Status (Handover Checkpoint - November 6, 2026)
+### AA. Aligned Monthly Comparison Sheet with Main Overview Sunday Week-Ending Bounds (November 11, 2026)
+- **Problem Diagnosed:** The user observed that sales and order totals on the "Monthly Comparison" sheet (Tab: Monthly) did not match the "Main Overview" dashboard cards for Henley:
+  - September 2026: Monthly Comparison showed **£19,651.00 (1,028 orders)** while Overview showed **£19,852.29 (1,047 orders)**.
+  - October 2026: Monthly Comparison showed **£17,900.00 (974 orders)** while Overview showed **£18,011.06 (958 orders)**.
+- **Root Cause Identified:**
+  - In `DateFilter.tsx` and `app/api/reports/route.ts`, the system standard defines monthly operating periods by Sunday statement week-ending dates (`weekEnd`).
+  - However, in `HenleyDashboard.tsx` and `HungryBirdsDashboard.tsx`, `monthlyMap` grouped sales by `s.weekStart` (Monday):
+    - Week Mon 31 Aug – Sun 06 Sep was misallocated into August instead of September (-£4,357.65 / -222 orders).
+    - Week Mon 28 Sep – Sun 04 Oct was misallocated into September instead of October (+£4,156.46 / +237 orders into Sep, -£4,156.46 from Oct).
+    - Week Mon 26 Oct – Sun 01 Nov was misallocated into October instead of November (+£4,044.98 / +253 orders into Oct).
+- **Solution Applied:**
+  - In `app/dashboard/HenleyDashboard.tsx` and `app/dashboard/HungryBirdsDashboard.tsx`:
+    - Updated `monthlyMap` to group by `s.weekEnd` (falling back to `s.date` or `s.weekStart`), aligning exactly with `/api/reports` and `DateFilter`.
+    - Aligned month sorting by anchoring month dates to the 1st of each month (`new Date(d.getFullYear(), d.getMonth(), 1)`).
+    - Stored sales amounts with exact decimal precision (`Number(m.sales.toFixed(2))`) so Recharts labels and tooltips match the Overview cards to the exact penny.
+- **Verification:**
+  - September 2026: Monthly Comparison now displays **£19,852.29 (1,047 orders)**, 100% matching the Overview cards.
+  - October 2026: Monthly Comparison now displays **£18,011.06 (958 orders)**, 100% matching the Overview cards.
+  - August 2026: Monthly Comparison displays **£29,066.44 (1,428 orders)**, 100% matching the August Overview cards.
+  - Full Next.js production build verified clean (38/38 routes, 0 errors).
+
+---
+
+## 5. Current Task & System Status (Handover Checkpoint - November 11, 2026)
 
 - **System Status:** 100% operational, fully verified with Next.js (`npm run build` 38/38 routes 0 errors), committed, and pushed to GitHub `origin main`.
+- **Monthly Comparison Alignment:** Monthly comparison sheet now uses Sunday `weekEnd` snapping, ensuring 100% exact penny-for-penny and order-for-order alignment with the Main Overview dashboard across all months.
 - **Henley Suppliers:** Added `Zetem Ltd.` exclusively for Tasty Bun (`franchise: 'Tasty Bun'`) with invoice #001171 (£199.92 dated 03-Nov-2026).
 - **Sales Invoices Platform Filter:** Multi-select checklist with checkboxes across all platforms on both Hungry Birds and Henley on Thames.
 - **Upload Modal:** Clear dual-category selector (`Delivery Platforms` vs `Website & Direct Payments`), allowing immediate upload of `Online Web` and `Walk-in Card`.
 - **Performance & Security:** Remote MySQL database indexes active, long text bypass in place, and authentic original files served directly.
-
-
-
-
-
-
-

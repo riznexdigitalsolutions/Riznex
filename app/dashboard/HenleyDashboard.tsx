@@ -407,8 +407,10 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
   // --- Weekly Comparison Data Logic ---
   const uniqueWeeksSet = new Set<string>();
   rawSales.forEach((s: any) => { if (s.weekStart) uniqueWeeksSet.add(s.weekStart); });
-  // All weeks sorted chronologically (oldest to newest)
-  const allChronologicalWeeks = Array.from(uniqueWeeksSet).sort((a: any, b: any) => new Date(a).getTime() - new Date(b).getTime());
+  const uniqueWeeks = Array.from(uniqueWeeksSet).sort((a: any, b: any) => new Date(b).getTime() - new Date(a).getTime());
+  // Strictly the last 6 weeks (from oldest to newest)
+  const latest6WeeksDates = uniqueWeeks.slice(0, 6).reverse();
+  const previous6WeeksDates = uniqueWeeks.slice(6, 12).reverse();
 
   const getWeeklyStats = (weekDates: string[]) => {
     const weeklyData = weekDates.map(dateStr => {
@@ -513,8 +515,8 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
     return { weeklyData, totalSales, totalOrders, totalProfit, aov: totalAov };
   };
 
-  const curr6Stats = getWeeklyStats(allChronologicalWeeks);
-  const prev6Stats = getWeeklyStats(allChronologicalWeeks.slice(-12, -6));
+  const curr6Stats = getWeeklyStats(latest6WeeksDates);
+  const prev6Stats = getWeeklyStats(previous6WeeksDates);
 
   const calcTrend = (curr: number, prev: number) => {
     if (prev === 0) return curr > 0 ? 100 : 0;
@@ -1288,8 +1290,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 min-h-0 w-full overflow-x-auto">
-                  <div style={{ minWidth: curr6Stats.weeklyData.length > 8 ? `${curr6Stats.weeklyData.length * 85}px` : '100%', height: '100%' }}>
+                <div className="flex-1 min-h-0 w-full">
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={curr6Stats.weeklyData} margin={{ top: 20, right: isMobile ? -10 : 0, left: isMobile ? -20 : 0, bottom: 40 }}>
                       <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
@@ -1346,7 +1347,6 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                       </Bar>
                     </ComposedChart>
                   </ResponsiveContainer>
-                  </div>
                 </div>
               </div>
 
@@ -1368,8 +1368,7 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 min-h-0 w-full overflow-x-auto">
-                  <div style={{ minWidth: curr6Stats.weeklyData.length > 8 ? `${curr6Stats.weeklyData.length * 85}px` : '100%', height: '100%' }}>
+                <div className="flex-1 min-h-0 w-full">
                     <ResponsiveContainer width="100%" height="100%">
                       <BarChart data={curr6Stats.weeklyData} margin={{ top: 25, right: isMobile ? -10 : 0, left: isMobile ? -20 : 0, bottom: 40 }}>
                         <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
@@ -1492,7 +1491,6 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                         </Bar>
                       </BarChart>
                     </ResponsiveContainer>
-                  </div>
                 </div>
               </div>
                 {/* 3 Bottom Widgets */}
@@ -1569,10 +1567,9 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                   <div className="bg-gradient-to-r from-black/[0.04] dark:from-white/[0.04] via-[#E5B869]/10 to-black/[0.04] dark:to-white/[0.04] border border-[#E5B869]/30 shadow-xl shadow-black/40 dark:shadow-none rounded-xl p-6 shadow-xl flex flex-col w-full h-[350px]">
                     <div className="flex justify-between items-center mb-6">
                       <h2 className="text-slate-900 dark:text-white font-bold text-lg">Supplier Purchases</h2>
-                      <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">{`${curr6Stats.weeklyData.length} Weeks`}</span>
+                      <span className="text-xs bg-slate-300 dark:bg-[#1f2947] text-slate-600 dark:text-slate-300 px-3 py-1.5 rounded-md border border-[#2a3454] uppercase font-bold tracking-wider">Last 6 Weeks</span>
                     </div>
-                    <div className="flex-1 min-h-0 w-full overflow-x-auto mt-2">
-                      <div style={{ minWidth: curr6Stats.weeklyData.length > 8 ? `${curr6Stats.weeklyData.length * 85}px` : '100%', height: '100%' }}>
+                    <div className="flex-1 min-h-0 w-full mt-2">
                       <ResponsiveContainer width="100%" height="100%">
                         <BarChart data={curr6Stats.weeklyData} margin={{ top: 15, right: 0, left: -25, bottom: 40 }}>
                           <CartesianGrid strokeDasharray="3 3" stroke="#1f2947" vertical={false} />
@@ -1606,7 +1603,6 @@ export function HenleyDashboard({ is2025 = false }: { is2025?: boolean }) {
                           </Bar>
                         </BarChart>
                       </ResponsiveContainer>
-                      </div>
                     </div>
                   </div>
                 </div>

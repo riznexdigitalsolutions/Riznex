@@ -1042,11 +1042,20 @@ IMPORTANT:
 
     // Auto-create Sale or Expense linked records
     if (invoice.type === "platform" && invoice.platform) {
-      const invoiceDate = ocrData.invoiceDate
-        ? new Date(ocrData.invoiceDate)
-        : new Date(invoice.invoiceDate || invoice.createdAt);
-      const weekStart = ocrData.weekStart || getWeekStart(invoiceDate);
-      const weekEnd = ocrData.weekEnd || getWeekEnd(weekStart);
+      const isValidDate = (d: any) => d && !isNaN(new Date(d).getTime());
+      let rawInvoiceDate = ocrData.invoiceDate ? new Date(ocrData.invoiceDate) : (invoice.invoiceDate ? new Date(invoice.invoiceDate) : new Date(invoice.createdAt));
+      if (isNaN(rawInvoiceDate.getTime())) rawInvoiceDate = new Date();
+
+      let wsCandidate = isValidDate(ocrData.weekStart) ? new Date(ocrData.weekStart) : null;
+      let weCandidate = isValidDate(ocrData.weekEnd) ? new Date(ocrData.weekEnd) : null;
+
+      if (!wsCandidate && weCandidate) wsCandidate = getWeekStart(weCandidate);
+      if (!weCandidate && wsCandidate) weCandidate = getWeekEnd(wsCandidate);
+      if (!wsCandidate) wsCandidate = getWeekStart(rawInvoiceDate);
+      if (!weCandidate) weCandidate = getWeekEnd(wsCandidate);
+
+      const weekStart = wsCandidate;
+      const weekEnd = weCandidate;
 
       let storeName = "Combined";
       if (invoice.platform?.includes("Herbies")) storeName = "Herbies Pizza";
@@ -1734,31 +1743,41 @@ function parseUberEatsInvoice(text: string) {
     /(\d{1,2}\/\d{1,2}\/\d{4})\s*-\s*(\d{1,2}\/\d{1,2}\/\d{4})/
   );
 
+  const cleanMonth = (mStr: string) => {
+    const m = mStr.match(/(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*/i);
+    return m ? m[0] : mStr;
+  };
+
   if (singleMonthRange) {
-    const m = singleMonthRange[1], d1 = singleMonthRange[2], d2 = singleMonthRange[3], y = singleMonthRange[4];
+    const m = cleanMonth(singleMonthRange[1]), d1 = singleMonthRange[2], d2 = singleMonthRange[3], y = singleMonthRange[4];
     result.weekStart = new Date(`${m} ${d1}, ${y} 00:00:00 UTC`);
     result.weekEnd = new Date(`${m} ${d2}, ${y} 23:59:59 UTC`);
-    result.invoiceDate = result.weekEnd.toISOString().split('T')[0];
+    if (!isNaN(result.weekEnd.getTime())) result.invoiceDate = result.weekEnd.toISOString().split('T')[0];
   } else if (dayFirstRange) {
-    const d1 = dayFirstRange[1], d2 = dayFirstRange[2], m = dayFirstRange[3], y = dayFirstRange[4];
+    const d1 = dayFirstRange[1], d2 = dayFirstRange[2], m = cleanMonth(dayFirstRange[3]), y = dayFirstRange[4];
     result.weekStart = new Date(`${m} ${d1}, ${y} 00:00:00 UTC`);
     result.weekEnd = new Date(`${m} ${d2}, ${y} 23:59:59 UTC`);
-    result.invoiceDate = result.weekEnd.toISOString().split('T')[0];
+    if (!isNaN(result.weekEnd.getTime())) result.invoiceDate = result.weekEnd.toISOString().split('T')[0];
   } else if (shortDateMatch) {
-    const m1 = shortDateMatch[1], d1 = shortDateMatch[2], m2 = shortDateMatch[3], d2 = shortDateMatch[4], y = shortDateMatch[5];
+    const m1 = cleanMonth(shortDateMatch[1]), d1 = shortDateMatch[2], m2 = cleanMonth(shortDateMatch[3]), d2 = shortDateMatch[4], y = shortDateMatch[5];
     result.weekStart = new Date(`${m1} ${d1}, ${y} 00:00:00 UTC`);
     result.weekEnd = new Date(`${m2} ${d2}, ${y} 23:59:59 UTC`);
-    result.invoiceDate = result.weekEnd.toISOString().split('T')[0];
+    if (!isNaN(result.weekEnd.getTime())) result.invoiceDate = result.weekEnd.toISOString().split('T')[0];
   } else if (shortDateMatch2) {
-    const d1 = shortDateMatch2[1], m1 = shortDateMatch2[2], d2 = shortDateMatch2[3], m2 = shortDateMatch2[4], y = shortDateMatch2[5];
+    const d1 = shortDateMatch2[1], m1 = cleanMonth(shortDateMatch2[2]), d2 = shortDateMatch2[3], m2 = cleanMonth(shortDateMatch2[4]), y = shortDateMatch2[5];
     result.weekStart = new Date(`${d1} ${m1} ${y} 00:00:00 UTC`);
     result.weekEnd = new Date(`${d2} ${m2} ${y} 23:59:59 UTC`);
-    result.invoiceDate = result.weekEnd.toISOString().split('T')[0];
+    if (!isNaN(result.weekEnd.getTime())) result.invoiceDate = result.weekEnd.toISOString().split('T')[0];
   } else {
     const singleDate = t.match(
       /(\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4}|\d{4}-\d{2}-\d{2})/
     );
     if (singleDate) result.invoiceDate = singleDate[1].replace(/,/g, "");
+  }
+
+  // Ensure weekStart is valid if weekEnd is present
+  if ((!result.weekStart || isNaN(result.weekStart.getTime())) && result.weekEnd && !isNaN(result.weekEnd.getTime())) {
+    result.weekStart = getWeekStart(result.weekEnd);
   }
 
   // --- FINANCIALS ---
@@ -1790,6 +1809,13 @@ function parseUberEatsInvoice(text: string) {
   }
   const settledMatch = t.match(/Settled\s*orders[\s\S]{0,5}?(\d+)/i);
   if (settledMatch) result.totalOrders = parseInt(settledMatch[1], 10);
+
+  if (!result.totalOrders || result.totalOrders === 0) {
+    const txMatches = [...t.matchAll(/\b([A-Z0-9]{5})\s*(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*\s+\d{1,2}/gi)];
+    if (txMatches.length > 0) {
+      result.totalOrders = txMatches.length;
+    }
+  }
 
   // Offers on items (incl. tax)
   const offersMatch = t.match(

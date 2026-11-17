@@ -33,6 +33,17 @@ export async function POST(
     let extractedText = "";
     let geminiData: any = null;
 
+    // Ensure file exists on disk (restore from base64 if needed)
+    try {
+      if (!require('fs').existsSync(filePath) && invoice.fileData) {
+        const { mkdir, writeFile } = require('fs/promises');
+        await mkdir(path.dirname(filePath), { recursive: true });
+        await writeFile(filePath, Buffer.from(invoice.fileData, 'base64'));
+      }
+    } catch (fsErr) {
+      console.warn("Could not ensure local file on disk:", fsErr);
+    }
+
     const apiKey = process.env.GOOGLE_AI_API_KEY || process.env.GEMINI_API_KEY;
     const openaiKey = process.env.OPENAI_API_KEY;
     const useOpenAI = !!openaiKey;
@@ -41,7 +52,7 @@ export async function POST(
       return NextResponse.json({ error: 'API Key missing' }, { status: 500 });
     }
     const isBankStatementPdf = invoice.type === "pos" && (invoice.platform?.includes("Card") || invoice.fileName?.toLowerCase().includes("card") || invoice.fileName?.toLowerCase().includes("bank") || invoice.fileName?.toLowerCase().includes("walkin"));
-    const isHungryBirdsPosPdf = (invoice.type === "pos" && invoice.fileType === "pdf" && (invoice.platform?.includes("Hungry Birds") || invoice.platform?.includes("Online Web"))) || isBankStatementPdf;
+    const isHungryBirdsPosPdf = (invoice.type === "pos" && invoice.fileType === "pdf" && (invoice.platform === "Hungry Birds POS" || invoice.platform === "Walk-in Cash")) || isBankStatementPdf;
     const isHerbiesPosPdf = invoice.type === "pos" && invoice.fileType === "pdf" && invoice.platform?.includes("Herbies");
 
     if ((apiKey || useOpenAI) && !isHungryBirdsPosPdf && !isHerbiesPosPdf) {
@@ -96,32 +107,37 @@ IMPORTANT:
 - DO NOT use markdown formatting, ONLY return JSON.`;
 } else if (invoice.type === "pos") {
   if (isOnlineWeb) {
-    prompt = `You are an invoice data extractor. Analyse this "Online Web" order list image and extract the financial data.
-Find every order row. For each row, extract the date ("Place on [Date]") and the total amount ("Total. £[Amount]").
-Group the orders by week. Assume weeks end on Sunday 11:59PM.
+    prompt = `You are an invoice data extractor. Analyse this "Online Web" order history / statement report and extract the financial data.
+Find every order row. In each row, extract the order date ("Place on [Date]") and the total amount ("Total. £[Amount]").
+CRITICAL UK DATE ORDERING: Dates are UK British format. E.g. "01 Nov 2026" or "31 Oct 2026".
+Group all extracted orders by their respective Sunday week-ending (Sunday 23:59:59).
+For each week bucket:
+- "weekStart": Monday 00:00:00 (ISO string, e.g. "2026-10-26T00:00:00.000Z")
+- "weekEnd": Sunday 23:59:59 (ISO string, e.g. "2026-11-01T23:59:59.999Z")
+- "totalOrders": number of orders in that week
+- "grossSales": sum of order totals in that week (number rounded to 2 decimal places)
 
 Return ONLY a valid JSON object matching exactly this format:
 {
   "isHungryBirdsMultiWeek": true,
   "webWeeklySales": [
     {
-      "weekStart": "YYYY-MM-DDT12:00:00Z",
-      "weekEnd": "YYYY-MM-DDT12:00:00Z",
+      "weekStart": "YYYY-MM-DDT00:00:00.000Z",
+      "weekEnd": "YYYY-MM-DDT23:59:59.999Z",
       "totalOrders": 0,
       "grossSales": 0.00
     }
   ],
-  "invoiceDate": "YYYY-MM-DDT12:00:00Z",
+  "invoiceDate": "YYYY-MM-DDT23:59:59.999Z",
   "grossSales": 0.00,
   "totalOrders": 0
 }
 
 IMPORTANT:
-- Extract the exact Date from "Place on ..." and the exact Amount from "Total. £...".
-- Group all extracted orders into their correct weekly buckets (Monday to Sunday).
-- "invoiceDate" should be the latest date found.
-- "grossSales" and "totalOrders" at the root should be the sum of all weeks.
-- Return ONLY JSON. No markdown, no markdown blocks, no code blocks.`;
+- Extract every single order row without skipping.
+- "invoiceDate" must be the latest order date found.
+- "grossSales" and "totalOrders" at root must be the overall sum of all orders across all weeks.
+- Return ONLY clean JSON. No markdown, no markdown blocks, no code blocks.`;
   } else if (isTastyBun) {
     prompt = `You are an invoice data extractor. Analyse this Tasty Bun "Aggregators Sales by Channel" report and extract the financial data.
 
@@ -506,21 +522,21 @@ IMPORTANT:
 
     // --- POS PARSING FOR PDF AND IMAGES ---
       if (invoice.type === "pos" && !geminiData) {
-      if (invoice.platform?.includes("Hungry Birds") || invoice.platform?.includes("Online Web")) {
-        const regex = /Total.*?([\d,.]+)(?:[\s\S]{0,50}?)Place[d]?\s*on\s*(\d{1,2}\s*[A-Za-z]{3,9}\s*\d{4})(?:[\s\S]{0,30}?(Yesweb))?/gi;
+      if (invoice.platform?.includes("Hungry Birds") || invoice.platform?.includes("Online Web") || invoice.fileName?.toLowerCase().includes("website") || invoice.fileName?.toLowerCase().includes("web")) {
+        const orderRegex = /Total[.:]?\s*£?\s*([\d,]+\.\d{2})[\s\S]{0,80}?Place(?:d)?\s*on\s*(\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4})(?:[\s\S]{0,40}?(web))?/gi;
         let match;
         let ordersCount = 0;
         const posWeeklyData: Record<string, { weekStart: Date, weekEnd: Date, totalOrders: number, grossSales: number }> = {};
         const webWeeklyData: Record<string, { weekStart: Date, weekEnd: Date, totalOrders: number, grossSales: number }> = {};
         let latestDate: Date | null = null;
         
-        while ((match = regex.exec(extractedText)) !== null) {
+        while ((match = orderRegex.exec(extractedText)) !== null) {
            const valueStr = match[1].replace(/,/g, '');
            const value = parseFloat(valueStr);
            const dateStr = match[2];
-           const isWeb = !!match[3];
+           const isWeb = !!match[3] || invoice.platform?.includes("Online Web") || invoice.fileName?.toLowerCase().includes("web");
            const orderDate = new Date(dateStr);
-           if (isNaN(orderDate.getTime())) continue;
+           if (isNaN(orderDate.getTime()) || isNaN(value)) continue;
            ordersCount++;
            if (!latestDate || orderDate > latestDate) latestDate = orderDate;
            
@@ -533,15 +549,17 @@ IMPORTANT:
              targetData[weekKey] = { weekStart: ws, weekEnd: we, totalOrders: 0, grossSales: 0 };
            }
            targetData[weekKey].totalOrders += 1;
-           targetData[weekKey].grossSales += value;
+           targetData[weekKey].grossSales = parseFloat((targetData[weekKey].grossSales + value).toFixed(2));
         }
         if (ordersCount > 0) {
+           const totalPosGross = parseFloat(Object.values(posWeeklyData).reduce((sum, w) => sum + w.grossSales, 0).toFixed(2));
+           const totalWebGross = parseFloat(Object.values(webWeeklyData).reduce((sum, w) => sum + w.grossSales, 0).toFixed(2));
            geminiData = {
              isHungryBirdsMultiWeek: true,
              posWeeklySales: Object.values(posWeeklyData),
              webWeeklySales: Object.values(webWeeklyData),
              invoiceDate: latestDate,
-             grossSales: Object.values(posWeeklyData).reduce((sum, w) => sum + w.grossSales, 0) + Object.values(webWeeklyData).reduce((sum, w) => sum + w.grossSales, 0),
+             grossSales: parseFloat((totalPosGross + totalWebGross).toFixed(2)),
              totalOrders: ordersCount
            };
         }
@@ -1148,28 +1166,43 @@ IMPORTANT:
         : new Date(invoice.invoiceDate || invoice.createdAt);
       const weekStart = ocrData.weekStart || getWeekStart(expenseDate);
       const weekEnd = ocrData.weekEnd || getWeekEnd(weekStart);
-      const storeName = invoice.platform.replace(" POS", ""); // e.g. "Herbies Pizza"
+      const storeName = (invoice.clientId === 'client-1' || invoice.platform?.includes('Hungry Birds')) ? 'Hungry Birds' : invoice.platform.replace(" POS", "");
 
       if (ocrData.isHungryBirdsMultiWeek) {
         // Multi-week sales records from Hungry Birds website POS
         const processWeeklyData = async (weeklyData: any[], platformName: string, commissionRate: number) => {
           for (const weekData of weeklyData) {
-            const { weekStart: ws, weekEnd: we, totalOrders, grossSales } = weekData;
-            if (grossSales === 0 && totalOrders === 0) continue;
-            const commission = grossSales * commissionRate;
-            const netPaid = grossSales - commission;
+            const { weekStart: rawWs, weekEnd: rawWe, totalOrders, grossSales } = weekData;
+            if (!grossSales && !totalOrders) continue;
+            const ws = new Date(rawWs);
+            const we = new Date(rawWe);
+            const validGross = typeof grossSales === 'number' && !isNaN(grossSales) ? grossSales : 0;
+            const validOrders = typeof totalOrders === 'number' && !isNaN(totalOrders) ? totalOrders : 0;
+            const commission = parseFloat((validGross * commissionRate).toFixed(2));
+            const netPaid = parseFloat((validGross - commission).toFixed(2));
             
+            const endOfWeek = new Date(we);
             const existingSale = await prisma.sale.findFirst({
-              where: { clientId: invoice.clientId, store: storeName, platform: platformName, weekStart: ws, weekEnd: we }
+              where: {
+                clientId: invoice.clientId,
+                store: storeName,
+                platform: platformName,
+                weekEnd: {
+                  gte: new Date(endOfWeek.getTime() - 24 * 60 * 60 * 1000),
+                  lte: new Date(endOfWeek.getTime() + 24 * 60 * 60 * 1000)
+                }
+              }
             });
             if (existingSale) {
               await prisma.sale.update({
                 where: { id: existingSale.id },
                 data: {
-                  totalOrders: existingSale.totalOrders + totalOrders,
-                  grossSales: existingSale.grossSales + grossSales,
-                  commission: existingSale.commission + commission,
-                  netPaid: existingSale.netPaid + netPaid
+                  totalOrders: validOrders,
+                  grossSales: validGross,
+                  commission,
+                  netPaid,
+                  notes: `Auto-updated from Online Web order history: ${invoice.fileName}`,
+                  invoiceId: invoice.id
                 }
               });
             } else {
@@ -1181,8 +1214,8 @@ IMPORTANT:
                   store: storeName,
                   weekStart: ws,
                   weekEnd: we,
-                  totalOrders,
-                  grossSales,
+                  totalOrders: validOrders,
+                  grossSales: validGross,
                   netPaid,
                   commission,
                   vat: 0,

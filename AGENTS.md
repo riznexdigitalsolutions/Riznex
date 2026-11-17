@@ -19,3 +19,10 @@
 6. **WEEK-ENDING SNAPPING & MONTHLY ALIGNMENT:**
    - Operating weeks snap to Sunday week-ending (`weekEnd`).
    - Overview metrics and Monthly Comparison sheets must always group by `weekEnd` so that monthly order counts and sales amounts match to the exact penny across all screens.
+7. **HUNGRY BIRDS ONLINE WEB ORDER HISTORY EXTRACTION RULE:**
+   - Online Web order history reports (PDFs / images with columns `Order ID | Customer | Order Information | Printed | Platform | Actions`) must extract:
+     1. Individual order amounts (`Total. £[Amount]`)
+     2. Order dates (`Place on [Date]`)
+     3. Total orders count
+   - Auto-bucket orders by their respective Sunday week-ending (`weekEnd`) and Monday week-start (`weekStart`).
+   - Create/update `Sale` records under `store: 'Hungry Birds'`, `platform: 'Online Web'` with `grossSales = sum(order amounts)`, `netPaid = grossSales`, `commission = 0`, `vat = 0`.

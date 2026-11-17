@@ -86,7 +86,7 @@ function InvoicesContent() {
   }, [searchParams])
   
   // Form State
-  const [type, setType] = useState('supplier')
+  const [type, setType] = useState('platform')
   const [supplierId, setSupplierId] = useState('')
   const [platformName, setPlatformName] = useState('Hungry Birds Deliveroo')
   const [posName, setPosName] = useState('Walk-in Card')
@@ -213,6 +213,7 @@ function InvoicesContent() {
     try {
       const currentClientId = session?.user?.role === 'admin' ? 'client-1' : session?.user?.clientId;
 
+      const effectiveType = uploadCategory === 'pos' ? 'pos' : 'platform';
       if (type === 'supplier' || type === 'stock') {
         const formData = new FormData()
         Array.from(files).forEach(file => formData.append('file', file))
